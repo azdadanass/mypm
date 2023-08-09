@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View ProjectPlanning" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View ProjectPlanning" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{projectPlanningView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{projectPlanningView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+
+						<h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditProjectPlanning.xhtml" rendered="#{projectPlanningView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{projectPlanningView.id}" />
+						</h:outputLink>
+
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{projectPlanningView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+
+						
+						
+						
+						
+						<p:commandLink title="#{projectPlanningView.model.active?'Disable':'Enable'}" styleClass="btn btn-app btn-sm #{projectPlanningView.model.active?'btn-danger':'btn-success'} hover aa-tooltip"
+							update=":toggleForm" oncomplete="PF('toggleDlg').show()">
+							<i class="ace-icon fa fa-power-off bigger-230"></i>
+							<h:outputText value="#{projectPlanningView.model.active?'Disable':'Enable'}" />
+						</p:commandLink>
+
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					
+					
+					
+					
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Numero" />
+										</div>
+
+										<div class="profile-info-value">
+											<h:outputText value="#{projectPlanningView.model.idStr}" styleClass="bolder orange" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Name" />
+										</div>
+
+										<div class="profile-info-value">
+											<h:outputText value="#{projectPlanningView.model.name}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space-16" />
+						<div style="width: 90%; margin: auto;">
+							<div class="well">
+								<h4 class="green smaller lighter">
+									<h:outputText value="Description" />
+								</h4>
+								<h:outputText value="#{projectPlanningView.model.description}" styleClass="preformatted" />
+							</div>
+						</div>
+					</div>
+					
+					
+					
+					
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{projectPlanningView.redirect()}" />
+		<ui:include src="projectPlanningFooter.xhtml" />
+	</ui:define>
+</ui:composition>

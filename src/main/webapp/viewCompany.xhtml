@@ -1,0 +1,1010 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View Company" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.Profile" var="Profile" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View Company" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{companyView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{companyView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditCompany.xhtml" rendered="#{companyView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{companyView.id}" />
+						</h:outputLink>
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{companyView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+						<p:commandLink title="Add Files" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" onclick="PF('uploadFileDlg').show()"
+							rendered="#{companyView.canAddFile()}">
+							<i class="ace-icon fa fa-file bigger-230"></i>
+							<h:outputText value="Files" />
+						</p:commandLink>
+						<p:commandLink title="Add Comment" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" onclick="PF('addCommentDlg').show()"
+							rendered="#{companyView.canAddComment()}">
+							<i class="ace-icon fa fa-comment bigger-230"></i>
+							<h:outputText value="Comment" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="user-profile row">
+				<div class="col-xs-12 col-sm-3 center">
+					<div class="profile-picture">
+						<!-- <p:graphicImage id="photo" value="#{companyView.model.photo}" styleClass="editable img-responsive editable-click editable-empty aa-avatar" onclick="PF('uploadPhotoDlg').show()"
+							rendered="#{companyView.canUploadPhoto()}" /> -->
+						<p:graphicImage id="photo" value="#{fileUploadView.stream}" styleClass="editable img-responsive editable-click editable-empty aa-avatar" onclick="PF('uploadPhotoDlg').show()"
+							rendered="#{companyView.canUploadPhoto()}">
+							<f:param name="fileName" value="#{companyView.model.photo}" />
+						</p:graphicImage>
+					</div>
+					<div class="space-4" />
+					<div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+						<div class="inline position-relative">
+							<a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+								<h:panelGroup id="activeIcon">
+									<i class="ace-icon fa fa-circle light-green" />
+								</h:panelGroup>
+								&nbsp;
+								<span class="white">
+									<h:outputText value="#{companyView.model.name}" />
+								</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-9">
+					<div class="widget-box transparent">
+						<div class="widget-header widget-header-small">
+							<h4 class="smaller">
+								<i class="ace-icon fa fa-check-square-o bigger-110"></i>
+								<h:outputText value=" Description" />
+							</h4>
+						</div>
+						<div class="space-8" />
+						<div>
+							<h:outputText value="#{companyView.model.description}" />
+						</div>
+						<div class="space-32" />
+					</div>
+				</div>
+			</div>
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab6">
+							<i class="red ace-icon fa fa-users bigger-120"></i>
+							<h:outputText value=" Functional Structure" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<f:subview rendered="#{companyView.model.accounting}">
+						<li>
+							<a data-toggle="tab" href="#tab7">
+								<i class="orange ace-icon fa fa-dollar bigger-120"></i>
+								<h:outputText value=" Accounting" styleClass="hidden-xs" />
+							</a>
+						</li>
+					</f:subview>
+					<li>
+						<a data-toggle="tab" href="#tab8">
+							<i class="orange ace-icon fa fa-money bigger-120"></i>
+							<h:outputText value=" Bank Accounts" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab2">
+							<i class="purple ace-icon fa fa-sitemap bigger-120"></i>
+							<h:outputText value=" BU List" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab3">
+							<i class="blue ace-icon fa fa-file bigger-120"></i>
+							<h:outputText value=" Attachements" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab4">
+							<i class="orange ace-icon fa fa-clock-o bigger-120"></i>
+							<h:outputText value=" History" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab5">
+							<i class="red ace-icon fa fa-comment-o bigger-120"></i>
+							<h:outputText value=" Comments" />
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.name}" styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Region" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.region}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Type" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.type}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="RI" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.ri}" styleClass="bolder blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="VAT" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.vat}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Phone 1" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.phone1}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Fax" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.fax}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Establishment Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.establishmentDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Company Parent" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.groupName}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="ICE" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.ice}" styleClass="orange" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Reporting Currency" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.defaultReportingCurrency.name}" styleClass="bolder light-blue" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Country" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.country}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Address" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.address}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="City" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.city}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Postal Code" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.postalCode}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Sector" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.sector}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="CNSS" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.cnss}" styleClass="purple" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Labor Law" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.laborLaw}" styleClass="#{companyView.model.laborLaw=='MOR'?'green':'blue'}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Phone 2" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.phone2}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Patent" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.patent}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Capital" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.capital}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Ownership structure" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{companyView.model.structure}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space-16" />
+						<div style="width: 90%; margin: auto;">
+							<div class="well">
+								<h4 class="green smaller lighter">
+									<h:outputText value="Description" />
+								</h4>
+								<h:outputText value="#{companyView.model.description}" styleClass="preformatted" />
+							</div>
+						</div>
+					</div>
+					<div id="tab2" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" BU List" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="buList" value="#{buView.list2}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Numero" sortBy="#{item.idStr}">
+											<h:outputText value="#{item.idStr}" styleClass="bolder purple" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" styleClass="bolder pink" />
+										</p:column>
+										<p:column headerText="Company">
+											<h:outputText value="#{item.companyName}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Operating Sector">
+											<h:outputText value="#{item.operatingSector}" />
+										</p:column>
+										<p:column headerText="Director">
+											<h:outputText value="#{item.directorFullName}" />
+										</p:column>
+										<p:column headerText="Operations Director">
+											<h:outputText value="#{item.operationsDirectorFullName}" />
+										</p:column>
+										<p:column headerText="Technical Director">
+											<h:outputText value="#{item.technicalDirectorFullName}" />
+										</p:column>
+										<p:column headerText="HR Director">
+											<h:outputText value="#{item.hrDirectorFullName}" />
+										</p:column>
+										<p:column headerText="Finance Manager">
+											<h:outputText value="#{item.financeManagerFullName}" />
+										</p:column>
+										<p:column headerText="Actions" width="150" exportable="false">
+											<div class="action-buttons center">
+												<p:commandLink title="#{item.countFiles} Attachements" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+												</p:commandLink>
+												<h:outputLink value="#{buView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:param name="id" value="#{item.id}" />
+												</h:outputLink>
+											</div>
+										</p:column>
+										<f:facet name="footer">
+											<div class="action-buttons center">
+												<h:outputLink value="addEditBu.xhtml" title="Add New BU" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-plus bigger-130 green" />
+													<f:param name="companyId" value="#{companyView.model.id}" />
+												</h:outputLink>
+											</div>
+										</f:facet>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab6" class="tab-pane">
+						<p:messages id="tab6messages" closable="true" />
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value=" Functional Structure" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+												<img src="/resources/img/xls.png" width="20" height="20" />
+												<p:dataExporter type="xls" target="companyProfileList" fileName="companyProfileList" postProcessor="#{utilsView.excelExportation}" />
+											</h:commandLink>
+										</div>
+									</div>
+									<div class="col-sm-2 col-xs-4">
+										<div class="nav-search minimized">
+											<span class="input-icon">
+												<p:inputText value="#{companyProfileView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+													<p:ajax event="keyup" update="companyProfileList" />
+												</p:inputText>
+												<i class="ace-icon fa fa-search nav-search-icon" />
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable value="#{companyProfileView.list2}" filteredValue="#{companyProfileView.list3}" rowKey="#{item.id}" selection="#{companyProfileView.list4}"
+										id="companyProfileList" widgetVar="companyProfileList" var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false"
+										paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowSelectMode="checkbox">
+										<p:column headerText="Photo" width="5%" styleClass="hidden-xs" exportable="false">
+											<p:graphicImage value="#{fileUploadView.stream}" styleClass="img-circle aa-datatable-photo">
+												<f:param name="fileName" value="#{item.userPhoto}" />
+											</p:graphicImage>
+										</p:column>
+										<p:column headerText="Photo">
+											<h:outputText value="#{item.userFullName}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="ERP">
+											<h:outputText value="#{item.erp}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="User">
+											<h:outputText value="#{item.userFullName}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Status">
+											<h:outputText value="#{item.userActive?'Active':'Inactive'}" styleClass="#{item.userActive?'green':'red'}" />
+										</p:column>
+										<p:column headerText="Profile">
+											<h:outputText value="#{item.profile}" styleClass="orange" />
+										</p:column>
+										<p:column headerText="Actions" width="100">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete " actionListener="#{companyProfileView.updateModel(item.id)}" action="#{companyProfileView.delete()}" update="companyProfileList,:main_form:historyList">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+												</p:commandLink>
+											</div>
+										</p:column>
+										<f:facet name="footer">
+											<div class="action-buttons center">
+												<p:commandLink title="Add New" styleClass="aa-tooltip" action="#{companyProfileView.initModel()}" oncomplete="PF('addProfileDlg').show()" update=":addProfileForm"
+													rendered="#{companyProfileView.canSave()}">
+													<i class="ace-icon fa fa-plus bigger-130 green" />
+												</p:commandLink>
+											</div>
+										</f:facet>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<f:subview rendered="#{companyView.model.accounting}">
+						<div id="tab7" class="tab-pane">
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="profile-user-info profile-user-info-striped">
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="Accounting System" />
+											</div>
+											<div class="profile-info-value">
+												<h:outputText value="#{companyView.model.accountingSystem.value}" styleClass="#{companyView.model.accountingSystem.color.name}" />
+												&nbsp;
+											</div>
+										</div>
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="Fiscal Year Start Date" />
+											</div>
+											<div class="profile-info-value">
+												<h:outputText value="#{companyView.model.fiscalYearStartDay} - #{utilsView.getMonthName(companyView.model.fiscalYearStartMonth)}" />
+												&nbsp;
+											</div>
+										</div>
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="Accounting Currency" />
+											</div>
+											<div class="profile-info-value">
+												<h:outputText value="#{companyView.model.accountingCurrency.name}" />
+												&nbsp;
+											</div>
+										</div>
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="System Accounting Start Date" />
+											</div>
+											<div class="profile-info-value">
+												<h:outputText value="#{companyView.model.systemAccountingStartDate}">
+													<f:convertDateTime pattern="yyyy-MM-dd" />
+												</h:outputText>
+												&nbsp;
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="profile-user-info profile-user-info-striped">
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="AccountNumber Of Digit" />
+											</div>
+											<div class="profile-info-value">
+												<h:outputText value="#{companyView.model.accountNumberOfDigit}" />
+												&nbsp;
+											</div>
+										</div>
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="Fiscal Year End Date" />
+											</div>
+											<div class="profile-info-value">
+												<h:outputText value="#{companyView.model.fiscalYearEndDay} - #{utilsView.getMonthName(companyView.model.fiscalYearEndMonth)}" />
+												&nbsp;
+											</div>
+										</div>
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="Automatic Accounting" />
+											</div>
+											<div class="profile-info-value">
+												<h:outputText value="#{companyView.model.automaticAccounting?'Yes':'No'}" />
+												&nbsp;
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</f:subview>
+					<div id="tab8" class="tab-pane">
+						<h:panelGroup id="panel1">
+							<ui:repeat var="bankAccount" value="#{companyView.model.bankAccountList}" varStatus="varStatus">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="widget-box transparent">
+											<div class="widget-header widget-header-large">
+												<table width="100%" style="margin: 10px">
+													<tr>
+														<td width="15%">
+															<p:commandLink disabled="#{!companyView.canUploadBankAccountPhoto()}" styleClass="pull-left">
+																<p:graphicImage value="#{fileUploadView.stream}" styleClass="editable editable-click editable-empty" height="50" width="200" onclick="PF('uploadBankAccountPhotoDlg').show()">
+																	<f:param name="fileName" value="#{bankAccount.logo}" />
+																</p:graphicImage>
+																<f:setPropertyActionListener value="#{bankAccount}" target="#{companyView.bankAccount}" />
+															</p:commandLink>
+														</td>
+														<td width="75%">
+															<h4>
+																<h:outputText value="BankAccount N° #{varStatus.index}" styleClass="bolder blue" />
+															</h4>
+														</td>
+														<td>
+															<span class="action-buttons center" style="margin-left: 20px">
+																<p:commandLink title="Edit BankAccount" oncomplete="PF('addBankAccountDlg').show()" update="addBankAccountForm">
+																	<i class="ace-icon fa fa-edit green" />
+																	<f:setPropertyActionListener target="#{companyView.bankAccount}" value="#{bankAccount}" />
+																</p:commandLink>
+																<p:commandLink title="Delete BankAccount" oncomplete="PF('deleteBankAccountDlg').show()">
+																	<i class="ace-icon fa fa-trash-o red" />
+																	<f:setPropertyActionListener target="#{companyView.bankAccount}" value="#{bankAccount}" />
+																</p:commandLink>
+															</span>
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- <div class="row">
+									<p:commandLink disabled="#{!companyView.canUploadBankAccountPhoto()}" styleClass="pull-left">
+										<p:graphicImage value="#{fileUploadView.stream}" styleClass="editable editable-click editable-empty" onclick="PF('uploadBankAccountPhotoDlg').show()">
+											<f:param name="fileName" value="#{bankAccount.logo}" />
+										</p:graphicImage>
+										<f:setPropertyActionListener value="#{bankAccount}" target="#{companyView.bankAccount}" />
+									</p:commandLink>
+									<div class="col-sm-10">
+										<h4>
+											<h:outputText value="BankAccount N° #{varStatus.index}" styleClass="blue bolder" />
+											<span class="action-buttons center" style="margin-left: 20px">
+												<p:commandLink title="Edit BankAccount" oncomplete="PF('addBankAccountDlg').show()" update="addBankAccountForm">
+													<i class="ace-icon fa fa-edit green" />
+													<f:setPropertyActionListener target="#{companyView.bankAccount}" value="#{bankAccount}" />
+												</p:commandLink>
+												<p:commandLink title="Delete BankAccount" oncomplete="PF('deleteBankAccountDlg').show()">
+													<i class="ace-icon fa fa-trash-o red" />
+													<f:setPropertyActionListener target="#{companyView.bankAccount}" value="#{bankAccount}" />
+												</p:commandLink>
+											</span>
+										</h4>
+									</div>
+								</div> -->
+								<div class="space-4" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-6">
+										<div class="profile-user-info profile-user-info-striped">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Bank Name" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.name}" styleClass="orange" />
+													&nbsp;
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="RIB" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.rib}" styleClass="light-blue" />
+													&nbsp;
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Swift Code" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.swiftCode}" />
+													&nbsp;
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Phone" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.phone}" />
+													&nbsp;
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Correspondent Bank Name" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.correspondentBankName}" />
+													<br /> &nbsp;
+												</div>
+											</div>
+											<f:subview rendered="#{companyView.model.accounting}">
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Accounting Code" />
+													</div>
+													<div class="profile-info-value">
+														<h:outputText value="#{bankAccount.accountingCode}" />
+														<br /> &nbsp;
+													</div>
+												</div>
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="VAT Accounting Code" />
+													</div>
+													<div class="profile-info-value">
+														<h:outputText value="#{bankAccount.vatAccountingCode}" />
+														<br /> &nbsp;
+													</div>
+												</div>
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Cash Accounting Code" />
+													</div>
+													<div class="profile-info-value">
+														<h:outputText value="#{bankAccount.cashAccountingCode}" />
+														<br /> &nbsp;
+													</div>
+												</div>
+											</f:subview>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6">
+										<div class="profile-user-info profile-user-info-striped">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Branch Code" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.address}" styleClass="light-green" />
+													&nbsp;
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Account Number" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.accountNumber}" styleClass="light-blue" />
+													&nbsp;
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Currency" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.currency.name}" />
+													&nbsp;
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Fax" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.fax}" />
+													&nbsp;
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Correspondent Bank Swift Code" />
+												</div>
+												<div class="profile-info-value">
+													<h:outputText value="#{bankAccount.correspondentBankSwiftCode}" />
+													<br /> &nbsp;
+												</div>
+											</div>
+											<f:subview rendered="#{companyView.model.accounting}">
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Bank Charge Accounting Code" />
+													</div>
+													<div class="profile-info-value">
+														<h:outputText value="#{bankAccount.bankChargeAccountingCode}" />
+														<br /> &nbsp;
+													</div>
+												</div>
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Bank Charge Vat Percentage" />
+													</div>
+													<div class="profile-info-value">
+														<h:outputText value="#{bankAccount.bankChargeVatPercentage} %" />
+														<br /> &nbsp;
+													</div>
+												</div>
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Funds Accouting Code" />
+													</div>
+													<div class="profile-info-value">
+														<h:outputText value="#{bankAccount.caisseAccountingCode}" />
+														<br /> &nbsp;
+													</div>
+												</div>
+											</f:subview>
+										</div>
+									</div>
+								</div>
+								<hr />
+								<div class="space-8" />
+							</ui:repeat>
+						</h:panelGroup>
+						<h4 class="header blue bolder smaller">
+							<span class="action-buttons center" style="margin-left: 20px">
+								<p:commandLink title="Add Bank Account" action="#{companyView.initBankAccount()}" oncomplete="PF('addBankAccountDlg').show()" update=":addBankAccountForm">
+									<h:outputText value="Add New BankAccount" />
+									<i class="fa fa-plus green" />
+								</p:commandLink>
+							</span>
+						</h4>
+					</div>
+					<div id="tab3" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List Of Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList" value="#{companyView.model.fileList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+										paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Phase" width="150" styleClass="center">
+											<h:outputText value="#{item.parentModelName}" styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Added Date" width="90">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="File Size" width="80">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+										<p:column headerText="File Type" width="100" styleClass="center">
+											<img src="#{item.fileExtensionImage}" style="border: none; border-radius: 0" width="20" height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}" styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Actions" width="150" style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File" oncomplete="PF('deleteFileDlg').show()" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener target="#{companyView.file}" value="#{item}" />
+												</p:commandLink>
+												<p:commandLink ajax="false">
+													<p:fileDownload value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="View" oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{fileView.file}" value="#{item}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab4" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" History" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="historyList" value="#{companyView.model.historyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+										paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Action" width="80" styleClass="center">
+											<span class="#{item.statusStyleClass}">
+												<h:outputText value="#{item.status}" styleClass="bolder" />
+											</span>
+										</p:column>
+										<p:column headerText="Date" width="90" styleClass="center">
+											<f:subview rendered="#{item.date==null}">
+												<i class="ace-icon fa fa-spinner fa-spin orange bigger-200 " />
+											</f:subview>
+											<h:outputText value="#{item.date}" rendered="#{item.date!=null}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="User" width="120">
+											<h:outputText id="user" value="#{item.user.fullName}" styleClass="purple bolder" />
+											<p:overlayPanel for="user" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Description" width="400">
+											<h:outputText value="#{item.description}" escape="false" styleClass="aa-cut-text" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab5" class="tab-pane">
+						<h:panelGroup id="commentPanel">
+							<div class="row">
+								<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+									<div class="timeline-container timeline-style2">
+										<ui:repeat var="commentGroup" value="#{companyView.model.commentGroupList}" varStatus="varStatus">
+											<div class="timeline-label">
+												<span class="label label-purple arrowed-in-right label-lg">
+													<b>
+														<h:outputText value="#{commentGroup.date}">
+															<f:convertDateTime pattern="yyyy-MM-dd" />
+														</h:outputText>
+													</b>
+												</span>
+											</div>
+											<div class="timeline-items">
+												<ui:repeat var="comment" value="#{commentGroup.commentList}">
+													<div class="timeline-item clearfix">
+														<div class="timeline-info">
+															<img src="#{comment.userPhoto}" />
+															<i class="timeline-indicator btn btn-info no-hover"></i>
+															<br />
+															<span class="orange">
+																<i class="ace-icon fa fa-clock-o bigger-120"></i>
+																<h:outputText value="#{comment.date}">
+																	<f:convertDateTime pattern="HH:mm" />
+																</h:outputText>
+															</span>
+														</div>
+														<div class="widget-box transparent">
+															<div class="widget-header widget-header-small">
+																<h5 class="widget-title smaller">
+																	<a href="#" class="blue">
+																		<h:outputText value="#{comment.userFullName}" />
+																	</a>
+																	<i class="ace-icon fa fa-angle-double-right"></i>
+																	<span class="grey">
+																		<h:outputText value="#{comment.title}" styleClass="green" />
+																	</span>
+																</h5>
+															</div>
+															<div class="widget-body">
+																<div class="widget-main">
+																	<h:outputText value="Comment : " styleClass="grey bolder" />
+																	<h:outputText value=" #{comment.content}" />
+																</div>
+															</div>
+														</div>
+													</div>
+												</ui:repeat>
+											</div>
+										</ui:repeat>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{companyView.redirect()}" />
+		<ui:include src="companyFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
+	</ui:define>
+</ui:composition>

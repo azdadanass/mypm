@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View InvoiceTermTemplate" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View InvoiceTermTemplate" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{invoiceTermTemplateView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{invoiceTermTemplateView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+
+						<!-- <h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditInvoiceTermTemplate.xhtml" rendered="#{invoiceTermTemplateView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{invoiceTermTemplateView.id}" />
+						</h:outputLink>
+
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{invoiceTermTemplateView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink> -->
+
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Name" />
+										</div>
+
+										<div class="profile-info-value">
+											<h:outputText value="#{invoiceTermTemplateView.model.name}"/>
+											<!-- <p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None" rendered="#{invoiceTermTemplateView.canUpdateName()}">
+												<p:inputText value="#{invoiceTermTemplateView.model.name}" styleClass="bolder orange" />
+												<p:ajax event="save" listener="#{invoiceTermTemplateView.updateName()}"  />
+												<p:ajax event="cancel" />
+											</p:inplace> -->
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Description" />
+										</div>
+
+										<div class="profile-info-value">
+											<h:outputText value="#{invoiceTermTemplateView.model.description}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<h4 class="header blue bolder smaller">
+							<h:outputText value="Invoice Term List" />
+						</h4>
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<i class="fa fa-list" />
+									<h:outputText value=" Details" />
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="detailList" value="#{invoiceTermTemplateView.model.detailList}" var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false"
+										paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowIndexVar="rowIndexVar">
+
+										<p:column headerText="Number">
+											<h:outputText value="#{item.numero}" styleClass="bolder green" />
+										</p:column>
+
+										<p:column headerText="Phase">
+											<h:outputText value="#{item.phase}" styleClass="bolder blue" />
+										</p:column>
+
+										<p:column headerText="Percentage">
+											<h:outputText value="#{item.percentage}" styleClass="purple" />
+										</p:column>
+
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+						<h4 class="header blue bolder smaller">
+							<h:outputText value="Payment Term List" />
+						</h4>
+						<h:panelGroup id="paymentTermList">
+							<ui:repeat var="oldInvoiceTerm" value="#{invoiceTermTemplateView.model.detailList}">
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10">
+										<div class="table-header col-sm-12 col-xs-12">
+											<i class="fa fa-list" />
+											<h:outputText value=" #{oldInvoiceTerm.numero} - #{oldInvoiceTerm.phase}" />
+										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+											<p:dataTable id="detailList" value="#{oldInvoiceTerm.detailList}" var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true"
+												paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowIndexVar="rowIndexVar">
+
+												<p:column headerText="Number">
+													<h:outputText value="#{item.numero}" styleClass="bolder green" />
+												</p:column>
+
+												<p:column headerText="Percentage">
+													<h:outputText value="#{item.percentage}" styleClass="purple" />
+												</p:column>
+
+												<p:column headerText="Duration">
+													<h:outputText value="#{item.duration}" styleClass="orange" />
+												</p:column>
+
+												<p:column headerText="Start Point">
+													<h:outputText value="#{item.startPoint.value}" styleClass="#{item.startPoint.color.name}" />
+												</p:column>
+
+											</p:dataTable>
+										</div>
+									</div>
+								</div>
+								<div class="space-4" />
+							</ui:repeat>
+						</h:panelGroup>
+						<div class="space-16" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{invoiceTermTemplateView.redirect()}" />
+		<ui:include src="invoiceTermTemplateFooter.xhtml" />
+	</ui:define>
+</ui:composition>

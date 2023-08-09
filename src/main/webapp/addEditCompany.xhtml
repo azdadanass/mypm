@@ -1,0 +1,578 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="#{companyView.isAddPage?'Add New':'Edit'} Company" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa #{companyView.isAddPage?'fa-plus green':'fa-edit orange'} bigger-110"></i>
+					<h:outputText value=" #{companyView.isAddPage?'Add New':'Edit'} Company" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-6">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-inverse hover aa-tooltip" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip tooltip-grey" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" action="#{companyView.save()}" update="messages" title="Save">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Save" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<div class="row">
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="tab-content profile-edit-tab-content">
+						<div class="tab-pane in active">
+							<p:messages id="messages" closable="true" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="General informations" />
+							</h4>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Name" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.name}" required="true" requiredMessage="Name should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Short Name" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.shortName}" required="true" requiredMessage="Name should not be null" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Region" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.region}" required="true" requiredMessage="Region should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Address" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.address}" required="true" requiredMessage="Address should not be null" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Type" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.type}" required="true" requiredMessage="Type should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Sector" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.sector}" required="true" requiredMessage="Sector should not be null" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Ri" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.ri}" required="true" requiredMessage="Ri should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Cnss" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.cnss}" required="true" requiredMessage="Cnss should not be null" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Vat" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.vat}" required="true" requiredMessage="Vat should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Labor Law" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.laborLaw}" required="true" requiredMessage="Labor Law should not be null" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Phone1" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.phone1}" required="true" requiredMessage="Phone1 should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Phone2" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.phone2}" required="true" requiredMessage="Phone2 should not be null" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Fax" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.fax}" required="true" requiredMessage="Fax should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Patent" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.patent}" required="true" requiredMessage="Patent should not be null" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Establishment Date" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:calendar value="#{companyView.model.establishmentDate}" pattern="yyyy-MM-dd" mask="true" pages="3" autocomplete="off" navigator="true" required="true"
+												requiredMessage="Establishment Date should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Capital" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.capital}" required="true" requiredMessage="Capital should not be null" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Company Parent" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.groupName}" required="true" requiredMessage="Group Name should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Structure" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{companyView.model.structure}" style="width:178px">
+												<f:selectItem itemValue="SARL" itemLabel="SARL" />
+												<f:selectItem itemValue="SA" itemLabel="SA" />
+												<f:selectItem itemValue="SARLAU" itemLabel="SARLAU" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Ice" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{companyView.model.ice}" required="true" requiredMessage="Ice should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Reporting Currency" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{companyView.model.defaultReportingCurrency}" required="true" requiredMessage="Reporting Currency should not be null" converter="#{genericSecuredConverter}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{currencyView.findAll()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Country" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{companyView.model.country}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Country should not be null">
+												<f:selectItems value="#{utilsView.countryList}" var="item" itemLabel="#{item}" itemValue="#{item}" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="City" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+										<p:inputText value="#{companyView.model.city}" required="true" requiredMessage="City should not be null"/>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Postal Code" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+										<p:inputNumber value="#{companyView.model.postalCode}"  thousandSeparator="" decimalPlaces="0"/>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="Accounting" />
+							</h4>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Accounting" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{companyView.model.accounting}" required="true" requiredMessage="Accounting should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemLabel="Yes" itemValue="true" />
+												<f:selectItem itemLabel="No" itemValue="false" />
+												<p:ajax update="accountingPanel" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<h:panelGroup id="accountingPanel">
+								<div class="row">
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+												<h:outputText value="Accounting System" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<h:selectOneMenu value="#{companyView.model.accountingSystem}" readonly="#{!companyView.model.accounting}" required="#{companyView.model.accounting}"
+													requiredMessage="Accounting System should not be null">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItem itemLabel="MOR" itemValue="MOR" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+												<h:outputText value="Account Number Of Digit" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<p:inputText value="#{companyView.model.accountNumberOfDigit}" readonly="#{!companyView.model.accounting}" required="#{companyView.model.accounting}"
+													requiredMessage="Account Number Of Digit should not be null" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="space-4" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+												<h:outputText value="Fiscal Year Start Date" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<h:selectOneMenu value="#{companyView.model.fiscalYearStartMonth}" disabled="#{!companyView.model.accounting}" required="#{companyView.model.accounting}"
+													requiredMessage="Fiscal Year Start Month should not be null" style="width:80px">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItem itemLabel="January" itemValue="1" />
+													<f:selectItem itemLabel="February" itemValue="2" />
+													<f:selectItem itemLabel="March" itemValue="3" />
+													<f:selectItem itemLabel="April" itemValue="4" />
+													<f:selectItem itemLabel="May" itemValue="5" />
+													<f:selectItem itemLabel="June" itemValue="6" />
+													<f:selectItem itemLabel="July" itemValue="7" />
+													<f:selectItem itemLabel="August" itemValue="8" />
+													<f:selectItem itemLabel="September" itemValue="9" />
+													<f:selectItem itemLabel="October" itemValue="10" />
+													<f:selectItem itemLabel="November" itemValue="11" />
+													<f:selectItem itemLabel="December" itemValue="12" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{companyView.model.fiscalYearStartDay}" disabled="#{!companyView.model.accounting}" required="#{companyView.model.accounting}"
+													requiredMessage="Fiscal Year Start Day should not be null" style="width:80px">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItem itemLabel="1" itemValue="1" />
+													<f:selectItem itemLabel="2" itemValue="2" />
+													<f:selectItem itemLabel="3" itemValue="3" />
+													<f:selectItem itemLabel="4" itemValue="4" />
+													<f:selectItem itemLabel="5" itemValue="5" />
+													<f:selectItem itemLabel="6" itemValue="6" />
+													<f:selectItem itemLabel="7" itemValue="7" />
+													<f:selectItem itemLabel="8" itemValue="8" />
+													<f:selectItem itemLabel="9" itemValue="9" />
+													<f:selectItem itemLabel="10" itemValue="10" />
+													<f:selectItem itemLabel="11" itemValue="11" />
+													<f:selectItem itemLabel="12" itemValue="12" />
+													<f:selectItem itemLabel="13" itemValue="13" />
+													<f:selectItem itemLabel="14" itemValue="14" />
+													<f:selectItem itemLabel="15" itemValue="15" />
+													<f:selectItem itemLabel="16" itemValue="16" />
+													<f:selectItem itemLabel="17" itemValue="17" />
+													<f:selectItem itemLabel="18" itemValue="18" />
+													<f:selectItem itemLabel="19" itemValue="19" />
+													<f:selectItem itemLabel="20" itemValue="20" />
+													<f:selectItem itemLabel="21" itemValue="21" />
+													<f:selectItem itemLabel="22" itemValue="22" />
+													<f:selectItem itemLabel="23" itemValue="23" />
+													<f:selectItem itemLabel="24" itemValue="24" />
+													<f:selectItem itemLabel="25" itemValue="25" />
+													<f:selectItem itemLabel="26" itemValue="26" />
+													<f:selectItem itemLabel="27" itemValue="27" />
+													<f:selectItem itemLabel="28" itemValue="28" />
+													<f:selectItem itemLabel="29" itemValue="29" />
+													<f:selectItem itemLabel="30" itemValue="30" />
+													<f:selectItem itemLabel="31" itemValue="31" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+												<h:outputText value="Fiscal Year End Date" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<h:selectOneMenu value="#{companyView.model.fiscalYearEndMonth}" disabled="#{!companyView.model.accounting}" required="#{companyView.model.accounting}"
+													requiredMessage="Fiscal Year End Month should not be null" style="width:80px">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItem itemLabel="January" itemValue="1" />
+													<f:selectItem itemLabel="February" itemValue="2" />
+													<f:selectItem itemLabel="March" itemValue="3" />
+													<f:selectItem itemLabel="April" itemValue="4" />
+													<f:selectItem itemLabel="May" itemValue="5" />
+													<f:selectItem itemLabel="June" itemValue="6" />
+													<f:selectItem itemLabel="July" itemValue="7" />
+													<f:selectItem itemLabel="August" itemValue="8" />
+													<f:selectItem itemLabel="September" itemValue="9" />
+													<f:selectItem itemLabel="October" itemValue="10" />
+													<f:selectItem itemLabel="November" itemValue="11" />
+													<f:selectItem itemLabel="December" itemValue="12" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{companyView.model.fiscalYearEndDay}" disabled="#{!companyView.model.accounting}" required="#{companyView.model.accounting}"
+													requiredMessage="Fiscal Year End Day should not be null" style="width:80px">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItem itemLabel="1" itemValue="1" />
+													<f:selectItem itemLabel="2" itemValue="2" />
+													<f:selectItem itemLabel="3" itemValue="3" />
+													<f:selectItem itemLabel="4" itemValue="4" />
+													<f:selectItem itemLabel="5" itemValue="5" />
+													<f:selectItem itemLabel="6" itemValue="6" />
+													<f:selectItem itemLabel="7" itemValue="7" />
+													<f:selectItem itemLabel="8" itemValue="8" />
+													<f:selectItem itemLabel="9" itemValue="9" />
+													<f:selectItem itemLabel="10" itemValue="10" />
+													<f:selectItem itemLabel="11" itemValue="11" />
+													<f:selectItem itemLabel="12" itemValue="12" />
+													<f:selectItem itemLabel="13" itemValue="13" />
+													<f:selectItem itemLabel="14" itemValue="14" />
+													<f:selectItem itemLabel="15" itemValue="15" />
+													<f:selectItem itemLabel="16" itemValue="16" />
+													<f:selectItem itemLabel="17" itemValue="17" />
+													<f:selectItem itemLabel="18" itemValue="18" />
+													<f:selectItem itemLabel="19" itemValue="19" />
+													<f:selectItem itemLabel="20" itemValue="20" />
+													<f:selectItem itemLabel="21" itemValue="21" />
+													<f:selectItem itemLabel="22" itemValue="22" />
+													<f:selectItem itemLabel="23" itemValue="23" />
+													<f:selectItem itemLabel="24" itemValue="24" />
+													<f:selectItem itemLabel="25" itemValue="25" />
+													<f:selectItem itemLabel="26" itemValue="26" />
+													<f:selectItem itemLabel="27" itemValue="27" />
+													<f:selectItem itemLabel="28" itemValue="28" />
+													<f:selectItem itemLabel="29" itemValue="29" />
+													<f:selectItem itemLabel="30" itemValue="30" />
+													<f:selectItem itemLabel="31" itemValue="31" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="space-4" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+												<h:outputText value="System Accounting Start Date" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<p:calendar value="#{companyView.model.systemAccountingStartDate}" pattern="yyyy-MM-dd" mask="true" pages="3" autocomplete="off" navigator="true"
+													disabled="#{!companyView.model.accounting}" required="#{companyView.model.accounting}" requiredMessage="System Accounting Start Date should not be null" />
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+												<h:outputText value="Accounting Currency" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<h:selectOneMenu value="#{companyView.model.accountingCurrency}" disabled="#{!companyView.model.accounting}" required="#{companyView.model.accounting}"
+													requiredMessage="Accounting Currency should not be null" converter="#{genericSecuredConverter}">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItems value="#{currencyView.findAll()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="space-4" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+												<h:outputText value="Automatic Accounting" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<h:selectOneMenu value="#{companyView.model.automaticAccounting}" disabled="#{!companyView.model.accounting}" required="#{companyView.model.accounting}"
+													requiredMessage="Automatic Accounting should not be null">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItem itemLabel="Yes" itemValue="true" />
+													<f:selectItem itemLabel="No" itemValue="false" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="space-4" />
+							</h:panelGroup>
+							<div class="space-4" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="Description" />
+							</h4>
+							<div class="row center">
+								<p:inputTextarea value="#{companyView.model.description}" style="width: 90%" />
+							</div>
+							<div class="space-16" />
+						</div>
+						<div class="row"></div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

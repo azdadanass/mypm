@@ -1,0 +1,388 @@
+.aa-icon-completed{
+	background: url(../img/icons/completed1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-completed:hover{
+	background: url(../img/icons/completed2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-open{
+	background: url(../img/icons/open1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-open:hover{
+	background: url(../img/icons/open2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-xbound{
+	background: url(../img/icons/xbound1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-xbound:hover{
+	background: url(../img/icons/xbound2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+.aa-icon-outbound{
+	background: url(../img/icons/outbound1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-outbound:hover{
+	background: url(../img/icons/outbound2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+.aa-icon-inbound{
+	background: url(../img/icons/inbound1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-inbound:hover{
+	background: url(../img/icons/inbound2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+.aa-icon-stc{
+	background: url(../img/icons/stc1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-stc:hover{
+	background: url(../img/icons/stc2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+.aa-icon-waiting{
+	background: url(../img/icons/waiting1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-waiting:hover{
+	background: url(../img/icons/waiting2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+
+.aa-icon-ongoing{
+	background: url(../img/icons/ongoing1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-ongoing:hover{
+	background: url(../img/icons/ongoing2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-upcoming{
+	background: url(../img/icons/upcoming1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-upcoming:hover{
+	background: url(../img/icons/upcoming2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-ended{
+	background: url(../img/icons/ended1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-ended:hover{
+	background: url(../img/icons/ended2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-expired{
+	background: url(../img/icons/expired1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-expired:hover{
+	background: url(../img/icons/expired2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+.aa-icon-pending{
+	background: url(../img/icons/pending1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-pending:hover{
+	background: url(../img/icons/pending2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-active{
+	background: url(../img/icons/active1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-active:hover{
+	background: url(../img/icons/active2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+.aa-icon-inactive{
+	background: url(../img/icons/inactive1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-inactive:hover{
+	background: url(../img/icons/inactive2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+.aa-icon-watched{
+	background: url(../img/icons/watched1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-watched:hover{
+	background: url(../img/icons/watched2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+.aa-icon-rejected{
+	background: url(../img/icons/rejected1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-rejected:hover{
+	background: url(../img/icons/rejected2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-acknowleged{
+	background: url(../img/icons/acknowleged1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-acknowleged:hover{
+	background: url(../img/icons/acknowleged2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-receiving{
+	background: url(../img/icons/receiving1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-receiving:hover{
+	background: url(../img/icons/receiving2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-requested{
+	background: url(../img/icons/requested1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-requested:hover{
+	background: url(../img/icons/requested2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+.aa-icon-paid{
+	background: url(../img/icons/paid1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-paid:hover{
+	background: url(../img/icons/paid2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-notinvoiced{
+	background: url(../img/icons/notinvoiced1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-notinvoiced:hover{
+	background: url(../img/icons/notinvoiced2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-invoiced{
+	background: url(../img/icons/invoiced1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-invoiced:hover{
+	background: url(../img/icons/invoiced2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-inprogress{
+	background: url(../img/icons/inprogress1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-inprogress:hover{
+	background: url(../img/icons/inprogress2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-approved{
+	background: url(../img/icons/approved1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-approved:hover{
+	background: url(../img/icons/approved2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-closed{
+	background: url(../img/icons/closed1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-closed:hover{
+	background: url(../img/icons/closed2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.aa-icon-all{
+	background: url(../img/icons/all.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.aa-icon-all:hover{
+	background: url(../img/icons/all_h.png) no-repeat;
+}
+
+/* new names */
+
+/* new names */
+
+.icon-a-green{
+	background: url(../img/icons/active1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.icon-a-green:hover{
+	background: url(../img/icons/active2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.icon-a-black{
+	background: url(../img/icons/all.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.icon-a-black:hover{
+	background: url(../img/icons/all_h.png) no-repeat;
+}
+
+.icon-i-red{
+	background: url(../img/icons/inactive1.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.icon-i-red:hover{
+	background: url(../img/icons/inactive2.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.icon-e-orange{
+	background: url(../img/icons/e-orange.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.icon-e-orange:hover{
+	background: url(../img/icons/e-orange-hover.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+.icon-i-green{
+	background: url(../img/icons/i-green.png) no-repeat;
+	background-size: 32px 32px;
+	width: 37px;
+	height: 37px;
+}
+
+.icon-i-green:hover{
+	background: url(../img/icons/i-green-hover.png) no-repeat;
+	background-size: 32px 32px;
+}
+
+
+
+

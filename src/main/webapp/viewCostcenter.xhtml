@@ -1,0 +1,318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View Costcenter" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View Costcenter" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{costcenterView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{costcenterView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditCostcenter.xhtml" rendered="#{costcenterView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{costcenterView.id}" />
+						</h:outputLink>
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{costcenterView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+						<p:commandLink title="Add Files" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" onclick="PF('uploadFileDlg').show()" rendered="#{costcenterView.canAddFile()}">
+							<i class="ace-icon fa fa-file bigger-230"></i>
+							<h:outputText value="Files" />
+						</p:commandLink>
+						<p:commandLink title="#{costcenterView.model.status=='Open'?'Close':'Open'}" styleClass="btn btn-app btn-sm #{rojectView.model.status=='Open'?'btn-danger':'btn-success'} hover aa-tooltip"
+							update=":toggleForm" oncomplete="PF('toggleDlg').show()">
+							<i class="ace-icon fa fa-power-off bigger-230"></i>
+							<h:outputText value="#{rojectView.model.status=='Open'?'Open':'Close'}" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab2">
+							<i class="purple ace-icon fa fa-list bigger-120"></i>
+							<h:outputText value=" Project List" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab3">
+							<i class="blue ace-icon fa fa-file bigger-120"></i>
+							<h:outputText value=" Attachements" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab4">
+							<i class="orange ace-icon fa fa-clock-o bigger-120"></i>
+							<h:outputText value=" History" />
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{costcenterView.model.lobName} / #{costcenterView.model.year}" styleClass="bolder blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Currency" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{costcenterView.model.currencyName}" styleClass="orange" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Status" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{costcenterView.model.status}" styleClass="badge #{costcenterView.model.status=='Open'?'badge-success':'badge-error'}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Budget" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{costcenterView.model.budget} #{costcenterView.model.currencyName}" styleClass="green" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space-16" />
+					</div>
+					<div id="tab2" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" Details" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="detailList" value="#{projectView.list2}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Numero" sortBy="#{item.idStr}" width="90">
+											<h:outputText value="#{item.idStr}" styleClass="bolder purple" />
+										</p:column>
+										<p:column headerText="Name" width="300">
+											<h:outputText value="#{item.name}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Cost Center">
+											<h:outputText value="#{item.lobName} / #{item.costcenterYear}" styleClass="bolder orange" />
+										</p:column>
+										<p:column headerText="Company">
+											<h:outputText value="#{item.companyName}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Category">
+											<h:outputText value="#{item.category}" styleClass="badge #{item.category=='project'?'badge-success':'badge-danger'}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" />
+										</p:column>
+										<p:column headerText="Sub Type">
+											<h:outputText value="#{item.subType}" />
+										</p:column>
+										<p:column headerText="Manager">
+											<h:outputText value="#{item.managerFullName}" styleClass="blue" />
+										</p:column>
+										<p:column headerText="Status">
+											<h:outputText value="#{item.status}" styleClass="#{item.status=='Open'?'green':'red'}" />
+										</p:column>
+										<p:column headerText="Actions" width="150" exportable="false">
+											<div class="action-buttons center">
+												<p:commandLink title="#{item.countFiles} Attachements" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+												</p:commandLink>
+												<h:outputLink value="#{projectView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:param name="id" value="#{item.id}" />
+												</h:outputLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab3" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List Of Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList" value="#{costcenterView.model.fileList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Phase" width="150" styleClass="center">
+											<h:outputText value="#{item.parentModelName}" styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Added Date" width="90">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="File Size" width="80">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+										<p:column headerText="File Type" width="100" styleClass="center">
+											<img src="#{item.fileExtensionImage}" style="border: none; border-radius: 0" width="20" height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}" styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Actions" width="150" style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File" oncomplete="PF('deleteFileDlg').show()" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener target="#{costcenterView.file}" value="#{item}" />
+												</p:commandLink>
+												<p:commandLink ajax="false">
+													<p:fileDownload value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="View" oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{fileView.file}" value="#{item}" />
+													<f:setPropertyActionListener target="#{costcenterView.file}" value="#{item}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab4" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" History" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="historyList" value="#{costcenterView.model.historyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+										paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Action" width="80" styleClass="center">
+											<span class="#{item.statusStyleClass}">
+												<h:outputText value="#{item.status}" styleClass="bolder" />
+											</span>
+										</p:column>
+										<p:column headerText="Date" width="90" styleClass="center">
+											<f:subview rendered="#{item.date==null}">
+												<i class="ace-icon fa fa-spinner fa-spin orange bigger-200 " />
+											</f:subview>
+											<h:outputText value="#{item.date}" rendered="#{item.date!=null}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="User" width="120">
+											<h:outputText id="user" value="#{item.user.fullName}" styleClass="purple bolder" />
+											<p:overlayPanel for="user" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Description" width="400">
+											<h:outputText value="#{item.description}" escape="false" styleClass="aa-cut-text" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{costcenterView.redirect()}" />
+		<ui:include src="costcenterFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
+	</ui:define>
+</ui:composition>

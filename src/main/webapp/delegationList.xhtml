@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value=" Delegation List" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list bigger-110 green"></i>
+					<h:outputText value="Delegation List" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h:panelGroup id="widgetPanel">
+						<div class=" col-sm-offset-1 col-sm-6">
+							<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Add New Delegation" value="#{delegationView.addEditPage}"
+								rendered="#{delegationView.canSave()}">
+								<i class="ace-icon fa fa-plus bigger-230"></i>
+								<h:outputText value="Add" />
+							</h:outputLink>
+							<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{delegationView.evictCache()}">
+								<i class="ace-icon fa fa-refresh bigger-230"></i>
+								<h:outputText value="Reload" />
+							</p:commandLink>
+						</div>
+						<div class="col-sm-5  hidden-xs infobox-container">
+							<span class="btn btn-app btn-sm btn-warning no-hover">
+								<span class="line-height-1 bigger-170">
+									<h:outputText value="#{delegationView.rowsNumber}" />
+								</span>
+								<br />
+								<span class="line-height-1 smaller-90">
+									<h:outputText value="Total" />
+								</span>
+							</span>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="tabbable">
+				<ul id="tabs" class="nav nav-tabs padding-18">
+					<li id="tab1" class="active">
+						<p:commandLink onclick="openTab(1)" action="#{delegationView.refreshList()}" update="panel1,widgetPanel">
+							<i class="blue ace-icon fa fa-list bigger-120"></i>
+							<h:outputText value=" As Delegate" styleClass="hidden-xs" />
+							<f:setPropertyActionListener value="true" target="#{delegationView.delegate}" />
+						</p:commandLink>
+					</li>
+					<li id="tab2">
+						<p:commandLink onclick="openTab(2)" action="#{delegationView.refreshList()}" update="panel1,widgetPanel">
+							<i class="green ace-icon fa fa-list bigger-120"></i>
+							<h:outputText value=" As Delegator" styleClass="hidden-xs" />
+							<f:setPropertyActionListener value="false" target="#{delegationView.delegate}" />
+						</p:commandLink>
+					</li>
+				</ul>
+			</div>
+			<div class="space-16" />
+			<div class="row">
+				<p:messages id="messages" />
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="pull-right">
+						<h:panelGroup id="showDetailList">
+							<h:outputText value="Show Details" />
+							<p:commandLink update="panel1,widgetPanel,showDetailList" partialSubmit="true" process="@this" action="#{delegationDetailView.refreshList()}" rendered="#{!delegationView.showDetailList}">
+								<i class="ace-icon fa fa-toggle-off grey bigger-200 white" />
+								<f:setPropertyActionListener value="true" target="#{delegationView.showDetailList}" />
+							</p:commandLink>
+							<p:commandLink update="panel1,widgetPanel,showDetailList" partialSubmit="true" process="@this" action="#{delegationView.refreshList()}" rendered="#{delegationView.showDetailList}">
+								<i class="ace-icon fa fa-toggle-on green bigger-200 white" />
+								<f:setPropertyActionListener value="false" target="#{delegationView.showDetailList}" />
+							</p:commandLink>
+						</h:panelGroup>
+					</div>
+					<h:panelGroup id="panel1">
+						<f:subview rendered="#{!delegationView.showDetailList}">
+							<div class="table-header col-sm-12 col-xs-12">
+								<div class="col-sm-2 col-xs-2">
+									<i class="fa fa-list" />
+									<h:outputText value="Delegation List" />
+								</div>
+								<div class="col-sm-6 ">
+									<table style="margin-top: 5px">
+										<tr>
+											<td>
+												<h:outputText value="Filter by : " />
+											</td>
+											<td>
+												<p:commandLink action="#{delegationView.refreshList()}" update="delegationList,:main_form:widgetPanel" styleClass="aa-tooltip tooltip-success" title="Active">
+													<div class="icon-a-green" />
+													<f:setPropertyActionListener value="true" target="#{delegationView.active}" />
+												</p:commandLink>
+											</td>
+											<td>
+												<p:commandLink action="#{delegationView.refreshList()}" update="delegationList,:main_form:widgetPanel" styleClass="aa-tooltip tooltip-error" title="Inactive">
+													<div class="icon-i-red" />
+													<f:setPropertyActionListener value="false" target="#{delegationView.active}" />
+												</p:commandLink>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="col-sm-2 hidden-xs">
+									<div class="action-buttons center">
+										<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+											<img src="/resources/img/xls.png" width="20" height="20" />
+											<p:dataExporter type="xls" target="delegationList" fileName="delegationList" postProcessor="#{utilsView.excelExportation}" />
+										</h:commandLink>
+									</div>
+								</div>
+								<div class="col-sm-2 col-xs-4">
+									<div class="nav-search minimized">
+										<span class="input-icon">
+											<p:inputText value="#{delegationView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+												<p:ajax event="keyup" update="delegationList,:main_form:widgetPanel" />
+											</p:inputText>
+											<i class="ace-icon fa fa-search nav-search-icon" />
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-xs-12 aa-datatable-container">
+								<p:dataTable value="#{delegationView.list2}" filteredValue="#{delegationView.list3}" rowKey="#{item.id}" selection="#{delegationView.list4}" id="delegationList" widgetVar="delegationList"
+									var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom"
+									paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowSelectMode="checkbox">
+									<p:column headerText="Photo" width="60" styleClass="hidden-xs" exportable="false">
+										<img src="#{item.delegatePhoto}" class="img-circle aa-datatable-photo" />
+									</p:column>
+									<p:column headerText="Start Date">
+										<h:outputText value="#{item.startDate}">
+											<f:convertDateTime pattern="yyyy-MM-dd" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="End Date">
+										<h:outputText value="#{item.endDate}">
+											<f:convertDateTime pattern="yyyy-MM-dd" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Description">
+										<h:outputText value="#{item.description}" />
+									</p:column>
+									<p:column headerText="Status">
+										<h:outputText value="#{item.status}" styleClass="orange" rendered="#{item.status=='Pending'}" />
+										<h:outputText value="#{item.status}" styleClass="green" rendered="#{item.status=='Active'}" />
+										<h:outputText value="#{item.status}" styleClass="red" rendered="#{item.status=='Expired'}" />
+									</p:column>
+									<p:column headerText="Delegate">
+										<h:outputText value="#{item.delegateFullName}" styleClass="bolder green" />
+									</p:column>
+									<p:column headerText="Delegator">
+										<h:outputText value="#{item.delegatorFullName}" styleClass="bolder blue" />
+									</p:column>
+									<p:column headerText="Actions" width="150" exportable="false">
+										<div class="action-buttons center">
+											<h:outputLink value="#{delegationView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+												<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+												<f:param name="id" value="#{item.id}" />
+											</h:outputLink>
+										</div>
+									</p:column>
+								</p:dataTable>
+							</div>
+						</f:subview>
+						<f:subview rendered="#{delegationView.showDetailList}">
+							<div class="table-header col-sm-12 col-xs-12">
+								<div class="col-sm-2 col-xs-2">
+									<i class="fa fa-list" />
+									<h:outputText value="Delegation Detail List" />
+								</div>
+								<div class="col-sm-6 ">
+									<table style="margin-top: 5px">
+										<tr>
+											<td>
+												<h:outputText value="Filter by : " />
+											</td>
+											<td>
+												<p:commandLink action="#{delegationDetailView.refreshList()}" update="delegationList,:main_form:widgetPanel" styleClass="aa-tooltip tooltip-success" title="Active">
+													<div class="icon-a-green" />
+													<f:setPropertyActionListener value="true" target="#{delegationView.active}" />
+												</p:commandLink>
+											</td>
+											<td>
+												<p:commandLink action="#{delegationDetailView.refreshList()}" update="delegationList,:main_form:widgetPanel" styleClass="aa-tooltip tooltip-error" title="Inactive">
+													<div class="icon-i-red" />
+													<f:setPropertyActionListener value="false" target="#{delegationView.active}" />
+												</p:commandLink>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="col-sm-2 hidden-xs">
+									<div class="action-buttons center">
+										<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+											<img src="/resources/img/xls.png" width="20" height="20" />
+											<p:dataExporter type="xls" target="delegationList" fileName="delegationList" postProcessor="#{utilsView.excelExportation}" />
+										</h:commandLink>
+									</div>
+								</div>
+								<div class="col-sm-2 col-xs-4">
+									<div class="nav-search minimized">
+										<span class="input-icon">
+											<p:inputText value="#{delegationDetailView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+												<p:ajax event="keyup" update="delegationList,:main_form:widgetPanel" />
+											</p:inputText>
+											<i class="ace-icon fa fa-search nav-search-icon" />
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-xs-12 aa-datatable-container">
+								<p:dataTable value="#{delegationDetailView.list2}" filteredValue="#{delegationDetailView.list3}" rowKey="#{item.id}" selection="#{delegationDetailView.list4}" id="delegationList"
+									widgetVar="delegationList" var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom"
+									paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowSelectMode="checkbox">
+									<p:column headerText="Photo" width="60" styleClass="hidden-xs" exportable="false">
+										<img src="#{item.delegatePhoto}" class="img-circle aa-datatable-photo" />
+									</p:column>
+									<p:column headerText="Delegation Type">
+										<h:outputText value="#{item.type}" styleClass="#{item.type.color.badge}" />
+									</p:column>
+									<p:column headerText="Project / Resource Name">
+										<h:outputText value="#{item.projectName}" styleClass="#{item.type.color.name}"/>
+										<h:outputText value="#{item.userFullName}" styleClass="#{item.type.color.name}"/>
+									</p:column>
+									<p:column headerText="Start Date">
+										<h:outputText value="#{item.startDate}">
+											<f:convertDateTime pattern="yyyy-MM-dd" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="End Date">
+										<h:outputText value="#{item.endDate}">
+											<f:convertDateTime pattern="yyyy-MM-dd" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Delegate">
+										<h:outputText value="#{item.delegateFullName}" styleClass="bolder green" />
+									</p:column>
+									<p:column headerText="Delegator">
+										<h:outputText value="#{item.delegatorFullName}" styleClass="bolder blue" />
+									</p:column>
+								</p:dataTable>
+							</div>
+						</f:subview>
+					</h:panelGroup>
+				</div>
+			</div>
+		</h:form>
+		<script>
+			function openTab(index) {
+				$('#tabs li[class="active"]').removeClass('active');
+				$('#tab' + index).addClass('active');
+			}
+		</script>
+	</ui:define>
+</ui:composition>

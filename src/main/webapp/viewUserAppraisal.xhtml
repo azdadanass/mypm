@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+		<link href="resources/css/bootstrap-nav/bootstrap-nav-wizard.css"
+			rel="stylesheet" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li><i class="ace-icon fa fa-home" /> <a href="#"> <h:outputText
+						value="Main Menu" />
+			</a></li>
+			<li class="active"><h:outputText
+					value="#{userAppraisalView.isAddPage?'Add New':'Edit'} Appraisal" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="widget-box">
+				<div class="widget-header widget-header-blue widget-header-flat">
+					<h4 class="widget-title lighter">
+						<i
+							class="ace-icon fa #{userAppraisalView.isAddPage?'fa-plus green':'fa-edit orange'} bigger-110"></i>
+						<h:outputText
+							value=" #{userAppraisalView.isAddPage?'Add New':'Edit'} Appraisal" />
+					</h4>
+				</div>
+				<div class="row">
+					<div class="col-sm-12"></div>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main">
+						<h:panelGroup id="nav-wizard">
+							<ul class="nav nav-wizard">
+								<li class="#{userAppraisalView.step==1?'active':''}"><a
+									href="#"> <h:outputText value="Sections" />
+								</a></li>
+								<li class="#{userAppraisalView.step==2?'active':''}"><a
+									href="#"> <h:outputText value="Plannning and Review" />
+								</a></li>
+								<li class="#{userAppraisalView.step==3?'active':''}"><a
+									href="#"> <h:outputText value="Users Appraisals" />
+								</a></li>
+							</ul>
+						</h:panelGroup>
+						<hr />
+						<p:messages id="messages" closable="true" />
+						<h:panelGroup id="steps">
+
+							<f:subview id="step1" rendered="#{userAppraisalView.step==1}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value="Sections" />
+								</h3>
+
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+										<p:dataTable value="#{userAppraisalView.titleList}"
+											var="title" rowKey="#{title}" id="appraisalsList"
+											widgetVar="sectionslist" rows="20"
+											styleClass="table table-striped table-hover center"
+											paginator="true" paginatorAlwaysVisible="false"
+											paginatorPosition="bottom"
+											paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+											rowSelectMode="checkbox" rowIndexVar="index">
+
+											<p:column headerText="ID">
+												<h:outputText value="#{index+1}" styleClass="bolder blue" />
+											</p:column>
+											<p:column headerText="Title">
+												<h:outputText value="#{title}" styleClass="bolder blue" />
+											</p:column>
+											<p:column headerText="Eligible">
+												<p:selectBooleanCheckbox
+													value="#{userAppraisalView.eligibleList[index]}"
+													disabled="#{userAppraisalView.eligibleList[index]}" />
+											</p:column>
+											<p:column headerText="Weight">
+												<h:inputText value="#{userAppraisalView.weightList[index]}"
+													converter="javax.faces.Integer" min="0" max="100"
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
+											</p:column>
+
+										</p:dataTable>
+									</div>
+								</div>
+								<div class="space-8" />
+							</f:subview>
+
+							<f:subview id="step2" rendered="#{userAppraisalView.step==2}">
+								<h4 class="header blue bolder smaller">
+									<h:outputText value="Business Goals List" />
+								</h4>
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10">
+										<div class="table-header col-sm-12 col-xs-12">
+											<i class="fa fa-list" />
+											<h:outputText value="business Goals" />
+										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+											<p:dataTable id="businessGoalsList"
+												value="#{userAppraisalView.businessGoalsList}" var="item"
+												rows="20"
+												styleClass="table table-striped table-hover center"
+												paginatorAlwaysVisible="false" paginator="true"
+												paginatorPosition="bottom"
+												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+												rowIndexVar="index">
+												<p:column headerText="ID">
+													<h:outputText value="#{index+1}" styleClass="bolder blue" />
+												</p:column>
+												<p:column headerText="Goal Title">
+													<h:outputText value="#{item.goalTitle}" />
+												</p:column>
+												<p:column headerText="Goal weight">
+													<h:inputText value="#{item.goalWeight}"
+														converter="javax.faces.Integer" min="0" max="100"
+														style="width: 40px" />
+													<h:outputText value="%" styleClass="bolder blue" />
+												</p:column>
+												<p:column headerText="Goal Details">
+													<p:inputText value="#{item.goalDetails}" />
+												</p:column>
+												<p:column headerText="Section">
+													<h:outputText value="#{item.sections.sectionsTitle}" />
+												</p:column>
+												<p:column headerText="Mid Year Review">
+													<p:inputText value="#{item.midYearReview}" />
+												</p:column>
+												<p:column headerText="Final Year Rate">
+													<p:inputNumber value="#{item.summaryRaiting}" />
+												</p:column>
+
+
+											<!-- 	<p:column headerText="Actions" styleClass="center"
+													width="100">
+													<div class="action-buttons center">
+														<p:commandLink title="Remove row"
+															action="#{userAppraisalView.delete(item)}"
+															update="businessGoalsList" partialSubmit="true"
+															process="businessGoalsList"
+															rendered="#{userAppraisalView.canDelete()}">
+															<i class="ace-icon fa fa-remove bigger-130 red" />
+														</p:commandLink>
+													</div>
+												</p:column>
+ -->
+												<f:facet name="footer">
+													<div class="action-buttons center">
+														<p:commandLink title="Add New Item"
+															action="#{userAppraisalView.addBusiness()}"
+															update="businessGoalsList" partialSubmit="true"
+															process="businessGoalsList" rendered="true">
+															<i class="fa fa-plus green" />
+														</p:commandLink>
+													</div>
+												</f:facet>
+											</p:dataTable>
+										</div>
+									</div>
+								</div>
+								<div class="space-16" />
+							</f:subview>
+
+						</h:panelGroup>
+						<hr />
+						<div class="wizard-actions">
+							<p:commandLink action="#{userAppraisalView.previousStep()}"
+								immediate="true" update="next,messages,nav-wizard,steps"
+								styleClass="btn btn-prev">
+								<i class="ace-icon fa fa-arrow-left icon-on-right"></i>
+								<h:outputText value="Back" />
+							</p:commandLink>
+							<p:commandLink id="next" action="#{userAppraisalView.nextStep()}"
+								update="messages,nav-wizard,next,steps"
+								styleClass="btn btn-success btn-next">
+								<h:outputText
+									value="#{userAppraisalView.step==3?'Finish':'Next'}" />
+								<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+							</p:commandLink>
+
+						</div>
+						<div class="space-16" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>

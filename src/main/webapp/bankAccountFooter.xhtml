@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<h:form id="deleteForm" rendered="#{bankAccountView.isViewPage}">
+		<p:dialog widgetVar="deleteDlg" modal="true" closable="false" resizable="false" showHeader="false">
+			<button type="button" class="bootbox-close-button close" onclick="PF('deleteDlg').hide()">
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-trash-o red" />
+					<h:outputText value=" Delete BankAccount" />
+				</h4>
+			</div>
+			<div class="modal-body">
+				<h:outputText value="Are you sure you want to delete this item ?" style="margin-left: 20px" />
+			</div>
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('deleteDlg').hide()" value="Hide" styleClass="btn btn-warning" />
+				<p:commandButton action="#{bankAccountView.delete()}" value="Delete" styleClass="btn btn-danger" oncomplete="PF('deleteDlg').hide()" />
+			</div>
+		</p:dialog>
+	</h:form>
+	
+	<h:form id="toggleForm">
+		<p:dialog widgetVar="toggleDlg" modal="true" closable="false" resizable="false" showHeader="false">
+			<button type="button" class="bootbox-close-button close" onclick="PF('toggleDlg').hide()">
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-power-off " />
+					<h:outputText value=" Change Status" />
+				</h4>
+			</div>
+			<div class="modal-body">
+				<h:outputText value="Are you sure you want to change status" style="margin-left: 20px" />
+			</div>
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('toggleDlg').hide()" value="Hide" styleClass="btn btn-warning" />
+				<p:commandButton action="#{bankAccountView.toggle()}" value="Toggle" styleClass="btn #{bankAccountView.model.active?'btn-danger':'btn-success'}" oncomplete="PF('toggleDlg').hide()" update=":main_form"/>
+			</div>
+		</p:dialog>
+	</h:form>
+
+	<h:form id="deleteFileForm" rendered="#{bankAccountView.isViewPage}">
+		<p:dialog widgetVar="deleteFileDlg" modal="true" closable="false" resizable="false" showHeader="false">
+			<button type="button" class="bootbox-close-button close" onclick="PF('deleteFileDlg').hide()">
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-trash-o red" />
+					<h:outputText value=" Delete File" />
+				</h4>
+			</div>
+			<div class="modal-body">
+				<h:outputText value="Are you sure you want to delete this item ?" style="margin-left: 20px" />
+			</div>
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('deleteFileDlg').hide()" value="Hide" styleClass="btn btn-warning" />
+				<p:commandButton action="#{bankAccountView.deleteFile()}" value="Delete" styleClass="btn btn-danger" oncomplete="PF('deleteFileDlg').hide()" update=":main_form:fileList" />
+			</div>
+		</p:dialog>
+	</h:form>
+
+	<h:form id="addFileForm" rendered="#{bankAccountView.isViewPage}">
+		<p:dialog widgetVar="uploadFileDlg" modal="true" closable="false" resizable="false" showHeader="false">
+			<button type="button" class="bootbox-close-button close" onclick="PF('uploadFileDlg').hide()">
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header" style="margin-bottom: 20px">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-plus green" />
+					<h:outputText value=" Add New File" />
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+								<h:outputText value="Doc Type" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<h:selectOneMenu value="#{bankAccountView.fileType}" style="width:178px">
+									<f:selectItem noSelectionOption="true" itemLabel="---" />
+									<f:selectItems value="#{docTypeView.findByType(bankAccountView.className2)}" var="item" itemLabel="#{item}" itemValue="#{item}" />
+									<p:ajax update="fileUploadPanel" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="space-16" />
+				<div class="row">
+					<h:panelGroup id="fileUploadPanel">
+						<p:fileUpload fileUploadListener="#{bankAccountView.handleFileUpload}" previewWidth="40" mode="advanced" dragDropSupport="true" multiple="true" update="messages,:main_form:fileList"
+							sizeLimit="20000000" fileLimit="5" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx?|docx?|eml|mp4|txt|conf)$/" styleClass="#{bankAccountView.fileType==null?&#39;hide&#39;:&#39;&#39;}" style="margin: auto;width: 80%" />
+						<p:growl id="messages" showDetail="true" />
+					</h:panelGroup>
+				</div>
+			</div>
+
+			<br />
+			<br />
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('uploadFileDlg').hide()" value="Hide" styleClass="btn btn-warning" />
+			</div>
+		</p:dialog>
+	</h:form>
+
+
+	
+
+	<h:form id="addCommentForm" rendered="#{bankAccountView.isViewPage}">
+		<p:dialog widgetVar="addCommentDlg" modal="true" closable="false" resizable="false" showHeader="false" position="center center" onShow="PF('addCommentDlg').initPosition()">
+			<button type="button" class="bootbox-close-button close" onclick="PF('addCommentDlg').hide()">
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-plus light-blue" />
+					<h:outputText value=" Add Comment" />
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="center">
+					<p:inputText value="#{bankAccountView.comment.title}" placeholder="Title" required="true" requiredMessage="Title should not be null" style="width:90%;margin:auto" />
+				</div>
+				<br />
+				<div class="center">
+					<p:inputTextarea value="#{bankAccountView.comment.content}" placeholder="Comment" required="true" requiredMessage="Comment should not be null" style="width:90%;margin:auto" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('addCommentDlg').hide()" value="Hide" styleClass="btn btn-warning" />
+				<p:commandButton action="#{bankAccountView.addComment()}" value="Add" styleClass="btn btn-info" oncomplete="PF('addCommentDlg').hide()" update=":main_form:commentPanel" />
+			</div>
+		</p:dialog>
+	</h:form>
+	
+	
+
+</ui:composition>

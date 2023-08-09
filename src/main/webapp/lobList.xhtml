@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value=" Lob List" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list bigger-110 green"></i>
+					<h:outputText value="Lob List" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h:panelGroup id="widgetPanel">
+						<div class=" col-sm-offset-1 col-sm-6">
+							<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Add New Lob" value="#{lobView.addEditPage}" rendered="#{lobView.canSave()}">
+								<i class="ace-icon fa fa-plus bigger-230"></i>
+								<h:outputText value="Add" />
+							</h:outputLink>
+							<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{lobView.evictCache()}">
+								<i class="ace-icon fa fa-refresh bigger-230"></i>
+								<h:outputText value="Reload" />
+							</p:commandLink>
+						</div>
+						<div class="col-sm-5  hidden-xs infobox-container">
+							<span class="btn btn-app btn-sm btn-warning no-hover">
+								<span class="line-height-1 bigger-170">
+									<h:outputText value="#{lobView.rowsNumber}" />
+								</span>
+								<br />
+								<span class="line-height-1 smaller-90">
+									<h:outputText value="Total" />
+								</span>
+							</span>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<p:messages id="messages" />
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="table-header col-sm-12 col-xs-12">
+						<div class="col-sm-8 col-xs-8">
+							<i class="fa fa-list" />
+							<h:outputText value="Lob List" />
+						</div>
+						<div class="col-sm-2 hidden-xs">
+							<div class="action-buttons center">
+								<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+									<img src="/resources/img/xls.png" width="20" height="20" />
+									<p:dataExporter type="xls" target="lobList" fileName="lobList" postProcessor="#{utilsView.excelExportation}" />
+								</h:commandLink>
+							</div>
+						</div>
+						<div class="col-sm-2 col-xs-4">
+							<div class="nav-search minimized">
+								<span class="input-icon">
+									<p:inputText value="#{lobView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+										<p:ajax event="keyup" update="lobList,widgetPanel" />
+									</p:inputText>
+									<i class="ace-icon fa fa-search nav-search-icon" />
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-xs-12 aa-datatable-container">
+						<p:dataTable value="#{lobView.list2}" filteredValue="#{lobView.list3}" rowKey="#{item.id}" selection="#{lobView.list4}" id="lobList" widgetVar="lobList" var="item" rows="20"
+							styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom"
+							paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowSelectMode="checkbox">
+							<p:column headerText="Name">
+								<h:outputText value="#{item.name}" styleClass="bolder orange" />
+							</p:column>
+							<p:column headerText="Company">
+								<h:outputText value="#{item.companyName}" styleClass="bolder blue" />
+							</p:column>
+							<p:column headerText="Bu">
+								<h:outputText value="#{item.buName}" styleClass="bolder pink" />
+							</p:column>
+							<p:column headerText="Description">
+								<h:outputText value="#{item.description}" styleClass="light-blue aa-cut-text" />
+							</p:column>
+							<p:column headerText="Type">
+								<h:outputText value="#{item.type}" styleClass="green" />
+							</p:column>
+							<p:column headerText="Manager">
+								<h:outputText value="#{item.managerFullName}" styleClass="blue" />
+							</p:column>
+							<p:column headerText="Actions" width="150" exportable="false">
+								<div class="action-buttons center">
+									<p:commandLink title="#{item.countFiles} Attachements" styleClass="aa-tooltip">
+										<i class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+									</p:commandLink>
+									<h:outputLink value="#{lobView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+										<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+										<f:param name="id" value="#{item.id}" />
+									</h:outputLink>
+								</div>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

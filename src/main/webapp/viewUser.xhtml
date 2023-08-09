@@ -1,0 +1,2119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li><i class="ace-icon fa fa-home" /> <a href="#"> <h:outputText
+						value="Main Menu" />
+			</a></li>
+			<li class="active"><h:outputText value="View User" /></li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.CompanyType" var="CompanyType"
+			allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.Role" var="Role"
+			allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View User" />
+					<small> <i class="ace-icon fa fa-angle-double-right"></i> <h:outputText
+							value=" #{userView.model.fullName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info"
+							title="Reload page" action="#{userView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip"
+							title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<h:outputLink
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
+							title="Edit" value="addEditUser.xhtml"
+							rendered="#{userView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="username" value="#{userView.username}" />
+						</h:outputLink>
+						<p:commandLink title="Reset Password"
+							styleClass="btn btn-app btn-sm btn-purple hover aa-tooltip tooltip-purple"
+							onclick="PF('resetPasswordDlg').show()"
+							rendered="#{userView.canResetPassword()}">
+							<i class="ace-icon fa fa-key bigger-230"></i>
+							<h:outputText value="Password" />
+						</p:commandLink>
+						<!-- <p:commandLink title="Change Password" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" onclick="PF('changePassword2Dlg').show()" rendered="#{userView.canChangePassword()}">
+							<i class="ace-icon fa fa-key bigger-230"></i>
+							<h:outputText value="Password" />
+						</p:commandLink> -->
+						<p:commandLink title="Unlock"
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							onclick="PF('unlockDlg').show()"
+							rendered="#{userView.canUnlock()}">
+							<i class="ace-icon fa fa-unlock bigger-230"></i>
+							<h:outputText value="Unlock" />
+						</p:commandLink>
+						<p:commandLink
+							title="#{userView.model.active?'Disable Account':'Enable Account'}"
+							styleClass="btn btn-app btn-sm #{userView.model.active?'btn-danger':'btn-success'} hover aa-tooltip"
+							update=":toggleForm" oncomplete="PF('toggleDlg').show()">
+							<i class="ace-icon fa fa-power-off bigger-230"></i>
+							<h:outputText value="#{userView.model.active?'Disable':'Enable'}" />
+						</p:commandLink>
+						<p:commandLink title="Delete"
+							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error"
+							onclick="PF('deleteDlg').show()"
+							rendered="#{userView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+						<p:commandLink title="Add Files"
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							onclick="PF('uploadFileDlg').show()"
+							rendered="#{userView.canAddFile()}">
+							<i class="ace-icon fa fa-file bigger-230"></i>
+							<h:outputText value="Files" />
+						</p:commandLink>
+						<!-- <p:commandLink title="Assign Project" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" action="#{userView.initAssignment()}" update="assignProjectForm"
+							oncomplete="PF('assignProjectDlg').show()" rendered="#{userView.canAssignProject()}">
+							<i class="ace-icon fa fa-link bigger-230"></i>
+							<h:outputText value="Assign" />
+						</p:commandLink> -->
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="user-profile row">
+				<div class="col-xs-12 col-sm-3 center">
+					<h:panelGroup id="avatar">
+						<div class="profile-picture">
+							<p:graphicImage id="photo" value="#{fileUploadView.stream}"
+								styleClass="editable img-responsive editable-click editable-empty aa-avatar"
+								onclick="PF('uploadPhotoDlg').show()"
+								rendered="#{userView.canUploadPhoto()}">
+								<f:param name="fileName" value="#{userView.model.photo}" />
+							</p:graphicImage>
+						</div>
+					</h:panelGroup>
+					<div class="space-4" />
+					<div
+						class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+						<div class="inline position-relative">
+							<a href="#" class="user-title-label dropdown-toggle"
+								data-toggle="dropdown"> <i
+								class="ace-icon fa fa-circle #{userView.model.active?'light-green':'light-red'}"></i>
+								&nbsp; <span class="white"> <h:outputText
+										value="#{userView.model.fullName}" />
+							</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="space-16" />
+			<p:messages id="messages" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active"><a data-toggle="tab" href="#tab1"> <i
+							class="green ace-icon fa fa-list-alt bigger-120"></i> <h:outputText
+								value=" Informations" styleClass="hidden-xs" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab3"> <i
+							class="red ace-icon fa fa-lock bigger-120"></i> <h:outputText
+								value=" Authorities" styleClass="hidden-xs" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab2"> <i
+							class="orange ace-icon fa fa-exchange bigger-120"></i> <h:outputText
+								value=" Contact Data" styleClass="hidden-xs" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab6"> <i
+							class="purple ace-icon fa fa-users bigger-120"></i> <h:outputText
+								value=" Resource List" styleClass="hidden-xs" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab7"> <i
+							class="pink ace-icon fa fa-sitemap bigger-120"></i> <h:outputText
+								value=" Project List" styleClass="hidden-xs" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab4"> <i
+							class="blue ace-icon fa fa-file bigger-120"></i> <h:outputText
+								value=" Attachements" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab5"> <i
+							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
+								value=" History" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab8"> <i
+							class="red ace-icon fa fa-list bigger-120"></i> <h:outputText
+								value=" Last Access Log" />
+					</a></li>
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<h4 class="header blue bolder smaller">
+							<h:outputText value="General informations" />
+						</h4>
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="First Name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.firstName}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Login" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.login}"
+												styleClass="badge badge-blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Email" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.email}"
+												styleClass="bolder light-blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="CIN" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.cin}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Primary Mobile N°" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.phone}"
+												styleClass="blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Job/Function" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.job}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Last Name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.lastName}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Type" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.internal?'Internal':'External'}"
+												styleClass="bolder #{userView.model.internal?'blue':'orange'}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Secondary E-mail" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.email2}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Birthday" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.birthday}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Gender" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.gender?'Male':'Female'}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Status" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.active?'Active':'Inactive'}"
+												styleClass="badge #{userView.model.active?'badge-green':'badge-red'}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<h4 class="header blue bolder smaller">
+							<h:outputText value="Functional Structure" />
+						</h4>
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="LOB" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.affectation.lobName}"
+												styleClass="purple" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="HR Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.affectation.hrManagerFullName}"
+												styleClass="green" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="#{userView.model.companyType.value}" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.entityName}"
+												styleClass="bolder #{userView.model.companyType.color.name}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Line Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.affectation.lineManagerFullName}"
+												styleClass="blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Logistic Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.affectation.logisticManagerFullName}"
+												styleClass="orange" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<f:subview rendered="#{!userView.model.internal}">
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="Systems" />
+							</h4>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="profile-user-info profile-user-info-striped">
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="SDM" />
+											</div>
+											<div class="profile-info-value">
+												<i
+													class="ace-icon fa #{userView.model.sdm?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												&nbsp;
+											</div>
+										</div>
+										<f:subview rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Myhr" />
+												</div>
+												<div class="profile-info-value">
+													<i
+														class="ace-icon fa #{userView.model.myhr?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													&nbsp;
+												</div>
+											</div>
+										</f:subview>
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="Ibuy" />
+											</div>
+											<div class="profile-info-value">
+												<i
+													class="ace-icon fa #{userView.model.ibuy?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												&nbsp;
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="profile-user-info profile-user-info-striped">
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="Ilogistics" />
+											</div>
+											<div class="profile-info-value">
+												<i
+													class="ace-icon fa #{userView.model.ilogistics?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												&nbsp;
+											</div>
+										</div>
+										<f:subview rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Iexpense" />
+												</div>
+												<div class="profile-info-value">
+													<i
+														class="ace-icon fa #{userView.model.iexpense?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													&nbsp;
+												</div>
+											</div>
+										</f:subview>
+										<f:subview rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="My Tools" />
+												</div>
+												<div class="profile-info-value">
+													<i
+														class="ace-icon fa #{userView.model.mytools?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													&nbsp;
+												</div>
+											</div>
+										</f:subview>
+									</div>
+								</div>
+							</div>
+						</f:subview>
+						<!-- <h4 class="header blue bolder smaller">
+							<h:outputText value="Assigned Projects" />
+						</h4> -->
+						<!-- <div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<i class="fa fa-list" />
+									<h:outputText value=" Assigned Projects" />
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable value="#{userView.model.assignmentList}" id="projectList" widgetVar="projectList" var="item" rows="50" styleClass="table table-striped table-hover center"
+										paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowIndexVar="rowIndexVar">
+
+										<p:column headerText="Name">
+											<h:outputText value="#{item.project.name}" styleClass="blue" />
+										</p:column>
+
+										<p:column headerText="Type" width="100">
+											<h:outputText value="#{item.project.type}" />
+										</p:column>
+
+										<p:column headerText="Start Date" width="100">
+											<h:outputText value="#{item.startDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+
+										<p:column headerText="End Date" width="100">
+											<h:outputText value="#{item.endDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+
+										<p:column headerText="Manager">
+											<h:outputText value="#{cacheView.getFullName(item.project.manager.username)}" styleClass="bloder green" />
+										</p:column>
+
+									</p:dataTable>
+								</div>
+							</div>
+						</div> -->
+						<div class="space-16" />
+						<div style="width: 90%; margin: auto;">
+							<div class="well">
+								<h4 class="green smaller lighter">
+									<h:outputText value="Description" />
+								</h4>
+								<h:outputText value="#{userView.model.userData.description}"
+									styleClass="preformatted" />
+							</div>
+						</div>
+					</div>
+					<div id="tab2" class="tab-pane">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Business phone" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.userData.businessPhone}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Home Address" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.userData.homeAddress}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Primary emergency contact name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.userData.emergencyName1}"
+												styleClass="orange bolder" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Secondary emergency contact name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.userData.emergencyName2}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Skype ID	" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.userData.skypeId}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Secondary Mobile N°" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.phone2}"
+												styleClass="green" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Business fax number" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.userData.businessFax}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Home phone number" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.userData.homePhone}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Primary emergency contact number" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.userData.emergencyPhone1}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Secondary contact number" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userView.model.userData.emergencyPhone2}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="IM ID" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userView.model.userData.imId}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab3" class="tab-pane">
+						<h4 class="header blue bolder smaller">
+							<h:outputText value="Authorities" />
+						</h4>
+						<h:panelGroup id="rolesPanel">
+							<f:subview rendered="#{userView.model.internal}">
+								<div class="col-xs-12 col-sm-6">
+									<div class="profile-user-info profile-user-info-striped">
+										<h:panelGroup rendered="#{erpView.gcom}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="VPN" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="vpnAccess"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleVpnAccess()}"
+														action="#{userView.updateVpnAccess()}">
+														<i
+															class="ace-icon fa #{userView.model.vpnAccess?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="Ibuy" />
+											</div>
+											<div class="profile-info-value">
+												<p:commandLink id="roleIbuy1" update=":main_form:rolesPanel"
+													partialSubmit="true" process="@this"
+													actionListener="#{userView.toggleRole(Role.ROLE_IBUY)}"
+													action="#{userView.updateRole()}">
+													<i
+														class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IBUY)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												</p:commandLink>
+												<h:outputText value=" Access" />
+												<br />
+												<p:commandLink id="roleIbuy2" update=":main_form:rolesPanel"
+													partialSubmit="true" process="@this"
+													actionListener="#{userView.toggleRole(Role.ROLE_IBUY_ADMIN)}"
+													action="#{userView.updateRole()}">
+													<i
+														class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IBUY_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												</p:commandLink>
+												<h:outputText value=" Admin Role" />
+												&nbsp;
+											</div>
+										</div>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Iexpense" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleIexpense1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_IEXPENSE)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IEXPENSE)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink id="roleIexpense2"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_IEXPENSE_RECEIVE_EXPENSE)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IEXPENSE_RECEIVE_EXPENSE)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Can Receive Expenses" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Myhr" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleMyhr1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYHR)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYHR)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink id="roleMyhr2"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYHR_HR)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYHR_HR)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" HR Role" />
+													<br />
+													<p:commandLink id="roleMyhr3"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYHR_INSSURANCE)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYHR_INSSURANCE)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Inssurance Role" />
+													<br />
+													<p:commandLink id="roleMyhr4"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYHR_PAYROLL)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYHR_PAYROLL)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Payroll Role" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.orange}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Ilogistics" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="hasRoleIlogistics"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink id="hasRolePm"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_PM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_PM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" PM Role" />
+													<br />
+													<p:commandLink id="hasRoleLobManager"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_LOB_MANAGER)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_LOB_MANAGER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" LOB Manager Role" />
+													<br />
+													<p:commandLink id="hasRoleBuManager"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_BU_MANAGER)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_BU_MANAGER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" BU Manager Role" />
+													<br />
+													<p:commandLink id="hasRoleWm"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_WM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_WM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" WM Role" />
+													<br />
+													<p:commandLink id="hasRoleSe"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_SE)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_SE)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" SE Role" />
+													<br />
+													<p:commandLink id="hasRoleDnNotification"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_DN_NOTIFICATION)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_DN_NOTIFICATION)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" DN Notification" />
+													<br />
+													<p:commandLink id="hasRoleCollectGoods"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_COLLECT_GOODS)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_COLLECT_GOODS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Collect Goods" />
+													<f:subview rendered="#{userView.model.internal}">
+														<br />
+														<p:commandLink id="hasRoleUser"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_USER)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_USER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" User Role" />
+														<br />
+														<p:commandLink id="hasRoleAdmin"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_ADMIN)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" Admin Role" />
+													</f:subview>
+													<br />
+													<p:commandLink id="hasRoleTm"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_TM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_TM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" TM Role" />
+													<f:subview rendered="#{userView.model.internal}">
+														<br />
+														<p:commandLink id="hasRoleHm"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_HM)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_HM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" HM Role" />
+														<br />
+														<p:commandLink id="hasRoleQm"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_QM)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_QM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" QM Role" />
+													</f:subview>
+													<br />
+													<p:commandLink id="hasRoleReceiveGoods"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_RECEIVE_GOODS)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_RECEIVE_GOODS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Receive Goods" />
+													<br />
+													<p:commandLink id="hasRoleDeliverGoods"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_DELIVER_GOODS)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_DELIVER_GOODS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Deliver Goods Role" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="My Reports" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleMyreports1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYREPORTS)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYREPORTS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<h:panelGroup id="rolesMyreport">
+														<br />
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_MYREPORTS_EXEC)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYREPORTS_EXEC)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" EXEC Role" />
+														<br />
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_MYREPORTS_HR)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYREPORTS_HR)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" HR Role" />
+														<br />
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_MYREPORTS_KAM)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYREPORTS_KAM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" KAM Role" />
+														<br />
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_MYREPORTS_LOB)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYREPORTS_LOB)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" LOB Role" />
+														<br />
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_MYREPORTS_PMA)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYREPORTS_PMA)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" PMA Role" />
+														<br />
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_MYREPORTS_FA)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYREPORTS_FA)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" FA Role" />
+														<br />
+													</h:panelGroup>
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="CRM" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleCrm1" update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_CRM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_CRM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<!-- <br/>
+											<p:commandLink id="roleCrm2" update=":main_form:rolesPanel" partialSubmit="true" process="@this" actionListener="#{userView.toggleRole(Role.ROLE_CRM_USER)}"
+												action="#{userView.updateRole()}">
+												<i class="ace-icon fa #{userView.model.hasRole(Role.ROLE_CRM_USER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+											</p:commandLink> 
+											<h:outputText value=" User" />-->
+													<br />
+													<p:commandLink id="roleCrm3" update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_CRM_ADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_CRM_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Admin" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Compta" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleCompta1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_COMPTA)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_COMPTA)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink id="roleCompta2"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_COMPTA_ADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_COMPTA_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Admin" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="profile-user-info profile-user-info-striped">
+										<h:panelGroup rendered="#{erpView.gcom  or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Invoice" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleInvoice1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_INVOICE)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_INVOICE)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink id="roleInvoice2"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_INVOICE_ADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_INVOICE_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Admin Role" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Mytools" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleMytools1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYTOOLS)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYTOOLS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink id="roleMytools2"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYTOOLS_ADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYTOOLS_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Admin Role" />
+													<br />
+													<p:commandLink id="roleMytools3"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYTOOLS_LOM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYTOOLS_LOM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" LOM Role" />
+													<br />
+													<p:commandLink id="roleMytools4"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYTOOLS_USE_TOOLS)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYTOOLS_USE_TOOLS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Can Use Tools" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{erpView.gcom or erpView.orange or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Iadmin" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="hasRoleIadmin"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_IADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink id="hasRoleIadminAdmin"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_IADMIN_ADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IADMIN_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Admin Role" />
+													<br /> &nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Camera" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleCamera1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYOFFICE)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYOFFICE)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink id="roleCamera2"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYOFFICE_USER)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYOFFICE_USER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" User Role" />
+													<br />
+													<p:commandLink id="roleCamera3"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYOFFICE_ADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYOFFICE_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Admin Role" />
+													<br />
+													<p:commandLink id="roleCamera4"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYOFFICE_TR_MANAGER)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYOFFICE_TR_MANAGER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" TR Manager Role" />
+													<br />
+													<p:commandLink id="roleCamera5"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYOFFICE_SUPERVISOR)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYOFFICE_SUPERVISOR)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Supervisor Role" />
+													<br />
+													<p:commandLink id="roleCamera6"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYOFFICE_DRIVER)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYOFFICE_DRIVER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Driver Role" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Ifinance" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleIfinance1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_IFINANCE)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IFINANCE)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_IFINANCE_ADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IFINANCE_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Admin" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.orange}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Sdm" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleSdm1" update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_SDM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<f:subview rendered="#{userView.model.internal}">
+														<br />
+														<p:commandLink id="roleSdm2"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_SDM_USER)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_USER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" User Role" />
+														<br />
+														<p:commandLink id="roleSdm3"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_SDM_ADMIN)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" Admin Role" />
+													</f:subview>
+													<br />
+													<p:commandLink id="roleSdm5" update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_SDM_PM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_PM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" PM Role" />
+													<br />
+													<p:commandLink update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_SDM_LOM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_LOM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" LOB Manager Role" />
+													<br />
+													<p:commandLink update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_SDM_BUM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_BUM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" BU Manager Role" />
+													<br />
+													<p:commandLink id="roleSdm6" update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_SDM_NOTIFICATION)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_NOTIFICATION)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Notification" />
+													<br />
+													<p:commandLink id="roleSdm7" update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_SDM_TEAM_LEADER)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_TEAM_LEADER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Team" />
+													<br /> &nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.mise}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="WTR" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleWtr1" update=":main_form:rolesPanel"
+														partialSubmit="true" process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_WTR)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_WTR)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													&nbsp;
+												</div>
+											</div>
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="MYPM" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleMypm1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYPM)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYPM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value="Resource" />
+													<br />
+													<p:commandLink id="roleMypm2"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYPM_HR)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYPM_HR)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value="HR" />
+													<br />
+													<p:commandLink id="roleMypm3"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYPM_LINE_MANAGER)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYPM_LINE_MANAGER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value="Line Manager" />
+													&nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+									</div>
+								</div>
+							</f:subview>
+							<f:subview rendered="#{!userView.model.internal}">
+								<div class="col-xs-12 col-sm-6">
+									<div class="profile-user-info profile-user-info-striped">
+										<div class="profile-info-row">
+											<div class="profile-info-name">
+												<h:outputText value="Apps" />
+											</div>
+											<div class="profile-info-value">
+												<p:commandLink update=":main_form:rolesPanel"
+													partialSubmit="true" process="@this"
+													actionListener="#{userView.toggleRole(Role.ROLE_APPS)}"
+													action="#{userView.updateRole()}">
+													<i
+														class="ace-icon fa #{userView.model.hasRole(Role.ROLE_APPS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												</p:commandLink>
+												<h:outputText value=" Access" />
+												&nbsp;
+											</div>
+										</div>
+										<f:subview rendered="#{erpView.gcom}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="VPN" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="vpnAccess"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this">
+														<i
+															class="ace-icon fa #{userView.model.vpnAccess?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														<f:setPropertyActionListener
+															value="#{!userView.model.vpnAccess}"
+															target="#{userView.model.vpnAccess}" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													&nbsp;
+												</div>
+											</div>
+										</f:subview>
+										<f:subview rendered="#{userView.model.mytools}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="My Tools" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="roleMytools1"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_MYTOOLS)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_MYTOOLS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													&nbsp;
+												</div>
+											</div>
+										</f:subview>
+										<f:subview rendered="#{userView.model.sdm}">
+											<h:panelGroup rendered="#{erpView.gcom or erpView.orange}">
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Sdm" />
+													</div>
+													<div class="profile-info-value">
+														<p:commandLink id="roleSdm1"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_SDM)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" Access" />
+														<f:subview rendered="#{userView.model.internal}">
+															<br />
+															<p:commandLink id="roleSdm2"
+																update=":main_form:rolesPanel" partialSubmit="true"
+																process="@this"
+																actionListener="#{userView.toggleRole(Role.ROLE_SDM_USER)}"
+																action="#{userView.updateRole()}">
+																<i
+																	class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_USER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															</p:commandLink>
+															<h:outputText value=" User Role" />
+															<br />
+															<p:commandLink id="roleSdm3"
+																update=":main_form:rolesPanel" partialSubmit="true"
+																process="@this"
+																actionListener="#{userView.toggleRole(Role.ROLE_SDM_ADMIN)}"
+																action="#{userView.updateRole()}">
+																<i
+																	class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															</p:commandLink>
+															<h:outputText value=" Admin Role" />
+														</f:subview>
+														<br />
+														<p:commandLink id="roleSdm5"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_SDM_PM)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_PM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" PM Role" />
+														<br />
+														<p:commandLink id="roleSdm6"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_SDM_NOTIFICATION)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_NOTIFICATION)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" Notification" />
+														<br />
+														<p:commandLink id="roleSdm7"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_SDM_TEAM_LEADER)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_SDM_TEAM_LEADER)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" Team" />
+														<br /> &nbsp;
+													</div>
+												</div>
+											</h:panelGroup>
+										</f:subview>
+										<f:subview rendered="#{userView.model.ilogistics}">
+											<h:panelGroup rendered="#{erpView.gcom or erpView.orange}">
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Ilogistics" />
+													</div>
+													<div class="profile-info-value">
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" Accesss" />
+														<br />
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_PM)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_PM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" PM Role" />
+														<br />
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_WM)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_WM)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" WM Role" />
+														<br />
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_ILOGISTICS_SE)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_ILOGISTICS_SE)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" SE Role" />
+													</div>
+												</div>
+											</h:panelGroup>
+										</f:subview>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="profile-user-info profile-user-info-striped">
+										<f:subview rendered="#{userView.model.iexpense}">
+											<h:panelGroup rendered="#{erpView.gcom or erpView.mise}">
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Iexpense" />
+													</div>
+													<div class="profile-info-value">
+														<p:commandLink id="roleIexpense1"
+															update=":main_form:rolesPanel" partialSubmit="true"
+															process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_IEXPENSE)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IEXPENSE)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" Access" />
+														&nbsp;
+													</div>
+												</div>
+											</h:panelGroup>
+										</f:subview>
+										<f:subview rendered="#{userView.model.ibuy}">
+											<h:panelGroup rendered="#{erpView.gcom or erpView.mise}">
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Ibuy" />
+													</div>
+													<div class="profile-info-value">
+														<p:commandLink update=":main_form:rolesPanel"
+															partialSubmit="true" process="@this"
+															actionListener="#{userView.toggleRole(Role.ROLE_IBUY)}"
+															action="#{userView.updateRole()}">
+															<i
+																class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IBUY)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<h:outputText value=" Access" />
+														<br /> &nbsp;
+													</div>
+												</div>
+											</h:panelGroup>
+										</f:subview>
+										<h:panelGroup rendered="#{erpView.gcom or erpView.orange}">
+											<div class="profile-info-row">
+												<div class="profile-info-name">
+													<h:outputText value="Iadmin" />
+												</div>
+												<div class="profile-info-value">
+													<p:commandLink id="hasRoleIadmin"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_IADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Access" />
+													<br />
+													<p:commandLink id="hasRoleIadminAdmin"
+														update=":main_form:rolesPanel" partialSubmit="true"
+														process="@this"
+														actionListener="#{userView.toggleRole(Role.ROLE_IADMIN_ADMIN)}"
+														action="#{userView.updateRole()}">
+														<i
+															class="ace-icon fa #{userView.model.hasRole(Role.ROLE_IADMIN_ADMIN)?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													</p:commandLink>
+													<h:outputText value=" Admin Role" />
+													<br /> &nbsp;
+												</div>
+											</div>
+										</h:panelGroup>
+									</div>
+								</div>
+							</f:subview>
+						</h:panelGroup>
+					</div>
+					<div id="tab4" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List Of Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList" value="#{userView.model.fileList}"
+										var="item" rows="20"
+										styleClass="table table-striped table-hover"
+										paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Phase" width="150" styleClass="center">
+											<h:outputText value="#{item.parentModelName}"
+												styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Added Date" width="90">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="File Size" width="80">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+										<p:column headerText="File Type" width="100"
+											styleClass="center">
+											<img src="#{item.fileExtensionImage}"
+												style="border: none; border-radius: 0" width="20"
+												height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}"
+												styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo"
+												style="text-align: left;width:350px" showEvent="mouseover"
+												hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Actions" width="150"
+											style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File"
+													oncomplete="PF('deleteFileDlg').show()"
+													styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener target="#{userView.file}"
+														value="#{item}" />
+												</p:commandLink>
+												<p:commandLink ajax="false">
+													<p:fileDownload
+														value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="View"
+													oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{fileView.file}"
+														value="#{item}" />
+													<f:setPropertyActionListener target="#{userView.file}"
+														value="#{item}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab5" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" History" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="historyList"
+										value="#{userView.model.historyList}" var="item" rows="20"
+										styleClass="table table-striped table-hover"
+										paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Action" width="80" styleClass="center">
+											<span class="#{item.statusStyleClass}"> <h:outputText
+													value="#{item.status}" styleClass="bolder" />
+											</span>
+										</p:column>
+										<p:column headerText="Date" width="90" styleClass="center">
+											<f:subview rendered="#{item.date==null}">
+												<i class="ace-icon fa fa-spinner fa-spin orange bigger-200 " />
+											</f:subview>
+											<h:outputText value="#{item.date}"
+												rendered="#{item.date!=null}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="User" width="120">
+											<h:outputText id="user" value="#{item.user.fullName}"
+												styleClass="purple bolder" />
+											<p:overlayPanel for="user"
+												style="text-align: left;width:350px" showEvent="mouseover"
+												hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Description" width="400">
+											<h:outputText value="#{item.description}" escape="false"
+												styleClass="aa-cut-text" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab6" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-2 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List" />
+									</div>
+									<div class="col-sm-6 ">
+										<table style="margin-top: 5px">
+											<tr>
+												<td><h:outputText value="Filter by : " /></td>
+												<td><p:commandLink action="#{userView.refreshList()}"
+														update="userList" styleClass="aa-tooltip tooltip-success"
+														title="Active">
+														<div class="aa-icon-active" />
+														<f:setPropertyActionListener value="true"
+															target="#{userView.active}" />
+													</p:commandLink></td>
+												<td><p:commandLink action="#{userView.refreshList()}"
+														update="userList" styleClass="aa-tooltip tooltip-error"
+														title="Inactive">
+														<div class="aa-icon-inactive" />
+														<f:setPropertyActionListener value="false"
+															target="#{userView.active}" />
+													</p:commandLink></td>
+												<td><p:commandLink action="#{userView.refreshList()}"
+														update="userList" styleClass="aa-tooltip" title="All">
+														<div class="aa-icon-all" />
+														<f:setPropertyActionListener value="#{null}"
+															target="#{userView.active}" />
+													</p:commandLink></td>
+											</tr>
+										</table>
+									</div>
+									<div class="col-sm-2">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+												<img src="/resources/img/xls.png" width="20" height="20" />
+												<p:dataExporter type="xls" target="userList"
+													fileName="userList"
+													postProcessor="#{utilsView.excelExportation}" />
+											</h:commandLink>
+										</div>
+									</div>
+									<div class="col-sm-2 col-xs-4">
+										<div class="nav-search minimized">
+											<span class="input-icon"> <p:inputText
+													value="#{userView.searchBean}" placeholder="Search..."
+													styleClass="input-small nav-search-input"
+													autocomplete="off">
+													<p:ajax event="keyup" update="userList" />
+												</p:inputText> <i class="ace-icon fa fa-search nav-search-icon" />
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="userList" value="#{userView.list2}" var="item"
+										rows="20" styleClass="table table-striped table-hover"
+										paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Photo" width="5%" styleClass="hidden-xs"
+											exportable="false">
+											<p:graphicImage value="#{fileUploadView.stream}"
+												styleClass="img-circle aa-datatable-photo">
+												<f:param name="fileName" value="#{item.photo}" />
+											</p:graphicImage>
+										</p:column>
+										<p:column headerText="Type" width="80">
+											<h:outputText value="#{item.internal?'Internal':'External'}"
+												styleClass="badge #{item.internal?'badge-success':'badge-warning'}" />
+										</p:column>
+										<p:column headerText="Full Name">
+											<h:outputText value="#{item.fullName}" />
+										</p:column>
+										<p:column headerText="Login" width="80">
+											<h:outputText value="#{item.login}" />
+										</p:column>
+										<p:column headerText="LOB" width="150">
+											<h:outputText value="#{item.lobName}" styleClass="pink" />
+										</p:column>
+										<p:column headerText="Email Address">
+											<h:outputText value="#{item.email}" styleClass="blue" />
+										</p:column>
+										<p:column headerText="Phone" width="100">
+											<h:outputText value="#{item.phone}" />
+										</p:column>
+										<p:column headerText="Account Status" width="80">
+											<h:outputText value="#{item.active?'Active':'Non Active'}"
+												styleClass="bolder #{item.active?'green':'red'}" />
+										</p:column>
+										<p:column headerText="Contract Status" width="80">
+											<h:outputText
+												value="#{item.contractActive?'Active':'Non Active'}"
+												styleClass="#{item.contractActive?'green':'red'}" />
+										</p:column>
+										<p:column headerText="Entity Type" width="80">
+											<h:outputText value="#{item.companyType.value}"
+												styleClass="#{item.companyType.color.name}" />
+										</p:column>
+										<p:column headerText="Entity Name" width="110">
+											<h:outputText value="#{item.entityName}" />
+										</p:column>
+										<p:column headerText="Actions" width="80">
+											<div class="action-buttons center">
+												<h:outputLink value="#{userView.viewPage}"
+													title="Show details" styleClass="aa-tooltip tooltip-info"
+													target="blank">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:param name="username" value="#{item.username}" />
+												</h:outputLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab7" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-2 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value="Project List" />
+									</div>
+									<div class="col-sm-6 ">
+										<table style="margin-top: 5px">
+											<tr>
+												<td><h:outputText value="Filter by : " /></td>
+												<td><p:commandLink
+														action="#{projectView.refreshList()}" update="projectList"
+														styleClass="aa-tooltip tooltip-info" title="Open">
+														<div class="aa-icon-open" />
+														<f:setPropertyActionListener value="Open"
+															target="#{projectView.status}" />
+													</p:commandLink></td>
+												<td><p:commandLink
+														action="#{projectView.refreshList()}" update="projectList"
+														styleClass="aa-tooltip" title="Closed">
+														<div class="aa-icon-closed" />
+														<f:setPropertyActionListener value="Closed"
+															target="#{projectView.status}" />
+													</p:commandLink></td>
+												<td><p:commandLink
+														action="#{projectView.refreshList()}" update="projectList"
+														styleClass="aa-tooltip" title="All">
+														<div class="aa-icon-all" />
+														<f:setPropertyActionListener value="#{null}"
+															target="#{projectView.status}" />
+													</p:commandLink></td>
+											</tr>
+										</table>
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+												<img src="/resources/img/xls.png" width="20" height="20" />
+												<p:dataExporter type="xls" target="projectList"
+													fileName="projectList"
+													postProcessor="#{utilsView.excelExportation}" />
+											</h:commandLink>
+										</div>
+									</div>
+									<div class="col-sm-2 col-xs-4">
+										<div class="nav-search minimized">
+											<span class="input-icon"> <p:inputText
+													value="#{projectView.searchBean}" placeholder="Search..."
+													styleClass="input-small nav-search-input"
+													autocomplete="off">
+													<p:ajax event="keyup" update="projectList" />
+												</p:inputText> <i class="ace-icon fa fa-search nav-search-icon" />
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="projectList" value="#{projectView.list2}"
+										var="item" rows="20"
+										styleClass="table table-striped table-hover"
+										paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Numero" sortBy="#{item.idStr}"
+											width="90">
+											<h:outputText value="#{item.idStr}"
+												styleClass="bolder purple" />
+										</p:column>
+										<p:column headerText="Name" width="300">
+											<h:outputText value="#{item.name}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Cost Center">
+											<h:outputText
+												value="#{item.lobName} / #{item.costcenterYear}"
+												styleClass="bolder orange" />
+										</p:column>
+										<p:column headerText="Company">
+											<h:outputText value="#{item.companyName}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Category">
+											<h:outputText value="#{item.category}"
+												styleClass="badge #{item.category=='project'?'badge-success':'badge-danger'}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" />
+										</p:column>
+										<p:column headerText="Sub Type">
+											<h:outputText value="#{item.subType}" />
+										</p:column>
+										<p:column headerText="Manager">
+											<h:outputText value="#{item.managerFullName}"
+												styleClass="blue" />
+										</p:column>
+										<p:column headerText="Status">
+											<h:outputText value="#{item.status}"
+												styleClass="#{item.status=='Open'?'green':'red'}" />
+										</p:column>
+										<p:column headerText="Actions" width="150" exportable="false">
+											<div class="action-buttons center">
+												<p:commandLink title="#{item.countFiles} Attachements"
+													styleClass="aa-tooltip">
+													<i
+														class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+												</p:commandLink>
+												<h:outputLink value="#{projectView.viewPage}"
+													title="Show details" styleClass="aa-tooltip tooltip-info"
+													target="blank">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:param name="id" value="#{item.id}" />
+												</h:outputLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab8" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value="Access Log List" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+												<img src="/resources/img/xls.png" width="20" height="20" />
+												<p:dataExporter type="xls" target="accessLogList"
+													fileName="accessLogList"
+													postProcessor="#{utilsView.excelExportation}" />
+											</h:commandLink>
+										</div>
+									</div>
+									<div class="col-sm-2 col-xs-4">
+										<div class="nav-search minimized">
+											<span class="input-icon"> <p:inputText
+													value="#{accessLogView.searchBean}" placeholder="Search..."
+													styleClass="input-small nav-search-input"
+													autocomplete="off">
+													<p:ajax event="keyup" update="accessLogList" />
+												</p:inputText> <i class="ace-icon fa fa-search nav-search-icon" />
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable value="#{accessLogView.list2}"
+										filteredValue="#{accessLogView.list3}" rowKey="#{item.id}"
+										selection="#{accessLogView.list4}" id="accessLogList"
+										widgetVar="accessLogList" var="item" rows="20"
+										styleClass="table table-striped table-hover center"
+										paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+										rowSelectMode="checkbox">
+										<p:column headerText="Date" sortBy="#{item.date}" width="130">
+											<h:outputText value="#{item.date}" styleClass="bolder purple">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Type" width="90">
+											<h:outputText value="#{item.type.value}"
+												styleClass="#{item.type.color.badge}" />
+										</p:column>
+										<p:column headerText="Application" width="80">
+											<h:outputText value="#{item.app}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="ip" width="100">
+											<h:outputText value="#{item.ip}" styleClass="blue" />
+										</p:column>
+										<p:column headerText="message">
+											<h:outputText value="#{item.message}"
+												styleClass="#{item.type.color.name} bolder" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<ui:include src="userFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
+	</ui:define>
+</ui:composition>

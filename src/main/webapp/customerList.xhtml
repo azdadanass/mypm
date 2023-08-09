@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+		<link rel="stylesheet" href="resources/css/css/style.css" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="Welcome Page" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list bigger-110 green"></i>
+					<h:outputText value=" Customer List" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h:panelGroup id="widgetPanel">
+						<div class=" col-sm-offset-1 col-sm-6">
+							<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Add New Customer" value="#{customerView.addEditPage}" rendered="#{customerView.canSave()}">
+								<i class="ace-icon fa fa-plus bigger-230"></i>
+								<h:outputText value="Add" />
+							</h:outputLink>
+
+							<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{customerView.evictCache()}">
+								<i class="ace-icon fa fa-refresh bigger-230"></i>
+								<h:outputText value="Reload" />
+							</p:commandLink>
+							
+							<h:outputLink styleClass="btn btn-app btn-sm btn-purple hover aa-tooltip tooltip-purple" title="Manage Categories" value="customerCategoryList.xhtml" rendered="#{sessionView.isAdmin}">
+								<i class="ace-icon fa fa-gears bigger-230"></i>
+								<h:outputText value="Categories" />
+							</h:outputLink>
+						</div>
+						<div class="col-sm-3">
+							<div class="nav-search minimized">
+								<span class="input-icon">
+									<p:inputText value="#{customerView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+										<p:ajax event="keyup" update="main_panel" />
+									</p:inputText>
+									<i class="ace-icon fa fa-search nav-search-icon" />
+								</span>
+							</div>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="hr dotted" />
+
+			<div class="space-32" />
+			<div class="row">
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="row">
+						<h:panelGroup id="main_panel">
+							<p:dataGrid var="item" value="#{customerCategoryView.list2}" columns="5" paginator="false" paginatorPosition="bottom" paginatorTemplate="{PageLinks}" styleClass="center" rowIndexVar="rowIndex"
+								rendered="#{customerView.category==null}">
+								<div class="itemdiv memberdiv">
+									<div class="inline position-relative">
+										<div class="user">
+											<p:commandLink action="#{customerView.refreshList()}" update=":main_form">
+												<p:graphicImage value="#{fileUploadView.stream}" styleClass="grid_images" style="cursor:pointer">
+													<f:param name="fileName" value="#{item.photo}" />
+												</p:graphicImage>
+												<f:setPropertyActionListener value="#{item}" target="#{customerView.category}" />
+											</p:commandLink>
+										</div>
+										<div class="body">
+											<div class="name">
+												<p:commandLink action="#{customerView.refreshList()}" update=":main_form">
+													<h:outputText value=" #{item.name}" styleClass="blue" />
+													<f:setPropertyActionListener value="#{item}" target="#{customerView.category}" />
+												</p:commandLink>
+											</div>
+										</div>
+									</div>
+								</div>
+							</p:dataGrid>
+							<p:dataGrid id="customerList" var="item" value="#{customerView.list2}" columns="5" rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+								paginatorTemplate="{PageLinks}" styleClass="center" rowIndexVar="rowIndex" rendered="#{customerView.category!=null}">
+								<div class="itemdiv memberdiv">
+									<div class="inline position-relative">
+										<div class="user">
+											<!-- <h:outputLink value="viewCustomer.xhtml">
+											<p:graphicImage value="#{item.photo}" styleClass="grid_images" />
+											<f:param name="id" value="#{item.id}" />
+										</h:outputLink> -->
+											<p:commandLink action="#{utilsView.addParameters('/viewCustomer.xhtml','faces-redirect=true','id='.concat(item.id))}">
+												<p:graphicImage value="#{fileUploadView.stream}" styleClass="grid_images" style="cursor:pointer">
+													<f:param name="fileName" value="#{item.photo}" />
+												</p:graphicImage>
+
+												<f:setPropertyActionListener value="2" target="#{sessionView.menu}" />
+												<f:setPropertyActionListener value="#{item.id}" target="#{sessionView.customerId}" />
+											</p:commandLink>
+
+										</div>
+										<div class="body">
+											<div class="name">
+												<!-- <i class="ace-icon fa fa-circle #{item.active?'light-green':'red'} "></i> -->
+												<!-- <h:outputLink value="viewCustomer.xhtml">
+												<h:outputText value=" #{item.name}" styleClass="blue" />
+												<f:param name="id" value="#{item.id}" />
+											</h:outputLink> -->
+
+												<p:commandLink action="#{utilsView.addParameters('/viewCustomer.xhtml','faces-redirect=true','id='.concat(item.id))}">
+													<h:outputText value=" #{item.name}" styleClass="blue" />
+													<f:setPropertyActionListener value="2" target="#{sessionView.menu}" />
+													<f:setPropertyActionListener value="#{item.id}" target="#{sessionView.customerId}" />
+												</p:commandLink>
+											</div>
+										</div>
+									</div>
+								</div>
+							</p:dataGrid>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+

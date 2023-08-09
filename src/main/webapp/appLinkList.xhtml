@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="AppLink List" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list bigger-110 green"></i>
+					<h:outputText value="AppLink List" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h:panelGroup id="widgetPanel">
+						<div class=" col-sm-offset-1 col-sm-6">
+
+							<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{appLinkView.evictCache()}">
+								<i class="ace-icon fa fa-refresh bigger-230"></i>
+								<h:outputText value="Reload" />
+							</p:commandLink>
+
+							<p:commandLink title="Add" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip" oncomplete="PF('addDlg').show()" actionListener="#{appLinkView.initAdd()}" update=":addForm">
+								<i class="ace-icon fa fa-plus bigger-230"></i>
+								<h:outputText value="Add" />
+							</p:commandLink>
+
+							<p:commandLink title="Add From Excel File" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip" oncomplete="PF('addFromExcelDlg').show()" actionListener="#{appLinkView.initAdd()}"
+								update=":addFromExcelForm">
+								<i class="ace-icon fa fa-file-excel-o bigger-230"></i>
+								<h:outputText value="Add" />
+							</p:commandLink>
+							
+							<p:commandLink title="Delete All" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip" oncomplete="PF('deleteAllDlg').show()" actionListener="#{appLinkView.canDelete()}" >
+								<i class="ace-icon fa fa-trash-o bigger-230"></i>
+								<h:outputText value="Delete All" />
+							</p:commandLink>
+
+						</div>
+						<div class="col-sm-5  hidden-xs infobox-container">
+							<span class="btn btn-app btn-sm btn-warning no-hover">
+								<span class="line-height-1 bigger-170">
+									<h:outputText value="#{appLinkView.rowsNumber}" />
+								</span>
+								<br />
+								<span class="line-height-1 smaller-90">
+									<h:outputText value="Total" />
+								</span>
+							</span>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<div class="col-sm-offset-3 col-sm-6">
+					<h:panelGroup id="summary">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<th colspan="4" style="background: #86b558; color: white">
+										<h:outputText value="Summary" styleClass="bolder" />
+									</th>
+								</tr>
+								<tr>
+									<td>
+										<i class="ace-icon fa fa-plus bigger-230 green" style="margin-right: 20px"></i>
+										<h:outputText value="Acceptance N°" />
+									</td>
+									<td class="center">
+										<h:outputText value="#{appLinkView.acceptance.numero}" styleClass="blue bolder" />
+									</td>
+									<td rowspan="4" class="center" style="vertical-align: middle">
+										<div class="easy-pie-chart percentage" data-percent="#{appLinkView.acceptance.appLinkPercentage}" data-color="#{appLinkView.acceptance.appLinkPercentage==100?'#87B87F':'#d3413b'}">
+											<span class="percent">
+												<h:outputText value="#{appLinkView.acceptance.appLinkPercentage/100}">
+													<f:convertNumber type="percent" maxFractionDigits="0" />
+												</h:outputText>
+											</span>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<i class="ace-icon fa fa-minus bigger-230 red" style="margin-right: 20px"></i>
+										<h:outputText value="Total Amount" />
+									</td>
+									<td class="center purple bolder">
+										<h:outputText value="#{appLinkView.acceptance.amountHt}">
+											<f:convertNumber type="number" maxFractionDigits="2" />
+										</h:outputText>
+										<h:outputText value=" #{appLinkView.acceptance.currencyName}" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<i class="ace-icon fa fa-table bigger-230 blue" style="margin-right: 20px"></i>
+										<h:outputText value="Total Justified" />
+									</td>
+									<td class="center green bolder">
+										<h:outputText value="#{appLinkView.acceptance.appLinkHt}">
+											<f:convertNumber type="number" maxFractionDigits="2" />
+										</h:outputText>
+										<h:outputText value=" #{appLinkView.acceptance.currencyName}" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<i class="ace-icon fa fa-table bigger-230 blue" style="margin-right: 20px"></i>
+										<h:outputText value="Remainder" />
+									</td>
+									<td class="center red bolder">
+										<h:outputText value="#{appLinkView.acceptance.amountHt-appLinkView.acceptance.appLinkHt}">
+											<f:convertNumber type="number" maxFractionDigits="2" />
+										</h:outputText>
+										<h:outputText value=" #{appLinkView.acceptance.currencyName}" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="row">
+				<p:messages id="messages" />
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="table-header col-sm-12 col-xs-12">
+						<div class="col-sm-8 col-xs-8">
+							<i class="fa fa-list" />
+							<h:outputText value="AppLink List" />
+						</div>
+						<div class="col-sm-2 hidden-xs">
+							<div class="action-buttons center">
+								<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+									<img src="/resources/img/xls.png" width="20" height="20" />
+									<p:dataExporter type="xls" target="appLinkList" fileName="appLinkList" postProcessor="#{utilsView.excelExportation}" />
+								</h:commandLink>
+							</div>
+						</div>
+						<div class="col-sm-2 col-xs-4">
+							<div class="nav-search minimized">
+								<span class="input-icon">
+									<p:inputText value="#{appLinkView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+										<p:ajax event="keyup" update="appLinkList,widgetPanel" />
+									</p:inputText>
+									<i class="ace-icon fa fa-search nav-search-icon" />
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-xs-12 aa-datatable-container">
+						<p:dataTable value="#{appLinkView.list2}" filteredValue="#{appLinkView.list3}" rowKey="#{item.id}" selection="#{appLinkView.list4}" id="appLinkList" widgetVar="appLinkList" var="item" rows="20"
+							styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom"
+							paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowSelectMode="checkbox">
+
+							<p:column headerText="Associated Object">
+								<p:commandLink update=":appLinkListForm" oncomplete="PF('appLinkListDlg').show()" title="Click to show other links to this object">
+									<h:outputText value="#{item.associatedObjectName}" styleClass="green bolder" />
+									<f:setPropertyActionListener value="#{item}" target="#{appLinkView.model}" />
+								</p:commandLink>
+							</p:column>
+
+							<p:column headerText="Cost Type">
+								<h:outputText value="#{item.costType.value}" styleClass="blue bolder" />
+							</p:column>
+
+							<p:column headerText="Start Date">
+								<h:outputText value="#{item.startDate}">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="End Date">
+								<h:outputText value="#{item.endDate}">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Cost">
+								<h:outputText value="#{item.amount}" styleClass="red bolder">
+									<f:convertNumber type="number" maxFractionDigits="2" />
+								</h:outputText>
+								<h:outputText value=" #{appLinkView.acceptance.currencyName}" styleClass="red bolder" />
+							</p:column>
+
+
+							<p:column headerText="Actions" width="150" exportable="false">
+								<div class="action-buttons center">
+									<p:commandLink title="Delete row" onclick="PF('deleteAppLinkDlg').show()" rendered="#{appLinkView.canDelete()}">
+										<i class="red fa fa-trash-o bigger-130" />
+										<f:setPropertyActionListener target="#{appLinkView.model}" value="#{item}" />
+									</p:commandLink>
+
+									<p:commandLink title="Details" action="#{appLinkView.refreshModel()}" update=":viewForm" oncomplete="PF('viewDlg').show()">
+										<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+										<f:setPropertyActionListener target="#{appLinkView.model}" value="#{item}" />
+									</p:commandLink>
+
+								</div>
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+			<script src="/resources/ace_template/assets/js/jquery.easypiechart.js" />
+			<h:panelGroup id="easy-pie-chart-script">
+				<script>
+					var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent
+							.toLowerCase());
+					$('.easy-pie-chart.percentage').each(function() {
+						$(this).easyPieChart({
+							barColor : $(this).data('color'),
+							trackColor : '#EEEEEE',
+							scaleColor : false,
+							lineCap : 'butt',
+							lineWidth : 8,
+							animate : oldie ? false : 1000,
+							size : 75
+						}).css('color', $(this).data('color'));
+					});
+				</script>
+			</h:panelGroup>
+		</h:form>
+		<ui:include src="appLinkFooter.xhtml" />
+	</ui:define>
+</ui:composition>

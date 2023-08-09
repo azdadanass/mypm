@@ -1,0 +1,808 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+		<link href="resources/css/bootstrap-nav/bootstrap-nav-wizard.css" rel="stylesheet" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="#{requestForQuoteView.isAddPage?'Add New':'Edit'} RFQ" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="widget-box">
+				<div class="widget-header widget-header-blue widget-header-flat">
+					<h4 class="widget-title lighter">
+						<i class="ace-icon fa #{requestForQuoteView.isAddPage?'fa-plus green':'fa-edit orange'} bigger-110"></i>
+						<h:outputText value=" #{requestForQuoteView.isAddPage?'Add New':'Edit'} RFQ" />
+					</h4>
+				</div>
+				<div class="row">
+					<div class="col-sm-12"></div>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main">
+						<h:panelGroup id="nav-wizard">
+							<ul class="nav nav-wizard">
+								<li class="#{requestForQuoteView.step==1?'active':''}">
+									<a href="#">
+										<h:outputText value="General informations" />
+									</a>
+								</li>
+								<li class="#{requestForQuoteView.step==2?'active':''}">
+									<a href="#">
+										<h:outputText value="Submisison TimeLine" />
+									</a>
+								</li>
+								<li class="#{requestForQuoteView.step==3?'active':''}">
+									<a href="#">
+										<h:outputText value="Delivery conditions" />
+									</a>
+								</li>
+								<li class="#{requestForQuoteView.step==4?'active':''}">
+									<a href="#">
+										<h:outputText value="Bank Guarantee" />
+									</a>
+								</li>
+							</ul>
+						</h:panelGroup>
+						<hr />
+						<p:messages id="messages" closable="true" />
+						<h:panelGroup id="steps">
+							<f:subview id="step1" rendered="#{requestForQuoteView.step==1}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" General informations" />
+								</h3>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Company" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:selectOneMenu id="company" value="#{requestForQuoteView.model.company}" effect="fold" styleClass="col-xs-12 col-sm-6" converter="#{genericSecuredConverter}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{companyView.findLight()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+												<p:ajax update="main_form" />
+												<f:facet name="footer">
+													<h:outputText value="3 options" style="font-weight:bold;" />
+												</f:facet>
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Reference" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{requestForQuoteView.model.reference}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Reference should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Existing Or New" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.existing}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Existing field should not be null">
+												<f:selectItem itemLabel="Existing customer" itemValue="true" />
+												<f:selectItem itemLabel="Account" itemValue="false" />
+												<p:ajax update="customer" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<h:panelGroup id="customer">
+									<f:subview rendered="#{requestForQuoteView.existing()}">
+										<div class="row">
+											<div class="col-xs-12 col-sm-3">
+												<label class="control-label pull-right">
+													<h:outputText value="Customer" />
+												</label>
+											</div>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<p:selectOneMenu id="customer" value="#{requestForQuoteView.model.customer}" styleClass="col-xs-12 col-sm-6" filter="true" filterMatchMode="contains" required="true"
+														requiredMessage="Customer should be not null" converter="#{genericSecuredConverter}">
+														<f:selectItem itemLabel="---" noSelectionOption="true" />
+														<f:selectItems value="#{customerView.findLight()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+														<p:ajax update="opp" />
+													</p:selectOneMenu>
+													<br />
+												</div>
+											</div>
+										</div>
+										<div class="space-8" />
+										
+										<h:panelGroup id="opp">
+										<div class="row">
+											<div class="col-xs-12 col-sm-3">
+												<label class="control-label pull-right">
+													<h:outputText value="Opportunity" />
+												</label>
+											</div>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<p:selectOneMenu id="opportunity" value="#{requestForQuoteView.model.opportunity}" styleClass="col-xs-12 col-sm-6" filter="true" filterMatchMode="contains" required="false"
+														 converter="#{genericSecuredConverter}">
+														<f:selectItem itemLabel="---" noSelectionOption="true" />
+														<f:selectItems value="#{requestForQuoteView.findByCompanyAndCustomer()}" var="item" itemLabel="#{item.reference} - #{item.user1}" itemValue="#{item}" />
+														
+													</p:selectOneMenu>
+													<br />
+												</div>
+											</div>
+										</div>
+										<div class="space-8" />
+										</h:panelGroup>
+									</f:subview>
+									<f:subview rendered="#{!requestForQuoteView.existing()}">
+										
+										<div class="row">
+											<div class="col-xs-12 col-sm-3">
+												<label class="control-label pull-right">
+													<h:outputText value="Account" />
+												</label>
+											</div>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<p:selectOneMenu id="acc" value="#{requestForQuoteView.model.customer}" styleClass="col-xs-12 col-sm-6" filter="true" filterMatchMode="contains" required="true"
+														requiredMessage="Account should be not null" converter="#{genericSecuredConverter}">
+														<f:selectItem itemLabel="---" noSelectionOption="true" />
+														<f:selectItems value="#{customerView.findLight2()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+														
+													</p:selectOneMenu>
+													<br />
+												</div>
+											</div>
+										</div>
+										<div class="space-8" />
+										<h:panelGroup id="opp">
+										<div class="row">
+											<div class="col-xs-12 col-sm-3">
+												<label class="control-label pull-right">
+													<h:outputText value="Opportunity" />
+												</label>
+											</div>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<p:selectOneMenu id="opportunity" value="#{requestForQuoteView.model.opportunity}" styleClass="col-xs-12 col-sm-6" filter="true" filterMatchMode="contains" required="false"
+														 converter="#{genericSecuredConverter}">
+														<f:selectItem itemLabel="---" noSelectionOption="true" />
+														<f:selectItems value="#{requestForQuoteView.findByCompanyAndCustomer()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+														
+													</p:selectOneMenu>
+													<br />
+												</div>
+											</div>
+										</div>
+										<div class="space-8" />
+										</h:panelGroup>
+									</f:subview>
+								</h:panelGroup>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="RFQ estimated Budget" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{requestForQuoteView.model.estimatedBudget}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Estimated Budget should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Currency" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.currency}" styleClass="col-xs-12 col-sm-6" converter="#{genericSecuredConverter}">
+												<f:selectItems value="#{currencyView.findAll()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Class1" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.class1}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="class1 field should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemLabel="Open " itemValue="Open " />
+												<f:selectItem itemLabel=" restricted" itemValue=" restricted" />
+												<f:selectItem itemLabel="Negotiated" itemValue="Negotiated" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Class2" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.class2}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="class2 field should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemLabel="Service Supply" itemValue="Service Supply" />
+												<f:selectItem itemLabel="Good supply" itemValue="Good supply" />
+												<f:selectItem itemLabel="Service and Good sypply" itemValue="Service and Good sypply" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Category" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.category}" styleClass="col-xs-12 col-sm-6" converter="#{genericSecuredConverter}" required="true" requiredMessage="Category field should not be null">
+											<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{requestForQuoteCategoryView.findAll()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+												<p:ajax update="type" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+									<h:panelGroup id="type">
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Type" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.type}" styleClass="col-xs-12 col-sm-6" converter="#{genericSecuredConverter}" required="true" requiredMessage="Type field should not be null">
+											<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{requestForQuoteView.typeList()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+												<p:ajax update="subType" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div></h:panelGroup>
+								<div class="space-8" />
+									<h:panelGroup id="subType">
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="SubType" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.subType}" styleClass="col-xs-12 col-sm-6" converter="#{genericSecuredConverter}" required="true" requiredMessage="SubType field should not be null">
+											<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{requestForQuoteView.subTypeList()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div></h:panelGroup>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Number of Lot" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{requestForQuoteView.model.numberOfLots}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Number of Lot should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="RFQ Description" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{requestForQuoteView.model.description}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Keywords" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{requestForQuoteView.model.keywords}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+							</f:subview>
+							<f:subview id="step2" rendered="#{requestForQuoteView.step==2}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" Submission TimeLine" />
+								</h3>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Published date" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:calendar value="#{requestForQuoteView.model.publishingDate}" pattern="yyyy-MM-dd"  autocomplete="off" navigator="true" required="true" requiredMessage="Published date should not be null"  />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Technical submission end Time" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:calendar value="#{requestForQuoteView.model.technicalSubmissionEndDate}" mindate="#{requestForQuoteView.model.publishingDate}"  pattern="yyyy-MM-dd"   navigator="true" required="true" requiredMessage="Technical submission date should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Financial submission end time" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<p:calendar value="#{requestForQuoteView.model.financialSubmissionEndDate}" mindate="#{requestForQuoteView.model.publishingDate}" pattern="yyyy-MM-dd"   navigator="true" required="true" requiredMessage="Financial submission date should not be null" />
+										<br />
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+								<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Online submission" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-3">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.onlineSubmission}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="warranty field should not be null">
+												<f:selectItem itemLabel="NO" itemValue="false" />
+												<f:selectItem itemLabel="YES" itemValue="true" />
+											
+											</h:selectOneMenu>
+											<br />
+										</div></div>
+									</div>
+								
+								
+							</f:subview>
+							<f:subview id="step3" rendered="#{requestForQuoteView.step==3}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" Delivery conditions" />
+								</h3>
+								
+								<div class="row">
+								<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Partial/Final acceptance" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.finalAcceptance}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="acceptance field should not be null">
+												<f:selectItem itemLabel="NO" itemValue="false" />
+												<f:selectItem itemLabel="YES" itemValue="true" />
+												<p:ajax update="finalAcceptance,deliveryDocument" />
+											</h:selectOneMenu>
+											<br />
+										</div></div>
+									</div>
+									
+								<div class="space-8" />
+								<h:panelGroup id="deliveryDocument">
+								<f:subview rendered="#{!requestForQuoteView.model.finalAcceptance}">
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Delivery Document Type" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.deliveryDocumentType}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Delivery Document Type should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemLabel="BL" itemValue="BL"/>
+												<f:selectItem itemLabel="PAC" itemValue="PAC"/>
+												<f:selectItem itemLabel="FAC" itemValue="FAC"/>
+												<f:selectItem itemLabel="Intervention Report" itemValue="Intervention Report"/>
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								</f:subview>
+								<f:subview rendered="#{requestForQuoteView.model.finalAcceptance}">
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Partial Delivery Document Type" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.deliveryDocumentType}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Delivery Document Type should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemLabel="PAC" itemValue="PAC"/>
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								</f:subview>
+								</h:panelGroup>
+								<div class="space-8" />
+								
+								<h:panelGroup id="finalAcceptance">
+									
+								<f:subview rendered="#{requestForQuoteView.model.finalAcceptance}">
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Final delivery document type" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.finalDeliveryDocumentType}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Delivery Document Type should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												
+												<f:selectItem itemLabel="FAC" itemValue="FAC"/>
+											
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div></f:subview>
+								<div class="space-8" />
+								</h:panelGroup>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Delivery lead time (In days)" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{requestForQuoteView.model.deliveryLeadTime}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="DeliveryLeadTime  should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+								<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Warranty needed ?" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.warranty}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="warranty field should not be null">
+												<f:selectItem itemLabel="NO" itemValue="false" />
+												<f:selectItem itemLabel="YES" itemValue="true" />
+												<p:ajax update="warranty" />
+											</h:selectOneMenu>
+											<br />
+										</div></div>
+									</div>
+									<div class="space-8" />
+									<h:panelGroup id="warranty">
+									<f:subview rendered="#{requestForQuoteView.model.warranty}">
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Warranty period (In days)" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{requestForQuoteView.model.warrantyTime}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<f:subview rendered="#{requestForQuoteView.model.warranty}">
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Warranty start point" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{requestForQuoteView.model.warrantyStartPoint}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="WarrantyStartPoint field should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemLabel="BL date" itemValue="0" />
+												<f:selectItem itemLabel="PAC Date" itemValue="1" />
+												<f:selectItem itemLabel="FAC Date" itemValue="2" />
+												<f:selectItem itemLabel="Intervention Report Date" itemValue="3"/>
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div></f:subview>
+								</f:subview>
+								</h:panelGroup>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Payment terms" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{requestForQuoteView.model.paymentTerms}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Acceptance / Invoicing Terms" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{requestForQuoteView.model.invoiceTerms}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+							</f:subview>
+							<f:subview id="step4" rendered="#{requestForQuoteView.step==4}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" Bank Guarantee" />
+								</h3>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Caution Provisoire needed ? " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:commandLink id="bank1" update="bank1,cpValue" partialSubmit="true" process="@this">
+												<i class="ace-icon fa #{requestForQuoteView.model.cp?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!requestForQuoteView.model.cp}" target="#{requestForQuoteView.model.cp}" />
+											</p:commandLink>
+											<br />
+										</div>
+									</div>
+								</div>
+								<h:panelGroup id="cpValue">
+									<f:subview rendered="#{requestForQuoteView.model.cp}">
+										<div class="space-8" />
+										<div class="row">
+											<div class="col-xs-12 col-sm-3">
+												<label class="control-label pull-right">
+													<h:outputText value="Value Caution Provisoire " />
+												</label>
+											</div>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<p:inputText value="#{requestForQuoteView.model.cpValue}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Caution Provisoire should not be null" />
+													<br />
+												</div>
+											</div>
+										</div>
+										<div class="space-8" />
+										<div class="row">
+											<div class="col-xs-12 col-sm-3">
+												<label class="control-label pull-right">
+													<h:outputText value="Lead Time to return from Contract signed date " />
+												</label>
+											</div>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<p:inputText value="#{requestForQuoteView.model.cpLeadTime}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Lead Time should not be null" />
+													<br />
+												</div>
+											</div>
+										</div>
+									</f:subview>
+									<div class="space-8" />
+								</h:panelGroup>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Caution Definitive  needed ? " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:commandLink id="bank2" update="bank2,cdValue" partialSubmit="true" process="@this">
+												<i class="ace-icon fa #{requestForQuoteView.model.cd?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!requestForQuoteView.model.cd}" target="#{requestForQuoteView.model.cd}" />
+											</p:commandLink>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<h:panelGroup id="cdValue">
+									<f:subview rendered="#{requestForQuoteView.model.cd}">
+										<div class="row">
+											<div class="col-xs-12 col-sm-3">
+												<label class="control-label pull-right">
+													<h:outputText value="Value % From Contract Value " />
+												</label>
+											</div>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<p:inputText value="#{requestForQuoteView.model.cdPercentage}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Value % From Contract Value should not be null" />
+													<br />
+												</div>
+											</div>
+										</div>
+										<div class="space-8" />
+										<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Max presentation period (in days)" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{requestForQuoteView.model.maxPresentationPeriod}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="DeliveryLeadTime  should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+									</f:subview>
+								</h:panelGroup>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Retenue De Garantie needed ? " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:commandLink id="bank3" update="bank3,crgValue" partialSubmit="true" process="@this">
+												<i class="ace-icon fa #{requestForQuoteView.model.cd?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!requestForQuoteView.model.crg}" target="#{requestForQuoteView.model.crg}" />
+											</p:commandLink>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<h:panelGroup id="crgValue">
+									<f:subview rendered="#{requestForQuoteView.model.crg}">
+										<div class="row">
+											<div class="col-xs-12 col-sm-3">
+												<label class="control-label pull-right">
+													<h:outputText value="RG % Value " />
+												</label>
+											</div>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<p:inputText value="#{requestForQuoteView.model.crgPercentage}" styleClass="col-xs-12 col-sm-6" required="true"
+														requiredMessage="RG % Value From Contract Value should not be null" />
+													<br />
+												</div>
+											</div>
+										</div>
+										<div class="space-8" />
+										<div class="row">
+											<div class="col-xs-12 col-sm-3">
+												<label class="control-label pull-right">
+													<h:outputText value="Cumulable With Caution Definitive" />
+												</label>
+											</div>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<h:selectOneMenu value="#{requestForQuoteView.model.crgCumulatable}" styleClass="col-xs-12 col-sm-6" required="true"
+														requiredMessage="Cumulable With Caution Definitive field should not be null">
+														<f:selectItem itemLabel="No" itemValue="false" />
+														<f:selectItem itemLabel="Yes" itemValue="true" />
+													</h:selectOneMenu>
+													<br />
+												</div>
+											</div>
+										</div>
+									</f:subview>
+								</h:panelGroup>
+							</f:subview>
+						</h:panelGroup>
+						<hr />
+						<div class="wizard-actions">
+							<p:commandLink action="#{requestForQuoteView.previousStep()}" immediate="true" update="messages,nav-wizard,steps" styleClass="btn  btn-prev">
+								<i class="ace-icon fa fa-arrow-left icon-on-right"></i>
+								<h:outputText value="Back" />
+							</p:commandLink>
+							<p:commandLink id="next" action="#{requestForQuoteView.nextStep()}" update="messages,nav-wizard,next,steps" styleClass="btn btn-success btn-next">
+								<h:outputText value="#{requestForQuoteView.step==4?'Finish':'Next'}" />
+								<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+							</p:commandLink>
+						</div>
+						<div class="space-16" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

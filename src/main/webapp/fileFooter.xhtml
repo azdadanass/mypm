@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<h:form id="fileForm">
+		<p:dialog widgetVar="fileDlg" modal="true" closable="false" resizable="false" showHeader="false" width="1000">
+			<button type="button" class="bootbox-close-button close" onclick="PF('fileDlg').hide()">
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header" style="margin-bottom: 20px">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-list-alt blue" />
+					<h:outputText value=" Preview" />
+				</h4>
+			</div>
+			<div class="modal-body center" style="width: 100%">
+				<p:media player="pdf" value="#{fileView.stream}" width="950" height="500" style="margin:auto" rendered="#{fileView.file.isPdf}">
+					<f:param name="fileName" value="#{fileView.file.fileLink}" />
+				</p:media>
+				<p:graphicImage value="#{fileView.stream}" rendered="#{fileView.file.isImage}" width="500">
+					<f:param name="fileName" value="#{fileView.file.fileLink}" />
+				</p:graphicImage>
+				<f:subview rendered="#{fileView.file.isOfficeDocument or fileView.file.isTextFile}">
+					<iframe src="#{fileView.file.iframeSrc}" width="100%" height="500px"></iframe>
+				</f:subview>
+				<f:subview rendered="#{fileView.file.isVideo}">
+					<video controls="true" autoplay="true" src="#{fileView.file.fileLink}" style="margin:auto" width="500px" height="500px"> <h:outputText value="Video" /> </video>
+				</f:subview>
+				<h:outputText value="No preview for this file" rendered="#{fileView.file.isOther}" />
+			</div>
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('fileDlg').hide()" value="Hide" styleClass="btn btn-warning" />
+			</div>
+		</p:dialog>
+	</h:form>
+</ui:composition>

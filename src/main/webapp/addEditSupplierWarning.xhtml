@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="#{supplierWarningView.isAddPage?&#39;Add New&#39;:&#39;Edit&#39;} SupplierWarning" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.Severity" var="Severity" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa #{supplierWarningView.isAddPage?&#39;fa-plus green&#39;:&#39;fa-edit orange&#39;} bigger-110"></i>
+					<h:outputText value=" #{supplierWarningView.isAddPage?&#39;Add New&#39;:&#39;Edit&#39;} SupplierWarning" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-6">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-inverse hover aa-tooltip" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+
+						<h:outputLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</h:outputLink>
+
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip tooltip-grey" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+
+						<p:commandLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" action="#{supplierWarningView.save()}" update="messages" title="Save">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Save" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<div class="row">
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="tab-content profile-edit-tab-content">
+						<div class="tab-pane in active">
+							<p:messages id="messages" closable="true" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="General informations" />
+							</h4>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Date" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:calendar value="#{supplierWarningView.model.date}" navigator="true" required="true" requiredMessage="Date should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Supplier" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{supplierWarningView.model.supplier.name}" readonly="true" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Type" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{supplierWarningView.model.type}" required="true" requiredMessage="Type should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemValue="CODE OF CONDUCT" itemLabel="CODE OF CONDUCT" />
+												<f:selectItem itemValue="PERSONALITY ATTRIBUTES" itemLabel="PERSONALITY ATTRIBUTES" />
+												<f:selectItem itemValue="JOB EXECUTION" itemLabel="JOB EXECUTION" />
+												<p:ajax update="subType" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Sub-Type" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:panelGroup id="subType">
+												<h:selectOneMenu value="#{supplierWarningView.model.subType}" required="true" requiredMessage="Sub-Type should not be null" rendered="#{supplierWarningView.model.type=='CODE OF CONDUCT'}">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItem itemValue="BAD ATTENDANCE" itemLabel="BAD ATTENDANCE" />
+													<f:selectItem itemValue="LACK OF PUNCTUALITY" itemLabel="LACK OF PUNCTUALITY" />
+													<f:selectItem itemValue="BAD ETHICS" itemLabel="BAD ETHICS" />
+													<f:selectItem itemValue="BAD USE COMPANY RESOURCES" itemLabel="BAD USE COMPANY RESOURCES" />
+													<f:selectItem itemValue="BAD INTEGRITY" itemLabel="BAD INTEGRITY" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{supplierWarningView.model.subType}" required="true" requiredMessage="Sub-Type should not be null"
+													rendered="#{supplierWarningView.model.type=='PERSONALITY ATTRIBUTES'}">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItem itemValue="BAD COMMUNICATION" itemLabel="BAD COMMUNICATION" />
+													<f:selectItem itemValue="LACK OF TEAMWORK" itemLabel="LACK OF TEAMWORK" />
+													<f:selectItem itemValue="LACK OF MATURITY" itemLabel="LACK OF MATURITY" />
+													<f:selectItem itemValue="BAD ATTITUDE" itemLabel="BAD ATTITUDE" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{supplierWarningView.model.subType}" required="true" requiredMessage="Sub-Type should not be null" rendered="#{supplierWarningView.model.type=='JOB EXECUTION'}">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItem itemValue="BAD QUALITY OF WORK" itemLabel="BAD QUALITY OF WORK" />
+													<f:selectItem itemValue="BAD PERFORMANCE" itemLabel="BAD PERFORMANCE" />
+												</h:selectOneMenu>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Severity" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{supplierWarningView.model.severity}" required="true" requiredMessage="Severity should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{Severity.ALL_ENUM_VALUES}" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Warning Way" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{supplierWarningView.model.way}" required="true" requiredMessage="Warning Way should be not null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemValue="Verbal" itemLabel="Verbal" />
+												<f:selectItem itemValue="Written" itemLabel="Written" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Disciplinary action" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{supplierWarningView.model.disciplinaryAction}" required="true" requiredMessage="Warning Action should be not null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemValue="None" itemLabel="None" />
+												<f:selectItem itemValue="Temporary Suspension" itemLabel="Temporary Suspension" />
+												<f:selectItem itemValue="Termination" itemLabel="Termination" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="Reason" />
+							</h4>
+							<div class="row center">
+								<p:inputTextarea value="#{supplierWarningView.model.reason}" style="width: 90%" required="true" requiredMessage="Reason should be not null" />
+							</div>
+							<div class="space-16" />
+						</div>
+						<div class="row"></div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

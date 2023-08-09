@@ -1,0 +1,1317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View Supplier" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.CostCategory" var="CostCategory" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.PaymentTermStartPoint" var="PaymentTermStartPoint" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.SupplierStatus" var="SupplierStatus" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.Profile" var="Profile" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View Supplier" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{supplierView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{supplierView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+						<!-- <h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink> -->
+						<h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditSupplier.xhtml" rendered="#{supplierView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{supplierView.id}" />
+						</h:outputLink>
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{supplierView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+						<p:commandLink title="Add Files" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" onclick="PF('uploadFileDlg').show()" rendered="#{supplierView.canAddFile()}">
+							<i class="ace-icon fa fa-file bigger-230"></i>
+							<h:outputText value="Files" />
+						</p:commandLink>
+						<p:commandLink title="Add Comment" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" onclick="PF('addCommentDlg').show()" rendered="#{supplierView.canAddComment()}">
+							<i class="ace-icon fa fa-comment bigger-230"></i>
+							<h:outputText value="Comment" />
+						</p:commandLink>
+						<p:commandLink title="Approve" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" onclick="PF('approveDlg').show()" rendered="#{supplierView.canApprove()}">
+							<i class="ace-icon fa fa-check bigger-230"></i>
+							<h:outputText value="Approve" />
+						</p:commandLink>
+						<p:commandLink title="Reject" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('rejectDlg').show()" rendered="#{supplierView.canReject()}">
+							<i class="ace-icon fa fa-remove bigger-230"></i>
+							<h:outputText value="Reject" />
+						</p:commandLink>
+						<p:commandLink title="#{supplierView.model.active?'Disable':'Enable'}" styleClass="btn btn-app btn-sm #{supplierView.model.active?'btn-danger':'btn-success'} hover aa-tooltip"
+							update=":toggleForm" oncomplete="PF('toggleDlg').show()">
+							<i class="ace-icon fa fa-power-off bigger-230"></i>
+							<h:outputText value="#{supplierView.model.active?'Disable':'Enable'}" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<h:panelGroup id="timeline">
+					<div class="col-sm-offset-1 col-sm-10">
+						<div class="widget-box transparent">
+							<div class="widget-header widget-header-flat">
+								<h4 class="lighter">
+									<i class="ace-icon fa fa-clock-o orange"></i>
+									<h:outputText value=" Approval Time Line" />
+								</h4>
+							</div>
+							<div class="widget-body">
+								<ul class="steps">
+									<li class="complete">
+										<span class="step">
+											<h:outputText value="0" />
+										</span>
+										<span class="title">
+											<h:outputText id="step0" value="#{SupplierStatus.EDITED.value}" />
+										</span>
+										<p:overlayPanel for="step0" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+											<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(supplierView.model.date0,supplierView.model.user0.username)}" />
+										</p:overlayPanel>
+									</li>
+									<f:subview rendered="#{supplierView.model.date2==null}">
+										<li class="#{supplierView.model.date1!=null?'complete':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step1" value="#{SupplierStatus.APPROVED.value}" />
+											</span>
+											<p:overlayPanel for="step1" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(supplierView.model.date1,supplierView.model.user1.username,cacheView.getFirstUsernameByCompanyAndProfile(1,Profile.CFO))}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+									<f:subview rendered="#{supplierView.model.date2!=null}">
+										<li class="#{supplierView.model.date2!=null?'error':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step9" value="#{SupplierStatus.REJECTED.value}" />
+											</span>
+											<p:overlayPanel for="step9" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(supplierView.model.date2,supplierView.model.user2.username)}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+			</div>
+			<div class="space-16" />
+			<div class="user-profile row">
+				<div class="col-xs-12 col-sm-3 center">
+					<div class="profile-picture">
+						<p:graphicImage id="photo" value="#{fileUploadView.stream}" styleClass="editable img-responsive editable-click editable-empty aa-avatar" onclick="PF('uploadPhotoDlg').show()"
+							rendered="#{supplierView.canUploadPhoto()}">
+							<f:param name="fileName" value="#{supplierView.model.photo}" />
+						</p:graphicImage>
+						<p:graphicImage value="#{fileUploadView.stream}" styleClass="editable img-responsive editable-click editable-empty aa-avatar" rendered="#{!supplierView.canUploadPhoto()}">
+							<f:param name="fileName" value="#{supplierView.model.photo}" />
+						</p:graphicImage>
+					</div>
+					<div class="space-4" />
+					<div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+						<div class="inline position-relative">
+							<a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+								<h:panelGroup id="activeIcon">
+									<i class="ace-icon fa fa-circle #{supplierView.model.active?'light-green':'red'}" />
+								</h:panelGroup>
+								&nbsp;
+								<span class="white">
+									<h:outputText value="#{supplierView.model.name}" />
+								</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-9">
+					<div class="widget-box transparent">
+						<div class="widget-header widget-header-small">
+							<h4 class="smaller">
+								<i class="ace-icon fa fa-check-square-o bigger-110"></i>
+								<h:outputText value=" Description" />
+							</h4>
+						</div>
+						<div class="space-8" />
+						<div>
+							<h:outputText value="#{supplierView.model.description}" />
+						</div>
+						<div class="space-32" />
+					</div>
+				</div>
+			</div>
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab8">
+							<i class="red ace-icon fa fa-sitemap bigger-120"></i>
+							<h:outputText value=" Organization Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab2">
+							<i class="purple ace-icon fa fa-list bigger-120"></i>
+							<h:outputText value=" Contacts" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab9">
+							<i class="red ace-icon fa fa-lock bigger-120"></i>
+							<h:outputText value=" Authorities" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab3">
+							<i class="blue ace-icon fa fa-file bigger-120"></i>
+							<h:outputText value=" Attachements" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab4">
+							<i class="orange ace-icon fa fa-clock-o bigger-120"></i>
+							<h:outputText value=" History" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab5">
+							<i class="red ace-icon fa fa-comment-o bigger-120"></i>
+							<h:outputText value=" Comments" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab6">
+							<i class="red ace-icon fa fa-gears bigger-120"></i>
+							<h:outputText value=" Configuration" />
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.name}" styleClass="bolder orange" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Phone" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.phone}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Country" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.country}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Website" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.website}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Category" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.category.name}" styleClass="green" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Email" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.email}" styleClass="blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Fax" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.fax}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="City" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.city}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Address" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.address1}" />
+											<h:outputText value="#{supplierView.model.address2}" />
+											<h:outputText value="#{supplierView.model.address3}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space-16" />
+						<div style="width: 90%; margin: auto;">
+							<div class="well">
+								<h4 class="green smaller lighter">
+									<h:outputText value="Description" />
+								</h4>
+								<h:outputText value="#{supplierView.model.description}" styleClass="preformatted" />
+							</div>
+						</div>
+					</div>
+					<div id="tab8" class="tab-pane">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Business Type" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.type}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="ICE" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.ice}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="CNSS" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.cnss}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Establishment Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.establishmentDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Parent Company" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.groupName}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="RC" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.ri}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Vat" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.vat}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Patent" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.patent}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Capital" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.capital}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Ownership structure" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierView.model.structure}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab2" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" Contacts" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="contactList" value="#{supplierView.model.contactList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" styleClass="bolder green" rendered="#{!supplierView.editContact}" />
+											<p:inputText value="#{item.name}" rendered="#{supplierView.editContact}" />
+										</p:column>
+										<p:column headerText="Email">
+											<h:outputText value="#{item.email}" styleClass="blue" rendered="#{!supplierView.editContact}" />
+											<p:inputText value="#{item.email}" rendered="#{supplierView.editContact}" />
+										</p:column>
+										<p:column headerText="Phone 1">
+											<h:outputText value="#{item.phone1}" styleClass="orange" rendered="#{!supplierView.editContact}" />
+											<p:inputText value="#{item.phone1}" rendered="#{supplierView.editContact}" />
+										</p:column>
+										<p:column headerText="Phone 2">
+											<h:outputText value="#{item.phone2}" rendered="#{!supplierView.editContact}" />
+											<p:inputText value="#{item.phone2}" rendered="#{supplierView.editContact}" />
+										</p:column>
+										<p:column headerText="FAX">
+											<h:outputText value="#{item.fax}" rendered="#{!supplierView.editContact}" />
+											<p:inputText value="#{item.fax}" rendered="#{supplierView.editContact}" />
+										</p:column>
+										<p:column headerText="Function">
+											<h:outputText value="#{item.function}" rendered="#{!supplierView.editContact}" />
+											<p:inputText value="#{item.function}" rendered="#{supplierView.editContact}" />
+										</p:column>
+										<p:column headerText="Actions" styleClass="center" width="100" rendered="#{supplierView.editContact}">
+											<div class="action-buttons center">
+												<p:commandLink title="Remove row" action="#{supplierView.deleteContact(item)}" update="contactList" partialSubmit="true" process="contactList" rendered="#{supplierView.canDeleteContact()}">
+													<i class="ace-icon fa fa-remove bigger-130 red" />
+												</p:commandLink>
+											</div>
+										</p:column>
+										<f:facet name="footer">
+											<div class="action-buttons center">
+												<p:commandLink title="Edit" update="contactList" partialSubmit="true" process="contactList" rendered="#{supplierView.canAddContact() and !supplierView.editContact}">
+													<i class="fa fa-edit orange" />
+													<f:setPropertyActionListener value="true" target="#{supplierView.editContact}" />
+												</p:commandLink>
+												<p:commandLink title="Save" action="#{supplierView.saveContactList()}" update="contactList" partialSubmit="true" process="contactList" rendered="#{supplierView.canSaveContactList()}">
+													<i class="fa fa-save green" />
+												</p:commandLink>
+												<p:commandLink title="Add New Item" action="#{supplierView.addContact()}" update="contactList" partialSubmit="true" process="contactList"
+													rendered="#{supplierView.canAddContact() and supplierView.editContact}">
+													<i class="fa fa-plus green" />
+												</p:commandLink>
+											</div>
+										</f:facet>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab3" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List Of Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList" value="#{supplierView.model.fileList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Phase" width="150" styleClass="center">
+											<h:outputText value="#{item.parentModelName}" styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Added Date" width="90">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="File Size" width="80">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+										<p:column headerText="File Type" width="100" styleClass="center">
+											<img src="#{item.fileExtensionImage}" style="border: none; border-radius: 0" width="20" height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}" styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Actions" width="150" style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File" oncomplete="PF('deleteFileDlg').show()" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener target="#{supplierView.file}" value="#{item}" />
+												</p:commandLink>
+												<p:commandLink ajax="false">
+													<p:fileDownload value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="View" oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{fileView.file}" value="#{item}" />
+													<f:setPropertyActionListener target="#{supplierView.file}" value="#{item}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab4" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" History" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="historyList" value="#{supplierView.model.historyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Action" width="80" styleClass="center">
+											<h:outputText value="#{item.status}" styleClass="#{item.statusStyleClass}" />
+										</p:column>
+										<p:column headerText="Date" width="90" styleClass="center">
+											<f:subview rendered="#{item.date==null}">
+												<i class="ace-icon fa fa-spinner fa-spin orange bigger-200 " />
+											</f:subview>
+											<h:outputText value="#{item.date}" rendered="#{item.date!=null}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="User" width="120">
+											<h:outputText id="user" value="#{item.user.fullName}" styleClass="purple bolder" />
+											<p:overlayPanel for="user" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Description" width="400">
+											<h:outputText value="#{item.description}" escape="false" styleClass="aa-cut-text" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab5" class="tab-pane">
+						<h:panelGroup id="commentPanel">
+							<div class="row">
+								<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+									<div class="timeline-container timeline-style2">
+										<ui:repeat var="commentGroup" value="#{supplierView.model.commentGroupList}" varStatus="varStatus">
+											<div class="timeline-label">
+												<span class="label label-purple arrowed-in-right label-lg">
+													<b> <h:outputText value="#{commentGroup.date}">
+															<f:convertDateTime pattern="yyyy-MM-dd" />
+														</h:outputText>
+													</b>
+												</span>
+											</div>
+											<div class="timeline-items">
+												<ui:repeat var="comment" value="#{commentGroup.commentList}">
+													<div class="timeline-item clearfix">
+														<div class="timeline-info">
+															<img src="#{comment.userPhoto}" /> <i class="timeline-indicator btn btn-info no-hover"></i>
+															<br />
+															<span class="orange">
+																<i class="ace-icon fa fa-clock-o bigger-120"></i>
+																<h:outputText value="#{comment.date}">
+																	<f:convertDateTime pattern="HH:mm" />
+																</h:outputText>
+															</span>
+														</div>
+														<div class="widget-box transparent">
+															<div class="widget-header widget-header-small">
+																<h5 class="widget-title smaller">
+																	<a href="#" class="blue">
+																		<h:outputText value="#{comment.userFullName}" />
+																	</a>
+																	<i class="ace-icon fa fa-angle-double-right"></i>
+																	<span class="grey">
+																		<h:outputText value="#{comment.title}" styleClass="green" />
+																	</span>
+																</h5>
+															</div>
+															<div class="widget-body">
+																<div class="widget-main">
+																	<h:outputText value="Comment : " styleClass="grey bolder" />
+																	<h:outputText value=" #{comment.content}" />
+																</div>
+															</div>
+														</div>
+													</div>
+												</ui:repeat>
+											</div>
+										</ui:repeat>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+					<div id="tab6" class="tab-pane">
+						<div class="space-8" />
+						<div class="col-sm-12">
+							<div class="tabbable tabs-left">
+								<ul class="nav nav-tabs">
+									<li class="active">
+										<a data-toggle="tab" href="#tab6_0">
+											<i class="pink ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Company List" />
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab6_1">
+											<i class="blue ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Currency List" />
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab6_5">
+											<i class="orange ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Service List" />
+										</a>
+									</li>
+									<!-- <li>
+										<a data-toggle="tab" href="#tab6_2">
+											<i class="pink ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Vat List" />
+										</a>
+									</li> -->
+									<li>
+										<a data-toggle="tab" href="#tab6_3">
+											<i class="green ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Cost Type List" />
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab6_4">
+											<i class="purple ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Accounting Code List" />
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab6_6">
+											<i class="red ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Invoicing Terms List" />
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab6_7">
+											<i class="blue ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Incoterms List" />
+										</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div id="tab6_0" class="tab-pane in active">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Company List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="companyList" value="#{supplierView.model.companyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="bolder green" rendered="#{!supplierView.editCompany}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{supplierView.editCompany}">
+															<f:selectItems value="#{companyView.findAll()}" var="company" itemLabel="#{company.name}" itemValue="#{company}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!supplierView.editCompany}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{supplierView.editCompany}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{supplierView.editCompany}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{supplierView.deleteCompany(item)}" update="companyList" partialSubmit="true" process="companyList"
+																rendered="#{supplierView.canDeleteCompany()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="companyList" partialSubmit="true" process="companyList" rendered="#{supplierView.canAddCompany() and !supplierView.editCompany}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{supplierView.editCompany}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{supplierView.saveCompanyList()}" update="companyList,:main_form:messages" partialSubmit="true" process="companyList"
+																rendered="#{supplierView.canSaveCompanyList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<p:commandLink title="Add New Item" action="#{supplierView.addCompany()}" update="companyList" partialSubmit="true" process="companyList"
+																rendered="#{supplierView.canAddCompany() and supplierView.editCompany}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+									<div id="tab6_1" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Currency List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="currencyList" value="#{supplierView.model.currencyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!supplierView.editCurrency}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{supplierView.editCurrency}">
+															<f:selectItems value="#{supplierView.model.companyList}" var="supplierCompany" itemLabel="#{supplierCompany.company.name}" itemValue="#{supplierCompany.company}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Currency">
+														<h:outputText value="#{item.currency.name}" styleClass="bolder green" rendered="#{!supplierView.editCurrency}" />
+														<h:selectOneMenu value="#{item.currency}" converter="#{genericSecuredConverter}" rendered="#{supplierView.editCurrency}">
+															<f:selectItems value="#{currencyView.findAll()}" var="currency" itemLabel="#{currency.name}" itemValue="#{currency}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!supplierView.editCurrency}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{supplierView.editCurrency}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{supplierView.editCurrency}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{supplierView.deleteCurrency(item)}" update="currencyList" partialSubmit="true" process="currencyList"
+																rendered="#{supplierView.canDeleteCurrency()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="currencyList" partialSubmit="true" process="currencyList" rendered="#{supplierView.canAddCurrency() and !supplierView.editCurrency}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{supplierView.editCurrency}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{supplierView.saveCurrencyList()}" update="currencyList,:main_form:messages" partialSubmit="true" process="currencyList"
+																rendered="#{supplierView.canSaveCurrencyList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<p:commandLink title="Add New Item" action="#{supplierView.addCurrency()}" update="currencyList" partialSubmit="true" process="currencyList"
+																rendered="#{supplierView.canAddCurrency() and supplierView.editCurrency}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+									<!-- <div id="tab6_2" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Vat List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="vatList" value="#{supplierView.model.vatList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!supplierView.editVat}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{supplierView.editVat}">
+															<f:selectItems value="#{supplierView.model.companyList}" var="company" itemLabel="#{company.name}" itemValue="#{company}" />
+														</h:selectOneMenu>
+													</p:column>
+
+													<p:column headerText="Vat">
+														<h:outputText value="#{item.vat}" styleClass="bolder green" rendered="#{!supplierView.editVat}" />
+														<p:inputNumber value="#{item.vat}" minValue="0" thousandSeparator="" decimalSeparator="." rendered="#{supplierView.editVat}" />
+													</p:column>
+
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!supplierView.editVat}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{supplierView.editVat}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{supplierView.editVat}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{supplierView.deleteVat(item)}" update="vatList" partialSubmit="true" process="vatList" rendered="#{supplierView.canDeleteVat()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="vatList" partialSubmit="true" process="vatList" rendered="#{supplierView.canAddVat() and !supplierView.editVat}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{supplierView.editVat}" />
+															</p:commandLink>
+
+															<p:commandLink title="Save" action="#{supplierView.saveVatList()}" update="vatList,:main_form:messages" partialSubmit="true" process="vatList"
+																rendered="#{supplierView.canSaveVatList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+
+															<p:commandLink title="Add New Item" action="#{supplierView.addVat()}" update="vatList" partialSubmit="true" process="vatList"
+																rendered="#{supplierView.canAddVat() and supplierView.editVat}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+
+														</div>
+													</f:facet>
+
+												</p:dataTable>
+											</div>
+										</div>
+									</div> -->
+									<div id="tab6_3" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Cost Type List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="costTypeList" value="#{supplierView.model.costTypeList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!supplierView.editCostType}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{supplierView.editCostType}">
+															<f:selectItems value="#{supplierView.model.companyList}" var="supplierCompany" itemLabel="#{supplierCompany.company.name}" itemValue="#{supplierCompany.company}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Cost Category">
+														<h:outputText value="#{item.costCategory.value}" styleClass="purple" rendered="#{!supplierView.editCostType}" />
+														<h:selectOneMenu value="#{item.costCategory}" rendered="#{supplierView.editCostType}">
+															<f:selectItem itemLabel="---" noSelectionOption="true" />
+															<f:selectItems value="#{CostCategory.ALL_ENUM_VALUES}" var="costCategory" itemLabel="#{costCategory.value}" itemValue="#{costCategory}" />
+															<p:ajax update="costType" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Cost Type" width="200">
+														<h:outputText value="#{item.costType.value}" styleClass="bolder green" rendered="#{!supplierView.editCostType}" />
+														<h:selectOneMenu id="costType" value="#{item.costType}" rendered="#{supplierView.editCostType}">
+															<f:selectItem itemLabel="---" noSelectionOption="true" />
+															<f:selectItems value="#{item.costCategory.costTypeList}" var="costType" itemLabel="#{costType.value}" itemValue="#{costType}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!supplierView.editCostType}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{supplierView.editCostType}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{supplierView.editCostType}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{supplierView.deleteCostType(item)}" update="costTypeList" partialSubmit="true" process="costTypeList"
+																rendered="#{supplierView.canDeleteCostType()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="costTypeList" partialSubmit="true" process="costTypeList" rendered="#{supplierView.canAddCostType() and !supplierView.editCostType}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{supplierView.editCostType}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{supplierView.saveCostTypeList()}" update="costTypeList,:main_form:messages" partialSubmit="true" process="costTypeList"
+																rendered="#{supplierView.canSaveCostTypeList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<p:commandLink title="Add New Item" action="#{supplierView.addCostType()}" update="costTypeList" partialSubmit="true" process="costTypeList"
+																rendered="#{supplierView.canAddCostType() and supplierView.editCostType}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+									<div id="tab6_4" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Accounting Code List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="accountingCodeList" value="#{supplierView.model.accountingCodeList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+													paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!supplierView.editAccountingCode}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{supplierView.editAccountingCode}">
+															<f:selectItem itemLabel="---" noSelectionOption="true" />
+															<f:selectItems value="#{supplierView.model.companyList}" var="supplierCompany" itemLabel="#{supplierCompany.company.name}" itemValue="#{supplierCompany.company}" />
+															<!-- <p:ajax listener="#{supplierView.changeAccountingCodeCompanyListener(item)}" update="accountingCode"/> -->
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="AccountingCode">
+														<h:panelGroup id="accountingCode">
+															<h:outputText value="#{item.accountingCode}" styleClass="bolder green" rendered="#{!supplierView.editAccountingCode}" />
+															<p:inputText value="#{item.accountingCode}" readonly="true" rendered="#{supplierView.editAccountingCode}" />
+														</h:panelGroup>
+														<p:overlayPanel for="accountingCode" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+															<h:outputText value="#{accountingSystemView.findNameByNumero(item.company.id,item.accountingCode)}" />
+														</p:overlayPanel>
+													</p:column>
+													<p:column headerText="Adv Payment Accouting Code">
+														<h:panelGroup id="advPaymentAccountingCode">
+															<h:outputText value="#{item.advPaymentAccountingCode}" styleClass="bolder green" rendered="#{!supplierView.editAccountingCode}" />
+															<p:inputText value="#{item.advPaymentAccountingCode}" rendered="#{supplierView.editAccountingCode}" />
+														</h:panelGroup>
+														<p:overlayPanel for="advPaymentAccountingCode" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+															<h:outputText value="#{accountingSystemView.findNameByNumero(item.company.id,item.advPaymentAccountingCode)}" />
+														</p:overlayPanel>
+													</p:column>
+													<!-- <p:column headerText="Actions" styleClass="center" width="100" rendered="#{supplierView.editAccountingCode}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{supplierView.deleteAccountingCode(item)}" update="accountingCodeList" partialSubmit="true" process="accountingCodeList"
+																rendered="#{supplierView.canDeleteAccountingCode()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column> -->
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="accountingCodeList" partialSubmit="true" process="accountingCodeList"
+																rendered="#{supplierView.canAddAccountingCode() and !supplierView.editAccountingCode}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{supplierView.editAccountingCode}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{supplierView.saveAccountingCodeList()}" update="accountingCodeList,:main_form:messages" partialSubmit="true" process="accountingCodeList"
+																rendered="#{supplierView.canSaveAccountingCodeList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<!-- <p:commandLink title="Add New Item" action="#{supplierView.addAccountingCode()}" update="accountingCodeList" partialSubmit="true" process="accountingCodeList"
+																rendered="#{supplierView.canAddAccountingCode() and supplierView.editAccountingCode}">
+																<i class="fa fa-plus green" />
+															</p:commandLink> -->
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+									<div id="tab6_5" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Service Code List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="serviceCodeList" value="#{supplierView.model.serviceCodeList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+													paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!supplierView.editServiceCode}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{supplierView.editServiceCode}">
+															<f:selectItems value="#{supplierView.model.companyList}" var="supplierCompany" itemLabel="#{supplierCompany.company.name}" itemValue="#{supplierCompany.company}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Service Code">
+														<h:panelGroup id="serviceCode">
+															<h:outputText value="#{item.serviceCode}" styleClass="bolder green" rendered="#{!supplierView.editServiceCode}" />
+															<p:inputText value="#{item.serviceCode}" rendered="#{supplierView.editServiceCode}" />
+														</h:panelGroup>
+														<p:overlayPanel for="serviceCode" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+															<h:outputText value="#{accountingSystemView.findNameByNumero(item.company.id,item.serviceCode)}" />
+														</p:overlayPanel>
+													</p:column>
+													<p:column headerText="VAT">
+														<h:outputText value="#{item.vat}" styleClass="bolder purple" rendered="#{!supplierView.editServiceCode}" />
+														<p:inputText value="#{item.vat}" rendered="#{supplierView.editServiceCode}" />
+													</p:column>
+													<p:column headerText="VAT Code">
+														<h:panelGroup id="vatAccountingCode">
+															<h:outputText value="#{item.vatAccountingCode}" styleClass="bolder pink" rendered="#{!supplierView.editServiceCode}" />
+															<p:inputText value="#{item.vatAccountingCode}" readonly="true" rendered="#{supplierView.editServiceCode}" />
+														</h:panelGroup>
+														<p:overlayPanel for="vatAccountingCode" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+															<h:outputText value="#{accountingSystemView.findNameByNumero(item.company.id,item.vatAccountingCode)}" />
+														</p:overlayPanel>
+													</p:column>
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!supplierView.editServiceCode}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{supplierView.editServiceCode}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{supplierView.editServiceCode}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{supplierView.deleteServiceCode(item)}" update="serviceCodeList" partialSubmit="true" process="serviceCodeList"
+																rendered="#{supplierView.canDeleteServiceCode()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="serviceCodeList" partialSubmit="true" process="serviceCodeList" rendered="#{supplierView.canAddServiceCode() and !supplierView.editServiceCode}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{supplierView.editServiceCode}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{supplierView.saveServiceCodeList()}" update="serviceCodeList,:main_form:messages" partialSubmit="true" process="serviceCodeList"
+																rendered="#{supplierView.canSaveServiceCodeList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<p:commandLink title="Add New Item" action="#{supplierView.addServiceCode()}" update="serviceCodeList" partialSubmit="true" process="serviceCodeList"
+																rendered="#{supplierView.canAddServiceCode() and supplierView.editServiceCode}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+									<div id="tab6_6" class="tab-pane">
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<div class="col-sm-9 hidden-xs">
+														<i class="fa fa-list" />
+														<h:outputText value=" Invoice Term Template List" />
+													</div>
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="invoiceTermTemplateList" value="#{supplierView.model.invoiceTermTemplateList}" var="item" rows="20" styleClass="table table-striped table-hover"
+														paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+														<p:column headerText="Company" width="120">
+															<h:outputText value="#{item.company.name}" styleClass="blue" />
+														</p:column>
+														<p:column headerText="Name" width="100">
+															<h:outputText value="#{item.name}" />
+														</p:column>
+														<p:column headerText="Invoice Terms">
+															<h:outputText value="#{item.description}" />
+														</p:column>
+														<p:column headerText="Payment Terms">
+															<h:outputText value="#{item.detailedDescription}" escape="false" />
+														</p:column>
+														<p:column headerText="Active" width="80">
+															<p:commandLink rendered="#{!supplierView.editInvoiceTermTemplate}">
+																<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															</p:commandLink>
+															<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{supplierView.editInvoiceTermTemplate}">
+																<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+																<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+															</p:commandLink>
+														</p:column>
+														<p:column headerText="Actions" width="80" exportable="false">
+															<div class="action-buttons center">
+																<h:outputLink value="#{invoiceTermTemplateView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+																	<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+																	<f:param name="id" value="#{item.id}" />
+																</h:outputLink>
+															</div>
+														</p:column>
+														<f:facet name="footer">
+															<div class="action-buttons center">
+																<p:commandLink title="Edit" update="invoiceTermTemplateList" partialSubmit="true" process="invoiceTermTemplateList"
+																	rendered="#{supplierView.canAddInvoiceTermTemplate() and !supplierView.editInvoiceTermTemplate}">
+																	<i class="fa fa-edit orange" />
+																	<f:setPropertyActionListener value="true" target="#{supplierView.editInvoiceTermTemplate}" />
+																</p:commandLink>
+																<p:commandLink title="Save" action="#{supplierView.saveInvoiceTermTemplateList()}" update="invoiceTermTemplateList,:main_form:messages" partialSubmit="true"
+																	process="invoiceTermTemplateList" rendered="#{supplierView.canSaveInvoiceTermTemplateList()}">
+																	<i class="fa fa-save green" />
+																</p:commandLink>
+																<h:outputLink value="addEditInvoiceTermTemplate.xhtml">
+																	<i class="fa fa-plus green" />
+																	<f:param name="supplierId" value="#{supplierView.model.id}" />
+																</h:outputLink>
+															</div>
+														</f:facet>
+													</p:dataTable>
+												</div>
+											</div>
+										</div>
+										<div class="space-8" />
+									</div>
+									<div id="tab6_7" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Incoterms List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="incotermsList" value="#{supplierView.model.incotermsList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+													paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!supplierView.editIncoterms}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{supplierView.editIncoterms}">
+															<f:selectItems value="#{supplierView.model.companyList}" var="supplierCompany" itemLabel="#{supplierCompany.company.name}" itemValue="#{supplierCompany.company}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Incoterms">
+														<h:outputText value="#{item.incoterms}" styleClass="bolder green" rendered="#{!supplierView.editIncoterms}" />
+														<h:selectOneMenu value="#{item.incoterms}" rendered="#{supplierView.editIncoterms}">
+															<f:selectItem itemLabel="DAP" itemValue="DAP" />
+															<f:selectItem itemLabel="EXW" itemValue="EXW" />
+															<f:selectItem itemLabel="CIP" itemValue="CIP" />
+															<f:selectItem itemLabel="CFR" itemValue="CFR" />
+															<f:selectItem itemLabel="CPT" itemValue="CPT" />
+															<f:selectItem itemLabel="CIF" itemValue="CIF" />
+															<f:selectItem itemLabel="FOB" itemValue="FOB" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!supplierView.editIncoterms}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{supplierView.editIncoterms}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{supplierView.editIncoterms}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{supplierView.deleteIncoterms(item)}" update="incotermsList" partialSubmit="true" process="incotermsList"
+																rendered="#{supplierView.canDeleteIncoterms()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="incotermsList" partialSubmit="true" process="incotermsList" rendered="#{supplierView.canAddIncoterms() and !supplierView.editIncoterms}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{supplierView.editIncoterms}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{supplierView.saveIncotermsList()}" update="incotermsList,:main_form:messages" partialSubmit="true" process="incotermsList"
+																rendered="#{supplierView.canSaveIncotermsList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<p:commandLink title="Add New Item" action="#{supplierView.addIncoterms()}" update="incotermsList" partialSubmit="true" process="incotermsList"
+																rendered="#{supplierView.canAddIncoterms() and supplierView.editIncoterms}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab9" class="tab-pane">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Ibuy Portal Remote Access" />
+										</div>
+										<div class="profile-info-value">
+											<p:commandLink id="ibuyAccess" update="ibuyAccess" partialSubmit="true" process="@this" action="#{supplierView.updateIbuyAccess()}" disabled="#{!supplierView.canEditInplace()}">
+												<i class="ace-icon fa #{supplierView.model.ibuyAccess?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!supplierView.model.ibuyAccess}" target="#{supplierView.model.ibuyAccess}" />
+											</p:commandLink>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Invoice Management " />
+										</div>
+										<div class="profile-info-value">
+											<p:commandLink id="invoiceManagement" update="invoiceManagement" partialSubmit="true" process="@this" action="#{supplierView.updateInvoiceManagement()}"
+												disabled="#{!supplierView.canEditInplace()}">
+												<i class="ace-icon fa #{supplierView.model.invoiceManagement?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!supplierView.model.invoiceManagement}" target="#{supplierView.model.invoiceManagement}" />
+											</p:commandLink>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Ibuy Portal notifications " />
+										</div>
+										<div class="profile-info-value">
+											<p:commandLink id="receiptNotifications" update="receiptNotifications" partialSubmit="true" process="@this" action="#{supplierView.updateReceiptNotifications()}"
+												disabled="#{!supplierView.canEditInplace()}">
+												<i class="ace-icon fa #{supplierView.model.receiptNotifications?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!supplierView.model.receiptNotifications}" target="#{supplierView.model.receiptNotifications}" />
+											</p:commandLink>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="View Comments " />
+										</div>
+										<div class="profile-info-value">
+											<p:commandLink id="canViewComments" update="canViewComments" partialSubmit="true" process="@this" action="#{supplierView.updateCanViewComments()}"
+												disabled="#{!supplierView.canEditInplace()}">
+												<i class="ace-icon fa #{supplierView.model.canViewComments?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!supplierView.model.canViewComments}" target="#{supplierView.model.canViewComments}" />
+											</p:commandLink>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{supplierView.redirect()}" />
+		<ui:include src="supplierFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml" xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="Jobs"/>
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="main_form">
+			<p:commandButton action="#{scriptView.evictCavhe()}" value="evictCavhe"/>
+			<br/>
+			<p:commandButton action="#{scriptView.generateBankAccountFullNameScript()}" value="generateBankAccountFullNameScript"/>
+			<br/>
+			<p:commandButton action="#{scriptView.initProjectManagerScript()}" value="initProjectManagerScript"/>
+			<br/>
+			<p:commandButton action="#{scriptView.splitDelegationPerTypeScript()}" value="splitDelegationPerTypeScript"/>
+		</h:form>
+	</ui:define>
+</ui:composition>

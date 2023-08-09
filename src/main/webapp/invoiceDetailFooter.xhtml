@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<h:form id="addPaymentForm">
+		<p:dialog widgetVar="addPaymentDlg" modal="true" closable="false" resizable="false" showHeader="false">
+			<button type="button" class="bootbox-close-button close" onclick="PF('addPaymentDlg').hide()">
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-plus light-blue" />
+					<h:outputText value=" Add Payment" />
+				</h4>
+			</div>
+			<div class="modal-body">
+				<f:subview rendered="#{invoiceDetailView.list4.size()==1}">
+					<div class="row">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-group">
+								<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+									<h:outputText value="Type" />
+								</label>
+								<div class="col-xs-9 col-sm-9">
+									<h:selectOneMenu value="#{invoiceDetailView.bankPayment.total}" required="true" requiredMessage="Type should not be null">
+										<f:selectItem itemLabel="---" noSelectionOption="true" />
+										<f:selectItem itemLabel="Partial" itemValue="false" />
+										<f:selectItem itemLabel="Total" itemValue="true" />
+										<p:ajax update="amount" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+						</div>
+						<h:panelGroup id="amount">
+							<f:subview rendered="#{!invoiceDetailView.bankPayment.total}">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Amount TTC" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputNumber value="#{invoiceDetailView.bankPayment.amount}" thousandSeparator="" decimalSeparator="." required="true" requiredMessage="Amount should not be null" />
+										</div>
+									</div>
+								</div>
+							</f:subview>
+						</h:panelGroup>
+					</div>
+					<hr />
+				</f:subview>
+				<div class="row">
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+								<h:outputText value="Bank Account" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<h:selectOneMenu value="#{invoiceDetailView.bankPayment.bankAccountId}" required="true" requiredMessage="Bank Account should not be null">
+									<f:selectItem itemLabel="---" noSelectionOption="true" />
+									<f:selectItems value="#{bankAccountView.findLightByCompany(invoiceDetailView.companyId)}" var="item" itemLabel="#{item.fullName}" itemValue="#{item.id}" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+								<h:outputText value="Supplier Bank Account" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<h:selectOneMenu value="#{invoiceDetailView.bankPayment.supplierBankAccountId}">
+									<f:selectItem itemLabel="---" noSelectionOption="true" />
+									<f:selectItems value="#{bankAccountView.findLightBySupplier(invoiceDetailView.supplierId,true)}" var="item" itemLabel="#{item.fullName}" itemValue="#{item.id}" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="space-4" />
+				<div class="row">
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+								<h:outputText value="Mode" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<h:selectOneMenu value="#{invoiceDetailView.bankPayment.mode}" required="true" requiredMessage="Mode should not be null">
+									<f:selectItem itemLabel="---" noSelectionOption="true" />
+									<f:selectItems value="#{BankPaymentMode.ALL_ENUM_VALUES}" />
+									<p:ajax listener="#{invoiceDetailView.changeModeListener()}" update="reference" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+								<h:outputText value="Reference" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<p:inputText id="reference" value="#{invoiceDetailView.bankPayment.reference}" readonly="#{!invoiceDetailView.bankPayment.mode.manual}" required="true"
+									requiredMessage="Reference should not be null" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="space-4" />
+				<div class="row">
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+								<h:outputText value="Payment Date" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<p:calendar value="#{invoiceDetailView.bankPayment.paymentDate}" pattern="yyyy-MM-dd" mask="true" pages="3" navigator="true" required="true"
+									requiredMessage="Date should not be null" autocomplete="off" />
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+								<h:outputText value="Description" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<p:inputText value="#{invoiceDetailView.bankPayment.description}" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('addPaymentDlg').hide()" value="Hide" styleClass="btn btn-warning" />
+				<p:commandButton action="#{invoiceDetailView.addPayment()}" value="Add" styleClass="btn btn-success" oncomplete="PF('addPaymentDlg').hide()" update=":main_form" />
+			</div>
+		</p:dialog>
+	</h:form>
+
+
+</ui:composition>

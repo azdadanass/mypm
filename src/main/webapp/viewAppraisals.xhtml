@@ -1,0 +1,715 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li><i class="ace-icon fa fa-home" /> <a href="#"> <h:outputText
+						value="Main Menu" />
+			</a></li>
+			<li class="active"><h:outputText value="View appraisals" /></li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+	<p:importEnum type="ma.azdad.model.AppraisalsStatus" var="appraisalsStatus" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View appraisals" />
+					<small> <i class="ace-icon fa fa-angle-double-right"></i> <h:outputText
+							value="#{appraisalsView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info"
+							title="Reload page" action="#{appraisalsView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip"
+							title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<p:commandLink title="Add Comment"
+							styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info"
+							onclick="PF('addCommentDlg').show()"
+							rendered="#{appraisalsView.canAddComment()}">
+							<i class="ace-icon fa fa-comment bigger-230"></i>
+							<h:outputText value="Comment" />
+						</p:commandLink>
+						<p:commandLink title="Add Files"
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							onclick="PF('uploadFileDlg').show()"
+							rendered="#{appraisalsView.canAddFile()}">
+							<i class="ace-icon fa fa-file bigger-230"></i>
+							<h:outputText value="Files" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							action="#{appraisalsView.midYearReview()}" update=":main_form"
+							title="Mid Year Review"
+							rendered="#{appraisalsView.canMidYearReview()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="MidYearReview" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							action="#{appraisalsView.finalYearReview()}" update=":main_form"
+							title="Final Year Review"
+							rendered="#{appraisalsView.canFinalYearReview()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="FinalYearReview" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							action="#{appraisalsView.closed()}" update=":main_form"
+							title="Closed" rendered="#{appraisalsView.canClosed()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Closed" />
+						</p:commandLink>
+						<h:outputLink
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
+							title="Edit" value="addEditAppraisals.xhtml"
+							rendered="#{appraisalsView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{appraisalsView.id}" />
+						</h:outputLink>
+						<p:commandLink title="Delete"
+							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error"
+							onclick="PF('deleteDlg').show()"
+							rendered="#{appraisalsView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<div class="row">
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="widget-box transparent">
+						<div class="widget-header widget-header-flat">
+							<h4 class="lighter">
+								<i class="ace-icon fa fa-clock-o orange"></i>
+								<h:outputText value=" Approval Time Line" />
+							</h4>
+						</div>
+						<div class="widget-body">
+							<ul class="steps">
+								<li class="complete"><span class="step"> <h:outputText
+											value="0" />
+								</span> <span class="title"> <h:outputText id="step0"
+											value="#{appraisalsStatus.OPEN.value}" />
+								</span> <p:overlayPanel for="step0"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout" >
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(appraisalsView.model.dateStatsOpen,appraisalsView.model.userStatsOpen.username)}" />
+									</p:overlayPanel></li>
+
+								<li class="#{appraisalsView.model.dateStatsMid!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step1"
+											value="#{appraisalsStatus.MID_YEAR_REVIEW.value}" /> <br />
+								</span> <p:overlayPanel for="step1"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout" >
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(appraisalsView.model.dateStatsMid,appraisalsView.model.userStatsMid.username)}" />
+									</p:overlayPanel></li>
+
+
+								<li class="#{appraisalsView.model.dateStatsFinal!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step2"
+											value="#{appraisalsStatus.FINAL_REVIEW.value}" /> <br />
+								</span> <p:overlayPanel for="step2"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(appraisalsView.model.dateStatsFinal,appraisalsView.model.userStatsFinal.username)}" />
+									</p:overlayPanel></li>
+
+
+								<li class="#{appraisalsView.model.dateStatsClosed!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step3"
+											value="#{appraisalsStatus.CLOSED.value}" /> <br />
+								</span> <p:overlayPanel for="step3"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(appraisalsView.model.dateStatsClosed,appraisalsView.model.userStatsClosed.username)}" />
+									</p:overlayPanel></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active"><a data-toggle="tab" href="#tab1"> <i
+							class="green ace-icon fa fa-list-alt bigger-120"></i> <h:outputText
+								value=" Informations" styleClass="hidden-xs" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab2"> <i
+							class="blue ace-icon fa fa-file bigger-120"></i> <h:outputText
+								value=" Attachements" styleClass="hidden-xs" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab3"> <i
+							class="red ace-icon fa fa-comment-o bigger-120"></i> <h:outputText
+								value=" Comments" styleClass="hidden-xs" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab4"> <i
+							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
+								value=" History" styleClass="hidden-xs" />
+					</a></li>
+				</ul>
+
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Numero" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{appraisalsView.model.idStr}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{appraisalsView.model.appraisalName}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Start Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{appraisalsView.model.startDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="End Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{appraisalsView.model.endDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Planning Start Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.planningStartDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Planning End Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{appraisalsView.model.planningEndDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Mid Year Review Start Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.midYearReviewStartDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Mid Year Review End Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.midYearReviewEndDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="End Year Summary Start Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.endYearSummaryStartDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="End Year Summary End Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.endYearSummaryEndDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="AppraisalsStatus" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.appraisalsStatus}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Year" />
+										</div>
+										<div class="profile-info-value">
+
+											<h:outputText value="#{appraisalsView.model.year}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Description" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{appraisalsView.model.description}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Date Status MidYear" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{appraisalsView.model.dateStatsMid}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="User Status MidYear" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.userStatsMid.fullName}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Date Status FinalYear" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{appraisalsView.model.dateStatsFinal}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="User Status FinalYear" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.userStatsFinal.fullName}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Date Status Closed" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{appraisalsView.model.dateStatsClosed}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="User Status Closed" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.userStatsClosed.fullName}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+													styleClass="bolder green" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="space-16" />
+					</div>
+					<div id="tab3" class="tab-pane">
+						<h:panelGroup id="commentPanel">
+							<div class="row">
+								<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+									<div class="timeline-container timeline-style2">
+										<ui:repeat var="commentGroup"
+											value="#{appraisalsView.model.commentGroupList}"
+											varStatus="varStatus">
+											<div class="timeline-label">
+												<span class="label label-purple arrowed-in-right label-lg">
+													<b> <h:outputText value="#{commentGroup.date}">
+															<f:convertDateTime pattern="yyyy-MM-dd" />
+														</h:outputText>
+												</b>
+												</span>
+											</div>
+											<div class="timeline-items">
+												<ui:repeat var="comment" value="#{commentGroup.commentList}">
+													<div class="timeline-item clearfix">
+														<div class="timeline-info">
+															<img src="#{comment.userPhoto}" /> <i
+																class="timeline-indicator btn btn-info no-hover"></i> <br />
+															<span class="orange"> <i
+																class="ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
+																	value="#{comment.date}">
+																	<f:convertDateTime pattern="HH:mm" />
+																</h:outputText>
+															</span>
+														</div>
+														<div class="widget-box transparent">
+															<div class="widget-header widget-header-small">
+																<h5 class="widget-title smaller">
+																	<a href="#" class="blue"> <h:outputText
+																			value="#{comment.userFullName}" />
+																	</a> <i class="ace-icon fa fa-angle-double-right"></i> <span
+																		class="grey"> <h:outputText
+																			value="#{comment.title}" styleClass="green" />
+																	</span>
+																</h5>
+															</div>
+															<div class="widget-body">
+																<div class="widget-main">
+																	<h:outputText value="Comment : "
+																		styleClass="grey bolder" />
+																	<h:outputText value=" #{comment.content}" />
+																</div>
+															</div>
+														</div>
+													</div>
+												</ui:repeat>
+											</div>
+										</ui:repeat>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+					<div id="tab2" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List Of Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList"
+										value="#{appraisalsView.model.fileList}" var="item" rows="20"
+										styleClass="table table-striped table-hover"
+										paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Phase" width="150" styleClass="center">
+											<h:outputText value="#{item.parentModelName}"
+												styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Added Date" width="90">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="File Size" width="80">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+										<p:column headerText="File Type" width="100"
+											styleClass="center">
+											<img src="#{item.fileExtensionImage}"
+												style="border: none; border-radius: 0" width="20"
+												height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}"
+												styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo"
+												style="text-align: left;width:350px" showEvent="mouseover"
+												hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Actions" width="150"
+											style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File"
+													oncomplete="PF('deleteFileDlg').show()"
+													styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener
+														target="#{appraisalsView.file}" value="#{item}" />
+												</p:commandLink>
+												<p:commandLink ajax="false">
+													<p:fileDownload
+														value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="View"
+													oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{fileView.file}"
+														value="#{item}" />
+													<f:setPropertyActionListener
+														target="#{appraisalsView.file}" value="#{item}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab4" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" History" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="historyList"
+										value="#{appraisalsView.model.historyList}" var="item"
+										rows="20" styleClass="table table-striped table-hover"
+										paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Action" width="80" styleClass="center">
+											<span class="#{item.statusStyleClass}"> <h:outputText
+													value="#{item.status}" styleClass="bolder" />
+											</span>
+										</p:column>
+										<p:column headerText="Date" width="90" styleClass="center">
+											<f:subview rendered="#{item.date==null}">
+												<i class="ace-icon fa fa-spinner fa-spin orange bigger-200 " />
+											</f:subview>
+											<h:outputText value="#{item.date}"
+												rendered="#{item.date!=null}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="User" width="120">
+											<h:outputText id="user" value="#{item.user.fullName}"
+												styleClass="purple bolder" />
+											<p:overlayPanel for="user"
+												style="text-align: left;width:350px" showEvent="mouseover"
+												hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Description" width="400">
+											<h:outputText value="#{item.description}" escape="false"
+												styleClass="aa-cut-text" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{appraisalsView.redirect()}" />
+		<ui:include src="appraisalsFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
+	</ui:define>
+</ui:composition>

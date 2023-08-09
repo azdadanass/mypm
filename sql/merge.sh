@@ -1,0 +1,1 @@
+rsync -azv root@192.168.100.171:/opt/tomcat/myhr/ROOT/files/externalResource /opt/tomcat/iadmin/ROOT/files 

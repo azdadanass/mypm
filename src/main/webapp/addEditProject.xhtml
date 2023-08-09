@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="#{projectView.isAddPage?'Add New':'Edit'} Project" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.ProjectCustomerType" var="ProjectCustomerType" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa #{projectView.isAddPage?'fa-plus green':'fa-edit orange'} bigger-110"></i>
+					<h:outputText value=" #{projectView.isAddPage?'Add New':'Edit'} Project" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-6">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-inverse hover aa-tooltip" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip tooltip-grey" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" action="#{projectView.save()}" update="messages" title="Save">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Save" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<div class="row">
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="tab-content profile-edit-tab-content">
+						<div class="tab-pane in active">
+							<p:messages id="messages" closable="true" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="General informations" />
+							</h4>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Name" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{projectView.model.name}" required="true" requiredMessage="not null value for Name" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Status" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{projectView.model.status}" required="true" requiredMessage="not null value for Status">
+												<f:selectItem noSelectionOption="true" itemLabel="---" />
+												<f:selectItem itemLabel="Open" itemValue="Open" />
+												<f:selectItem itemLabel="Closed" itemValue="Closed" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Costcenter" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<!-- <p:inputText value="#{projectView.model.costcenter.lob.name} #{projectView.model.costcenter.year}" readonly="true" rendered="#{projectView.model.costcenterId!=null}" /> -->
+											<p:selectOneMenu value="#{projectView.model.costcenterId}" required="true" requiredMessage="not null value for Costcenter" filter="true" filterMatchMode="contains">
+												<f:selectItem noSelectionOption="true" itemLabel="---" />
+												<f:selectItems itemLabel="#{item.lob.name} #{item.year}" itemValue="#{item.id}" var="item" value="#{costcenterView.findLight()}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Category" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{projectView.model.category}" required="true" requiredMessage="not null value for Category">
+												<f:selectItem noSelectionOption="true" itemLabel="---" />
+												<f:selectItem itemLabel="Project" itemValue="project" />
+												<f:selectItem itemLabel="Cost Center" itemValue="costcenter" />
+												<p:ajax update="selectProjectType" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Type" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:panelGroup id="selectProjectType">
+												<h:selectOneMenu value="#{projectView.model.type}" required="true" requiredMessage="not null value for Type" rendered="#{projectView.model.category=='costcenter'}">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItem itemLabel="Sales" itemValue="Sales" />
+													<f:selectItem itemLabel="Support" itemValue="Support" />
+													<f:selectItem itemLabel="Lob" itemValue="Lob" />
+													<f:selectItem itemLabel="TPSR" itemValue="TPSR" />
+													<f:selectItem itemLabel="Cross Charge" itemValue="Cross Charge" />
+													<f:selectItem itemLabel="Stock" itemValue="Stock" />
+													<p:ajax update=":main_form:subType" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{projectView.model.type}" required="true" requiredMessage="not null value for Type" rendered="#{projectView.model.category=='project'}">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItem itemLabel="Delivery" itemValue="Delivery" />
+													<p:ajax update=":main_form:subType" />
+												</h:selectOneMenu>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Sub Type" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:panelGroup id="subType">
+												<h:selectOneMenu value="#{projectView.model.subType}" required="true" requiredMessage="not null value for Sub Type" rendered="#{projectView.model.type=='Delivery'}">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItem itemLabel="Delivery" itemValue="Delivery" />
+													<f:selectItem itemLabel="DSTR" itemValue="DSTR" />
+													<f:selectItem itemLabel="O&amp;M" itemValue="O&amp;M" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{projectView.model.subType}" required="true" requiredMessage="not null value for Sub Type" rendered="#{projectView.model.type=='Sales'}">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItem itemLabel="Marketing" itemValue="Marketing" />
+													<f:selectItem itemLabel="Direct Sales" itemValue="Direct Sales" />
+													<f:selectItem itemLabel="Presales &amp; Business Dev" itemValue="Presales &amp; Business Dev" />
+													<f:selectItem itemLabel="Global Sales" itemValue="Global Sales" />
+													<f:selectItem itemLabel="LOB" itemValue="LOB" />
+													<f:selectItem itemLabel="Days off" itemValue="Days off" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{projectView.model.subType}" required="true" requiredMessage="not null value for Sub Type" rendered="#{projectView.model.type=='Support'}">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItem itemLabel="Human Resources" itemValue="Human Resources" />
+													<f:selectItem itemLabel="Accounting &amp; Finance" itemValue="Accounting &amp; Finance" />
+													<f:selectItem itemLabel="IT" itemValue="IT" />
+													<f:selectItem itemLabel="Admin &amp; Logistics" itemValue="Admin &amp; Logistics" />
+													<f:selectItem itemLabel="LOB" itemValue="LOB" />
+													<f:selectItem itemLabel="Days off" itemValue="Days off" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{projectView.model.subType}" required="true" requiredMessage="not null value for Sub Type" rendered="#{projectView.model.type=='Lob'}">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItem itemLabel="LOB" itemValue="LOB" />
+													<f:selectItem itemLabel="Awards &amp; Bonus" itemValue="Awards &amp; Bonus" />
+													<f:selectItem itemLabel="Days off" itemValue="Days off" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{projectView.model.subType}" required="true" requiredMessage="not null value for Sub Type" rendered="#{projectView.model.type=='TPSR'}">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItem itemLabel="TPSR" itemValue="TPSR" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{projectView.model.subType}" required="true" requiredMessage="not null value for Sub Type" rendered="#{projectView.model.type=='Cross Charge'}">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItem itemLabel="Tool Cross charge" itemValue="Tool Cross charge" />
+													<f:selectItem itemLabel="Leasing" itemValue="Leasing" />
+												</h:selectOneMenu>
+												<h:selectOneMenu value="#{projectView.model.subType}" required="true" requiredMessage="not null value for Sub Type" rendered="#{projectView.model.type=='Stock'}">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItem itemLabel="Stock" itemValue="Stock" />
+												</h:selectOneMenu>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Start Date" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:calendar value="#{projectView.model.startDate}" navigator="true" required="true" requiredMessage="Start Date should be not null">
+												<p:ajax listener="#{projectView.model.calculateDuration()}" update="durationInput" />
+												<p:ajax event="dateSelect" listener="#{projectView.model.calculateDuration()}" update="durationInput" />
+											</p:calendar>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="End Date" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:calendar value="#{projectView.model.endDate}" navigator="true" required="true" requiredMessage="End Date should be not null">
+												<p:ajax listener="#{projectView.model.calculateDuration()}" update="durationInput" />
+												<p:ajax event="dateSelect" listener="#{projectView.model.calculateDuration()}" update="durationInput" />
+											</p:calendar>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Duration" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText id="durationInput" value="#{projectView.model.duration}" readonly="true" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Currency" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{projectView.model.currency}" required="true" requiredMessage="not null value for Currency" converter="#{genericSecuredConverter}">
+												<f:selectItem noSelectionOption="true" itemLabel="---" />
+												<f:selectItems value="#{currencyView.findAll()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Manager" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:selectOneMenu value="#{projectView.model.managerUsername}" required="true" requiredMessage="not null value for Manager" filter="true" filterMatchMode="contains">
+												<f:selectItem noSelectionOption="true" itemLabel="---" />
+												<f:selectItems itemLabel="#{item.fullName}" itemValue="#{item.username}" var="item" value="#{userView.findLightActive()}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+											<h:outputText value="Customer Type" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{projectView.model.customerType}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{ProjectCustomerType.ALL_ENUM_VALUES}" />
+												<p:ajax update="customer" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<h:panelGroup id="customer">
+								<div class="space-4" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+												<h:outputText value="Customer" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<p:selectOneMenu value="#{projectView.model.customerId}" required="true" requiredMessage="not null value for Customer" filter="true" filterMatchMode="contains">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItems itemLabel="#{item.name}" itemValue="#{item.id}" var="item" value="#{customerView.findLight()}" />
+													<p:ajax update="contract" />
+												</p:selectOneMenu>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+												<h:outputText value="Contract" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<p:selectOneMenu id="contract" value="#{projectView.model.contractId}" filter="true" filterMatchMode="contains">
+													<f:selectItem noSelectionOption="true" itemLabel="---" />
+													<f:selectItems itemLabel="#{item.reference}" itemValue="#{item.id}" var="item" value="#{contractView.findByCustomerId(projectView.model.customerId)}" />
+												</p:selectOneMenu>
+											</div>
+										</div>
+									</div>
+								</div>
+							</h:panelGroup>
+							<!-- <h:panelGroup id="requestForQuote">
+								<f:subview rendered="#{projectView.model.category=='project'}">
+									<div class="space-4" />
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group">
+												<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+													<h:outputText value="Request For Quote" />
+												</label>
+												<div class="col-xs-9 col-sm-9">
+													<p:selectOneMenu value="#{projectView.model.requestForQuote}" filter="true" filterMatchMode="contains" converter="#{genericSecuredConverter}">
+														<f:selectItem noSelectionOption="true" itemLabel="" />
+														<f:selectItems itemLabel="#{item.reference}" itemValue="#{item}" var="item" value="#{requestForQuoteView.findByCustomerOrCustomerNull(projectView.model.customerId)}" />
+													</p:selectOneMenu>
+												</div>
+											</div>
+										</div>
+									</div>
+								</f:subview>
+							</h:panelGroup> -->
+							<div class="space-4" />
+							<f:subview rendered="#{projectView.isAddPage}">
+								<h4 class="header blue bolder smaller">
+									<h:outputText value="Planned Revenue &amp; Cost" />
+								</h4>
+								<div class="row">
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+												<h:outputText value="Planned Revenue" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<p:inputText value="#{projectView.model.revenue}" required="true" requiredMessage="not null value for Revenue" />
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-group">
+											<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-username">
+												<h:outputText value="COGS" />
+											</label>
+											<div class="col-xs-9 col-sm-9">
+												<p:inputText value="#{projectView.model.cogs}" required="true" requiredMessage="not null value for COGS" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</f:subview>
+							<div class="row"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

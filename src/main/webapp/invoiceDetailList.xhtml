@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="InvoiceDetail List" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.BankPaymentMode" var="BankPaymentMode" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list bigger-110 green"></i>
+					<h:outputText value="InvoiceDetail List" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h:panelGroup id="widgetPanel">
+						<div class=" col-sm-offset-1 col-sm-6">
+							<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{invoiceDetailView.evictCache()}">
+								<i class="ace-icon fa fa-refresh bigger-230"></i>
+								<h:outputText value="Reload" />
+							</p:commandLink>
+
+							<p:commandLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-info" title="Add Payment" action="#{invoiceDetailView.initAddPayment()}"
+								update=":addPaymentForm" oncomplete="PF('addPaymentDlg').show()"
+								disabled="#{invoiceDetailView.supplierId==null or invoiceDetailView.companyId==null or invoiceDetailView.currencyId==null}">
+								<i class="ace-icon fa fa-plus bigger-230"></i>
+								<h:outputText value="Add" />
+							</p:commandLink>
+
+						</div>
+						<div class="col-sm-5  hidden-xs infobox-container">
+							<span class="btn btn-app btn-sm btn-warning no-hover">
+								<span class="line-height-1 bigger-170">
+									<h:outputText value="#{invoiceDetailView.rowsNumber}" />
+								</span>
+								<br />
+								<span class="line-height-1 smaller-90">
+									<h:outputText value="Total" />
+								</span>
+							</span>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<p:messages id="messages" />
+				<div class="col-sm-12">
+					<div class="table-header col-sm-12 col-xs-12">
+						<div class="col-sm-8 col-xs-8">
+							<i class="fa fa-list" />
+							<h:outputText value="InvoiceDetail List" />
+						</div>
+						<div class="col-sm-2 hidden-xs">
+							<div class="action-buttons center">
+								<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+									<img src="/resources/img/xls.png" width="20" height="20" />
+									<p:dataExporter type="xls" target="invoiceDetailList" fileName="invoiceDetailList" postProcessor="#{utilsView.excelExportation}" />
+								</h:commandLink>
+							</div>
+						</div>
+						<div class="col-sm-2 col-xs-4">
+							<div class="nav-search minimized">
+								<span class="input-icon">
+									<p:inputText value="#{invoiceDetailView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+										<p:ajax event="keyup" update="invoiceDetailList,widgetPanel" />
+									</p:inputText>
+									<i class="ace-icon fa fa-search nav-search-icon" />
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-xs-12 aa-datatable-container">
+						<p:remoteCommand name="panelUpdaters" process="@this" update=":main_form:widgetPanel" />
+						<p:dataTable value="#{invoiceDetailView.list2}" filteredValue="#{invoiceDetailView.list3}" rowKey="#{item.id}" selection="#{invoiceDetailView.list4}"
+							id="invoiceDetailList" widgetVar="invoiceDetailList" var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false"
+							paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowSelectMode="checkbox">
+
+							<p:ajax event="filter" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowSelect" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowUnselect" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowSelectCheckbox" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowUnselectCheckbox" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="toggleSelect" oncomplete="panelUpdaters()" process="@this" />
+
+							<p:column selectionMode="multiple" styleClass="ace aa-checkbox-column" exportable="false" />
+
+
+							<p:column headerText="N°">
+								<h:outputLink value="viewInvoice.xhtml" target="_blank">
+									<h:outputText value="#{item.invoiceNumero}" styleClass="bolder purple" />
+									<f:param name="id" value="#{item.invoiceId}" />
+								</h:outputLink>
+							</p:column>
+
+							<p:column headerText="Supplier">
+								<h:outputText value="#{item.supplierName}" styleClass="#{deductionView.getHasPendingDeduction(item.supplierId)?'bolder red':'green'}" />
+								<f:subview rendered="#{deductionView.getHasPendingDeduction(item.supplierId)}">
+									<i class="ace-icon fa fa-warning bigger-110 red"></i>
+								</f:subview>
+							</p:column>
+
+							<p:column headerText="Company">
+								<h:outputText value="#{item.companyName}" />
+							</p:column>
+
+							<p:column headerText="Date">
+								<h:outputText value="#{item.invoiceDate}" styleClass="green">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Due Date">
+								<h:outputText value="#{item.invoiceDueDate}" styleClass="red">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Net Invoice TTC">
+								<h:outputText value="#{item.invoiceAmountTtc2}">
+									<f:convertNumber type="number" maxFractionDigits="2" />
+								</h:outputText>
+								<h:outputText value=" #{item.currencyName}" />
+							</p:column>
+
+							<p:column headerText="Payment Term %">
+								<h:outputText value="#{item.paymentTermPercentage} %" styleClass="bolder" />
+							</p:column>
+
+							<p:column headerText="Remainder TTC">
+								<h:outputText value="#{item.paymentRemainingTtc}">
+									<f:convertNumber type="number" maxFractionDigits="2" />
+								</h:outputText>
+								<h:outputText value=" #{item.currencyName}" />
+							</p:column>
+
+							<p:column headerText="Invoice Status">
+								<h:outputText value="#{item.invoiceStatus.value}" styleClass="#{item.invoiceStatus.color.name}" />
+							</p:column>
+							
+							<p:column headerText="Age" width="80" rendered="#{invoiceDetailView.pageIndex==1}">
+								<h:outputText value="#{item.invoiceOverdueAge}" styleClass="bolder red"/>
+							</p:column>
+
+
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<ui:include src="invoiceDetailFooter.xhtml" />
+	</ui:define>
+</ui:composition>

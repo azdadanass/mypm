@@ -1,0 +1,484 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="#{userView.username == null?'Add New':'Edit'} User" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.CompanyType" var="CompanyType" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa #{userView.username == null?'fa-plus green':'fa-edit orange'} bigger-110"></i>
+					<h:outputText value=" #{userView.username == null?'Add New':'Edit'} User" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-6">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-inverse hover aa-tooltip" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip tooltip-grey" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" action="#{userView.save()}" update="messages" title="Save">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Save" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<div class="row">
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="tab-content profile-edit-tab-content">
+						<div class="tab-pane in active">
+							<p:messages id="messages" closable="true" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="General informations" />
+							</h4>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="First Name" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText id="firstName" value="#{userView.model.firstName}" required="true" requiredMessage="First Name should not be null">
+												<p:ajax listener="#{userView.generateUsername()}" update="firstName,login" />
+											</p:inputText>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Last Name" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText id="lastName" value="#{userView.model.lastName}" required="true" requiredMessage="Last Name should not be null">
+												<p:ajax listener="#{userView.generateUsername()}" update="lastName,login" />
+											</p:inputText>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Login" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText id="login" value="#{userView.model.login}" readonly="#{userView.isAddPage}" required="true" requiredMessage="Login should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Type" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{userView.model.internal?'Internal':'External'}" readonly="true" rendered="#{!userView.isAddPage}" />
+											<h:selectOneMenu value="#{userView.model.internal}" required="true" requiredMessage="Type should not be null" rendered="#{userView.isAddPage}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemLabel="Internal" itemValue="true" />
+												<f:selectItem itemLabel="External" itemValue="false" />
+												<p:ajax listener="#{userView.changeInternalListener()}" update="internalPanel,externalPanel,lineManager,login" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Email 1" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText id="email" value="#{userView.model.email}">
+												<p:ajax listener="#{userView.formatEmail()}" update="email" />
+											</p:inputText>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Email 2" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText id="email2" value="#{userView.model.email2}">
+												<p:ajax listener="#{userView.formatEmail2()}" update="email2" />
+											</p:inputText>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="CIN" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText id="cin" value="#{userView.model.cin}" required="true" requiredMessage="CIN should not be null">
+												<p:ajax listener="#{userView.formatCin()}" update="cin" />
+											</p:inputText>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Birthday" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:calendar value="#{userView.model.birthday}" pattern="yyyy-MM-dd" mask="true" pages="3" autocomplete="off" navigator="true" required="true" requiredMessage="Birthday should not be null" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Phone" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputMask value="#{userView.model.phone}" mask="+212999999999" validateMask="true" placeholder="example : +212673737373" required="true" requiredMessage="Phone should not be null" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Gender" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<h:selectOneMenu value="#{userView.model.gender}" required="true" requiredMessage="Gender should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemLabel="Male" itemValue="true" />
+												<f:selectItem itemLabel="Female" itemValue="false" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Job" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:inputText value="#{userView.model.job}" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<h:panelGroup id="internalPanel">
+								<f:subview rendered="#{userView.model.internal}">
+									<h4 class="header blue bolder smaller">
+										<h:outputText value="Company" />
+									</h4>
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group">
+												<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+													<h:outputText value="Company " />
+												</label>
+												<div class="col-xs-9 col-sm-9">
+													<p:selectOneMenu value="#{userView.model.companyId}" filter="true" filterMatchMode="contains" required="true" requiredMessage="Company should not be null">
+														<f:selectItem itemLabel="---" noSelectionOption="true" />
+														<f:selectItems value="#{companyView.findLight()}" var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+														<p:ajax update=":main_form:lob" />
+													</p:selectOneMenu>
+												</div>
+											</div>
+										</div>
+									</div>
+								</f:subview>
+							</h:panelGroup>
+							<h:panelGroup id="externalPanel">
+								<f:subview rendered="#{!userView.model.internal}">
+									<h4 class="header blue bolder smaller">
+										<h:outputText value="Systems" />
+									</h4>
+									<div class="row">
+										<f:subview rendered="#{erpView.gcom or erpView.mise}">
+											<div class="col-xs-12 col-sm-6">
+												<div class="form-group">
+													<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+														<h:outputText value="Myhr" />
+													</label>
+													<div class="col-xs-9 col-sm-9">
+														<p:commandLink id="myhr" update="myhr" partialSubmit="true" process="@this">
+															<i class="ace-icon fa #{userView.model.myhr?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!userView.model.myhr}" target="#{userView.model.myhr}" />
+														</p:commandLink>
+													</div>
+												</div>
+											</div>
+										</f:subview>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group">
+												<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+													<h:outputText value="SDM" />
+												</label>
+												<div class="col-xs-9 col-sm-9">
+													<p:commandLink id="sdm" update="sdm" partialSubmit="true" process="@this">
+														<i class="ace-icon fa #{userView.model.sdm?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														<f:setPropertyActionListener value="#{!userView.model.sdm}" target="#{userView.model.sdm}" />
+													</p:commandLink>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="space-4" />
+									<div class="row">
+										<f:subview rendered="#{erpView.gcom}">
+											<div class="col-xs-12 col-sm-6">
+												<div class="form-group">
+													<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+														<h:outputText value="Iexpense" />
+													</label>
+													<div class="col-xs-9 col-sm-9">
+														<p:commandLink id="iexpense" update="iexpense" partialSubmit="true" process="@this">
+															<i class="ace-icon fa #{userView.model.iexpense?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!userView.model.iexpense}" target="#{userView.model.iexpense}" />
+														</p:commandLink>
+													</div>
+												</div>
+											</div>
+										</f:subview>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group">
+												<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+													<h:outputText value="Ilogistics" />
+												</label>
+												<div class="col-xs-9 col-sm-9">
+													<p:commandLink id="ilogistics" update="ilogistics" partialSubmit="true" process="@this">
+														<i class="ace-icon fa #{userView.model.ilogistics?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														<f:setPropertyActionListener value="#{!userView.model.ilogistics}" target="#{userView.model.ilogistics}" />
+													</p:commandLink>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="space-4" />
+									<div class="row">
+										<f:subview rendered="#{erpView.gcom or erpView.mise}">
+											<div class="col-xs-12 col-sm-6">
+												<div class="form-group">
+													<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+														<h:outputText value="Ibuy" />
+													</label>
+													<div class="col-xs-9 col-sm-9">
+														<p:commandLink id="ibuy" update="ibuy" partialSubmit="true" process="@this">
+															<i class="ace-icon fa #{userView.model.ibuy?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!userView.model.ibuy}" target="#{userView.model.ibuy}" />
+														</p:commandLink>
+													</div>
+												</div>
+											</div>
+										</f:subview>
+										<f:subview rendered="#{erpView.gcom}">
+											<div class="col-xs-12 col-sm-6">
+												<div class="form-group">
+													<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+														<h:outputText value="Mytools" />
+													</label>
+													<div class="col-xs-9 col-sm-9">
+														<p:commandLink id="mytools" update="mytools" partialSubmit="true" process="@this">
+															<i class="ace-icon fa #{userView.model.mytools?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!userView.model.mytools}" target="#{userView.model.mytools}" />
+														</p:commandLink>
+													</div>
+												</div>
+											</div>
+										</f:subview>
+									</div>
+									<h4 class="header blue bolder smaller">
+										<h:outputText value="External Company Informations" />
+									</h4>
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group">
+												<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+													<h:outputText value="Company Type " />
+												</label>
+												<div class="col-xs-9 col-sm-9">
+													<h:selectOneMenu value="#{userView.model.companyType}" required="true" requiredMessage="Company Type should not be null" disabled="#{!sessionView.internal}">
+														<f:selectItem itemLabel="---" noSelectionOption="true" />
+														<f:selectItem itemValue="#{CompanyType.SUPPLIER}" itemLabel="#{CompanyType.SUPPLIER.value}" />
+														<f:selectItem itemValue="#{CompanyType.CUSTOMER}" itemLabel="#{CompanyType.CUSTOMER.value}" />
+														<f:selectItem itemValue="#{CompanyType.OTHER}" itemLabel="#{CompanyType.OTHER.value}" />
+														<p:ajax update="company" />
+													</h:selectOneMenu>
+												</div>
+											</div>
+										</div>
+										<h:panelGroup id="company">
+											<f:subview rendered="#{CompanyType.CUSTOMER==userView.model.companyType}">
+												<div class="col-xs-12 col-sm-6">
+													<div class="form-group">
+														<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+															<h:outputText value="Company Name" />
+														</label>
+														<div class="col-xs-9 col-sm-9">
+															<p:selectOneMenu value="#{userView.model.customerId}" filter="true" filterMatchMode="contains" required="true" requiredMessage="Customer should not be null"
+																disabled="#{!sessionView.internal}">
+																<f:selectItem itemLabel="---" noSelectionOption="true" />
+																<f:selectItems value="#{customerView.findLight()}" var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+															</p:selectOneMenu>
+														</div>
+													</div>
+												</div>
+											</f:subview>
+											<f:subview rendered="#{CompanyType.SUPPLIER==userView.model.companyType}">
+												<div class="col-xs-12 col-sm-6">
+													<div class="form-group">
+														<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+															<h:outputText value="Company Name" />
+														</label>
+														<div class="col-xs-9 col-sm-9">
+															<p:selectOneMenu value="#{userView.model.supplierId}" filter="true" filterMatchMode="contains" required="true" requiredMessage="Supplier should not be null"
+																disabled="#{!sessionView.internal}">
+																<f:selectItem itemLabel="---" noSelectionOption="true" />
+																<f:selectItems value="#{supplierView.findLight()}" var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+															</p:selectOneMenu>
+														</div>
+													</div>
+												</div>
+											</f:subview>
+											<f:subview rendered="#{CompanyType.OTHER==userView.model.companyType}">
+												<div class="col-xs-12 col-sm-6">
+													<div class="form-group">
+														<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+															<h:outputText value="Company Name" />
+														</label>
+														<div class="col-xs-9 col-sm-9">
+															<p:inputText value="#{userView.model.other}" required="true" requiredMessage="Company should not be null" />
+														</div>
+													</div>
+												</div>
+											</f:subview>
+										</h:panelGroup>
+									</div>
+								</f:subview>
+							</h:panelGroup>
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="Functional Structure" />
+							</h4>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="LOB " />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:selectOneMenu id="lob" value="#{userView.model.affectation.lobId}" filter="true" filterMatchMode="contains" required="true" requiredMessage="LOB should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{lobView.findLight()}" var="item" itemLabel="#{item.name}" itemValue="#{item.id}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Line / Sponsor Manager" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:selectOneMenu id="lineManager" value="#{userView.model.affectation.lineManagerUsername}" filter="true" filterMatchMode="contains" required="true"
+												requiredMessage="Line Manager should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{userView.findLineManagerList()}" var="item" itemLabel="#{item.name}" itemValue="#{item.username}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="HR Manager" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:selectOneMenu value="#{userView.model.affectation.hrManagerUsername}" filter="true" filterMatchMode="contains" required="true" requiredMessage="HR Manager should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{userView.findLightByInternalAndActive()}" var="item" itemLabel="#{item.name}" itemValue="#{item.username}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 control-label no-padding-right" for="form-field-basename">
+											<h:outputText value="Logistics Manager" />
+										</label>
+										<div class="col-xs-9 col-sm-9">
+											<p:selectOneMenu value="#{userView.model.affectation.logisticManagerUsername}" filter="true" filterMatchMode="contains" required="true" requiredMessage="Logistic Manager should not be null">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{userView.findLightByInternalAndActive()}" var="item" itemLabel="#{item.name}" itemValue="#{item.username}" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-4" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="Description" />
+							</h4>
+							<div class="row center">
+								<p:inputTextarea value="#{userView.model.userData.description}" style="width: 90%" />
+							</div>
+							<div class="space-16" />
+						</div>
+						<div class="row"></div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<ui:include src="userFooter.xhtml" />
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,1198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View Customer" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.RevenueCategory" var="RevenueCategory" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.PaymentTermStartPoint" var="PaymentTermStartPoint" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.CustomerStatus" var="CustomerStatus" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.Profile" var="Profile" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View Customer" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{customerView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{customerView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+						<h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditCustomer.xhtml" rendered="#{customerView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{customerView.id}" />
+						</h:outputLink>
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{customerView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+						<p:commandLink title="Add Files" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" onclick="PF('uploadFileDlg').show()" rendered="#{customerView.canAddFile()}">
+							<i class="ace-icon fa fa-file bigger-230"></i>
+							<h:outputText value="Files" />
+						</p:commandLink>
+						<p:commandLink title="Add Comment" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" onclick="PF('addCommentDlg').show()" rendered="#{customerView.canAddComment()}">
+							<i class="ace-icon fa fa-comment bigger-230"></i>
+							<h:outputText value="Comment" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<div class="user-profile row">
+				<div class="col-xs-12 col-sm-3 center">
+					<div class="profile-picture">
+						<p:graphicImage id="photo" value="#{fileUploadView.stream}" styleClass="editable img-responsive editable-click editable-empty aa-avatar" onclick="PF('uploadPhotoDlg').show()"
+							rendered="#{customerView.canUploadPhoto()}">
+							<f:param name="fileName" value="#{customerView.model.photo}" />
+						</p:graphicImage>
+						<p:graphicImage value="#{fileUploadView.stream}" styleClass="editable img-responsive editable-click editable-empty aa-avatar" rendered="#{!customerView.canUploadPhoto()}">
+							<f:param name="fileName" value="#{customerView.model.photo}" />
+						</p:graphicImage>
+					</div>
+					<div class="space-4" />
+					<div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+						<div class="inline position-relative">
+							<a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+								&nbsp;
+								<span class="white">
+									<h:outputText value="#{customerView.model.name}" />
+								</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-9">
+					<div class="widget-box transparent">
+						<div class="widget-header widget-header-small">
+							<h4 class="smaller">
+								<i class="ace-icon fa fa-check-square-o bigger-110"></i>
+								<h:outputText value=" Description" />
+							</h4>
+						</div>
+						<div class="space-8" />
+						<div>
+							<h:outputText value="#{customerView.model.description}" />
+						</div>
+						<div class="space-32" />
+					</div>
+				</div>
+			</div>
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab8">
+							<i class="red ace-icon fa fa-sitemap bigger-120"></i>
+							<h:outputText value=" Organization Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab7">
+							<i class="pink ace-icon fa fa-list bigger-120"></i>
+							<h:outputText value=" Compagnies" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab2">
+							<i class="purple ace-icon fa fa-list bigger-120"></i>
+							<h:outputText value=" Contacts" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab3">
+							<i class="blue ace-icon fa fa-file bigger-120"></i>
+							<h:outputText value=" Attachements" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab4">
+							<i class="orange ace-icon fa fa-clock-o bigger-120"></i>
+							<h:outputText value=" History" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab5">
+							<i class="red ace-icon fa fa-comment-o bigger-120"></i>
+							<h:outputText value=" Comments" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab6">
+							<i class="red ace-icon fa fa-gears bigger-120"></i>
+							<h:outputText value=" Configuration" />
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.name}" styleClass="bolder orange" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Phone" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.phone}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Country" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.country}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Website" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.website}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.managerFullName}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Code" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.code}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Category" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.category.name}" styleClass="green" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Email" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.email}" styleClass="blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Fax" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.fax}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="City" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.city}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Address" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.address}" />
+											<br />
+											<h:outputText value="#{customerView.model.address2}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space-16" />
+						<div style="width: 90%; margin: auto;">
+							<div class="well">
+								<h4 class="green smaller lighter">
+									<h:outputText value="Description" />
+								</h4>
+								<h:outputText value="#{customerView.model.description}" styleClass="preformatted" />
+							</div>
+						</div>
+					</div>
+					<div id="tab8" class="tab-pane">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Business Type" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.type}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="ICE" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.ice}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="CNSS" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.cnss}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Establishment Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.establishmentDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Parent Company" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.groupName}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="RC" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.ri}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Vat" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.vat}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Patent" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.patent}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Capital" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.capital}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Ownership structure" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{customerView.model.structure}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab2" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" Contacts" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="contactList" value="#{customerView.model.contactList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" styleClass="bolder green" rendered="#{!customerView.editContact}" />
+											<p:inputText value="#{item.name}" rendered="#{customerView.editContact}" />
+										</p:column>
+										<p:column headerText="Email">
+											<h:outputText value="#{item.email}" styleClass="blue" rendered="#{!customerView.editContact}" />
+											<p:inputText value="#{item.email}" rendered="#{customerView.editContact}" />
+										</p:column>
+										<p:column headerText="Phone 1">
+											<h:outputText value="#{item.phone1}" styleClass="orange" rendered="#{!customerView.editContact}" />
+											<p:inputText value="#{item.phone1}" rendered="#{customerView.editContact}" />
+										</p:column>
+										<p:column headerText="Phone 2">
+											<h:outputText value="#{item.phone2}" rendered="#{!customerView.editContact}" />
+											<p:inputText value="#{item.phone2}" rendered="#{customerView.editContact}" />
+										</p:column>
+										<p:column headerText="FAX">
+											<h:outputText value="#{item.fax}" rendered="#{!customerView.editContact}" />
+											<p:inputText value="#{item.fax}" rendered="#{customerView.editContact}" />
+										</p:column>
+										<p:column headerText="Function">
+											<h:outputText value="#{item.position}" rendered="#{!customerView.editContact}" />
+											<p:inputText value="#{item.position}" rendered="#{customerView.editContact}" />
+										</p:column>
+										<p:column headerText="Actions" styleClass="center" width="100" rendered="#{customerView.editContact}">
+											<div class="action-buttons center">
+												<p:commandLink title="Remove row" action="#{customerView.deleteContact(item)}" update="contactList" partialSubmit="true" process="contactList" rendered="#{customerView.canDeleteContact()}">
+													<i class="ace-icon fa fa-remove bigger-130 red" />
+												</p:commandLink>
+											</div>
+										</p:column>
+										<f:facet name="footer">
+											<div class="action-buttons center">
+												<p:commandLink title="Edit" update="contactList" partialSubmit="true" process="contactList" rendered="#{customerView.canAddContact() and !customerView.editContact}">
+													<i class="fa fa-edit orange" />
+													<f:setPropertyActionListener value="true" target="#{customerView.editContact}" />
+												</p:commandLink>
+												<p:commandLink title="Save" action="#{customerView.saveContactList()}" update="contactList" partialSubmit="true" process="contactList" rendered="#{customerView.canSaveContactList()}">
+													<i class="fa fa-save green" />
+												</p:commandLink>
+												<p:commandLink title="Add New Item" action="#{customerView.addContact()}" update="contactList" partialSubmit="true" process="contactList"
+													rendered="#{customerView.canAddContact() and customerView.editContact}">
+													<i class="fa fa-plus green" />
+												</p:commandLink>
+											</div>
+										</f:facet>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab7" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="row">
+								<div class="col-sm-offset-1 col-sm-10">
+									<div class="table-header col-sm-12 col-xs-12">
+										<i class="fa fa-list" />
+										<h:outputText value=" Company List" />
+									</div>
+									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+										<p:dataTable id="companyList" value="#{customerView.model.companyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+											paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+											<p:column headerText="Company">
+												<h:outputText value="#{item.company.name}" styleClass="bolder green" rendered="#{!customerView.editCompany}" />
+												<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{customerView.editCompany}">
+													<f:selectItems value="#{companyView.findAll()}" var="company" itemLabel="#{company.name}" itemValue="#{company}" />
+												</h:selectOneMenu>
+											</p:column>
+											<p:column headerText="Active">
+												<p:commandLink rendered="#{!customerView.editCompany}">
+													<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												</p:commandLink>
+												<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{customerView.editCompany}">
+													<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+													<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerText="Actions" styleClass="center" width="100" rendered="#{customerView.editCompany}">
+												<div class="action-buttons center">
+													<p:commandLink title="Remove row" action="#{customerView.deleteCompany(item)}" update="companyList" partialSubmit="true" process="companyList"
+														rendered="#{customerView.canDeleteCompany()}">
+														<i class="ace-icon fa fa-remove bigger-130 red" />
+													</p:commandLink>
+												</div>
+											</p:column>
+											<f:facet name="footer">
+												<div class="action-buttons center">
+													<p:commandLink title="Edit" update="companyList" partialSubmit="true" process="companyList" rendered="#{customerView.canAddCompany() and !customerView.editCompany}">
+														<i class="fa fa-edit orange" />
+														<f:setPropertyActionListener value="true" target="#{customerView.editCompany}" />
+													</p:commandLink>
+													<p:commandLink title="Save" action="#{customerView.saveCompanyList()}" update="companyList,:main_form:messages" partialSubmit="true" process="companyList"
+														rendered="#{customerView.canSaveCompanyList()}">
+														<i class="fa fa-save green" />
+													</p:commandLink>
+													<p:commandLink title="Add New Item" action="#{customerView.addCompany()}" update="companyList" partialSubmit="true" process="companyList"
+														rendered="#{customerView.canAddCompany() and customerView.editCompany}">
+														<i class="fa fa-plus green" />
+													</p:commandLink>
+												</div>
+											</f:facet>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab3" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List Of Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList" value="#{customerView.model.fileList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Phase" width="150" styleClass="center">
+											<h:outputText value="#{item.parentModelName}" styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Added Date" width="90">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="File Size" width="80">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+										<p:column headerText="File Type" width="100" styleClass="center">
+											<img src="#{item.fileExtensionImage}" style="border: none; border-radius: 0" width="20" height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}" styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Actions" width="150" style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File" oncomplete="PF('deleteFileDlg').show()" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener target="#{customerView.file}" value="#{item}" />
+												</p:commandLink>
+												<p:commandLink ajax="false">
+													<p:fileDownload value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="View" oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{fileView.file}" value="#{item}" />
+													<f:setPropertyActionListener target="#{customerView.file}" value="#{item}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab4" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" History" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="historyList" value="#{customerView.model.historyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Action" width="80" styleClass="center">
+											<h:outputText value="#{item.status}" styleClass="#{item.statusStyleClass}" />
+										</p:column>
+										<p:column headerText="Date" width="90" styleClass="center">
+											<f:subview rendered="#{item.date==null}">
+												<i class="ace-icon fa fa-spinner fa-spin orange bigger-200 " />
+											</f:subview>
+											<h:outputText value="#{item.date}" rendered="#{item.date!=null}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="User" width="120">
+											<h:outputText id="user" value="#{item.user.fullName}" styleClass="purple bolder" />
+											<p:overlayPanel for="user" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Description" width="400">
+											<h:outputText value="#{item.description}" escape="false" styleClass="aa-cut-text" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab5" class="tab-pane">
+						<h:panelGroup id="commentPanel">
+							<div class="row">
+								<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+									<div class="timeline-container timeline-style2">
+										<ui:repeat var="commentGroup" value="#{customerView.model.commentGroupList}" varStatus="varStatus">
+											<div class="timeline-label">
+												<span class="label label-purple arrowed-in-right label-lg">
+													<b> <h:outputText value="#{commentGroup.date}">
+															<f:convertDateTime pattern="yyyy-MM-dd" />
+														</h:outputText>
+													</b>
+												</span>
+											</div>
+											<div class="timeline-items">
+												<ui:repeat var="comment" value="#{commentGroup.commentList}">
+													<div class="timeline-item clearfix">
+														<div class="timeline-info">
+															<img src="#{comment.userPhoto}" /> <i class="timeline-indicator btn btn-info no-hover"></i>
+															<br />
+															<span class="orange">
+																<i class="ace-icon fa fa-clock-o bigger-120"></i>
+																<h:outputText value="#{comment.date}">
+																	<f:convertDateTime pattern="HH:mm" />
+																</h:outputText>
+															</span>
+														</div>
+														<div class="widget-box transparent">
+															<div class="widget-header widget-header-small">
+																<h5 class="widget-title smaller">
+																	<a href="#" class="blue">
+																		<h:outputText value="#{comment.userFullName}" />
+																	</a>
+																	<i class="ace-icon fa fa-angle-double-right"></i>
+																	<span class="grey">
+																		<h:outputText value="#{comment.title}" styleClass="green" />
+																	</span>
+																</h5>
+															</div>
+															<div class="widget-body">
+																<div class="widget-main">
+																	<h:outputText value="Comment : " styleClass="grey bolder" />
+																	<h:outputText value=" #{comment.content}" />
+																</div>
+															</div>
+														</div>
+													</div>
+												</ui:repeat>
+											</div>
+										</ui:repeat>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+					<div id="tab6" class="tab-pane">
+						<div class="space-8" />
+						<div class="col-sm-12">
+							<div class="tabbable tabs-left">
+								<ul class="nav nav-tabs">
+									<li class="active">
+										<a data-toggle="tab" href="#tab6_1">
+											<i class="blue ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Currency List" />
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab6_5">
+											<i class="orange ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Service List" />
+										</a>
+									</li>
+									<!-- <li>
+										<a data-toggle="tab" href="#tab6_2">
+											<i class="pink ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Vat List" />
+										</a>
+									</li> -->
+									<li>
+										<a data-toggle="tab" href="#tab6_3">
+											<i class="green ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Revenue Type List" />
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab6_4">
+											<i class="purple ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Accounting Code List" />
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab6_6">
+											<i class="red ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Invoicing Terms List" />
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#tab6_7">
+											<i class="blue ace-icon fa fa-list bigger-110"></i>
+											<h:outputText value=" Incoterms List" />
+										</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div id="tab6_1" class="tab-pane in active">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Currency List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="currencyList" value="#{customerView.model.currencyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!customerView.editCurrency}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{customerView.editCurrency}">
+															<f:selectItems value="#{customerView.model.companyList}" var="customerCompany" itemLabel="#{customerCompany.company.name}" itemValue="#{customerCompany.company}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Currency">
+														<h:outputText value="#{item.currency.name}" styleClass="bolder green" rendered="#{!customerView.editCurrency}" />
+														<h:selectOneMenu value="#{item.currency}" converter="#{genericSecuredConverter}" rendered="#{customerView.editCurrency}">
+															<f:selectItems value="#{currencyView.findAll()}" var="currency" itemLabel="#{currency.name}" itemValue="#{currency}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!customerView.editCurrency}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{customerView.editCurrency}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{customerView.editCurrency}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{customerView.deleteCurrency(item)}" update="currencyList" partialSubmit="true" process="currencyList"
+																rendered="#{customerView.canDeleteCurrency()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="currencyList" partialSubmit="true" process="currencyList" rendered="#{customerView.canAddCurrency() and !customerView.editCurrency}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{customerView.editCurrency}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{customerView.saveCurrencyList()}" update="currencyList,:main_form:messages" partialSubmit="true" process="currencyList"
+																rendered="#{customerView.canSaveCurrencyList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<p:commandLink title="Add New Item" action="#{customerView.addCurrency()}" update="currencyList" partialSubmit="true" process="currencyList"
+																rendered="#{customerView.canAddCurrency() and customerView.editCurrency}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+									<!-- <div id="tab6_2" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Vat List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="vatList" value="#{customerView.model.vatList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!customerView.editVat}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{customerView.editVat}">
+															<f:selectItems value="#{customerView.model.companyList}" var="company" itemLabel="#{company.name}" itemValue="#{company}" />
+														</h:selectOneMenu>
+													</p:column>
+
+													<p:column headerText="Vat">
+														<h:outputText value="#{item.vat}" styleClass="bolder green" rendered="#{!customerView.editVat}" />
+														<p:inputNumber value="#{item.vat}" minValue="0" thousandSeparator="" decimalSeparator="." rendered="#{customerView.editVat}" />
+													</p:column>
+
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!customerView.editVat}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{customerView.editVat}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{customerView.editVat}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{customerView.deleteVat(item)}" update="vatList" partialSubmit="true" process="vatList" rendered="#{customerView.canDeleteVat()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="vatList" partialSubmit="true" process="vatList" rendered="#{customerView.canAddVat() and !customerView.editVat}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{customerView.editVat}" />
+															</p:commandLink>
+
+															<p:commandLink title="Save" action="#{customerView.saveVatList()}" update="vatList,:main_form:messages" partialSubmit="true" process="vatList"
+																rendered="#{customerView.canSaveVatList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+
+															<p:commandLink title="Add New Item" action="#{customerView.addVat()}" update="vatList" partialSubmit="true" process="vatList"
+																rendered="#{customerView.canAddVat() and customerView.editVat}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+
+														</div>
+													</f:facet>
+
+												</p:dataTable>
+											</div>
+										</div>
+									</div> -->
+									<div id="tab6_3" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Revenue Type List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="revenueTypeList" value="#{customerView.model.revenueTypeList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+													paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!customerView.editRevenueType}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{customerView.editRevenueType}">
+															<f:selectItems value="#{customerView.model.companyList}" var="customerCompany" itemLabel="#{customerCompany.company.name}" itemValue="#{customerCompany.company}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Revenue Category">
+														<h:outputText value="#{item.revenueCategory.value}" styleClass="purple" rendered="#{!customerView.editRevenueType}" />
+														<h:selectOneMenu value="#{item.revenueCategory}" rendered="#{customerView.editRevenueType}">
+															<f:selectItem itemLabel="---" noSelectionOption="true" />
+															<f:selectItems value="#{RevenueCategory.ALL_ENUM_VALUES}" var="revenueCategory" itemLabel="#{revenueCategory.value}" itemValue="#{revenueCategory}" />
+															<p:ajax update="revenueType" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Revenue Type" width="200">
+														<h:outputText value="#{item.revenueType.value}" styleClass="bolder green" rendered="#{!customerView.editRevenueType}" />
+														<h:selectOneMenu id="revenueType" value="#{item.revenueType}" rendered="#{customerView.editRevenueType}">
+															<f:selectItem itemLabel="---" noSelectionOption="true" />
+															<f:selectItems value="#{item.revenueCategory.revenueTypeList}" var="revenueType" itemLabel="#{revenueType.value}" itemValue="#{revenueType}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!customerView.editRevenueType}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{customerView.editRevenueType}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{customerView.editRevenueType}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{customerView.deleteRevenueType(item)}" update="revenueTypeList" partialSubmit="true" process="revenueTypeList"
+																rendered="#{customerView.canDeleteRevenueType()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="revenueTypeList" partialSubmit="true" process="revenueTypeList" rendered="#{customerView.canAddRevenueType() and !customerView.editRevenueType}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{customerView.editRevenueType}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{customerView.saveRevenueTypeList()}" update="revenueTypeList,:main_form:messages" partialSubmit="true" process="revenueTypeList"
+																rendered="#{customerView.canSaveRevenueTypeList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<p:commandLink title="Add New Item" action="#{customerView.addRevenueType()}" update="revenueTypeList" partialSubmit="true" process="revenueTypeList"
+																rendered="#{customerView.canAddRevenueType() and customerView.editRevenueType}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+									<div id="tab6_4" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Accounting Code List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="accountingCodeList" value="#{customerView.model.accountingCodeList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+													paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!customerView.editAccountingCode}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{customerView.editAccountingCode}">
+															<f:selectItem itemLabel="---" noSelectionOption="true" />
+															<f:selectItems value="#{customerView.model.companyList}" var="customerCompany" itemLabel="#{customerCompany.company.name}" itemValue="#{customerCompany.company}" />
+															<p:ajax listener="#{customerView.changeAccountingCodeCompanyListener(item)}" update="accountingCode" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="AccountingCode">
+														<h:panelGroup id="accountingCode">
+															<h:outputText value="#{item.accountingCode}" styleClass="bolder green" rendered="#{!customerView.editAccountingCode}" />
+															<p:inputText value="#{item.accountingCode}" readonly="true" rendered="#{customerView.editAccountingCode}" />
+														</h:panelGroup>
+														<p:overlayPanel for="accountingCode" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+															<h:outputText value="#{accountingSystemView.findNameByNumero(item.company.id,item.accountingCode)}" />
+														</p:overlayPanel>
+													</p:column>
+													<p:column headerText="Adv Payment Accouting Code">
+														<h:panelGroup id="advPaymentAccountingCode">
+															<h:outputText value="#{item.advPaymentAccountingCode}" styleClass="bolder green" rendered="#{!customerView.editAccountingCode}" />
+															<p:inputText value="#{item.advPaymentAccountingCode}" rendered="#{customerView.editAccountingCode}" />
+														</h:panelGroup>
+														<p:overlayPanel for="advPaymentAccountingCode" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+															<h:outputText value="#{accountingSystemView.findNameByNumero(item.company.id,item.advPaymentAccountingCode)}" />
+														</p:overlayPanel>
+													</p:column>
+													<!-- <p:column headerText="Actions" styleClass="center" width="100" rendered="#{customerView.editAccountingCode}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{customerView.deleteAccountingCode(item)}" update="accountingCodeList" partialSubmit="true" process="accountingCodeList"
+																rendered="#{customerView.canDeleteAccountingCode()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column> -->
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="accountingCodeList" partialSubmit="true" process="accountingCodeList"
+																rendered="#{customerView.canAddAccountingCode() and !customerView.editAccountingCode}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{customerView.editAccountingCode}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{customerView.saveAccountingCodeList()}" update="accountingCodeList,:main_form:messages" partialSubmit="true" process="accountingCodeList"
+																rendered="#{customerView.canSaveAccountingCodeList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<!-- <p:commandLink title="Add New Item" action="#{customerView.addAccountingCode()}" update="accountingCodeList" partialSubmit="true" process="accountingCodeList"
+																rendered="#{customerView.canAddAccountingCode() and customerView.editAccountingCode}">
+																<i class="fa fa-plus green" />
+															</p:commandLink> -->
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+									<div id="tab6_5" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Service Code List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="serviceCodeList" value="#{customerView.model.serviceCodeList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+													paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!customerView.editServiceCode}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{customerView.editServiceCode}">
+															<f:selectItems value="#{customerView.model.companyList}" var="customerCompany" itemLabel="#{customerCompany.company.name}" itemValue="#{customerCompany.company}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Service Code">
+														<h:panelGroup id="serviceCode">
+															<h:outputText value="#{item.serviceCode}" styleClass="bolder green" rendered="#{!customerView.editServiceCode}" />
+															<p:inputText value="#{item.serviceCode}" rendered="#{customerView.editServiceCode}" />
+														</h:panelGroup>
+														<p:overlayPanel for="serviceCode" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+															<h:outputText value="#{accountingSystemView.findNameByNumero(item.company.id,item.serviceCode)}" />
+														</p:overlayPanel>
+													</p:column>
+													<p:column headerText="VAT">
+														<h:outputText value="#{item.vat}" styleClass="bolder purple" rendered="#{!customerView.editServiceCode}" />
+														<p:inputText value="#{item.vat}" rendered="#{customerView.editServiceCode}" />
+													</p:column>
+													<p:column headerText="VAT Code">
+														<h:panelGroup id="vatAccountingCode">
+															<h:outputText value="#{item.vatAccountingCode}" styleClass="bolder pink" rendered="#{!customerView.editServiceCode}" />
+															<p:inputText value="#{item.vatAccountingCode}" rendered="#{customerView.editServiceCode}" />
+														</h:panelGroup>
+														<p:overlayPanel for="vatAccountingCode" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+															<h:outputText value="#{accountingSystemView.findNameByNumero(item.company.id,item.vatAccountingCode)}" />
+														</p:overlayPanel>
+													</p:column>
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!customerView.editServiceCode}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{customerView.editServiceCode}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{customerView.editServiceCode}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{customerView.deleteServiceCode(item)}" update="serviceCodeList" partialSubmit="true" process="serviceCodeList"
+																rendered="#{customerView.canDeleteServiceCode()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="serviceCodeList" partialSubmit="true" process="serviceCodeList" rendered="#{customerView.canAddServiceCode() and !customerView.editServiceCode}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{customerView.editServiceCode}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{customerView.saveServiceCodeList()}" update="serviceCodeList,:main_form:messages" partialSubmit="true" process="serviceCodeList"
+																rendered="#{customerView.canSaveServiceCodeList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<p:commandLink title="Add New Item" action="#{customerView.addServiceCode()}" update="serviceCodeList" partialSubmit="true" process="serviceCodeList"
+																rendered="#{customerView.canAddServiceCode() and customerView.editServiceCode}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+									<div id="tab6_6" class="tab-pane">
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<div class="col-sm-9 hidden-xs">
+														<i class="fa fa-list" />
+														<h:outputText value=" Invoice Term Template List" />
+													</div>
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="invoiceTermTemplateList" value="#{customerView.model.invoiceTermTemplateList}" var="item" rows="20" styleClass="table table-striped table-hover"
+														paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowStyleClass="#{item.system?'hide':''}">
+														<p:column headerText="Company" width="120">
+															<h:outputText value="#{item.company.name}" styleClass="blue" />
+														</p:column>
+														<p:column headerText="Name" width="100">
+															<h:outputText value="#{item.name}" />
+														</p:column>
+														<p:column headerText="Invoice Terms">
+															<h:outputText value="#{item.description}" />
+														</p:column>
+														<p:column headerText="Payment Terms">
+															<h:outputText value="#{item.detailedDescription}" escape="false" />
+														</p:column>
+														<p:column headerText="Active" width="80">
+															<p:commandLink rendered="#{!customerView.editInvoiceTermTemplate}">
+																<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															</p:commandLink>
+															<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{customerView.editInvoiceTermTemplate}">
+																<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+																<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+															</p:commandLink>
+														</p:column>
+														<p:column headerText="Actions" width="80" exportable="false">
+															<div class="action-buttons center">
+																<h:outputLink value="#{invoiceTermTemplateView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+																	<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+																	<f:param name="id" value="#{item.id}" />
+																</h:outputLink>
+															</div>
+														</p:column>
+														<f:facet name="footer">
+															<div class="action-buttons center">
+																<p:commandLink title="Edit" update="invoiceTermTemplateList" partialSubmit="true" process="invoiceTermTemplateList"
+																	rendered="#{customerView.canAddInvoiceTermTemplate() and !customerView.editInvoiceTermTemplate}">
+																	<i class="fa fa-edit orange" />
+																	<f:setPropertyActionListener value="true" target="#{customerView.editInvoiceTermTemplate}" />
+																</p:commandLink>
+																<p:commandLink title="Save" action="#{customerView.saveInvoiceTermTemplateList()}" update="invoiceTermTemplateList,:main_form:messages" partialSubmit="true"
+																	process="invoiceTermTemplateList" rendered="#{customerView.canSaveInvoiceTermTemplateList()}">
+																	<i class="fa fa-save green" />
+																</p:commandLink>
+																<h:outputLink value="addEditInvoiceTermTemplate.xhtml">
+																	<i class="fa fa-plus green" />
+																	<f:param name="customerId" value="#{customerView.model.id}" />
+																</h:outputLink>
+															</div>
+														</f:facet>
+													</p:dataTable>
+												</div>
+											</div>
+										</div>
+										<div class="space-8" />
+									</div>
+									<div id="tab6_7" class="tab-pane">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<div class="col-sm-9 hidden-xs">
+													<i class="fa fa-list" />
+													<h:outputText value=" Incoterms List" />
+												</div>
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="incotermsList" value="#{customerView.model.incotermsList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false"
+													paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+													<p:column headerText="Company">
+														<h:outputText value="#{item.company.name}" styleClass="blue" rendered="#{!customerView.editIncoterms}" />
+														<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}" rendered="#{customerView.editIncoterms}">
+															<f:selectItems value="#{customerView.model.companyList}" var="customerCompany" itemLabel="#{customerCompany.company.name}" itemValue="#{customerCompany.company}" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Incoterms">
+														<h:outputText value="#{item.incoterms}" styleClass="bolder green" rendered="#{!customerView.editIncoterms}" />
+														<h:selectOneMenu value="#{item.incoterms}" rendered="#{customerView.editIncoterms}">
+															<f:selectItem itemLabel="DAP" itemValue="DAP" />
+															<f:selectItem itemLabel="EXW" itemValue="EXW" />
+															<f:selectItem itemLabel="CIP" itemValue="CIP" />
+															<f:selectItem itemLabel="CFR" itemValue="CFR" />
+															<f:selectItem itemLabel="CPT" itemValue="CPT" />
+															<f:selectItem itemLabel="CIF" itemValue="CIF" />
+															<f:selectItem itemLabel="FOB" itemValue="FOB" />
+														</h:selectOneMenu>
+													</p:column>
+													<p:column headerText="Active">
+														<p:commandLink rendered="#{!customerView.editIncoterms}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														</p:commandLink>
+														<p:commandLink id="active" update="active" partialSubmit="true" process="@this" rendered="#{customerView.editIncoterms}">
+															<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+															<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+														</p:commandLink>
+													</p:column>
+													<p:column headerText="Actions" styleClass="center" width="100" rendered="#{customerView.editIncoterms}">
+														<div class="action-buttons center">
+															<p:commandLink title="Remove row" action="#{customerView.deleteIncoterms(item)}" update="incotermsList" partialSubmit="true" process="incotermsList"
+																rendered="#{customerView.canDeleteIncoterms()}">
+																<i class="ace-icon fa fa-remove bigger-130 red" />
+															</p:commandLink>
+														</div>
+													</p:column>
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Edit" update="incotermsList" partialSubmit="true" process="incotermsList" rendered="#{customerView.canAddIncoterms() and !customerView.editIncoterms}">
+																<i class="fa fa-edit orange" />
+																<f:setPropertyActionListener value="true" target="#{customerView.editIncoterms}" />
+															</p:commandLink>
+															<p:commandLink title="Save" action="#{customerView.saveIncotermsList()}" update="incotermsList,:main_form:messages" partialSubmit="true" process="incotermsList"
+																rendered="#{customerView.canSaveIncotermsList()}">
+																<i class="fa fa-save green" />
+															</p:commandLink>
+															<p:commandLink title="Add New Item" action="#{customerView.addIncoterms()}" update="incotermsList" partialSubmit="true" process="incotermsList"
+																rendered="#{customerView.canAddIncoterms() and customerView.editIncoterms}">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{customerView.redirect()}" />
+		<ui:include src="customerFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
+	</ui:define>
+</ui:composition>

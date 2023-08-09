@@ -1,0 +1,552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+		<link href="resources/css/bootstrap-nav/bootstrap-nav-wizard.css" rel="stylesheet" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="#{customerView.isAddPage?'Add New':'Edit'} Customer" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.CustomerType" var="CustomerType" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="widget-box">
+				<div class="widget-header widget-header-blue widget-header-flat">
+					<h4 class="widget-title lighter">
+						<i class="ace-icon fa #{customerView.id == null?'fa-plus green':'fa-edit orange'} bigger-110"></i>
+						<h:outputText value=" #{customerView.id == null?'Add New':'Edit'} Customer" />
+					</h4>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main">
+						<h:panelGroup id="nav-wizard">
+							<ul class="nav nav-wizard">
+								<li class="#{customerView.step==1?'active':''}">
+									<a href="#">
+										<h:outputText value="General informations" />
+									</a>
+								</li>
+								<li class="#{customerView.step==2?'active':''}">
+									<a href="#">
+										<h:outputText value="Organization Informations" />
+									</a>
+								</li>
+								<li class="#{customerView.step==3?'active':''}">
+									<a href="#">
+										<h:outputText value="Associated Companies" />
+									</a>
+								</li>
+								<li class="#{customerView.step==4?'active':''}">
+									<a href="#">
+										<h:outputText value="Contact Informations" />
+									</a>
+								</li>
+							</ul>
+						</h:panelGroup>
+						<hr />
+						<p:messages id="messages" closable="true" />
+						<h:panelGroup id="steps">
+							<f:subview id="step1" rendered="#{customerView.step==1}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" General informations" />
+								</h3>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Name " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.name}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Name should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Category " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:selectOneMenu value="#{customerView.model.category}" styleClass="col-xs-12 col-sm-6" filter="true" filterMatchMode="contains" required="true"
+												requiredMessage="Category should not be null" converter="#{genericSecuredConverter}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{customerCategoryView.findAll()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+											</p:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Phone " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.phone}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Fax " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.fax}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Website " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.website}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Country " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{customerView.model.country}" styleClass="col-xs-12 col-sm-6">
+												<f:selectItems value="#{utilsView.countryList}" var="item" itemLabel="#{item}" itemValue="#{item}" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="City " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.city}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Address " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.address}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.address2}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Description " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{customerView.model.description}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Manager " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:selectOneMenu value="#{customerView.model.managerUsername}" styleClass="col-xs-12 col-sm-6" filter="true" filterMatchMode="contains" required="true"
+												requiredMessage="Manager should not be null" >
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{userView.findLightByInternalAndActive()}" var="item" itemLabel="#{item.name}" itemValue="#{item.username}" />
+											</p:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Abbreviation" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.abbreviation}" styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="Abbreviation should not be null"/>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<!-- <div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Code " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{customerView.model.code}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div> -->
+							</f:subview>
+							<f:subview id="step2" rendered="#{customerView.step==2}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" Organization informations" />
+								</h3>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Business Type " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{customerView.model.type}" styleClass="col-xs-12 col-sm-6">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{CustomerType.ALL_ENUM_VALUES}" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="RC " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.ri}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="ICE " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.ice}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Vat " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.vat}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="CNSS " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.cnss}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Patent " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.patent}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Establishment Date " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:calendar value="#{customerView.model.establishmentDate}" navigator="true"  />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Capital " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.capital}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Parent Company " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{customerView.model.groupName}" styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Ownership structure " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<h:selectOneMenu value="#{customerView.model.structure}" styleClass="col-xs-12 col-sm-6">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItem itemLabel="SARL" itemValue="SARL" />
+												<f:selectItem itemLabel="SA" itemValue="SA" />
+												<f:selectItem itemLabel="SARLAU" itemValue="SARLAU" />
+											</h:selectOneMenu>
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+							</f:subview>
+							<f:subview id="step3" rendered="#{customerView.step==3}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" Associated Companies" />
+								</h3>
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10">
+										<div class="table-header col-sm-12 col-xs-12">
+											<i class="fa fa-list" />
+											<h:outputText value=" Company List" />
+										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+											<p:dataTable id="companyList" value="#{customerView.model.companyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+												paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+
+												<p:column headerText="Company">
+													<h:selectOneMenu value="#{item.company}" converter="#{genericSecuredConverter}">
+														<f:selectItems value="#{companyView.findAll()}" var="company" itemLabel="#{company.name}" itemValue="#{company}" />
+													</h:selectOneMenu>
+												</p:column>
+
+												<p:column headerText="Active">
+													<p:commandLink id="active" update="active" partialSubmit="true" process="@this" >
+														<i class="ace-icon fa #{item.active?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+														<f:setPropertyActionListener value="#{!item.active}" target="#{item.active}" />
+													</p:commandLink>
+												</p:column>
+
+												<p:column headerText="Actions" styleClass="center" width="100" >
+													<div class="action-buttons center">
+														<p:commandLink title="Remove row" action="#{customerView.deleteCompany(item)}" update="companyList" partialSubmit="true" process="companyList"
+															rendered="#{customerView.canDeleteCompany()}">
+															<i class="ace-icon fa fa-remove bigger-130 red" />
+														</p:commandLink>
+													</div>
+												</p:column>
+
+												<f:facet name="footer">
+													<div class="action-buttons center">
+														<p:commandLink title="Add New Item" action="#{customerView.addCompany()}" update="companyList" partialSubmit="true" process="companyList">
+															<i class="fa fa-plus green" />
+														</p:commandLink>
+													</div>
+												</f:facet>
+
+											</p:dataTable>
+										</div>
+									</div>
+								</div>
+							</f:subview>
+							<f:subview id="step4" rendered="#{customerView.step==4}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" Contact Informations" />
+								</h3>
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10">
+										<div class="table-header col-sm-12 col-xs-12">
+											<i class="fa fa-list" />
+											<h:outputText value=" Contact List" />
+										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+											<p:dataTable id="contactList" value="#{customerView.model.contactList}" var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false"
+											paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowIndexVar="rowIndexVar">
+
+											<p:column headerText="Name">
+												<p:inputText value="#{item.name}" />
+											</p:column>
+											
+											<p:column headerText="Email">
+												<p:inputText value="#{item.email}" />
+											</p:column>
+											
+											<p:column headerText="Phone 1">
+												<p:inputText value="#{item.phone1}" />
+											</p:column>
+											
+											<p:column headerText="Phone 2">
+												<p:inputText value="#{item.phone2}" />
+											</p:column>
+											
+											<p:column headerText="FAX">
+												<p:inputText value="#{item.fax}" />
+											</p:column>
+											
+											<p:column headerText="Function">
+												<p:inputText value="#{item.function}" />
+											</p:column>
+
+											<p:column headerText="Actions" styleClass="center" width="100">
+												<div class="action-buttons center">
+													<p:commandLink title="Remove row" action="#{customerView.deleteContact(item)}" update="contactList" partialSubmit="true" process="contactList"
+														rendered="#{customerView.canDeleteContact()}">
+														<i class="ace-icon fa fa-remove bigger-130 red" />
+													</p:commandLink>
+												</div>
+											</p:column>
+
+											<f:facet name="footer">
+												<div class="action-buttons center">
+													<p:commandLink title="Add New Item" action="#{customerView.addContact()}" update="contactList" partialSubmit="true" process="contactList" rendered="#{customerView.canAddContact()}">
+														<i class="fa fa-plus green" />
+													</p:commandLink>
+												</div>
+											</f:facet>
+										</p:dataTable>
+										</div>
+									</div>
+								</div>
+							</f:subview>
+						</h:panelGroup>
+						<hr />
+						<div class="wizard-actions">
+							<p:commandLink action="#{customerView.previousStep()}" immediate="true" update="messages,nav-wizard,steps" styleClass="btn  btn-prev">
+								<i class="ace-icon fa fa-arrow-left icon-on-right"></i>
+								<h:outputText value="Back" />
+							</p:commandLink>
+							<p:commandLink id="next" action="#{customerView.nextStep()}" update="messages,nav-wizard,steps,next" styleClass="btn btn-success btn-next">
+								<h:outputText value="#{customerView.step==4?'Finish':'Next'}" />
+								<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+							</p:commandLink>
+						</div>
+						<div class="space-16" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

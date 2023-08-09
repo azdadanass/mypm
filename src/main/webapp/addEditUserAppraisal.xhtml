@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li><i class="ace-icon fa fa-home" /> <a href="#"> <h:outputText
+						value="Main Menu" />
+			</a></li>
+			<li class="active"><h:outputText
+					value="#{userAppraisalView.isAddPage?'Add New':'Edit'} userAppraisal" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i
+						class="ace-icon fa #{userAppraisalView.isAddPage?'fa-plus green':'fa-edit orange'} bigger-110"></i>
+					<h:outputText
+						value=" #{userAppraisalView.isAddPage?'Add New':'Edit'} userAppraisal" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-6">
+						<h:outputLink
+							styleClass="btn btn-app btn-sm btn-inverse hover aa-tooltip"
+							title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<h:outputLink
+							styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info"
+							title="Reload page">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</h:outputLink>
+						<h:outputLink
+							styleClass="btn btn-app btn-sm hover aa-tooltip tooltip-grey"
+							title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							action="#{userAppraisalView.save()}" update="messages" title="Save">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Save" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<div class="row">
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="tab-content profile-edit-tab-content">
+						<div class="tab-pane in active">
+							<p:messages id="messages" closable="true" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="General informations" />
+							</h4>
+
+
+		<div class="widget-body">
+					<div class="widget-main">
+						<h:panelGroup id="nav-wizard">
+							<ul class="nav nav-wizard">
+								<li class="#{appraisalsView.step==1?'active':''}"><a
+									href="#"> <h:outputText value="General informations" />
+								</a></li>
+								<li class="#{appraisalsView.step==2?'active':''}"><a
+									href="#"> <h:outputText value="Plannning and Review" />
+								</a></li>
+								<li class="#{appraisalsView.step==3?'active':''}"><a
+									href="#"> <h:outputText value="Users Appraisals" />
+								</a></li>
+							</ul>
+						</h:panelGroup>
+						<hr />
+						<p:messages id="messages" closable="true" />
+						<h:panelGroup id="steps">
+							<f:subview id="step1" rendered="#{appraisalsView.step==1}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" General informations" />
+								</h3>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Appraisal Name" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputText value="#{appraisalsView.model.appraisalName}"
+												styleClass="col-xs-12 col-sm-6" required="true"
+												requiredMessage="Appraisal Name should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Start Date" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:calendar value="#{appraisalsView.model.startDate}"
+												styleClass="col-xs-12 col-sm-6" required="true"
+												requiredMessage="Start Date should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="End Date" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:calendar value="#{appraisalsView.model.endDate}"
+												styleClass="col-xs-12 col-sm-6" required="true"
+												requiredMessage="End DateS should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Description" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{appraisalsView.model.description}"
+												styleClass="col-xs-12 col-sm-6" />
+											<br />
+										</div>
+									</div>
+								</div>
+
+								<div class="space-8" />
+							</f:subview>
+							<f:subview id="step2" rendered="#{appraisalsView.step==2}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value=" Submission TimeLine" />
+								</h3>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Planning Start Date" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:calendar value="#{appraisalsView.model.planningStartDate}"
+												pattern="yyyy-MM-dd" autocomplete="off" navigator="true"
+												required="true"
+												requiredMessage="Planning start date should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Planning End Date" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:calendar value="#{appraisalsView.model.planningEndDate}"
+												pattern="yyyy-MM-dd" navigator="true" required="true"
+												requiredMessage="Planning end date should not be null" />
+											<br />
+										</div>
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Mid Year Start" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<p:calendar
+											value="#{appraisalsView.model.midYearReviewStartDate}"
+											pattern="yyyy-MM-dd" navigator="true" required="true"
+											requiredMessage="Mid year start date should not be null" />
+										<br />
+									</div>
+								</div>
+								<div class="space-8" />
+
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Mid Year End" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<p:calendar
+											value="#{appraisalsView.model.midYearReviewEndDate}"
+											pattern="yyyy-MM-dd" navigator="true" required="true"
+											requiredMessage="Mid year end date should not be null" />
+										<br />
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Final Year Start" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<p:calendar
+											value="#{appraisalsView.model.endYearSummaryStartDate}"
+											pattern="yyyy-MM-dd" navigator="true" required="true"
+											requiredMessage="Final year start date should not be null" />
+										<br />
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Final Year End" />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<p:calendar
+											value="#{appraisalsView.model.endYearSummaryEndDate}"
+											pattern="yyyy-MM-dd" navigator="true" required="true"
+											requiredMessage="Final year end date should not be null" />
+										<br />
+									</div>
+								</div>
+								<div class="space-8" />
+							</f:subview>
+							<f:subview id="step3" rendered="#{appraisalsView.step==3}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-list-alt" />
+									<h:outputText value="Employees" />
+								</h3>
+
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+										<p:dataTable value="#{appraisalsView.getUsersByManager()}"
+											filteredValue="#{appraisalsView.list3}" rowKey="#{item.id}"
+											selection="#{appraisalsView.list4}" id="appraisalsList"
+											widgetVar="appraisalsList" var="item" rows="20"
+											styleClass="table table-striped table-hover center"
+											paginatorAlwaysVisible="false" paginator="true"
+											paginatorPosition="bottom"
+											paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+											rowSelectMode="checkbox">
+											<p:column headerText="Photo">
+												<p:graphicImage value="#{fileUploadView.stream}"
+													styleClass="img-circle aa-datatable-photo">
+													<f:param name="fileName" value="#{item.photo}" />
+												</p:graphicImage>
+											</p:column>
+											<p:column headerText="Full Name">
+												<h:outputText value="#{item.fullName}"
+													styleClass="bolder blue" />
+											</p:column>
+											<p:column headerText="Email">
+												<h:outputText value="#{item.email}" styleClass="bolder blue" />
+											</p:column>
+											<p:column headerText="Employe Status">
+												<h:outputText value="#{item.status}"
+													styleClass="bolder blue" />
+											</p:column>
+										<!--<p:column headerText="Line Manager">
+												<h:outputText value="#{item.LineManagerUser}"
+													styleClass="bolder blue" />
+											</p:column> -->
+											<p:column headerText="LOB">
+												<h:outputText value="#{item.lobName}"
+													styleClass="bolder blue" />
+											</p:column>
+											<p:column headerText="Function">
+												<h:outputText value="#{item.job}" styleClass="bolder blue" />
+											</p:column>
+											<p:column headerText="Actions" width="150" exportable="false">
+												<div class="action-buttons center">
+													<p:commandButton icon="fa fa-trash bigger-130 red"
+														action="#{appraisalsView.deleteUser(item)}" title="Delete"
+														update="appraisalsList" process="@this">
+													</p:commandButton>
+
+
+													<!-- <p:commandButton icon="fa fa-undo bigger-130 blue"
+														action="#{appraisalsView.undoDelete}" title="Undo"
+														update="appraisalsList" process="@this"
+														rendered="#{appraisalsView.isUndoMode}">
+													</p:commandButton>  -->
+												</div>
+											</p:column>
+										</p:dataTable>
+									</div>
+								</div>
+								<div class="space-8" />
+							</f:subview>
+						</h:panelGroup>
+						<hr />
+						<div class="wizard-actions">
+							<p:commandLink action="#{appraisalsView.previousStep()}"
+								immediate="true" update="next,messages,nav-wizard,steps"
+								styleClass="btn btn-prev">
+								<i class="ace-icon fa fa-arrow-left icon-on-right"></i>
+								<h:outputText value="Back" />
+							</p:commandLink>
+							<p:commandLink id="next" action="#{appraisalsView.nextStep()}"
+								update="messages,nav-wizard,next,steps"
+								styleClass="btn btn-success btn-next">
+								<h:outputText value="#{appraisalsView.step==3?'Finish':'Next'}" />
+								<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+							</p:commandLink>
+						</div>
+						<div class="space-16" />
+					</div>
+				</div>
+
+							<div class="space-16" />
+						</div>
+						<div class="row"></div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,1449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View Project" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.ProjectManagerType" var="ProjectManagerType" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.ProjectMilestoneType" var="ProjectMilestoneType" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.utils.Color" var="Color" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View Project" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{projectView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{projectView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditProject.xhtml" rendered="#{projectView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{projectView.id}" />
+						</h:outputLink>
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{projectView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+						<p:commandLink title="Add Files" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" onclick="PF('uploadFileDlg').show()" rendered="#{projectView.canAddFile()}">
+							<i class="ace-icon fa fa-file bigger-230"></i>
+							<h:outputText value="Files" />
+						</p:commandLink>
+						<p:commandLink title="Add Comment" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" onclick="PF('addCommentDlg').show()" rendered="#{projectView.canAddComment()}">
+							<i class="ace-icon fa fa-comment bigger-230"></i>
+							<h:outputText value="Comment" />
+						</p:commandLink>
+						<p:commandLink title="#{projectView.model.status=='Open'?'Close':'Open'}" styleClass="btn btn-app btn-sm #{rojectView.model.status=='Open'?'btn-danger':'btn-success'} hover aa-tooltip"
+							update=":toggleForm" oncomplete="PF('toggleDlg').show()">
+							<i class="ace-icon fa fa-power-off bigger-230"></i>
+							<h:outputText value="#{rojectView.model.status=='Open'?'Open':'Close'}" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="space-16" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab7">
+							<i class="orange ace-icon fa fa-users bigger-120"></i>
+							<h:outputText value=" Manager List" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab6">
+							<i class="blue ace-icon fa fa-dollar bigger-120"></i>
+							<h:outputText value=" Project P&amp;L" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab8">
+							<i class="black ace-icon fa fa-bar-chart bigger-120"></i>
+							<h:outputText value=" Project Planning" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab2">
+							<i class="purple ace-icon fa fa-list bigger-120"></i>
+							<h:outputText value=" Tasks" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab9">
+							<i class="red ace-icon fa fa-list-ol bigger-120"></i>
+							<h:outputText value=" Milestones" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab3">
+							<i class="blue ace-icon fa fa-file bigger-120"></i>
+							<h:outputText value=" Attachements" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab4">
+							<i class="orange ace-icon fa fa-clock-o bigger-120"></i>
+							<h:outputText value=" History" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab5">
+							<i class="red ace-icon fa fa-comment-o bigger-120"></i>
+							<h:outputText value=" Comments" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab10">
+							<i class="red ace-icon fa fa-check-square-o bigger-120"></i>
+							<h:outputText value=" SDM / Ilogistics" />
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Name" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.name}" styleClass="pink" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Cost Center" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.costcenter.lob.name} #{projectView.model.costcenter.year}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Category" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.category}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Customer" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.customer.name}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Start Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.startDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Duration" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.duration}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Customer Type" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.customerType.value}" styleClass="#{projectView.model.customerType.color.name}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Status" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.status}" styleClass="#{projectView.model.status=='Open'?'green':'red'}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.manager.name}" styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Type" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.type}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Sub Type" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.subType}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="End Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.endDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Currency" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.currency.name}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Contract" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.contract.reference}" styleClass="bolder blue" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab2" class="tab-pane">
+						<p:messages id="tab2messages" closable="true" />
+						<div class="space-8" />
+						<h:panelGroup id="taskPanel">
+							<div class="row">
+								<div class="col-sm-offset-1 col-sm-10">
+									<div class="table-header col-sm-12 col-xs-12">
+										<div class="col-sm-5 hidden-xs">
+											<i class="fa fa-list" />
+											<h:outputText value=" Tasks" />
+										</div>
+										<f:subview rendered="#{projectView.editTaskList}">
+											<div class="col-sm-7">
+												<h:outputText value="Select Template : " />
+												<h:selectOneMenu value="#{taskTemplateView.model}" converter="#{genericSecuredConverter}">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItems value="#{taskTemplateView.findAll()}" var="item" itemLabel="#{item.name}" itemValue="#{item}" />
+													<p:ajax listener="#{projectView.generateTaskListFromTemplate(taskTemplateView.model)}" update=":main_form:taskList" />
+												</h:selectOneMenu>
+											</div>
+										</f:subview>
+									</div>
+									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+										<p:dataTable id="taskList" value="#{projectView.model.taskList}" var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true"
+											paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+											<p:column headerText="Name">
+												<h:outputText value="#{item.name}" styleClass="bolder blue" rendered="#{!projectView.editTaskList}" />
+												<p:inputText value="#{item.name}" rendered="#{projectView.editTaskList}" styleClass="green" style="width:90%" />
+											</p:column>
+											<p:column headerText="Effort">
+												<h:outputText value="#{item.effort}" styleClass="bolder green" rendered="#{!projectView.editTaskList}" />
+												<p:inputNumber value="#{item.effort}" thousandSeparator="" decimalSeparator="." rendered="#{projectView.editTaskList}" />
+											</p:column>
+											<p:column headerText="Actions" width="100" rendered="#{projectView.editTaskList}">
+												<div class="action-buttons center">
+													<p:commandLink title="Delete " action="#{projectView.deleteTask(item)}" update=":main_form:taskPanel">
+														<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													</p:commandLink>
+												</div>
+											</p:column>
+											<f:facet name="footer">
+												<div class="action-buttons center">
+													<p:commandLink title="Add New" styleClass="aa-tooltip" action="#{projectView.addTask()}" update=":main_form:taskPanel" rendered="#{projectView.canAddTask()}">
+														<i class="ace-icon fa fa-plus bigger-130 green" />
+													</p:commandLink>
+													<p:commandLink title="Save" styleClass="aa-tooltip" action="#{projectView.saveTaskList()}" update=":main_form:taskPanel,:main_form:tab2messages"
+														rendered="#{projectView.canSaveTaskList()}">
+														<i class="ace-icon fa fa-save bigger-130 blue" />
+													</p:commandLink>
+													<p:commandLink title="Edit" styleClass="aa-tooltip" update=":main_form:taskPanel" rendered="#{projectView.canEditTaskList()}">
+														<i class="ace-icon fa fa-edit  bigger-130 orange" />
+														<f:setPropertyActionListener value="true" target="#{projectView.editTaskList}" />
+													</p:commandLink>
+												</div>
+											</f:facet>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+					<div id="tab3" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List Of Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList" value="#{projectView.model.fileList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Phase" width="150" styleClass="center">
+											<h:outputText value="#{item.parentModelName}" styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Added Date" width="90">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="File Size" width="80">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+										<p:column headerText="File Type" width="100" styleClass="center">
+											<img src="#{item.fileExtensionImage}" style="border: none; border-radius: 0" width="20" height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}" styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Actions" width="150" style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File" oncomplete="PF('deleteFileDlg').show()" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener target="#{projectView.file}" value="#{item}" />
+												</p:commandLink>
+												<p:commandLink ajax="false">
+													<p:fileDownload value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="View" oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{fileView.file}" value="#{item}" />
+													<f:setPropertyActionListener target="#{projectView.file}" value="#{item}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab4" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" History" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="historyList" value="#{projectView.model.historyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Action" width="80" styleClass="center">
+											<span class="#{item.statusStyleClass}">
+												<h:outputText value="#{item.status}" styleClass="bolder" />
+											</span>
+										</p:column>
+										<p:column headerText="Date" width="90" styleClass="center">
+											<f:subview rendered="#{item.date==null}">
+												<i class="ace-icon fa fa-spinner fa-spin orange bigger-200 " />
+											</f:subview>
+											<h:outputText value="#{item.date}" rendered="#{item.date!=null}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="User" width="120">
+											<h:outputText id="user" value="#{item.user.fullName}" styleClass="purple bolder" />
+											<p:overlayPanel for="user" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Description" width="400">
+											<h:outputText value="#{item.description}" escape="false" styleClass="aa-cut-text" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab5" class="tab-pane">
+						<h:panelGroup id="commentPanel">
+							<div class="row">
+								<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+									<div class="timeline-container timeline-style2">
+										<ui:repeat var="commentGroup" value="#{projectView.model.commentGroupList}" varStatus="varStatus">
+											<div class="timeline-label">
+												<span class="label label-purple arrowed-in-right label-lg">
+													<b> <h:outputText value="#{commentGroup.date}">
+															<f:convertDateTime pattern="yyyy-MM-dd" />
+														</h:outputText>
+													</b>
+												</span>
+											</div>
+											<div class="timeline-items">
+												<ui:repeat var="comment" value="#{commentGroup.commentList}">
+													<div class="timeline-item clearfix">
+														<div class="timeline-info">
+															<img src="#{comment.userPhoto}" />
+															<i class="timeline-indicator btn btn-info no-hover"></i>
+															<br />
+															<span class="orange">
+																<i class="ace-icon fa fa-clock-o bigger-120"></i>
+																<h:outputText value="#{comment.date}">
+																	<f:convertDateTime pattern="HH:mm" />
+																</h:outputText>
+															</span>
+														</div>
+														<div class="widget-box transparent">
+															<div class="widget-header widget-header-small">
+																<h5 class="widget-title smaller">
+																	<a href="#" class="blue">
+																		<h:outputText value="#{comment.userFullName}" />
+																	</a>
+																	<i class="ace-icon fa fa-angle-double-right"></i>
+																	<span class="grey">
+																		<h:outputText value="#{comment.title}" styleClass="green" />
+																	</span>
+																</h5>
+															</div>
+															<div class="widget-body">
+																<div class="widget-main">
+																	<h:outputText value="Comment : " styleClass="grey bolder" />
+																	<h:outputText value=" #{comment.content}" />
+																</div>
+															</div>
+														</div>
+													</div>
+												</ui:repeat>
+											</div>
+										</ui:repeat>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+					<div id="tab6" class="tab-pane">
+						<h:panelGroup id="panel1">
+							<p:messages id="messages" closable="true" />
+							<div class="row col-sm-offset-1 col-sm-8">
+								<table class="table table-bordered">
+									<tbody>
+										<tr>
+											<td style="background-color: #fff; border: 1px solid #fff; border-right: 1px solid #ddd; width: 30%"></td>
+											<td style="width: 35%">
+												<h:outputText value="%" />
+											</td>
+											<td style="width: 35%">
+												<h:outputText value="Value" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="space-8" />
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th style="background-color: #EDF3F4; color: #336199; width: 30%">
+												<h:outputText value="Project Revenue, GOGS &amp; Gross Margin" />
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Planned Revenue" styleClass="bolder" />
+											</td>
+											<td style="width: 35%"></td>
+											<td style="width: 35%">
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<h:outputText value="#{projectView.model.revenue}">
+														<f:convertNumber type="number" maxFractionDigits="2" />
+													</h:outputText>
+													<p:inputNumber value="#{projectView.model.revenue}" thousandSeparator="" decimalSeparator="." decimalPlaces="2" />
+													<p:ajax event="save" listener="#{projectView.updateGrossMargin}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<i>
+													<h:outputText value="COGS" title="Cost Of Goods Sold" styleClass="aa-tooltip bolder" />
+												</i>
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.cogs/projectView.model.revenue}" rendered="#{projectView.model.revenue!=0}">
+													<f:convertNumber type="percent" maxFractionDigits="2" />
+												</h:outputText>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Cost Of Goods Sold % Revenue " />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<h:outputText value="#{projectView.model.cogs}">
+														<f:convertNumber type="number" maxFractionDigits="2" />
+													</h:outputText>
+													<p:inputNumber value="#{projectView.model.cogs}" thousandSeparator="" decimalSeparator="." decimalPlaces="2" />
+													<p:ajax event="save" listener="#{projectView.updateGrossMargin}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Risk" styleClass="bolder" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.risk}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateGrossMargin}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Risk Percentage % COGS " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.risk*projectView.model.cogs}" />
+											</td>
+										</tr>
+										<tr class="#{(projectView.model.grossMargin/projectView.model.revenue) lt 0.2?'background-red-font-white':'background-green-font-white'}">
+											<td>
+												<h:outputText value="Gross Margin" title="Revenue - (1+Risk) * COGS" styleClass="aa-tooltip bolder" />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.grossMargin/projectView.model.revenue}" rendered="#{projectView.model.revenue!=0}">
+													<f:convertNumber type="percent" maxFractionDigits="2" />
+												</h:outputText>
+												<i class="ace-icon fa fa-info bigger-130 white pull-right aa-tooltip" title="Gross Margin % Revenue " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.grossMargin}" styleClass="bolder bigger-120">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="space-16" />
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th style="background-color: #EDF3F4; color: #336199; width: 30%">
+												<h:outputText value="Sales Cost" />
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Direct Sales" styleClass="bolder" />
+											</td>
+											<td style="width: 35%">
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.directSalesCost}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Sales Cost % Revenue " />
+											</td>
+											<td style="width: 35%">
+												<h:outputText value="#{projectView.model.directSalesCost*projectView.model.revenue}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Global Sales" styleClass="bolder" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.globalSalesCost}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="HR Cost % Revenue " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.globalSalesCost*projectView.model.revenue}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Presales &amp; Business Developement" styleClass="bolder" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.presalesCost}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Finance Cost % Revenue " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.presalesCost*projectView.model.revenue}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Marketing" styleClass="bolder" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.marketingCost}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="IT Cost % Revenue " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.marketingCost*projectView.model.revenue}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9; color: #336199;">
+												<h:outputText value="Total Sales Costs" styleClass="bolder" />
+											</td>
+											<td style="background-color: #EDF3F4; color: #336199;">
+												<h:outputText value="#{projectView.model.directSalesCost+projectView.model.globalSalesCost+projectView.model.presalesCost+projectView.model.marketingCost}">
+													<f:convertNumber type="percent" maxFractionDigits="2" />
+												</h:outputText>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Total Costs % Revenue " />
+											</td>
+											<td style="background-color: #EDF3F4; color: #336199;">
+												<h:outputText value="#{(projectView.model.directSalesCost+projectView.model.globalSalesCost+projectView.model.presalesCost+projectView.model.marketingCost)*projectView.model.revenue}"
+													styleClass="bolder bigger-120">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="space-16" />
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th style="background-color: #EDF3F4; color: #336199; width: 30%">
+												<h:outputText value="Support Cost" />
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Admin &amp; Logistic " styleClass="bolder" />
+											</td>
+											<td style="width: 35%">
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.adminCost}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Sales Cost % Revenue " />
+											</td>
+											<td style="width: 35%">
+												<h:outputText value="#{projectView.model.adminCost*projectView.model.revenue}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Humain ressources" styleClass="bolder" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.hrCost}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="HR Cost % Revenue " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.hrCost*projectView.model.revenue}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Finance &amp; Accounting" styleClass="bolder" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.financeCost}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Finance Cost % Revenue " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.financeCost*projectView.model.revenue}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="IT " styleClass="bolder" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.itCost}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="IT Cost % Revenue " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.itCost*projectView.model.revenue}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9; color: #336199;">
+												<h:outputText value="Total Support Costs" styleClass="bolder" />
+											</td>
+											<td style="background-color: #EDF3F4; color: #336199;">
+												<h:outputText value="#{projectView.model.adminCost+projectView.model.hrCost+projectView.model.financeCost+projectView.model.itCost}">
+													<f:convertNumber type="percent" maxFractionDigits="2" />
+												</h:outputText>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Total Costs % Revenue " />
+											</td>
+											<td style="background-color: #EDF3F4; color: #336199;">
+												<h:outputText value="#{(projectView.model.adminCost+projectView.model.hrCost+projectView.model.financeCost+projectView.model.itCost)*projectView.model.revenue}"
+													styleClass="bolder bigger-120">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="space-16" />
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th style="background-color: #EDF3F4; color: #336199; width: 30%">
+												<h:outputText value="TPSR" />
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="TPSR" styleClass="bolder" />
+											</td>
+											<td style="width: 35%">
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.tpsr}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="TPSR % Revenue " />
+											</td>
+											<td style="width: 35%">
+												<h:outputText value="#{projectView.model.tpsr*projectView.model.revenue}" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="space-16" />
+								<table class="table table-bordered">
+									<tbody>
+										<tr class="#{projectView.model.ebida/projectView.model.revenue lt 0.12?'background-red-font-white':'background-green-font-white'}">
+											<td>
+												<i>
+													<h:outputText value="EBIDA" title="Earnings Before Interest, Depreciation and Amortization = Gross Margin - (Sales &amp; Support Costs + TPSR)" styleClass="aa-tooltip bolder" />
+												</i>
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.ebida/projectView.model.revenue}" rendered="#{projectView.model.revenue!=0}">
+													<f:convertNumber type="percent" maxFractionDigits="2" />
+												</h:outputText>
+												<i class="ace-icon fa fa-info bigger-130 white pull-right aa-tooltip" title="EBIDA % Revenue " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.ebida}" styleClass="bolder bigger-120">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="space-16" />
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th style="background-color: #EDF3F4; color: #336199; width: 30%">
+												<h:outputText value="TAX &amp; Interest" />
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Financing Cost" styleClass="bolder" />
+											</td>
+											<td style="width: 35%">
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.financingCost}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Financing Cost % Revenue " />
+											</td>
+											<td style="width: 35%">
+												<h:outputText value="#{projectView.model.financingCost*projectView.model.revenue}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="TAX" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.tax}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="TAX % EBIDA " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.tax*projectView.model.ebida}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Amortization" styleClass="bolder" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.amortization}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Amortization % EBIDA " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.amortization*projectView.model.ebida}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Depreciation" styleClass="bolder" />
+											</td>
+											<td>
+												<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+													<p:inputText value="#{projectView.model.depreciation}">
+														<f:convertNumber type="percent" maxFractionDigits="2" />
+													</p:inputText>
+													<p:ajax event="save" listener="#{projectView.updateEbida}" update=":main_form:panel1,:main_form:historyList" />
+													<p:ajax event="cancel" />
+												</p:inplace>
+												<i class="ace-icon fa fa-info bigger-130 blue pull-right aa-tooltip" title="Depreciation % EBIDA " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.depreciation*projectView.model.ebida}" />
+											</td>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9; color: #336199;">
+												<h:outputText value="Total Costs" styleClass="bolder" />
+											</td>
+											<td style="background-color: #EDF3F4; color: #336199;"></td>
+											<td style="background-color: #EDF3F4; color: #336199;">
+												<h:outputText value="#{(projectView.model.financingCost+projectView.model.tax+projectView.model.amortization+projectView.model.depreciation)*projectView.model.ebida}"
+													styleClass="bolder bigger-120">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="space-16" />
+								<table class="table table-bordered">
+									<tbody>
+										<tr class="#{projectView.model.netMargin/projectView.model.revenue lt 0.08?'background-red-font-white':'background-green-font-white'}">
+											<td>
+												<h:outputText value="Net Margin" title="= EBIDA (1-Tax &amp; Interst Costs)" styleClass="aa-tooltip bolder" />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.netMargin/projectView.model.revenue}" rendered="#{projectView.model.revenue!=0}">
+													<f:convertNumber type="percent" maxFractionDigits="2" />
+												</h:outputText>
+												<i class="ace-icon fa fa-info bigger-130 white pull-right aa-tooltip" title="Net Margin % Revenue " />
+											</td>
+											<td>
+												<h:outputText value="#{projectView.model.netMargin}" styleClass="bolder bigger-120">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</h:panelGroup>
+					</div>
+					<div id="tab7" class="tab-pane">
+						<p:messages id="tab7messages" closable="true" />
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" Manager List" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="managerList" value="#{projectView.model.managerList}" var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Photo" width="5%" styleClass="hidden-xs" exportable="false">
+											<p:graphicImage value="#{fileUploadView.stream}" styleClass="img-circle aa-datatable-photo">
+												<f:param name="fileName" value="#{item.user.photo}" />
+											</p:graphicImage>
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type.value}" styleClass="#{item.type.color.badge}" rendered="#{!projectView.editManagerList}" />
+											<h:selectOneMenu value="#{item.type}" rendered="#{projectView.editManagerList}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{ProjectManagerType.ALL_ENUM_VALUES}" />
+											</h:selectOneMenu>
+										</p:column>
+										<p:column headerText="User">
+											<h:outputText value="#{item.user.fullName}" styleClass="bolder green" rendered="#{!projectView.editManagerList}" />
+											<p:selectOneMenu value="#{item.userUsername}" filter="true" filterMatchMode="contains" rendered="#{projectView.editManagerList}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{userView.findLightActive()}" var="user" itemLabel="#{user.fullName}" itemValue="#{user.username}" />
+											</p:selectOneMenu>
+										</p:column>
+										<p:column headerText="Email">
+											<h:outputText value="#{item.user.email}" styleClass="light-blue" />
+										</p:column>
+										<p:column headerText="Phone">
+											<h:outputText value="#{item.user.phone}" styleClass="orange bolder" />
+										</p:column>
+										<p:column headerText="Actions" width="100" rendered="#{projectView.editManagerList}">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete " action="#{projectView.deleteManager(item)}" update="managerList">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+												</p:commandLink>
+											</div>
+										</p:column>
+										<f:facet name="footer">
+											<div class="action-buttons center">
+												<p:commandLink title="Add New" styleClass="aa-tooltip" action="#{projectView.addManager()}" update="managerList" rendered="#{projectView.canAddManager()}">
+													<i class="ace-icon fa fa-plus bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="Save" styleClass="aa-tooltip" action="#{projectView.saveManagerList()}" update="managerList,:main_form:tab7messages" rendered="#{projectView.canSaveManagerList()}">
+													<i class="ace-icon fa fa-save bigger-130 blue" />
+												</p:commandLink>
+												<p:commandLink title="Edit" styleClass="aa-tooltip" update="managerList" rendered="#{projectView.canEditManagerList()}">
+													<i class="ace-icon fa fa-edit  bigger-130 orange" />
+													<f:setPropertyActionListener value="true" target="#{projectView.editManagerList}" />
+												</p:commandLink>
+											</div>
+										</f:facet>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab8" class="tab-pane">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Planned Start Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.startDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Planned Revenue" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.revenue}" styleClass="blue">
+												<f:convertNumber type="number" maxFractionDigits="2" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="EBIDA" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.ebida}" styleClass="#{projectView.model.ebida/projectView.model.revenue lt 0.12?'red':'green'}">
+												<f:convertNumber type="number" maxFractionDigits="2" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Planned End Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.endDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="COGS" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.cogs}" styleClass="red">
+												<f:convertNumber type="number" maxFractionDigits="2" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Currency" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{projectView.model.currency.name}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space-8" />
+						<f:subview rendered="#{projectPlanningView.yearList.size()==0}">
+							<h:outputText value="This project does not contain planning list" />
+							<div class="action-buttons">
+								<small>
+									<p:commandLink styleClass="aa-tooltip" action="#{projectPlanningView.generateProjectPlanning}">
+										<i class="ace-icon fa fa-gears bigger-130" />
+										<h:outputText value=" Generate Planning List for this project" />
+									</p:commandLink>
+								</small>
+							</div>
+						</f:subview>
+						<p:tabView id="tabview1" rendered="#{projectPlanningView.yearList.size()>0}" value="#{projectPlanningView.yearList}" var="year" styleClass="aa-tabview">
+							<p:ajax event="tabChange" listener="#{projectPlanningView.onTabChange}" update=":main_form:tabview1" />
+							<p:tab title="#{year}">
+								<table class="table table-bordered aa-table1">
+									<thead>
+										<tr>
+											<th style="width: 15%">
+												<h:outputText value="Financial Planning" />
+											</th>
+										</tr>
+										<tr>
+											<th style="background-color: #e4e6e9;">
+												<h:outputText value="Month" styleClass="bolder black" />
+											</th>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<th class="center" style="width: 100px">
+													<h:outputText value="#{utilsView.getMonthName(item.month)}" />
+												</th>
+											</ui:repeat>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Sales / Orders" />
+											</td>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<td class="center">
+													<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+														<p:inputText value="#{item.sales}" />
+														<p:ajax event="save" listener="#{projectPlanningView.saveProjectPlanningList}" update=":main_form:tabview1" />
+														<p:ajax event="cancel" />
+													</p:inplace>
+												</td>
+											</ui:repeat>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Revenue Planning" />
+											</td>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<td class="center">
+													<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+														<p:inputText value="#{item.revenue}" />
+														<p:ajax event="save" listener="#{projectPlanningView.saveProjectPlanningList}" update=":main_form:tabview1" />
+														<p:ajax event="cancel" />
+													</p:inplace>
+												</td>
+											</ui:repeat>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="COGS Budgeting" />
+											</td>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<td class="center">
+													<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+														<p:inputText value="#{item.cost}" />
+														<p:ajax event="save" listener="#{projectPlanningView.saveProjectPlanningList}" update=":main_form:tabview1" />
+														<p:ajax event="cancel" />
+													</p:inplace>
+												</td>
+											</ui:repeat>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Operatoins Margin" />
+											</td>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<td class="center" style="background-color: #e4e6e9">
+													<h:outputText value="#{item.margin}" styleClass="#{item.margin lt 0?'red':'green'} bolder" />
+												</td>
+											</ui:repeat>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table table-bordered aa-table1">
+									<thead>
+										<tr>
+											<th style="width: 15%">
+												<h:outputText value="Cash Follow" />
+											</th>
+										</tr>
+										<tr>
+											<th style="background-color: #e4e6e9; width: 10%">
+												<h:outputText value="Month" styleClass="bolder black" />
+											</th>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<th class="center" style="width: 100px">
+													<h:outputText value="#{utilsView.getMonthName(item.month)}" />
+												</th>
+											</ui:repeat>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Cash In" />
+											</td>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<td class="center">
+													<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+														<p:inputText value="#{item.cashIn}" />
+														<p:ajax event="save" listener="#{projectPlanningView.saveProjectPlanningList}" update=":main_form:tabview1" />
+														<p:ajax event="cancel" />
+													</p:inplace>
+												</td>
+											</ui:repeat>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Cash Out" />
+											</td>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<td class="center">
+													<p:inplace editor="true" styleClass="editable-click" saveLabel="save" cancelLabel="cancel" effect="none" emptyLabel="None">
+														<p:inputText value="#{item.cashOut}" />
+														<p:ajax event="save" listener="#{projectPlanningView.saveProjectPlanningList}" update=":main_form:tabview1" />
+														<p:ajax event="cancel" />
+													</p:inplace>
+												</td>
+											</ui:repeat>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Delta" />
+											</td>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<td class="center">
+													<h:outputText value="#{item.delta}" styleClass="#{item.delta lt 0?'red':'green'}" />
+												</td>
+											</ui:repeat>
+										</tr>
+										<tr>
+											<td style="background-color: #e4e6e9">
+												<h:outputText value="Cumulative" />
+											</td>
+											<ui:repeat var="item" value="#{projectPlanningView.list1}">
+												<td class="center" style="background-color: #e4e6e9">
+													<h:outputText value="#{item.cumulative}" styleClass="#{item.cumulative lt 0?'red':'green'} bolder" />
+												</td>
+											</ui:repeat>
+										</tr>
+									</tbody>
+								</table>
+							</p:tab>
+						</p:tabView>
+					</div>
+					<div id="tab9" class="tab-pane">
+						<p:messages id="tab9messages" closable="true" />
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-5 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" Milestones" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="milestoneList" value="#{projectView.model.milestoneList}" var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false"
+										paginator="true" paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Numero">
+											<h:outputText value="#{item.numero}" rendered="#{!projectView.editMilestoneList}" />
+											<p:inputNumber value="#{item.numero}" decimalPlaces="0" thousandSeparator="" styleClass="bolder purple" rendered="#{projectView.editMilestoneList}" style="width:90%" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" styleClass="bolder green" rendered="#{!projectView.editMilestoneList}" />
+											<p:inputText value="#{item.name}" rendered="#{projectView.editMilestoneList}" style="width:90%" />
+										</p:column>
+										<p:column headerText="Description">
+											<h:outputText value="#{item.description}" styleClass="pink" rendered="#{!projectView.editMilestoneList}" />
+											<p:inputText value="#{item.description}" rendered="#{projectView.editMilestoneList}" style="width:90%" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type.value}" styleClass="#{item.type.color.name}" rendered="#{!projectView.editMilestoneList}" />
+											<h:selectOneMenu value="#{item.type}" rendered="#{projectView.editMilestoneList}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{ProjectMilestoneType.ALL_ENUM_VALUES}" />
+											</h:selectOneMenu>
+										</p:column>
+										<p:column headerText="Color">
+											<h:outputText value="#{item.color.name}" styleClass="#{item.color.name}" rendered="#{!projectView.editMilestoneList}" />
+											<h:selectOneMenu value="#{item.color}" rendered="#{projectView.editMilestoneList}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems value="#{Color.ALL_ENUM_VALUES}" />
+											</h:selectOneMenu>
+										</p:column>
+										<p:column headerText="Completion %">
+											<h:outputText value="#{item.completionPercentage} %" styleClass="#{item.color.badge}" rendered="#{!projectView.editMilestoneList}" />
+											<p:inputNumber value="#{item.completionPercentage}" minValue="0" maxValue="100" thousandSeparator="" decimalSeparator="." rendered="#{projectView.editMilestoneList}" />
+										</p:column>
+										<p:column headerText="Actions" width="100" rendered="#{projectView.editMilestoneList}">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete " action="#{projectView.deleteMilestone(item)}" update=":main_form:milestoneList">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+												</p:commandLink>
+											</div>
+										</p:column>
+										<f:facet name="footer">
+											<div class="action-buttons center">
+												<p:commandLink title="Add New" styleClass="aa-tooltip" action="#{projectView.addMilestone()}" update=":main_form:milestoneList" rendered="#{projectView.canAddMilestone()}">
+													<i class="ace-icon fa fa-plus bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="Save" styleClass="aa-tooltip" action="#{projectView.saveMilestoneList()}" update=":main_form:milestoneList,:main_form:tab9messages"
+													rendered="#{projectView.canSaveMilestoneList()}">
+													<i class="ace-icon fa fa-save bigger-130 blue" />
+												</p:commandLink>
+												<p:commandLink title="Edit" styleClass="aa-tooltip" update=":main_form:milestoneList" rendered="#{projectView.canEditMilestoneList()}">
+													<i class="ace-icon fa fa-edit  bigger-130 orange" />
+													<f:setPropertyActionListener value="true" target="#{projectView.editMilestoneList}" />
+												</p:commandLink>
+											</div>
+										</f:facet>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab10" class="tab-pane">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Company" />
+										</div>
+										<div class="profile-info-value">
+											<p:commandLink id="companyWarehousing" update="companyWarehousing,companyStockManagement" partialSubmit="true" process="@this" action="#{projectView.updateCompanyWarehousing()}"
+												disabled="#{!projectView.canEditInplace()}">
+												<i class="ace-icon fa #{projectView.model.companyWarehousing?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!projectView.model.companyWarehousing}" target="#{projectView.model.companyWarehousing}" />
+											</p:commandLink>
+											<h:outputText value=" Company Warehousing" />
+											<br />
+											<p:commandLink id="companyStockManagement" update="companyWarehousing,companyStockManagement" partialSubmit="true" process="@this" action="#{projectView.updateCompanyStockManagement()}"
+												disabled="#{!projectView.canEditInplace()}">
+												<i class="ace-icon fa #{projectView.model.companyStockManagement?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!projectView.model.companyStockManagement}" target="#{projectView.model.companyStockManagement}" />
+											</p:commandLink>
+											<h:outputText value=" Company Stock Management" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Customer" />
+										</div>
+										<div class="profile-info-value">
+											<p:commandLink id="customerWarehousing" update="customerWarehousing,customerStockManagement" partialSubmit="true" process="@this" action="#{projectView.updateCustomerWarehousing()}"
+												disabled="#{!projectView.canEditInplace()}">
+												<i class="ace-icon fa #{projectView.model.customerWarehousing?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!projectView.model.customerWarehousing}" target="#{projectView.model.customerWarehousing}" />
+											</p:commandLink>
+											<h:outputText value=" Customer Warehousing" />
+											<br />
+											<p:commandLink id="customerStockManagement" update="customerWarehousing,customerStockManagement" partialSubmit="true" process="@this" action="#{projectView.updateCustomerStockManagement()}"
+												disabled="#{!projectView.canEditInplace()}">
+												<i class="ace-icon fa #{projectView.model.customerStockManagement?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!projectView.model.customerStockManagement}" target="#{projectView.model.customerStockManagement}" />
+											</p:commandLink>
+											<h:outputText value=" Customer Stock Management" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Supplier" />
+										</div>
+										<div class="profile-info-value">
+											<p:commandLink id="supplierWarehousing" update="supplierWarehousing,supplierStockManagement" partialSubmit="true" process="@this" action="#{projectView.updateSupplierWarehousing()}"
+												disabled="#{!projectView.canEditInplace()}">
+												<i class="ace-icon fa #{projectView.model.supplierWarehousing?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!projectView.model.supplierWarehousing}" target="#{projectView.model.supplierWarehousing}" />
+											</p:commandLink>
+											<h:outputText value=" Supplier Warehousing" />
+											<br />
+											<p:commandLink id="supplierStockManagement" update="supplierWarehousing,supplierStockManagement" partialSubmit="true" process="@this" action="#{projectView.updateSupplierStockManagement()}"
+												disabled="#{!projectView.canEditInplace()}">
+												<i class="ace-icon fa #{projectView.model.supplierStockManagement?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!projectView.model.supplierStockManagement}" target="#{projectView.model.supplierStockManagement}" />
+											</p:commandLink>
+											<h:outputText value=" Supplier Stock Management" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="SDM" />
+										</div>
+										<div class="profile-info-value">
+											<p:commandLink id="sdm" update="sdm" partialSubmit="true" process="@this" action="#{projectView.updateSdm()}" disabled="#{!projectView.canEditInplace()}">
+												<i class="ace-icon fa #{projectView.model.sdm?'fa-toggle-on green':'fa-toggle-off grey'} bigger-200" />
+												<f:setPropertyActionListener value="#{!projectView.model.sdm}" target="#{projectView.model.sdm}" />
+											</p:commandLink>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{projectView.redirect()}" />
+		<ui:include src="projectFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
+	</ui:define>
+</ui:composition>

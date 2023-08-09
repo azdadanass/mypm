@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="#{companyView.findName(paramView.idCompany)}" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.PaymentStatus" var="PaymentStatus" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list bigger-110 green"></i>
+					<h:outputText value="BankPayment List" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h:panelGroup id="widgetPanel">
+						<div class=" col-sm-offset-1 col-sm-5">
+							<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{bankPaymentView.evictCache()}">
+								<i class="ace-icon fa fa-refresh bigger-230"></i>
+								<h:outputText value="Reload" />
+							</p:commandLink>
+						</div>
+						<div class="col-sm-5 infobox-container">
+							<div class="infobox infobox-blue">
+								<div class="infobox-icon">
+									<i class="ace-icon fa fa-list"></i>
+								</div>
+								<div class="infobox-data">
+									<span class="infobox-data-number">
+										<h:outputText value="Total" />
+									</span>
+									<div class="infobox-content">
+										<h:outputText value="#{bankPaymentView.rowsNumber}" />
+									</div>
+								</div>
+							</div>
+							<div class="infobox infobox-green">
+								<div class="infobox-icon">
+									<i class="ace-icon fa fa-dollar"></i>
+								</div>
+								<div class="infobox-data">
+									<span class="infobox-data-number">
+										<h:outputText value="Total Amount" />
+									</span>
+									<div class="infobox-content">
+										<h:outputText value="#{bankPaymentView.list2TotalAmountMad}">
+											<f:convertNumber type="number" maxFractionDigits="2" />
+										</h:outputText>
+										<h:outputText value=" MAD" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<p:messages id="messages" />
+				<div class="col-sm-12">
+					<div class="table-header col-sm-12 col-xs-12">
+						<div class="col-sm-2 col-xs-8">
+							<i class="fa fa-list" />
+							<h:outputText value="Payment List" />
+						</div>
+						<div class="col-sm-6 ">
+							<table style="margin-top: 5px">
+								<tr>
+									<td>
+										<h:outputText value="Filter by : " />
+									</td>
+									<td>
+										<p:commandLink action="#{bankPaymentView.refreshList()}" update="bankPaymentList,widgetPanel" styleClass="aa-tooltip tooltip-warning" title="Initiated">
+											<div class="aa-icon-pending" />
+											<f:setPropertyActionListener value="#{PaymentStatus.INITIATED}" target="#{bankPaymentView.status}" />
+										</p:commandLink>
+									</td>
+									<td>
+										<p:commandLink action="#{bankPaymentView.refreshList()}" update="bankPaymentList,widgetPanel" styleClass="aa-tooltip tooltip-info" title="Submitted">
+											<div class="aa-icon-paid" />
+											<f:setPropertyActionListener value="#{PaymentStatus.SUBMITTED}" target="#{bankPaymentView.status}" />
+										</p:commandLink>
+									</td>
+									<td>
+										<p:commandLink action="#{bankPaymentView.refreshList()}" update="bankPaymentList,widgetPanel" styleClass="aa-tooltip tooltip-success" title="Confirmed">
+											<div class="aa-icon-completed" />
+											<f:setPropertyActionListener value="#{PaymentStatus.CONFIRMED}" target="#{bankPaymentView.status}" />
+										</p:commandLink>
+									</td>
+									<td>
+										<p:commandLink action="#{bankPaymentView.refreshList()}" update="bankPaymentList,widgetPanel" styleClass="aa-tooltip" title="All">
+											<div class="aa-icon-all" />
+											<f:setPropertyActionListener value="#{null}" target="#{bankPaymentView.status}" />
+										</p:commandLink>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-sm-2 hidden-xs">
+							<div class="action-buttons center">
+								<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+									<img src="/resources/img/xls.png" width="20" height="20" />
+									<p:dataExporter type="xls" target="bankPaymentList" fileName="bankPaymentList" postProcessor="#{utilsView.excelExportation}" />
+								</h:commandLink>
+							</div>
+						</div>
+						<div class="col-sm-2 col-xs-4">
+							<div class="nav-search minimized">
+								<span class="input-icon">
+									<p:inputText value="#{bankPaymentView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+										<p:ajax event="keyup" update="bankPaymentList,widgetPanel" />
+									</p:inputText>
+									<i class="ace-icon fa fa-search nav-search-icon" />
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-xs-12 aa-datatable-container">
+						<!-- <p:remoteCommand name="panelUpdaters" process="@this" update=":main_form:widgetPanel" /> -->
+						<p:dataTable value="#{bankPaymentView.list2}" filteredValue="#{bankPaymentView.list3}" rowKey="#{item.id}" selection="#{bankPaymentView.list4}" id="bankPaymentList" widgetVar="bankPaymentList"
+							var="item" rows="20" styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom"
+							paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowSelectMode="checkbox">
+
+							<!-- <p:ajax event="filter" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowSelect" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowUnselect" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowSelectCheckbox" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowUnselectCheckbox" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="toggleSelect" oncomplete="panelUpdaters()" process="@this" />
+
+							<p:column selectionMode="multiple" styleClass="ace aa-checkbox-column" exportable="false" /> -->
+
+							<p:column headerText="Reference" width="200">
+								<h:outputText value="#{item.reference}" styleClass="bolder blue" />
+							</p:column>
+
+							<p:column headerText="Mode" width="80">
+								<h:outputText value="#{item.mode.value}" styleClass="#{item.mode.color.badge}" />
+							</p:column>
+
+							<p:column headerText="Supplier">
+								<h:outputText value="#{item.supplierName}" styleClass="aa-cut-text pink" />
+							</p:column>
+
+							<p:column headerText="Bank Account" width="200">
+								<h:outputText value="#{item.bankAccountFullName}" styleClass="bolder green" />
+							</p:column>
+
+							<p:column headerText="Payment Date" width="80">
+								<h:outputText value="#{item.paymentDate}">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Cash Date" width="80">
+								<h:outputText value="#{item.cashDate}">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Age" width="50" sortBy="#{item.age}" rendered="#{PaymentStatus.INITIATED==bankPaymentView.status or PaymentStatus.SUBMITTED==bankPaymentView.status}">
+								<h:outputText value="#{item.age}" styleClass="red" />
+							</p:column>
+
+							<p:column headerText="Amount" width="120">
+								<h:outputText value="#{item.amount}" styleClass="bolder purple">
+									<f:convertNumber type="number" maxFractionDigits="2" />
+								</h:outputText>
+								<h:outputText value=" #{item.currencyName}" styleClass="bolder purple"/>
+							</p:column>
+							
+							<p:column headerText="Status" width="120">
+								<h:outputText value="#{item.status.value}" styleClass="#{item.status.color.name}" />
+							</p:column>
+
+							<p:column headerText="Actions" width="100" exportable="false">
+								<div class="action-buttons center">
+								
+									<p:commandLink title="Mapped" styleClass="aa-tooltip" rendered="#{item.isMapped}">
+										<i class="ace-icon fa fa-link bigger-130 green" />
+									</p:commandLink>
+
+									<p:commandLink title="#{item.countFiles} Attachements" styleClass="aa-tooltip">
+										<i class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+									</p:commandLink>
+
+									<h:outputLink value="#{bankPaymentView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+										<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+										<f:param name="id" value="#{item.id}" />
+									</h:outputLink>
+								</div>
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

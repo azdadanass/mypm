@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View SupplierCategory" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View SupplierCategory" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{supplierCategoryView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{supplierCategoryView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+
+						<h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditSupplierCategory.xhtml" rendered="#{supplierCategoryView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{supplierCategoryView.id}" />
+						</h:outputLink>
+
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{supplierCategoryView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+
+
+
+
+
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="user-profile row">
+				<div class="col-xs-12 col-sm-3 center">
+					<div class="profile-picture">
+						<p:graphicImage id="photo" value="#{fileUploadView.stream}" styleClass="editable img-responsive editable-click editable-empty aa-avatar" onclick="PF('uploadPhotoDlg').show()"
+							rendered="#{supplierCategoryView.canUploadPhoto()}">
+							<f:param name="fileName" value="#{supplierCategoryView.model.photo}" />
+						</p:graphicImage>
+						<p:graphicImage value="#{fileUploadView.stream}" styleClass="editable img-responsive editable-click editable-empty aa-avatar" rendered="#{!supplierCategoryView.canUploadPhoto()}">
+							<f:param name="fileName" value="#{supplierCategoryView.model.photo}" />
+						</p:graphicImage>
+					</div>
+					<div class="space-4" />
+
+					<div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+						<div class="inline position-relative">
+							<a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+								<h:panelGroup id="activeIcon">
+									<i class="ace-icon fa fa-circle #{supplierCategoryView.model.active?&#39;light-green&#39;:&#39;red&#39;}" />
+								</h:panelGroup>
+								&nbsp;
+								<span class="white">
+									<h:outputText value="#{supplierCategoryView.model.name}" />
+								</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-9">
+					<div class="widget-box transparent">
+						<div class="widget-header widget-header-small">
+							<h4 class="smaller">
+								<i class="ace-icon fa fa-check-square-o bigger-110"></i>
+								<h:outputText value=" Description" />
+							</h4>
+						</div>
+						<div class="space-8" />
+						<div>
+							<h:outputText value="#{supplierCategoryView.model.description}" />
+						</div>
+						<div class="space-32" />
+					</div>
+				</div>
+			</div>
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+
+
+
+
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Numero" />
+										</div>
+
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierCategoryView.model.idStr}" styleClass="bolder orange" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Name" />
+										</div>
+
+										<div class="profile-info-value">
+											<h:outputText value="#{supplierCategoryView.model.name}" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space-16" />
+						<div style="width: 90%; margin: auto;">
+							<div class="well">
+								<h4 class="green smaller lighter">
+									<h:outputText value="Description" />
+								</h4>
+								<h:outputText value="#{supplierCategoryView.model.description}" styleClass="preformatted" />
+							</div>
+						</div>
+					</div>
+
+
+
+
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{supplierCategoryView.redirect()}" />
+		<ui:include src="supplierCategoryFooter.xhtml" />
+	</ui:define>
+</ui:composition>

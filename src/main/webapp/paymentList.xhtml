@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="#{companyView.findName(paramView.idCompany)}" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.BankPaymentMode" var="BankPaymentMode" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.PaymentStatus" var="PaymentStatus" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list bigger-110 green"></i>
+					<h:outputText value="Payment List" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h:panelGroup id="widgetPanel">
+						<div class=" col-sm-offset-1 col-sm-6">
+							<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{paymentView.evictCache()}">
+								<i class="ace-icon fa fa-refresh bigger-230"></i>
+								<h:outputText value="Reload" />
+							</p:commandLink>
+
+							<p:commandLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-info" title="Add Payment" action="#{paymentView.initConsolidatePayment()}" update=":consolidatePaymentForm"
+								oncomplete="PF('consolidatePaymentDlg').show()" 
+								disabled="#{paymentView.status!=PaymentStatus.CONFIRMED or paymentView.supplierId==null or paymentView.companyId==null or paymentView.currencyId==null or paymentView.bankAccountId==null or paymentView.cashDate==null or paymentView.cashDate==null}">
+								<i class="ace-icon fa fa-plus bigger-230"></i>
+								<h:outputText value="Add" />
+							</p:commandLink>
+
+						</div>
+						<div class="col-sm-5  hidden-xs infobox-container">
+							<span class="btn btn-app btn-sm btn-warning no-hover">
+								<span class="line-height-1 bigger-170">
+									<h:outputText value="#{paymentView.rowsNumber}" />
+								</span>
+								<br />
+								<span class="line-height-1 smaller-90">
+									<h:outputText value="Total" />
+								</span>
+							</span>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<p:messages id="messages" />
+				<div class="col-sm-12">
+					<div class="table-header col-sm-12 col-xs-12">
+						<div class="col-sm-8 col-xs-8">
+							<i class="fa fa-list" />
+							<h:outputText value="Payment List" />
+						</div>
+						<div class="col-sm-2 hidden-xs">
+							<div class="action-buttons center">
+								<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+									<img src="/resources/img/xls.png" width="20" height="20" />
+									<p:dataExporter type="xls" target="paymentList" fileName="paymentList" postProcessor="#{utilsView.excelExportation}" />
+								</h:commandLink>
+							</div>
+						</div>
+						<div class="col-sm-2 col-xs-4">
+							<div class="nav-search minimized">
+								<span class="input-icon">
+									<p:inputText value="#{paymentView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+										<p:ajax event="keyup" update="paymentList,widgetPanel" />
+									</p:inputText>
+									<i class="ace-icon fa fa-search nav-search-icon" />
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-xs-12 aa-datatable-container">
+						<p:remoteCommand name="panelUpdaters" process="@this" update=":main_form:widgetPanel" />
+						<p:dataTable value="#{paymentView.list2}" filteredValue="#{paymentView.list3}" rowKey="#{item.id}" selection="#{paymentView.list4}" id="paymentList" widgetVar="paymentList" var="item" rows="20"
+							styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom"
+							paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowSelectMode="checkbox">
+
+							<p:ajax event="filter" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowSelect" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowUnselect" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowSelectCheckbox" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowUnselectCheckbox" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="toggleSelect" oncomplete="panelUpdaters()" process="@this" />
+
+							<p:column selectionMode="multiple" styleClass="ace aa-checkbox-column" exportable="false" />
+
+							<p:column headerText="Numero" sortBy="#{item.numero}">
+								<h:outputText value="#{item.numero}" styleClass="bolder blue" />
+							</p:column>
+
+							<p:column headerText="Invoice">
+								<h:outputText value="#{item.invoiceId}" styleClass="orange bolder" />
+							</p:column>
+
+							<p:column headerText="Mode" width="80">
+								<h:outputText value="#{item.mode}" />
+							</p:column>
+
+							<p:column headerText="Supplier">
+								<h:outputText value="#{item.supplierName}" styleClass="purple" />
+							</p:column>
+
+							<p:column headerText="Company">
+								<h:outputText value="#{item.companyName}" styleClass="green" />
+							</p:column>
+
+							<p:column headerText="Bank Account">
+								<h:outputText value="#{cacheView.getBankAccountFullName(item.bankAccountId)}" styleClass="pink" />
+							</p:column>
+
+							<p:column headerText="Date">
+								<h:outputText value="#{item.date}">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Amount TTC">
+								<h:outputText value="#{item.amountTtc}" styleClass="bolder blue">
+									<f:convertNumber type="number" maxFractionDigits="2" />
+								</h:outputText>
+								<h:outputText value=" #{item.currencyName}" styleClass="bolder blue" />
+							</p:column>
+
+
+							<p:column headerText="Status">
+								<h:outputText value="#{item.status.value}" styleClass="#{item.status.color.name}" />
+							</p:column>
+
+							<p:column headerText="Cash Date">
+								<h:outputText value="#{item.cashDate}">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<ui:include src="paymentFooter.xhtml" />
+	</ui:define>
+</ui:composition>

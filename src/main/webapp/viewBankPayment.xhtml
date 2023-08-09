@@ -1,0 +1,666 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View BankPayment" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.PaymentStatus" var="PaymentStatus" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.Profile" var="Profile" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View BankPayment" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{bankPaymentView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-7">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{bankPaymentView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<!-- <h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditBankPayment.xhtml" rendered="#{bankPaymentView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{bankPaymentView.id}" />
+						</h:outputLink> -->
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{bankPaymentView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+						<p:commandLink title="Add Files" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" onclick="PF('uploadFileDlg').show()" rendered="#{bankPaymentView.canAddFile()}">
+							<i class="ace-icon fa fa-file bigger-230"></i>
+							<h:outputText value="Files" />
+						</p:commandLink>
+						<p:commandLink title="Add Comment" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" onclick="PF('addCommentDlg').show()" rendered="#{bankPaymentView.canAddComment()}">
+							<i class="ace-icon fa fa-comment bigger-230"></i>
+							<h:outputText value="Comment" />
+						</p:commandLink>
+						<p:commandLink title="Submit" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" onclick="PF('submitDlg').show()" rendered="#{bankPaymentView.canSubmit()}">
+							<i class="ace-icon fa fa-external-link bigger-230"></i>
+							<h:outputText value="Submit" />
+						</p:commandLink>
+						<p:commandLink title="Cash" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-info" onclick="PF('cashDlg').show()" rendered="#{bankPaymentView.canCash()}">
+							<i class="ace-icon fa fa-money bigger-230"></i>
+							<h:outputText value="Cash" />
+						</p:commandLink>
+						<p:commandLink title="Edit Conversion Rate" styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-info" onclick="PF('editConversionRateDlg').show()"
+							rendered="#{bankPaymentView.canEditConversionRate()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Rate" />
+						</p:commandLink>
+						<p:commandLink title="Print" styleClass="btn btn-app btn-sm btn-purple hover aa-tooltip tooltip-info" ajax="false" rendered="#{bankPaymentView.canGetWireTransferPdf()}">
+							<p:fileDownload value="#{bankPaymentView.wireTransferPdf}" />
+							<i class="ace-icon fa fa-print bigger-230"></i>
+							<h:outputText value="Print" />
+						</p:commandLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<h:panelGroup id="timeline">
+					<div class="col-sm-offset-1 col-sm-10">
+						<div class="widget-box transparent">
+							<div class="widget-header widget-header-flat">
+								<h4 class="lighter">
+									<i class="ace-icon fa fa-clock-o orange"></i>
+									<h:outputText value=" Approval Time Line" />
+								</h4>
+							</div>
+							<div class="widget-body">
+								<ul class="steps">
+									<li class="complete">
+										<span class="step">
+											<h:outputText value="0" />
+										</span>
+										<span class="title">
+											<h:outputText id="step0" value="#{PaymentStatus.INITIATED.value}" />
+										</span>
+										<p:overlayPanel for="step0" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+											<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(bankPaymentView.model.date0,bankPaymentView.model.user0.username)}" />
+										</p:overlayPanel>
+									</li>
+									<li class="#{bankPaymentView.model.date1!=null?'complete':''}">
+										<span class="step">
+											<i class="ace-icon fa fa-spinner fa-spin grey" />
+										</span>
+										<span class="title">
+											<h:outputText id="step1" value="#{PaymentStatus.SUBMITTED.value}" />
+										</span>
+										<p:overlayPanel for="step1" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+											<h:outputText escape="false"
+												value="#{htmlView.generateOverlayPanelContent(bankPaymentView.model.date1,bankPaymentView.model.user1.username,cacheView.getFirstUsernameByCompanyAndProfile(bankPaymentView.model.bankAccount.company.id,Profile.ACCOUNTANT))}" />
+										</p:overlayPanel>
+									</li>
+									<li class="#{bankPaymentView.model.date2!=null?'complete':''}">
+										<span class="step">
+											<i class="ace-icon fa fa-spinner fa-spin grey" />
+										</span>
+										<span class="title">
+											<h:outputText id="step2" value="#{PaymentStatus.CONFIRMED.value}" />
+										</span>
+										<p:overlayPanel for="step2" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+											<h:outputText escape="false"
+												value="#{htmlView.generateOverlayPanelContent(bankPaymentView.model.date2,bankPaymentView.model.user2.username,cacheView.getFirstUsernameByCompanyAndProfile(bankPaymentView.model.bankAccount.company.id,Profile.CASH_CONTROLLER))}" />
+										</p:overlayPanel>
+									</li>
+									<li class="#{bankPaymentView.model.date3!=null?'complete':''}">
+										<span class="step">
+											<i class="ace-icon fa fa-spinner fa-spin grey" />
+										</span>
+										<span class="title">
+											<h:outputText id="step3" value="Mapped" />
+										</span>
+										<p:overlayPanel for="step3" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+											<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(bankPaymentView.model.date3,bankPaymentView.model.user3.username,'o.lazrak')}" />
+										</p:overlayPanel>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+			</div>
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab2">
+							<i class="purple ace-icon fa fa-list bigger-120"></i>
+							<h:outputText value=" Invoices" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab3">
+							<i class="blue ace-icon fa fa-file bigger-120"></i>
+							<h:outputText value=" Attachements" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab4">
+							<i class="orange ace-icon fa fa-clock-o bigger-120"></i>
+							<h:outputText value=" History" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab5">
+							<i class="red ace-icon fa fa-comment-o bigger-120"></i>
+							<h:outputText value=" Comments" />
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Reference" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.reference}" styleClass="bolder blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Supplier" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.supplier.name}" styleClass="pink" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Bank Account" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.bankAccount.fullName}" styleClass="green" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Payment Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.paymentDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Total Amount" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.amount}" styleClass="bolder purple">
+												<f:convertNumber type="number" maxFractionDigits="2" />
+											</h:outputText>
+											<h:outputText value=" #{bankPaymentView.model.currencyName}" styleClass="bolder purple" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Mode" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.mode.value}" styleClass="#{bankPaymentView.model.mode.color.badge}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Status" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.status.value}" styleClass="#{bankPaymentView.model.status.color.name}" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Supplier Bank Account" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.supplierBankAccount.fullName}" styleClass="orange" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Cash Date" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.cashDate}" styleClass="bolder green">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Conversion Rate" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{bankPaymentView.model.conversionRate}">
+												<f:convertNumber type="number" maxFractionDigits="4" />
+											</h:outputText>
+											<f:subview rendered="#{bankPaymentView.model.conversionRate!=null}">
+												<h:outputText value="(" style="margin-left:20px" />
+												<h:outputText value="#{bankPaymentView.model.conversionRate * bankPaymentView.model.amount}">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{bankPaymentView.model.bankAccount.currency.name})" />
+											</f:subview>
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space-16" />
+						<div style="width: 90%; margin: auto;">
+							<div class="well">
+								<h4 class="green smaller lighter">
+									<h:outputText value="Description" />
+								</h4>
+								<h:outputText value="#{bankPaymentView.model.description}" styleClass="preformatted" />
+							</div>
+						</div>
+					</div>
+					<div id="tab2" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value="Invoice List" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+												<img src="/resources/img/xls.png" width="20" height="20" />
+												<p:dataExporter type="xls" target="invoiceList" fileName="invoiceList" postProcessor="#{utilsView.excelExportation}" />
+											</h:commandLink>
+										</div>
+									</div>
+									<div class="col-sm-2 col-xs-4">
+										<div class="nav-search minimized">
+											<span class="input-icon">
+												<p:inputText value="#{acceptanceView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+													<p:ajax event="keyup" update="invoiceList" />
+												</p:inputText>
+												<i class="ace-icon fa fa-search nav-search-icon" />
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="invoiceList" value="#{invoiceView.list2}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Numero">
+											<h:outputText value="#{item.numero}" styleClass="green" />
+										</p:column>
+										<p:column headerText="Supplier">
+											<h:outputText value="#{item.supplierName}" styleClass="purple" />
+										</p:column>
+										<p:column headerText="Company">
+											<h:outputText value="#{item.companyName}" styleClass="blue" />
+										</p:column>
+										<p:column headerText="Date" width="80">
+											<h:outputText value="#{item.date}" styleClass="pink">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Due Date" width="80">
+											<h:outputText value="#{item.dueDate}" styleClass="red">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Amount HT" width="120">
+											<h:outputText value="#{item.amountHt}" styleClass="blue">
+												<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+											</h:outputText>
+											<h:outputText value=" #{item.currencyName}" styleClass="blue" />
+										</p:column>
+										<p:column headerText="Net Amount HT" width="120">
+											<h:outputText value="#{item.amountHt2}" styleClass="green bolder">
+												<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+											</h:outputText>
+											<h:outputText value=" #{item.currencyName}" styleClass="green bolder" />
+										</p:column>
+										<p:column headerText="Net Amount TTC" width="120">
+											<h:outputText value="#{item.amountTtc2}" styleClass="green bolder">
+												<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+											</h:outputText>
+											<h:outputText value=" #{item.currencyName}" styleClass="green bolder" />
+										</p:column>
+										<p:column headerText="Remainder TTC" width="120">
+											<h:outputText value="#{item.amountTtc2-item.paidTtc}">
+												<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+											</h:outputText>
+											<h:outputText value=" #{item.currencyName}" />
+										</p:column>
+										<p:column headerText="Status" width="100">
+											<h:outputText value="#{item.status.value}" styleClass="#{item.status.color.name}" />
+										</p:column>
+										<p:column headerText="Actions" width="100" exportable="false">
+											<div class="action-buttons center">
+												<p:commandLink title="#{item.appLinkPercentage} %" styleClass="aa-tooltip" rendered="#{item.mappable}">
+													<i class="ace-icon fa fa-link bigger-130 #{item.appLinkPercentageStyleClass}" />
+												</p:commandLink>
+												<p:commandLink title="#{item.countFiles} Attachements" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+												</p:commandLink>
+												<h:outputLink value="viewInvoice.xhtml" title="Show details" styleClass="aa-tooltip tooltip-info">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:param name="id" value="#{item.id}" />
+												</h:outputLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+						<div style="width: 80%; margin: auto;">
+							<div class="hr hr8 hr-double hr-dotted"></div>
+							<div class="row">
+								<div class="col-sm-5 pull-right">
+									<h4 class="pull-right">
+										<h:outputText value="Total amount :" />
+										<span class="green">
+											<h:outputText value="#{invoiceView.list2TotalAmountTtc2}">
+												<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+											</h:outputText>
+											<h:outputText value=" #{bankPaymentView.model.currencyName}" />
+										</span>
+									</h4>
+								</div>
+								<div class="col-sm-7 pull-left">
+									<h:outputText value="Extra Information" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab3" class="tab-pane">
+						<!-- <div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List Of Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList" value="#{bankPaymentView.model.fileList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" />
+										</p:column>
+
+										<p:column headerText="Added Date">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+
+										<p:column headerText="File Size">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+
+										<p:column headerText="File Type" width="100" styleClass="center">
+											<img src="#{item.fileExtensionImage}" style="border: none; border-radius: 0" width="20" height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}" styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+
+										<p:column headerText="Actions" width="150" style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File" oncomplete="PF('deleteFileDlg').show()" styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener target="#{bankPaymentView.file}" value="#{item}" />
+												</p:commandLink>
+
+												<p:commandLink ajax="false">
+													<p:fileDownload value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+
+												<p:commandLink title="View" oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{bankPaymentView.file}" value="#{item}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+						<div class="space-8" /> -->
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" Parent Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList" value="#{bankPaymentView.parentFileList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Phase">
+											<h:outputText value="#{item.parentModelName}" styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Numero">
+											<h:outputText value="#{item.parentModelReference}" />
+										</p:column>
+										<p:column headerText="Phase" width="150" styleClass="center">
+											<h:outputText value="#{item.parentModelName}" styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Added Date" width="90">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="File Size" width="80">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+										<p:column headerText="File Type" width="100" styleClass="center">
+											<img src="#{item.fileExtensionImage}" style="border: none; border-radius: 0" width="20" height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}" styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Actions" width="150" style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File" oncomplete="PF('deleteFileDlg').show()" styleClass="aa-tooltip" rendered="#{bankPaymentView.canDeleteFile(item)}">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener value="#{item}" target="#{bankPaymentView.genericFile}" />
+												</p:commandLink>
+												<p:commandLink ajax="false">
+													<p:fileDownload value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="View" oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{fileView.file}" value="#{item}" />
+													<f:setPropertyActionListener value="#{item}" target="#{bankPaymentView.genericFile}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab4" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" History" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="historyList" value="#{bankPaymentView.model.historyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Action" width="80" styleClass="center">
+											<h:outputText value="#{item.status}" styleClass="#{item.statusStyleClass}" />
+										</p:column>
+										<p:column headerText="Date" width="90" styleClass="center">
+											<f:subview rendered="#{item.date==null}">
+												<i class="ace-icon fa fa-spinner fa-spin orange bigger-200 " />
+											</f:subview>
+											<h:outputText value="#{item.date}" rendered="#{item.date!=null}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="User" width="120">
+											<h:outputText id="user" value="#{item.user.fullName}" styleClass="purple bolder" />
+											<p:overlayPanel for="user" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Description" width="400">
+											<h:outputText value="#{item.description}" escape="false" styleClass="aa-cut-text" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab5" class="tab-pane">
+						<h:panelGroup id="commentPanel">
+							<div class="row">
+								<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+									<div class="timeline-container timeline-style2">
+										<ui:repeat var="commentGroup" value="#{bankPaymentView.model.commentGroupList}" varStatus="varStatus">
+											<div class="timeline-label">
+												<span class="label label-purple arrowed-in-right label-lg">
+													<b> <h:outputText value="#{commentGroup.date}">
+															<f:convertDateTime pattern="yyyy-MM-dd" />
+														</h:outputText>
+													</b>
+												</span>
+											</div>
+											<div class="timeline-items">
+												<ui:repeat var="comment" value="#{commentGroup.commentList}">
+													<div class="timeline-item clearfix">
+														<div class="timeline-info">
+															<img src="#{comment.userPhoto}" /> <i class="timeline-indicator btn btn-info no-hover"></i>
+															<br />
+															<span class="orange">
+																<i class="ace-icon fa fa-clock-o bigger-120"></i>
+																<h:outputText value="#{comment.date}">
+																	<f:convertDateTime pattern="HH:mm" />
+																</h:outputText>
+															</span>
+														</div>
+														<div class="widget-box transparent">
+															<div class="widget-header widget-header-small">
+																<h5 class="widget-title smaller">
+																	<a href="#" class="blue">
+																		<h:outputText value="#{comment.userFullName}" />
+																	</a>
+																	<i class="ace-icon fa fa-angle-double-right"></i>
+																	<span class="grey">
+																		<h:outputText value="#{comment.title}" styleClass="green" />
+																	</span>
+																</h5>
+															</div>
+															<div class="widget-body">
+																<div class="widget-main">
+																	<h:outputText value="Comment : " styleClass="grey bolder" />
+																	<h:outputText value=" #{comment.content}" />
+																</div>
+															</div>
+														</div>
+													</div>
+												</ui:repeat>
+											</div>
+										</ui:repeat>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<f:event type="preRenderView" listener="#{bankPaymentView.redirect()}" />
+		<ui:include src="bankPaymentFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
+	</ui:define>
+</ui:composition>

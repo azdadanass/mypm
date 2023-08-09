@@ -1,0 +1,42 @@
+<script type="text/javascript">
+	Highcharts.chart('__id__', {
+		chart : {
+			plotBackgroundColor : null,
+			plotBorderWidth : null,
+			plotShadow : false,
+			type : 'pie'
+		},
+		title : {
+			text : '__title__'
+		},
+		tooltip : {
+			pointFormat : 'Total : <b>{point.y}</b><br/>Percentage : <b>{point.percentage:.1f}%</b>'
+		},
+		legend : {
+			/* labelFormatter : function() {
+				return this.name.substr(this.name
+						.indexOf(";") + 1,
+						this.name.length);
+			}, */
+			itemWidth : 150,
+			layout : 'vertical',
+			align : 'right',
+			verticalAlign : 'top',
+			x : 30,
+			y : 40,
+			borderWidth : 0,
+			floating : false
+		},
+		plotOptions : {
+			pie : {
+				allowPointSelect : true,
+				cursor : 'pointer',
+				dataLabels : {
+					enabled : false
+				},
+				showInLegend : true
+			}
+		},
+		series : __series__
+	});
+</script>

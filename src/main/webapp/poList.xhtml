@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="Po List" />
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.PoState" var="PoState" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list bigger-110 green"></i>
+					<h:outputText value=" Po List" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h:panelGroup id="widgetPanel">
+						<div class=" col-sm-offset-1 col-sm-5">
+							<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Add New Po" value="#{poView.addEditPage}" rendered="#{poView.canSave()}">
+								<i class="ace-icon fa fa-plus bigger-230"></i>
+								<h:outputText value="Add" />
+							</h:outputLink>
+
+							<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{poView.evictCache()}">
+								<i class="ace-icon fa fa-refresh bigger-230"></i>
+								<h:outputText value="Reload" />
+							</p:commandLink>
+
+							<p:commandLink title="Approve" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip" onclick="PF('approveDlg').show()" disabled="#{poView.list4==null or poView.list4.isEmpty()}"
+								rendered="#{poView.pageIndex==1}">
+								<i class="ace-icon fa fa-check bigger-230"></i>
+								<h:outputText value="Approve" />
+							</p:commandLink>
+
+							<p:commandLink title="Reject" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip" onclick="PF('rejectDlg').show()" disabled="#{poView.list4==null or poView.list4.isEmpty()}"
+								rendered="#{poView.pageIndex==1}">
+								<i class="ace-icon fa fa-remove bigger-230"></i>
+								<h:outputText value="Reject" />
+							</p:commandLink>
+
+
+							<p:commandLink title="Close" styleClass="btn btn-app btn-sm  hover aa-tooltip" onclick="PF('closeDlg').show()" disabled="#{poView.list4==null or poView.list4.isEmpty()}"
+								rendered="#{poView.pageIndex==1}">
+								<i class="ace-icon fa fa-circle bigger-230"></i>
+								<h:outputText value="Close" />
+							</p:commandLink>
+
+							<p:commandLink title="Submit" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip" onclick="PF('submitDlg').show()" disabled="#{poView.list4==null or poView.list4.isEmpty()}"
+								rendered="#{poView.pageIndex==2}">
+								<i class="ace-icon fa fa-external-link bigger-230"></i>
+								<h:outputText value="Submit" />
+							</p:commandLink>
+
+						</div>
+						<div class="col-sm-5 infobox-container">
+							<div class="infobox infobox-blue">
+								<div class="infobox-icon">
+									<i class="ace-icon fa fa-list"></i>
+								</div>
+								<div class="infobox-data">
+									<span class="infobox-data-number">
+										<h:outputText value="Total" />
+									</span>
+									<div class="infobox-content">
+										<h:outputText value="#{poView.rowsNumber}" />
+									</div>
+								</div>
+							</div>
+							<div class="infobox infobox-green">
+								<div class="infobox-icon">
+									<i class="ace-icon fa fa-dollar"></i>
+								</div>
+								<div class="infobox-data">
+									<span class="infobox-data-number">
+										<h:outputText value="Total Amount" />
+									</span>
+									<div class="infobox-content">
+										<h:outputText value="#{poView.list2TotalAmount}">
+											<f:convertNumber type="number" maxFractionDigits="2" />
+										</h:outputText>
+										<h:outputText value=" MAD" />
+									</div>
+								</div>
+							</div>
+							<f:subview rendered="#{poView.pageIndex==3}">
+								<div class="infobox infobox-pink">
+									<div class="infobox-icon">
+										<i class="ace-icon fa fa-dollar"></i>
+									</div>
+									<div class="infobox-data">
+										<span class="infobox-data-number">
+											<h:outputText value="Total Remaining" />
+										</span>
+										<div class="infobox-content">
+											<h:outputText value="#{poView.list2TotalRemaining}">
+												<f:convertNumber type="number" maxFractionDigits="2" />
+											</h:outputText>
+											<h:outputText value=" MAD" />
+										</div>
+									</div>
+								</div>
+							</f:subview>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<p:messages id="messages" />
+				<div class="col-sm-offset-1 col-sm-10">
+					<div class="table-header col-sm-12 col-xs-12">
+						<div class="col-sm-2 col-xs-8">
+							<i class="fa fa-list" />
+							<h:outputText value="Po List" />
+						</div>
+						<div class="col-sm-6 ">
+							<table style="margin-top: 5px">
+								<tr>
+									<td>
+										<h:outputText value="Filter by : " />
+									</td>
+									<td class="#{poView.pageIndex==3?'':'hide'}">
+										<p:commandLink action="#{poView.refreshList()}" update="poList,widgetPanel" styleClass="aa-tooltip tooltip-warning" title="Pending">
+											<div class="aa-icon-pending" />
+											<f:setPropertyActionListener value="#{PoState.SLEEPING}" target="#{poView.state}" />
+										</p:commandLink>
+									</td>
+									<td class="#{poView.pageIndex==null?'':'hide'}">
+										<p:commandLink action="#{poView.refreshList()}" update="poList,widgetPanel" styleClass="aa-tooltip tooltip-pink" title="In Progress">
+											<div class="aa-icon-inprogress" />
+											<f:setPropertyActionListener value="#{PoState.INPROGRESS}" target="#{poView.state}" />
+										</p:commandLink>
+									</td>
+									<td class="#{poView.pageIndex==null or poView.pageIndex==3?'':'hide'}">
+										<p:commandLink action="#{poView.refreshList()}" update="poList,widgetPanel" styleClass="aa-tooltip tooltip-success" title="Receiving">
+											<div class="aa-icon-receiving" />
+											<f:setPropertyActionListener value="#{PoState.RECEIVING}" target="#{poView.state}" />
+										</p:commandLink>
+									</td>
+									<td class="#{poView.pageIndex==null?'':'hide'}">
+										<p:commandLink action="#{poView.refreshList()}" update="poList,widgetPanel" styleClass="aa-tooltip" title="Closed">
+											<div class="aa-icon-closed" />
+											<f:setPropertyActionListener value="#{PoState.CLOSED}" target="#{poView.state}" />
+										</p:commandLink>
+									</td>
+									<td class="#{poView.pageIndex==null?'':'hide'}">
+										<p:commandLink action="#{poView.refreshList()}" update="poList,widgetPanel" styleClass="aa-tooltip tooltip-error" title="Rejected">
+											<div class="aa-icon-rejected" />
+											<f:setPropertyActionListener value="#{PoState.REJECTED}" target="#{poView.state}" />
+										</p:commandLink>
+									</td>
+									<td class="#{poView.pageIndex==null?'':'hide'}">
+										<p:commandLink action="#{poView.refreshList()}" update="poList,widgetPanel" styleClass="aa-tooltip" title="All">
+											<div class="aa-icon-all" />
+											<f:setPropertyActionListener value="#{null}" target="#{poView.state}" />
+										</p:commandLink>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-sm-2 hidden-xs">
+							<div class="action-buttons center">
+								<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+									<img src="/resources/img/xls.png" width="20" height="20" />
+									<p:dataExporter type="xls" target="poList" fileName="poList" postProcessor="#{utilsView.excelExportation}" />
+								</h:commandLink>
+							</div>
+						</div>
+						<div class="col-sm-2 col-xs-4">
+							<div class="nav-search minimized">
+								<span class="input-icon">
+									<p:inputText value="#{poView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+										<p:ajax event="keyup" update="poList,widgetPanel" />
+									</p:inputText>
+									<i class="ace-icon fa fa-search nav-search-icon" />
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-xs-12 aa-datatable-container">
+						<p:remoteCommand name="panelUpdaters" process="@this" update=":main_form:widgetPanel" />
+						<p:dataTable value="#{poView.list2}" filteredValue="#{poView.list3}" rowKey="#{item.id}" selection="#{poView.list4}" id="poList" widgetVar="poList" var="item" rows="20"
+							styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom"
+							paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}" rowSelectMode="checkbox">
+
+							<p:ajax event="filter" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowSelect" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowUnselect" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowSelectCheckbox" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="rowUnselectCheckbox" oncomplete="panelUpdaters()" process="@this" />
+							<p:ajax event="toggleSelect" oncomplete="panelUpdaters()" process="@this" />
+
+							<p:column selectionMode="multiple" styleClass="ace aa-checkbox-column" exportable="false" rendered="#{poView.pageIndex==1 or poView.pageIndex==2 }" />
+
+							<p:column headerText="Numero" sortBy="#{item.numero}">
+								<h:outputText value="#{item.numero}" styleClass="bolder purple" />
+							</p:column>
+
+							<p:column headerText="Supplier">
+								<h:outputText value="#{item.supplierName}" />
+							</p:column>
+
+							<p:column headerText="Project">
+								<h:outputText value="#{item.projectName}" />
+							</p:column>
+
+							<p:column headerText="date">
+								<h:outputText value="#{item.date}">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Total Amount">
+								<h:outputText value="#{item.amountHt}">
+									<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+								</h:outputText>
+								<h:outputText value=" #{item.currencyName}" />
+							</p:column>
+
+							<p:column headerText="Status">
+								<h:outputText value="#{item.status.value}" styleClass="#{item.status.color.name}" />
+								<div class="orange" style="font-size: 11px">
+									<i class="fa fa-clock-o bigger-110" style="margin-right: 5px"></i>
+									<h:outputText value="#{item.lastDate}">
+										<f:convertDateTime pattern="yyyy-MM-dd" />
+									</h:outputText>
+								</div>
+							</p:column>
+
+							<p:column headerText="Last Acceptance" rendered="#{poView.pageIndex==3}">
+								<h:outputText value="#{item.lastAcceptanceDate}">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Age" rendered="#{poView.pageIndex==3}">
+								<h:outputText value="#{item.age}" styleClass="red" />
+							</p:column>
+
+							<p:column headerText="Actions" width="150" exportable="false">
+								<div class="action-buttons center">
+
+									<p:commandLink title="#{item.countFiles} Attachements" styleClass="aa-tooltip">
+										<i class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+									</p:commandLink>
+
+
+									<h:outputLink value="#{poView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+										<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+										<f:param name="id" value="#{item.id}" />
+									</h:outputLink>
+								</div>
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<ui:include src="poFooter.xhtml" />
+	</ui:define>
+</ui:composition>

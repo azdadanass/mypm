@@ -1,0 +1,993 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="View Po" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.PoStatus" var="PoStatus" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.Profile" var="Profile" allSuffix="ALL_ENUM_VALUES" />
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 green"></i>
+					<h:outputText value=" View Po" />
+					<small>
+						<i class="ace-icon fa fa-angle-double-right"></i>
+						<h:outputText value="#{poView.model.identifierName}" />
+					</small>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class=" col-sm-offset-1 col-sm-9">
+						<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Return to Home " value="index.xhtml">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+						</h:outputLink>
+						<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{poView.evictCache()}">
+							<i class="ace-icon fa fa-refresh bigger-230"></i>
+							<h:outputText value="Reload" />
+						</p:commandLink>
+						<h:outputLink styleClass="btn btn-app btn-sm hover aa-tooltip" title="Previous Page" value="javascript: window.history.go(-1)">
+							<i class="ace-icon fa fa-undo bigger-230"></i>
+							<h:outputText value="Back" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning" title="Edit" value="addEditPo.xhtml" rendered="#{poView.canSave()}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{poView.id}" />
+						</h:outputLink>
+						<h:outputLink styleClass="btn btn-app btn-sm btn-purple hover aa-tooltip tooltip-purple" title="Duplicate" value="addEditPo.xhtml" rendered="#{poView.canDuplicate()}">
+							<i class="ace-icon fa fa-files-o bigger-230"></i>
+							<h:outputText value="Duplicate" />
+							<f:param name="templateId" value="#{poView.id}" />
+						</h:outputLink>
+						<p:commandLink title="Delete" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('deleteDlg').show()" rendered="#{poView.canDelete()}">
+							<i class="ace-icon fa fa-trash-o bigger-230"></i>
+							<h:outputText value="Delete" />
+						</p:commandLink>
+						<p:commandLink title="Add Files" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" onclick="PF('uploadFileDlg').show()" rendered="#{poView.canAddFile()}">
+							<i class="ace-icon fa fa-file bigger-230"></i>
+							<h:outputText value="Files" />
+						</p:commandLink>
+						<p:commandLink title="Add Comment" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" onclick="PF('addCommentDlg').show()" rendered="#{poView.canAddComment()}">
+							<i class="ace-icon fa fa-comment bigger-230"></i>
+							<h:outputText value="Comment" />
+						</p:commandLink>
+						<p:commandLink title="Approve" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" onclick="PF('approveDlg').show()" rendered="#{poView.canApprove()}">
+							<i class="ace-icon fa fa-check bigger-230"></i>
+							<h:outputText value="Approve" />
+						</p:commandLink>
+						<p:commandLink title="Reject" styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error" onclick="PF('rejectDlg').show()" rendered="#{poView.canReject()}">
+							<i class="ace-icon fa fa-remove bigger-230"></i>
+							<h:outputText value="Reject" />
+						</p:commandLink>
+						<p:commandLink title="Close" styleClass="btn btn-app btn-sm hover aa-tooltip " onclick="PF('closeDlg').show()" rendered="#{poView.canClose()}">
+							<i class="ace-icon fa fa-circle bigger-230"></i>
+							<h:outputText value="Close" />
+						</p:commandLink>
+						<p:commandLink title="Open" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip " onclick="PF('openDlg').show()" rendered="#{poView.canOpen()}">
+							<i class="ace-icon fa fa-circle bigger-230"></i>
+							<h:outputText value="Open" />
+						</p:commandLink>
+						<p:commandLink title="Submit" styleClass="btn btn-app btn-sm btn-info hover aa-tooltip tooltip-info" onclick="PF('submitDlg').show()" rendered="#{poView.canSubmit()}">
+							<i class="ace-icon fa fa-external-link bigger-230"></i>
+							<h:outputText value="Submit" />
+						</p:commandLink>
+						<h:outputLink value="addEditAcceptance.xhtml" styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Add Acceptance" rendered="#{poView.canAddAcceptance()}">
+							<i class="ace-icon fa fa-plus bigger-230"></i>
+							<h:outputText value="Add" />
+							<f:param name="poId" value="#{poView.model.id}" />
+						</h:outputLink>
+					</div>
+					<div class="col-sm-2">
+						<h:outputLink value="viewSupplier.xhtml" target="_blank" disabled="#{!(sessionView.isBuyer() or sessionView.isCashController() or sessionView.isCfo() or sessionView.isAccountant())}">
+							<p:graphicImage value="#{fileUploadView.stream}" width="150" height="100" style="cursor:pointer">
+								<f:param name="fileName" value="#{poView.model.supplier.photo}" />
+							</p:graphicImage>
+							<f:param name="id" value="#{poView.model.supplier.id}" />
+						</h:outputLink>
+					</div>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<h:panelGroup id="timeline">
+					<div class="col-sm-offset-1 col-sm-10">
+						<div class="widget-box transparent">
+							<div class="widget-header widget-header-flat">
+								<h4 class="lighter">
+									<i class="ace-icon fa fa-clock-o orange"></i>
+									<h:outputText value=" Approval Time Line" />
+								</h4>
+							</div>
+							<div class="widget-body">
+								<ul class="steps">
+									<li class="complete">
+										<span class="step">
+											<h:outputText value="0" />
+										</span>
+										<span class="title">
+											<h:outputText id="step0" value="#{PoStatus.EDITED.value}" />
+										</span>
+										<p:overlayPanel for="step0" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+											<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(poView.model.date0,poView.model.user0.username)}" />
+										</p:overlayPanel>
+									</li>
+									<f:subview rendered="#{poView.model.date1!=null or (poView.model.date8==null and poView.model.date9==null) }">
+										<li class="#{poView.model.date1!=null?'complete':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step1" value="Buyer Approval" />
+												<br />
+												<h:outputText value="#{poView.model.lastActionAgeInHours} H" styleClass="bolder #{poView.model.lastActionAgeInHours gt 24 ?'red':'blue'}" rendered="#{PoStatus.EDITED==poView.model.status}" />
+											</span>
+											<p:overlayPanel for="step1" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(poView.model.date1,poView.model.user1.username,cacheView.getFirstUsernameByCompanyAndProfile(poView.model.company.id,Profile.BUYER))}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+									<f:subview rendered="#{poView.model.date2!=null or (poView.model.date8==null and poView.model.date9==null) }">
+										<li class="#{poView.model.date2!=null?'complete':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step2" value="Approved L1" />
+												<br />
+												<h:outputText value="#{poView.model.lastActionAgeInHours} H" styleClass="bolder #{poView.model.lastActionAgeInHours gt 24 ?'red':'blue'}"
+													rendered="#{PoStatus.APPROVED1==poView.model.status}" />
+											</span>
+											<p:overlayPanel for="step2" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(poView.model.date2,poView.model.user2.username,poView.model.projectManagerUsername)}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+									<f:subview rendered="#{poView.model.date3!=null or (poView.model.date8==null and poView.model.date9==null) }">
+										<li class="#{poView.model.date3!=null?'complete':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step3" value="Approved L2" />
+												<br />
+												<h:outputText value="#{poView.model.lastActionAgeInHours} H" styleClass="bolder #{poView.model.lastActionAgeInHours gt 24 ?'red':'blue'}"
+													rendered="#{PoStatus.APPROVED2==poView.model.status}" />
+											</span>
+											<p:overlayPanel for="step3" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(poView.model.date3,poView.model.user3.username,poView.model.project.category=='project'?poView.model.customerManagerUsername:poView.model.lobManagerUsername)}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+									<f:subview rendered="#{poView.model.date4!=null or (poView.model.date8==null and poView.model.date9==null) }">
+										<li class="#{poView.model.date4!=null?'complete':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step4" value="Finance Approval" />
+												<br />
+												<h:outputText value="#{poView.model.lastActionAgeInHours} H" styleClass="bolder #{poView.model.lastActionAgeInHours gt 24 ?'red':'blue'}"
+													rendered="#{PoStatus.APPROVED3==poView.model.status}" />
+											</span>
+											<p:overlayPanel for="step4" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(poView.model.date4,poView.model.user4.username,cacheView.getFirstUsernameByCompanyAndProfile(poView.model.company.id,Profile.CFO))}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+									<f:subview rendered="#{poView.model.date5!=null or (poView.model.date8==null and poView.model.date9==null) }">
+										<li class="#{poView.model.date5!=null?'complete':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step5" value="#{PoStatus.SUBMITTED.value}" />
+												<br />
+												<h:outputText value="#{poView.model.lastActionAgeInHours} H" styleClass="bolder #{poView.model.lastActionAgeInHours gt 24 ?'red':'blue'}"
+													rendered="#{PoStatus.APPROVED4==poView.model.status}" />
+											</span>
+											<p:overlayPanel for="step5" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(poView.model.date5,poView.model.user5.username,poView.model.user0.username)}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+									<f:subview rendered="#{poView.model.date7==null and (poView.model.date6!=null or (poView.model.date8==null and poView.model.date9==null)) }">
+										<li class="#{poView.model.date6!=null?'complete':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step6" value="#{PoStatus.RECEIVING.value}" />
+												<br />
+												<h:outputText value="#{poView.model.lastActionAgeInHours} H" styleClass="bolder #{poView.model.lastActionAgeInHours gt 24 ?'red':'blue'}"
+													rendered="#{PoStatus.SUBMITTED==poView.model.status}" />
+											</span>
+											<p:overlayPanel for="step6" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(poView.model.date6,poView.model.user6.username,poView.model.projectManagerUsername)}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+									<f:subview rendered="#{poView.model.date7!=null or (poView.model.date8==null and poView.model.date9==null) }">
+										<li class="#{poView.model.date7!=null?'complete':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step7" value="#{PoStatus.RECEIVED.value}" />
+											</span>
+											<p:overlayPanel for="step7" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(poView.model.date7,poView.model.user7.username,poView.model.projectManagerUsername)}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+									<f:subview rendered="#{poView.model.date8!=null}">
+										<li class="#{poView.model.date8!=null?'complete':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step8" value="#{PoStatus.CLOSED.value}" />
+											</span>
+											<p:overlayPanel for="step8" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(poView.model.date8,poView.model.user8.username)}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+									<f:subview rendered="#{poView.model.date9!=null}">
+										<li class="#{poView.model.date9!=null?'error':''}">
+											<span class="step">
+												<i class="ace-icon fa fa-spinner fa-spin grey" />
+											</span>
+											<span class="title">
+												<h:outputText id="step9" value="#{PoStatus.REJECTED.value}" />
+											</span>
+											<p:overlayPanel for="step9" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(poView.model.date9,poView.model.user9.username)}" />
+											</p:overlayPanel>
+										</li>
+									</f:subview>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+			</div>
+			<div class="space-16" />
+			<p:messages id="messages" closable="true" />
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-18">
+					<li class="active">
+						<a data-toggle="tab" href="#tab1">
+							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
+							<h:outputText value=" Informations" styleClass="hidden-xs" />
+						</a>
+					</li>
+					<f:subview rendered="#{poView.model.date5 != null}">
+						<li>
+							<a data-toggle="tab" href="#tab2">
+								<i class="purple ace-icon fa fa-list bigger-120"></i>
+								<h:outputText value=" Details" styleClass="hidden-xs" />
+							</a>
+						</li>
+					</f:subview>
+					<f:subview rendered="#{PoStatus.RECEIVING==poView.model.status}">
+						<li>
+							<a data-toggle="tab" href="#tab6">
+								<i class="orange ace-icon fa fa-list bigger-120"></i>
+								<h:outputText value=" Receiving To Go" styleClass="hidden-xs" />
+							</a>
+						</li>
+					</f:subview>
+					<li>
+						<a data-toggle="tab" href="#tab3">
+							<i class="blue ace-icon fa fa-file bigger-120"></i>
+							<h:outputText value=" Attachements" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab4">
+							<i class="orange ace-icon fa fa-clock-o bigger-120"></i>
+							<h:outputText value=" History" />
+						</a>
+					</li>
+					<li>
+						<a data-toggle="tab" href="#tab5">
+							<i class="red ace-icon fa fa-comment-o bigger-120"></i>
+							<h:outputText value=" Comments" />
+						</a>
+					</li>
+					<f:subview rendered="#{poView.model.containsGoodsSupply()}">
+						<li>
+							<a data-toggle="tab" href="#tab7">
+								<i class="pink ace-icon fa fa-list-alt bigger-120"></i>
+								<h:outputText value=" BoQ Summary" />
+							</a>
+						</li>
+					</f:subview>
+				</ul>
+				<div class="tab-content no-border padding-24">
+					<div id="tab1" class="tab-pane in active">
+						<ui:include src="viewPoTab1.xhtml" />
+					</div>
+					<f:subview rendered="#{poView.model.date5 != null}">
+						<div id="tab2" class="tab-pane">
+							<div class="space-8" />
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="Acceptance List" />
+							</h4>
+							<div class="row">
+								<div class="col-sm-offset-1 col-sm-10">
+									<div class="table-header col-sm-12 col-xs-12">
+										<div class="col-sm-9 hidden-xs">
+											<i class="fa fa-list" />
+											<h:outputText value=" Acceptance List" />
+										</div>
+									</div>
+									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+										<p:dataTable id="acceptanceList" value="#{acceptanceView.list1}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+											paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+											<p:column headerText="Numero" sortBy="#{item.numero}">
+												<h:outputText value="#{item.numero}" styleClass="bolder purple" />
+											</p:column>
+											<p:column headerText="Po">
+												<h:outputText value="#{item.poNumero}" />
+											</p:column>
+											<p:column headerText="Supplier">
+												<h:outputText value="#{item.supplierName}" />
+											</p:column>
+											<p:column headerText="Project" width="200">
+												<h:outputText value="#{item.projectName}" />
+											</p:column>
+											<p:column headerText="Type">
+												<h:outputText value="#{item.oldInvoiceTermPhase}" />
+											</p:column>
+											<p:column headerText="Date">
+												<h:outputText value="#{item.date}">
+													<f:convertDateTime pattern="yyyy-MM-dd" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Total Price">
+												<h:outputText value="#{item.amountHt}">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{item.currencyName}" />
+											</p:column>
+											<p:column headerText="Status">
+												<h:outputText value="#{item.status.value}" styleClass="#{item.status.color.name}" />
+											</p:column>
+											<p:column headerText="Actions" width="150" exportable="false">
+												<div class="action-buttons center">
+													<p:commandLink title="#{item.countFiles} Attachements" styleClass="aa-tooltip">
+														<i class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+													</p:commandLink>
+													<h:outputLink value="#{acceptanceView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+														<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+														<f:param name="id" value="#{item.id}" />
+													</h:outputLink>
+												</div>
+											</p:column>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+							<div style="width: 80%; margin: auto;">
+								<div class="hr hr8 hr-double hr-dotted"></div>
+								<div class="row">
+									<div class="col-sm-5 pull-right">
+										<h4 class="pull-right">
+											<h:outputText value="Total amount :" />
+											<span class="green">
+												<h:outputText value="#{acceptanceView.list1TotalAmount}">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{poView.model.currency.name}" />
+											</span>
+										</h4>
+									</div>
+									<div class="col-sm-7 pull-left">
+										<h:outputText value="Extra Information" />
+									</div>
+								</div>
+							</div>
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="Invoice List" />
+							</h4>
+							<div class="row">
+								<div class="col-sm-offset-1 col-sm-10">
+									<div class="table-header col-sm-12 col-xs-12">
+										<div class="col-sm-9 hidden-xs">
+											<i class="fa fa-list" />
+											<h:outputText value=" Invoice List" />
+										</div>
+									</div>
+									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+										<p:dataTable id="invoiceList" value="#{invoiceView.list2}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+											paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+											<p:column headerText="N°">
+												<h:outputText value="#{item.numero}" styleClass="bolder green" />
+											</p:column>
+											<p:column headerText="Supplier">
+												<h:outputText value="#{item.supplierName}" styleClass="purple" />
+											</p:column>
+											<p:column headerText="Company">
+												<h:outputText value="#{item.companyName}" styleClass="blue" />
+											</p:column>
+											<p:column headerText="Date" width="80">
+												<h:outputText value="#{item.date}" styleClass="pink">
+													<f:convertDateTime pattern="yyyy-MM-dd" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Due Date" width="80">
+												<h:outputText value="#{item.dueDate}" styleClass="red">
+													<f:convertDateTime pattern="yyyy-MM-dd" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Amount HT" width="120">
+												<h:outputText value="#{item.amountHt}" styleClass="blue">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{item.currencyName}" styleClass="blue" />
+											</p:column>
+											<p:column headerText="Net Amount HT" width="120">
+												<h:outputText value="#{item.amountHt2}" styleClass="green bolder">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{item.currencyName}" styleClass="green bolder" />
+											</p:column>
+											<p:column headerText="Net Amount TTC" width="120">
+												<h:outputText value="#{item.amountTtc2}" styleClass="green bolder">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{item.currencyName}" styleClass="green bolder" />
+											</p:column>
+											<p:column headerText="Remainder TTC" width="120">
+												<h:outputText value="#{item.amountTtc2-item.paidTtc}">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{item.currencyName}" />
+											</p:column>
+											<p:column headerText="Status" width="100">
+												<h:outputText value="#{item.status.value}" styleClass="#{item.status.color.name}" />
+											</p:column>
+											<p:column headerText="Actions" width="100" exportable="false">
+												<div class="action-buttons center">
+													<p:commandLink title="#{item.appLinkPercentage} %" styleClass="aa-tooltip" rendered="#{item.mappable}">
+														<i class="ace-icon fa fa-link bigger-130 #{item.appLinkPercentageStyleClass}" />
+													</p:commandLink>
+													<p:commandLink title="#{item.countFiles} Attachements" styleClass="aa-tooltip">
+														<i class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+													</p:commandLink>
+													<h:outputLink value="viewInvoice.xhtml" title="Show details" styleClass="aa-tooltip tooltip-info">
+														<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+														<f:param name="id" value="#{item.id}" />
+													</h:outputLink>
+												</div>
+											</p:column>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+							<div style="width: 80%; margin: auto;">
+								<div class="hr hr8 hr-double hr-dotted"></div>
+								<div class="row">
+									<div class="col-sm-5 pull-right">
+										<h4 class="pull-right">
+											<h:outputText value="Total amount :" />
+											<span class="green">
+												<h:outputText value="#{invoiceView.list2TotalAmountTtc2}">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{poView.model.currency.name}" />
+											</span>
+										</h4>
+									</div>
+									<div class="col-sm-7 pull-left">
+										<h:outputText value="Extra Information" />
+									</div>
+								</div>
+							</div>
+							<h4 class="header blue bolder smaller">
+								<h:outputText value="Payment List" />
+							</h4>
+							<div class="row">
+								<div class="col-sm-offset-1 col-sm-10">
+									<div class="table-header col-sm-12 col-xs-12">
+										<div class="col-sm-9 hidden-xs">
+											<i class="fa fa-list" />
+											<h:outputText value=" Payment List" />
+										</div>
+									</div>
+									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+										<p:dataTable id="paymentList" value="#{bankPaymentView.list2}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+											paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+											<p:column headerText="Reference" width="200">
+												<h:outputText value="#{item.reference}" styleClass="bolder blue" />
+											</p:column>
+											<p:column headerText="Mode" width="80">
+												<h:outputText value="#{item.mode.value}" styleClass="#{item.mode.color.badge}" />
+											</p:column>
+											<p:column headerText="Supplier">
+												<h:outputText value="#{item.supplierName}" styleClass="aa-cut-text pink" />
+											</p:column>
+											<p:column headerText="Bank Account" width="200">
+												<h:outputText value="#{item.bankAccountFullName}" styleClass="bolder green" />
+											</p:column>
+											<p:column headerText="Payment Date" width="80">
+												<h:outputText value="#{item.paymentDate}">
+													<f:convertDateTime pattern="yyyy-MM-dd" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Cash Date" width="80">
+												<h:outputText value="#{item.cashDate}">
+													<f:convertDateTime pattern="yyyy-MM-dd" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Age" width="50" sortBy="#{item.age}" rendered="#{PaymentStatus.INITIATED==bankPaymentView.status or PaymentStatus.SUBMITTED==bankPaymentView.status}">
+												<h:outputText value="#{item.age}" styleClass="red" />
+											</p:column>
+											<p:column headerText="Amount" width="120">
+												<h:outputText value="#{item.amount}" styleClass="bolder purple">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{item.currencyName}" styleClass="bolder purple" />
+											</p:column>
+											<p:column headerText="Status" width="120">
+												<h:outputText value="#{item.status.value}" styleClass="#{item.status.color.name}" />
+											</p:column>
+											<p:column headerText="Actions" width="100" exportable="false">
+												<div class="action-buttons center">
+													<p:commandLink title="Mapped" styleClass="aa-tooltip" rendered="#{item.isMapped}">
+														<i class="ace-icon fa fa-link bigger-130 green" />
+													</p:commandLink>
+													<p:commandLink title="#{item.countFiles} Attachements" styleClass="aa-tooltip">
+														<i class="ace-icon fa fa-paperclip bigger-130 #{item.hasFiles?'green':'red'}" />
+													</p:commandLink>
+													<h:outputLink value="#{bankPaymentView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+														<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+														<f:param name="id" value="#{item.id}" />
+													</h:outputLink>
+												</div>
+											</p:column>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+							<div style="width: 80%; margin: auto;">
+								<div class="hr hr8 hr-double hr-dotted"></div>
+								<div class="row">
+									<div class="col-sm-5 pull-right">
+										<h4 class="pull-right">
+											<h:outputText value="Total amount :" />
+											<span class="green">
+												<h:outputText value="#{bankPaymentView.list2TotalAmount}">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{poView.model.currency.name}" />
+											</span>
+										</h4>
+									</div>
+									<div class="col-sm-7 pull-left">
+										<h:outputText value="Extra Information" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</f:subview>
+					<div id="tab3" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" List Of Attachements" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="fileList" value="#{poView.model.fileList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Phase" width="150" styleClass="center">
+											<h:outputText value="#{item.parentModelName}" styleClass="#{item.parentModelStyleClass}" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.name}" />
+										</p:column>
+										<p:column headerText="Type">
+											<h:outputText value="#{item.type}" styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Added Date" width="90">
+											<h:outputText value="#{item.date}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="File Size" width="80">
+											<h:outputText value="#{item.size}" />
+										</p:column>
+										<p:column headerText="File Type" width="100" styleClass="center">
+											<img src="#{item.fileExtensionImage}" style="border: none; border-radius: 0" width="20" height="20" />
+										</p:column>
+										<p:column headerText="Added By" styleClass="center">
+											<p:graphicImage id="photo" value="#{item.user.photo}" styleClass="img-circle aa-datatable-photo" />
+											<p:overlayPanel for="photo" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Actions" width="150" style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink title="Delete File" oncomplete="PF('deleteFileDlg').show()" styleClass="aa-tooltip" rendered="#{poView.canDeleteFile()}">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+													<f:setPropertyActionListener target="#{poView.file}" value="#{item}" />
+												</p:commandLink>
+												<p:commandLink ajax="false">
+													<p:fileDownload value="#{fileView.getStreamedContent(item.link,item.name)}" />
+													<i class="ace-icon fa fa-save bigger-130 green" />
+												</p:commandLink>
+												<p:commandLink title="View" oncomplete="PF('fileDlg').show()" update=":fileForm">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:setPropertyActionListener target="#{fileView.file}" value="#{item}" />
+													<f:setPropertyActionListener target="#{poView.file}" value="#{item}" />
+												</p:commandLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab4" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value=" History" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable id="historyList" value="#{poView.model.historyList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+										<p:column headerText="Action" width="80" styleClass="center">
+											<h:outputText value="#{item.status}" styleClass="#{item.statusStyleClass}" />
+										</p:column>
+										<p:column headerText="Date" width="90" styleClass="center">
+											<f:subview rendered="#{item.date==null}">
+												<i class="ace-icon fa fa-spinner fa-spin orange bigger-200 " />
+											</f:subview>
+											<h:outputText value="#{item.date}" rendered="#{item.date!=null}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="User" width="120">
+											<h:outputText id="user" value="#{item.user.fullName}" styleClass="purple bolder" />
+											<p:overlayPanel for="user" style="text-align: left;width:350px" showEvent="mouseover" hideEvent="mouseout">
+												<h:outputText escape="false" value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
+											</p:overlayPanel>
+										</p:column>
+										<p:column headerText="Description" width="400">
+											<h:outputText value="#{item.description}" escape="false" styleClass="aa-cut-text" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab5" class="tab-pane">
+						<h:panelGroup id="commentPanel">
+							<div class="row">
+								<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+									<div class="timeline-container timeline-style2">
+										<ui:repeat var="commentGroup" value="#{poView.model.commentGroupList}" varStatus="varStatus">
+											<div class="timeline-label">
+												<span class="label label-purple arrowed-in-right label-lg">
+													<b> <h:outputText value="#{commentGroup.date}">
+															<f:convertDateTime pattern="yyyy-MM-dd" />
+														</h:outputText>
+													</b>
+												</span>
+											</div>
+											<div class="timeline-items">
+												<ui:repeat var="comment" value="#{commentGroup.commentList}">
+													<div class="timeline-item clearfix">
+														<div class="timeline-info">
+															<img src="#{comment.userPhoto}" /> <i class="timeline-indicator btn btn-info no-hover"></i>
+															<br />
+															<span class="orange">
+																<i class="ace-icon fa fa-clock-o bigger-120"></i>
+																<h:outputText value="#{comment.date}">
+																	<f:convertDateTime pattern="HH:mm" />
+																</h:outputText>
+															</span>
+														</div>
+														<div class="widget-box transparent">
+															<div class="widget-header widget-header-small">
+																<h5 class="widget-title smaller">
+																	<a href="#" class="blue">
+																		<h:outputText value="#{comment.userFullName}" />
+																	</a>
+																	<i class="ace-icon fa fa-angle-double-right"></i>
+																	<span class="grey">
+																		<h:outputText value="#{comment.title}" styleClass="green" />
+																	</span>
+																</h5>
+															</div>
+															<div class="widget-body">
+																<div class="widget-main">
+																	<h:outputText value="Comment : " styleClass="grey bolder" />
+																	<h:outputText value=" #{comment.content}" />
+																</div>
+															</div>
+														</div>
+													</div>
+												</ui:repeat>
+											</div>
+										</ui:repeat>
+									</div>
+								</div>
+							</div>
+						</h:panelGroup>
+					</div>
+					<f:subview rendered="#{PoStatus.RECEIVING==poView.model.status}">
+						<div id="tab6" class="tab-pane">
+							<div class="row">
+								<div class="col-sm-offset-3 col-sm-6">
+									<table class="table table-bordered">
+										<tbody>
+											<tr>
+												<th colspan="4" style="background: #86b558; color: white">
+													<h:outputText value="Summary" styleClass="bolder" />
+												</th>
+											</tr>
+											<tr>
+												<td>
+													<i class="ace-icon fa fa-plus bigger-230 green" style="margin-right: 20px"></i>
+													<h:outputText value="Po N°" />
+												</td>
+												<td class="center">
+													<h:outputText value="#{poView.model.numero}" styleClass="blue bolder" />
+												</td>
+												<td rowspan="4" class="center" style="vertical-align: middle">
+													<div class="easy-pie-chart percentage" data-percent="#{100*poView.model.totalAccepted/poView.model.amountHt}" data-color="#d3413b">
+														<span class="percent">
+															<h:outputText value="#{poView.model.totalAccepted/poView.model.amountHt}">
+																<f:convertNumber type="percent" maxFractionDigits="0" />
+															</h:outputText>
+														</span>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<i class="ace-icon fa fa-minus bigger-230 red" style="margin-right: 20px"></i>
+													<h:outputText value="Total PO Value" />
+												</td>
+												<td class="center purple bolder">
+													<h:outputText value="#{poView.model.amountHt}">
+														<f:convertNumber type="number" maxFractionDigits="2" />
+													</h:outputText>
+													<h:outputText value=" #{poView.model.currencyName}" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<i class="ace-icon fa fa-table bigger-230 blue" style="margin-right: 20px"></i>
+													<h:outputText value="Total Accepted" />
+												</td>
+												<td class="center green bolder">
+													<h:outputText value="#{poView.model.totalAccepted}">
+														<f:convertNumber type="number" maxFractionDigits="2" />
+													</h:outputText>
+													<h:outputText value=" #{poView.model.currencyName}" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<i class="ace-icon fa fa-table bigger-230 blue" style="margin-right: 20px"></i>
+													<h:outputText value="Total Pending" />
+												</td>
+												<td class="center red bolder">
+													<h:outputText value="#{poView.model.amountHt-poView.model.totalAccepted}">
+														<f:convertNumber type="number" maxFractionDigits="2" />
+													</h:outputText>
+													<h:outputText value=" #{poView.model.currencyName}" />
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="space-8" />
+							<div class="row">
+								<div class="col-sm-offset-1 col-sm-10">
+									<div class="table-header col-sm-12 col-xs-12">
+										<div class="col-sm-9 hidden-xs">
+											<i class="fa fa-list" />
+											<h:outputText value=" Receiving To Go" />
+										</div>
+									</div>
+									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+										<p:dataTable value="#{poView.model.detailList}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom"
+											paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+											<p:column headerText="Reference">
+												<h:outputText value="#{item.reference}" />
+											</p:column>
+											<p:column headerText="Cost Type">
+												<h:outputText value="#{item.costType.value}" />
+											</p:column>
+											<p:column headerText="Description">
+												<h:outputText value="#{item.description}" />
+											</p:column>
+											<p:column headerText="Quantity">
+												<h:outputText value="#{item.quantity} #{item.unit}" />
+											</p:column>
+											<p:column headerText="Received Quantity">
+												<h:outputText value="#{item.usedQuantity}">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Receiving to Go">
+												<h:outputText value="#{item.quantity-item.usedQuantity}">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Unit Price">
+												<h:outputText value="#{item.unitPrice}" styleClass="orange">
+													<f:convertNumber type="number" maxFractionDigits="4" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{poView.model.currencyName}" styleClass="orange" />
+											</p:column>
+											<p:column headerText="Total Price">
+												<h:outputText value="#{(item.quantity-item.usedQuantity)*item.unitPrice}" styleClass="green">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{poView.model.currencyName}" styleClass="green" />
+											</p:column>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+						</div>
+					</f:subview>
+					<f:subview rendered="#{poView.model.containsGoodsSupply()}">
+						<div id="tab7" class="tab-pane">
+							<div class="row">
+								<div class="col-sm-offset-1 col-sm-10">
+									<div class="table-header col-sm-12 col-xs-12">
+										<div class="col-sm-8 col-xs-8">
+											<i class="fa fa-list" />
+											<h:outputText value="BoQ Summary List" />
+										</div>
+										<div class="col-sm-2 hidden-xs">
+											<div class="action-buttons center">
+												<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+													<img src="/resources/img/xls.png" width="20" height="20" />
+													<p:dataExporter type="xls" target="boqList" fileName="boqList" postProcessor="#{utilsView.excelExportation}" />
+												</h:commandLink>
+											</div>
+										</div>
+										<div class="col-sm-2 col-xs-4">
+											<div class="nav-search minimized">
+												<span class="input-icon">
+													<p:inputText value="#{boqView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+														<p:ajax event="keyup" update="boqList" />
+													</p:inputText>
+													<i class="ace-icon fa fa-search nav-search-icon" />
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+										<p:dataTable id="boqList" value="#{boqView.list2}" var="item" rows="20" styleClass="table table-striped table-hover" paginatorAlwaysVisible="false" paginator="true"
+											paginatorPosition="bottom" paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+											<p:column headerText="Po Detail" width="80">
+												<h:outputText value="#{item.poDetailReference}" />
+											</p:column>
+											<p:column headerText="Reference" width="80">
+												<h:outputText value="#{item.reference}" />
+											</p:column>
+											<p:column headerText="Description">
+												<h:outputText value="#{item.poDetailDescription}" styleClass="blue aa-cut-text" />
+											</p:column>
+											<p:column headerText="Part Number">
+												<h:outputText value="#{item.partNumberName}" styleClass="bolder orange" />
+											</p:column>
+											<p:column headerText="PN Description">
+												<h:outputText value="#{item.partNumberDescription}" styleClass="green aa-cut-text" />
+											</p:column>
+											<p:column headerText="Quantity" width="80">
+												<h:outputText value="#{item.quantity}">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="PN Unit Price" width="120">
+												<h:outputText value="#{item.unitPrice}">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{poView.model.currencyName}" />
+											</p:column>
+											<p:column headerText="Total Quantity" width="100">
+												<h:outputText value="#{item.quantity * item.poDetailQuantity}">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Total Price" width="100">
+												<h:outputText value="#{item.quantity * item.poDetailQuantity * item.unitPrice}">
+													<f:convertNumber type="number" maxFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{poView.model.currencyName}" />
+											</p:column>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+							<div style="width: 80%; margin: auto;">
+								<div class="hr hr8 hr-double hr-dotted"></div>
+								<div class="row">
+									<div class="col-sm-5 pull-right">
+										<h4 class="pull-right">
+											<h:outputText value="Total amount :" />
+											<span class="green">
+												<h:outputText value="#{boqView.list2TotalPrice}">
+													<f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+												</h:outputText>
+												<h:outputText value=" #{poView.model.currencyName}" />
+											</span>
+										</h4>
+									</div>
+									<div class="col-sm-7 pull-left">
+										<h:outputText value="Extra Information" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</f:subview>
+				</div>
+			</div>
+			<script src="/resources/ace_template/assets/js/jquery.easypiechart.js" />
+			<h:panelGroup id="easy-pie-chart-script">
+				<script>
+					var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
+					$('.easy-pie-chart.percentage').each(function() {
+						$(this).easyPieChart({
+							barColor : $(this).data('color'),
+							trackColor : '#EEEEEE',
+							scaleColor : false,
+							lineCap : 'butt',
+							lineWidth : 8,
+							animate : oldie ? false : 1000,
+							size : 75
+						}).css('color', $(this).data('color'));
+					});
+				</script>
+			</h:panelGroup>
+		</h:form>
+		<f:event type="preRenderView" listener="#{poView.redirect()}" />
+		<ui:include src="poFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" template="template/template.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home" />
+				<a href="#">
+					<h:outputText value="Main Menu" />
+				</a>
+			</li>
+			<li class="active">
+				<h:outputText value="User List" />
+			</li>
+		</ul>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="main_form">
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list bigger-110 green"></i>
+					<h:outputText value=" User List" />
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h:panelGroup id="widgetPanel">
+						<div class=" col-sm-offset-1 col-sm-6">
+							<h:outputLink styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success" title="Add New User" value="#{userView.addEditPage}" rendered="#{userView.canSave()}">
+								<i class="ace-icon fa fa-plus bigger-230"></i>
+								<h:outputText value="Add" />
+							</h:outputLink>
+							<p:commandLink styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" title="Reload page" action="#{userView.evictCache()}">
+								<i class="ace-icon fa fa-refresh bigger-230"></i>
+								<h:outputText value="Reload" />
+							</p:commandLink>
+							<p:commandLink styleClass="btn btn-app btn-sm btn-purple hover aa-tooltip tooltip-purple" title="Adv Search" action="#{userView.initSearch()}" update=":searchForm"
+								oncomplete="PF('searchDlg').show()">
+								<i class="ace-icon fa fa-search bigger-230"></i>
+								<h:outputText value="Search" />
+							</p:commandLink>
+						</div>
+						<div class="col-sm-5  hidden-xs infobox-container">
+							<span class="btn btn-app btn-sm btn-warning no-hover">
+								<span class="line-height-1 bigger-170">
+									<h:outputText value="#{userView.rowsNumber}" />
+								</span>
+								<br />
+								<span class="line-height-1 smaller-90">
+									<h:outputText value="Total" />
+								</span>
+							</span>
+						</div>
+					</h:panelGroup>
+				</div>
+			</div>
+			<div class="hr dotted" />
+			<div class="row">
+				<p:messages id="messages" />
+				<div class="col-sm-12">
+					<div class="table-header col-sm-12 col-xs-12">
+						<div class="col-sm-2 hidden-xs">
+							<i class="fa fa-list" />
+							<h:outputText value=" List" />
+						</div>
+						<div class="col-sm-6 ">
+							<table style="margin-top: 5px">
+								<tr>
+									<td>
+										<h:outputText value="Filter by : " />
+									</td>
+									<td>
+										<p:commandLink action="#{userView.refreshList()}" update="userList,widgetPanel" styleClass="aa-tooltip tooltip-success" title="Active">
+											<div class="aa-icon-active" />
+											<f:setPropertyActionListener value="true" target="#{userView.active}" />
+										</p:commandLink>
+									</td>
+									<td>
+										<p:commandLink action="#{userView.refreshList()}" update="userList,widgetPanel" styleClass="aa-tooltip tooltip-error" title="Inactive">
+											<div class="aa-icon-inactive" />
+											<f:setPropertyActionListener value="false" target="#{userView.active}" />
+										</p:commandLink>
+									</td>
+									<td>
+										<p:commandLink action="#{userView.refreshList()}" update="userList,widgetPanel" styleClass="aa-tooltip" title="All">
+											<div class="aa-icon-all" />
+											<f:setPropertyActionListener value="#{null}" target="#{userView.active}" />
+										</p:commandLink>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-sm-2">
+							<div class="action-buttons center">
+								<h:commandLink styleClass="aa-tooltip tooltip-success" title="Export to excel">
+									<img src="/resources/img/xls.png" width="20" height="20" />
+									<p:dataExporter type="xls" target="userList" fileName="userList" postProcessor="#{utilsView.excelExportation}" />
+								</h:commandLink>
+							</div>
+						</div>
+						<div class="col-sm-2 col-xs-4">
+							<div class="nav-search minimized">
+								<span class="input-icon">
+									<p:inputText value="#{userView.searchBean}" placeholder="Search..." styleClass="input-small nav-search-input" autocomplete="off">
+										<p:ajax event="keyup" update="userList,widgetPanel" />
+									</p:inputText>
+									<i class="ace-icon fa fa-search nav-search-icon" />
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-xs-12 aa-datatable-container">
+						<p:dataTable value="#{userView.list2}" filteredValue="#{userView.list3}" rowKey="#{item.username}" selection="#{userView.list4}" id="userList" widgetVar="userList" var="item" rows="20"
+							styleClass="table table-striped table-hover center" paginatorAlwaysVisible="false" paginator="true" paginatorPosition="bottom"
+							paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}">
+							<p:column headerText="Photo" width="5%" styleClass="hidden-xs" exportable="false">
+								<p:graphicImage value="#{fileUploadView.stream}" styleClass="img-circle aa-datatable-photo">
+									<f:param name="fileName" value="#{item.photo}" />
+								</p:graphicImage>
+							</p:column>
+							<p:column headerText="Type" width="80">
+								<h:outputText value="#{item.internal?'Internal':'External'}" styleClass="badge #{item.internal?'badge-success':'badge-warning'}" />
+							</p:column>
+							<p:column headerText="Full Name">
+								<h:outputText value="#{item.fullName}" />
+							</p:column>
+							<p:column headerText="Login" width="80">
+								<h:outputText value="#{item.login}" />
+							</p:column>
+							<p:column headerText="LOB" width="150">
+								<h:outputText value="#{item.lobName}" styleClass="pink" />
+							</p:column>
+							<p:column headerText="Email Address">
+								<h:outputText value="#{item.email}" styleClass="blue" />
+							</p:column>
+							<p:column headerText="Phone" width="100">
+								<h:outputText value="#{item.phone}" />
+							</p:column>
+							<p:column headerText="Account Status" width="80">
+								<h:outputText value="#{item.active?'Active':'Non Active'}" styleClass="bolder #{item.active?'green':'red'}" />
+							</p:column>
+							<p:column headerText="Contract Status" width="80">
+								<h:outputText value="#{item.contractActive?'Active':'Non Active'}" styleClass="#{item.contractActive?'green':'red'}" rendered="#{item.internal}" />
+							</p:column>
+							<p:column headerText="Entity Type" width="80">
+								<h:outputText value="#{item.companyType.value}" styleClass="#{item.companyType.color.name}" />
+							</p:column>
+							<p:column headerText="Entity Name" width="110">
+								<h:outputText value="#{item.entityName}" />
+							</p:column>
+							<p:column headerText="Actions" width="170">
+								<div class="action-buttons center">
+									<p:commandLink title="#{item.countUsers} Resources" styleClass="aa-tooltip">
+										<i class="ace-icon fa fa-group bigger-130 #{item.countUsers!=0?'green':'grey'}" />
+									</p:commandLink>
+									<p:commandLink title="#{item.countProjects} Projects" styleClass="aa-tooltip">
+										<i class="ace-icon fa fa-sitemap bigger-130 #{item.countProjects!=0?'blue':'grey'}" />
+									</p:commandLink>
+									<p:commandLink title="Reset Password" styleClass="aa-tooltip" update=":resetPasswordForm" oncomplete="PF('resetPasswordDlg').show()" partialSubmit="true" process="@this"
+										action="#{userView.refreshModel(item)}" rendered="#{userView.canResetPassword(item.username)}">
+										<i class="ace-icon fa fa-key bigger-130 purple" />
+									</p:commandLink>
+									<!-- <p:commandLink title="Change Password" styleClass="aa-tooltip" update=":changePassword2Form" oncomplete="PF('changePassword2Dlg').show()" partialSubmit="true" process="@this"
+										action="#{userView.refreshModel(item)}">
+										<i class="ace-icon fa fa-key bigger-130 blue" />
+									</p:commandLink> -->
+									<p:commandLink title="Toggle" styleClass="aa-tooltip" update=":toggleForm" oncomplete="PF('toggleDlg').show()" partialSubmit="true" process="@this" action="#{userView.refreshModel(item)}" rendered="#{userView.canToggle(item)}">
+										<i class="ace-icon fa fa-power-off bigger-130 #{item.active?'red':'green'}" />
+									</p:commandLink>
+									<h:outputLink value="#{userView.addEditPage}" title="Edit User" styleClass="aa-tooltip tooltip-warning" rendered="#{userView.canSave()}">
+										<i class="ace-icon fa fa-edit bigger-130 orange" />
+										<f:param name="username" value="#{item.username}" />
+									</h:outputLink>
+									<h:outputLink value="#{userView.viewPage}" title="Show details" styleClass="aa-tooltip tooltip-info">
+										<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+										<f:param name="username" value="#{item.username}" />
+									</h:outputLink>
+								</div>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<ui:include src="userFooter.xhtml" />
+	</ui:define>
+</ui:composition>
