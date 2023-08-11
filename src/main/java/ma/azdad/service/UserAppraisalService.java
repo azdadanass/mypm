@@ -20,6 +20,9 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		for (UserAppraisal userAppraisal : list) {
 			initialize(userAppraisal.getAppraisal());
 			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
 		}
 		
 		return repos.findAll();
@@ -33,7 +36,9 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 			initialize(userAppraisal.getAppraisal());
 			initialize(userAppraisal.getEmploy());
 			initialize(userAppraisal.getAppraisee());
-
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
 		}
 		return  list;
 	}
@@ -46,6 +51,9 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		initialize(userAppraisal.getAppraisal());
 		initialize(userAppraisal.getEmploy());
 		initialize(userAppraisal.getAppraisee());
+		initialize(userAppraisal.getCommentList());
+		initialize(userAppraisal.getFileList());
+		initialize(userAppraisal.getHistoryList());
 
 		return userAppraisal;
 	}

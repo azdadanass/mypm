@@ -138,11 +138,17 @@
 							<p:column headerText="Actions" width="150" exportable="false">
 								<div class="action-buttons center">
 									<h:outputLink value="#{userAppraisalView.viewPage}"
-										title="Show details" styleClass="aa-tooltip tooltip-info">
+										title="Edit UserAppraisal" styleClass="aa-tooltip tooltip-info">
+										<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+										<f:param name="id" value="#{item.id}" />
+									</h:outputLink>
+									<h:outputLink value="#{userAppraisalView.addEditPage}"
+										title="Show Details" styleClass="aa-tooltip tooltip-info">
 										<i class="ace-icon fa fa-list-alt bigger-130 blue" />
 										<f:param name="id" value="#{item.id}" />
 									</h:outputLink>
 								</div>
+								
 							</p:column>
 						</p:dataTable>
 					</div>

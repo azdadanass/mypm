@@ -141,12 +141,9 @@
 												<p:column headerText="Section">
 													<h:outputText value="#{item.sections.sectionsTitle}" />
 												</p:column>
-												<p:column headerText="Mid Year Review"
-													rendered="#{userAppraisalView.validateMidYear()}">
-													<p:inputNumber value="#{item.midYearReview}" />
+												<p:column headerText="Mid Year Review">
+													<p:inputNumber value="#{item.midYearReview}" disabled="#{userAppraisalView.validateMidYear()}"/>
 												</p:column>
-
-
 												<p:column headerText="Final Year Rate">
 													<p:inputNumber value="#{item.summaryRaiting}" />
 												</p:column>
