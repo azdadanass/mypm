@@ -75,6 +75,14 @@
 						<!-- ===================-->
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							action="#{userAppraisalView.submiteduser()}" update=":main_form"
+							title="Submited"
+							rendered="#{userAppraisalView.canSubmiteduser()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Submited" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.ApprovedLM()}" update=":main_form"
 							title="Approved LM"
 							rendered="#{userAppraisalView.canApprovedLMMidYear()}">
@@ -178,34 +186,31 @@
 								<li class="complete"><span class="step"> <h:outputText
 											value="0" />
 								</span> <span class="title"> <h:outputText id="step0"
-											value="#{userAppraisaltatus.CREATED.value}" />
+											value="#{userAppraisalStatus.CREATED.value}" />
 								</span> <p:overlayPanel for="step0"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
 										<h:outputText escape="false"
 											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsCreated,userAppraisalView.model.userStatsCreated.username)}" />
 									</p:overlayPanel></li>
-
 								<li
 									class="#{userAppraisalView.model.dateStatsSubmited!=null?'complete':''}"><span
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step1"
-											value="#{userAppraisaltatus.SUBMITED.value}" /> <br />
+											value="#{userAppraisalStatus.SUBMITED.value}" /> <br />
 								</span> <p:overlayPanel for="step1"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
 										<h:outputText escape="false"
 											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsSubmited,userAppraisalView.model.userStatsSubmited.username)}" />
 									</p:overlayPanel></li>
-
-
 								<li
 									class="#{userAppraisalView.model.dateStatsApprovedLM!=null?'complete':''}"><span
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step2"
-											value="#{userAppraisaltatus.APPROVED_LM.value}" /> <br />
+											value="#{userAppraisalStatus.APPROVED_LM.value}" /> <br />
 								</span> <p:overlayPanel for="step2"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
@@ -217,7 +222,7 @@
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step3"
-											value="#{userAppraisaltatus.APPROVED.value}" /> <br />
+											value="#{userAppraisalStatus.APPROVED.value}" /> <br />
 								</span> <p:overlayPanel for="step3"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
@@ -229,7 +234,7 @@
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step4"
-											value="#{userAppraisaltatus.SUBMITED_MID_YEAR.value}" /> <br />
+											value="#{userAppraisalStatus.SUBMITED_MID_YEAR.value}" /> <br />
 								</span> <p:overlayPanel for="step4"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
@@ -241,7 +246,7 @@
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step5"
-											value="#{userAppraisaltatus.MYR_APPROVED_LM.value}" /> <br />
+											value="#{userAppraisalStatus.MYR_APPROVED_LM.value}" /> <br />
 								</span> <p:overlayPanel for="step5"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
@@ -253,7 +258,7 @@
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step6"
-											value="#{userAppraisaltatus.MYR_APPROVED.value}" /> <br />
+											value="#{userAppraisalStatus.MYR_APPROVED.value}" /> <br />
 								</span> <p:overlayPanel for="step6"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
@@ -266,7 +271,7 @@
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step7"
-											value="#{userAppraisaltatus.SUBMITED_FINAL_YEAR.value}" /> <br />
+											value="#{userAppraisalStatus.SUBMITED_FINAL_YEAR.value}" /> <br />
 								</span> <p:overlayPanel for="step7"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
@@ -278,7 +283,7 @@
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step8"
-											value="#{userAppraisaltatus.FYR_APPROVED_LM.value}" /> <br />
+											value="#{userAppraisalStatus.FYR_APPROVED_LM.value}" /> <br />
 								</span> <p:overlayPanel for="step8"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
@@ -290,7 +295,7 @@
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step9"
-											value="#{userAppraisaltatus.FYR_APPROVED.value}" /> <br />
+											value="#{userAppraisalStatus.FYR_APPROVED.value}" /> <br />
 								</span> <p:overlayPanel for="step9"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
@@ -302,7 +307,7 @@
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step10"
-											value="#{userAppraisaltatus.CLOSED.value}" /> <br />
+											value="#{userAppraisalStatus.CLOSED.value}" /> <br />
 								</span> <p:overlayPanel for="step10"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">
@@ -398,22 +403,21 @@
 									</div>
 								</div>
 							</div>
-								<div class="col-xs-12 col-sm-6">
+							<div class="col-xs-12 col-sm-6">
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
 										<div class="profile-info-name">
 											<h:outputText value="Rating" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText
-												value="#{userAppraisalView.model.raiting}"
+											<h:outputText value="#{userAppraisalView.model.raiting}"
 												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
 								</div>
 							</div>
-							
+
 
 							<div class="col-xs-12 col-sm-6">
 								<div class="profile-user-info profile-user-info-striped">

@@ -340,7 +340,26 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				"change User AppraisalsStats from CREATED to SUBMITED"));
 		service.save(model);
 		model = service.findOne(model.getId());
+	}
+	
+	//test for submited only 
+	public Boolean canSubmiteduser() {
+		return UserAppraisalStatus.CREATED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+	}
+	public void submiteduser() {
+		if (!canSubmiteduser())
+			return;
+
+		model.setDateStatsSubmited(new Date());
+		model.setUserStatsSubmited(sessionView.getUser());
+		model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED);
+		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
+				"change User AppraisalsStats from CREATED to SUBMITED"));
+
+		service.save(model);
+		model = service.findOne(model.getId());
 	}	
+	//end test submited
 	public Boolean canApprovedLM() {
 		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}

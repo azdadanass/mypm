@@ -29,7 +29,7 @@ public class Sections extends GenericModel<Integer> {
 	private Integer weight;
 	private UserAppraisal userappraisal;
 	private Integer summaryRaiting;
-	private String midYearReview;
+	private Integer midYearReview;
 	private Boolean eligible;
 
 	private Integer countFiles = 0;
@@ -99,11 +99,11 @@ public class Sections extends GenericModel<Integer> {
 	}
 
 	@Column(name = "midYearReview")
-	public String getMidYearReview() {
+	public Integer getMidYearReview() {
 		return midYearReview;
 	}
 
-	public void setMidYearReview(String midYearReview) {
+	public void setMidYearReview(Integer midYearReview) {
 		this.midYearReview = midYearReview;
 	}
 	

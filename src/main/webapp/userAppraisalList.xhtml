@@ -38,7 +38,8 @@
 						<div class=" col-sm-offset-1 col-sm-6">
 							<h:outputLink
 								styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-								title="Add New userAppraisal" value="#{userAppraisalView.addEditPage}"
+								title="Add New userAppraisal"
+								value="#{userAppraisalView.addEditPage}"
 								rendered="#{userAppraisalView.canSave()}">
 								<i class="ace-icon fa fa-plus bigger-230"></i>
 								<h:outputText value="Add" />
@@ -85,7 +86,8 @@
 						<div class="col-sm-2 col-xs-4">
 							<div class="nav-search minimized">
 								<span class="input-icon"> <p:inputText
-										value="#{userAppraisalView.searchBean}" placeholder="Search..."
+										value="#{userAppraisalView.searchBean}"
+										placeholder="Search..."
 										styleClass="input-small nav-search-input" autocomplete="off">
 										<p:ajax event="keyup" update="userAppraisalList,widgetPanel" />
 									</p:inputText> <i class="ace-icon fa fa-search nav-search-icon" />
@@ -138,8 +140,9 @@
 							<p:column headerText="Actions" width="150" exportable="false">
 								<div class="action-buttons center">
 									<h:outputLink value="#{userAppraisalView.viewPage}"
-										title="Edit UserAppraisal" styleClass="aa-tooltip tooltip-info">
-										<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+										title="Edit UserAppraisal"
+										styleClass="aa-toolt ip tooltip-info">
+										<i class="ace-icon fa fa-pencil-square-o bigger-130 green" />
 										<f:param name="id" value="#{item.id}" />
 									</h:outputLink>
 									<h:outputLink value="#{userAppraisalView.addEditPage}"
@@ -148,12 +151,12 @@
 										<f:param name="id" value="#{item.id}" />
 									</h:outputLink>
 								</div>
-								
 							</p:column>
 						</p:dataTable>
 					</div>
 				</div>
 			</div>
 		</h:form>
+		
 	</ui:define>
 </ui:composition>

@@ -30,6 +30,8 @@
 		</ul>
 	</ui:define>
 	<ui:define name="body">
+		<p:importEnum type="ma.azdad.model.UserAppraisalStatus" var="userappraisalStatus" allSuffix="ALL_ENUM_VALUES" />
+	
 		<h:form id="main_form">
 			<div class="widget-box">
 				<div class="widget-header widget-header-blue widget-header-flat">
@@ -202,6 +204,8 @@
 				</div>
 			</div>
 		</h:form>
+		<ui:include src="userAppraisalFooter.xhtml" />
+		<ui:include src="fileFooter.xhtml" />
 	</ui:define>
 
 

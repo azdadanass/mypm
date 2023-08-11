@@ -21,6 +21,8 @@ import ma.azdad.model.AppraisalsComment;
 import ma.azdad.model.AppraisalsFile;
 import ma.azdad.model.AppraisalsHistory;
 import ma.azdad.model.AppraisalsStatus;
+import ma.azdad.model.UserAppraisalStatus;
+
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.AffectationRepos;
@@ -111,6 +113,8 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 			userAppraisal.setAppraisee(sessionView.getUser());
 			userAppraisal.setAppraisal(model);
 			userAppraisal.setEmploy(usr);
+			userAppraisal.setDateStatsCreated(new Date());
+			userAppraisal.setUserStatsCreated(sessionView.getUser());
 			userAppraisalService.save(userAppraisal);
 
 		}
