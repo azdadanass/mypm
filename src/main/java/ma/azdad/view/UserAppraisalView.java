@@ -152,6 +152,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 	}
 
+	
+	
+	
 	// sections
 	public List<String> gettitleList() {
 		return titleList;
@@ -235,6 +238,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	// Business Goal
+	public Boolean validateMidYear() {
+		Date dt=new Date();
+		if(!(model.getAppraisal().getMidYearReviewEndDate().compareTo(dt)<=0) && !(model.getAppraisal().getMidYearReviewStartDate().compareTo(dt)>=0)) {
+			return false;
+		}
+		return true;
+	}
+	
 	public List<BusinessGoals> getBusinessGoalsList() {
 		return businessGoalsList;
 	}

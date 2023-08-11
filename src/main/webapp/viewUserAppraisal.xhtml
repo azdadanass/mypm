@@ -141,15 +141,18 @@
 												<p:column headerText="Section">
 													<h:outputText value="#{item.sections.sectionsTitle}" />
 												</p:column>
-												<p:column headerText="Mid Year Review">
-													<p:inputText value="#{item.midYearReview}" />
+												<p:column headerText="Mid Year Review"
+													rendered="#{userAppraisalView.validateMidYear()}">
+													<p:inputNumber value="#{item.midYearReview}" />
 												</p:column>
+
+
 												<p:column headerText="Final Year Rate">
 													<p:inputNumber value="#{item.summaryRaiting}" />
 												</p:column>
 
 
-											<!-- 	<p:column headerText="Actions" styleClass="center"
+												<!-- 	<p:column headerText="Actions" styleClass="center"
 													width="100">
 													<div class="action-buttons center">
 														<p:commandLink title="Remove row"

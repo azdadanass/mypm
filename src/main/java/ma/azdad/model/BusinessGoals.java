@@ -27,7 +27,7 @@ public class BusinessGoals extends GenericModel<Integer> {
 	private String goalDetails;
 	private String goalTitle;
 	private double goalWeight;
-	private String midYearReview;
+	private Integer midYearReview;
 	private Integer summaryRaiting;
 	private String comment;
 	private String commentEY;
@@ -58,7 +58,7 @@ public class BusinessGoals extends GenericModel<Integer> {
 	
 	
 
-	public BusinessGoals(String goalDetails, String goalTitle, double goalWeight, String midYearReview,
+	public BusinessGoals(String goalDetails, String goalTitle, double goalWeight, Integer midYearReview,
 			Integer summaryRaiting, Sections sections) {
 		super();
 		this.goalDetails = goalDetails;
@@ -113,11 +113,11 @@ public class BusinessGoals extends GenericModel<Integer> {
 	}
 
 	@Column(name = "midYearReview")
-	public String getMidYearReview() {
+	public Integer getMidYearReview() {
 		return midYearReview;
 	}
 
-	public void setMidYearReview(String midYearReview) {
+	public void setMidYearReview(Integer midYearReview) {
 		this.midYearReview = midYearReview;
 	}
 
