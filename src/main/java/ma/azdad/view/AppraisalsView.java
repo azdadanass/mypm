@@ -104,8 +104,8 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		model.setUserStatsOpen(sessionView.getUser());
 		model.setDateStatsOpen(new Date());
 		
+		model = service.save(model);
 
-		if (service.findOne(id).equals(null)) {
 			for (User usr : users) {
 
 				UserAppraisal userAppraisal = new UserAppraisal();
@@ -117,20 +117,6 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				userAppraisalService.save(userAppraisal);
 
 			}
-		}else {
-			for (UserAppraisal userappraisal : userAppraisalService.findByAppraisal(model)) {
-
-				userappraisal.setAppraisee(sessionView.getUser());
-				userappraisal.setAppraisal(model);
-				userappraisal.setDateStatsCreated(new Date());
-				userappraisal.setUserStatsCreated(sessionView.getUser());
-				userAppraisalService.save(userappraisal);
-
-			}
-		}
-		model = service.save(model);
-
-		
 		
 
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
