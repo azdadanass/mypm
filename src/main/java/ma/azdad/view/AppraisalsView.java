@@ -21,7 +21,6 @@ import ma.azdad.model.AppraisalsComment;
 import ma.azdad.model.AppraisalsFile;
 import ma.azdad.model.AppraisalsHistory;
 import ma.azdad.model.AppraisalsStatus;
-import ma.azdad.model.UserAppraisalStatus;
 
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
@@ -126,6 +125,21 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		return true;
 	}
 
+	public Boolean validateMidYear() {
+		Date dt=new Date();
+		if(!(model.getMidYearReviewEndDate().compareTo(dt)>=0 && model.getMidYearReviewStartDate().compareTo(dt)<=0)) {
+			return FacesContextMessages.ErrorMessages("date not valide in appraisals Mid year date");
+		}
+		return true;
+	}
+	public Boolean validateFinalYear() {
+		Date dt=new Date();
+		if(!(model.getEndYearSummaryEndDate().compareTo(dt)>=0 && model.getEndYearSummaryStartDate().compareTo(dt)<=0)){
+			return FacesContextMessages.ErrorMessages("date not valide in appraisals Final year date");
+		}
+		return true;
+	}
+	
 	public Boolean validate1() {
 		if (model.getEndDate() != null && model.getStartDate().compareTo(model.getEndDate()) > 0)
 			return FacesContextMessages.ErrorMessages("Start Date should be lower than end date");
@@ -344,8 +358,9 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	public void midYearReview() {
 		if (!canMidYearReview())
 			return;
-
-		
+		if (!validateMidYear()) {
+			return;
+		}
 		model.setDateStatsMid(new Date()); model.setUserStatsMid(sessionView.getUser());
 		model.setAppraisalsStatus(AppraisalsStatus.MID_YEAR_REVIEW);
 		model.addHistory(new AppraisalsHistory(model.getAppraisalsStatus().getValue(), sessionView.getUser(),"change AppraisalsStats from OPEN to MID_YEAR_REVIEW"));
@@ -362,7 +377,9 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	public void finalYearReview() {
 		if (!canFinalYearReview())
 			return;
-
+		if (!validateFinalYear()) {
+			return;
+		}
 		model.setDateStatsFinal(new Date());
 		model.setUserStatsFinal(sessionView.getUser());
 		model.setAppraisalsStatus(AppraisalsStatus.FINAL_REVIEW);

@@ -238,10 +238,24 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	// Business Goal
-	public Boolean validateMidYear() {
+	public Boolean validateBusinessMidYear() {
 		Date dt=new Date();
-		if(!(model.getAppraisal().getMidYearReviewEndDate().compareTo(dt)<=0) && !(model.getAppraisal().getMidYearReviewStartDate().compareTo(dt)>=0)) {
-			return false;
+		if(!(model.getAppraisal().getMidYearReviewEndDate().compareTo(dt)>=0 && model.getAppraisal().getMidYearReviewStartDate().compareTo(dt)<=0)) {
+			return FacesContextMessages.ErrorMessages("date not valide in appraisal mid year date");
+		}
+		return true;
+	}
+	public Boolean validateBusinessFinalYear() {
+		Date dt=new Date();
+		if(!(model.getAppraisal().getEndYearSummaryEndDate().compareTo(dt)>=0 && model.getAppraisal().getEndYearSummaryStartDate().compareTo(dt)<=0)) {
+			return FacesContextMessages.ErrorMessages("date not valide in appraisal Final year date");
+		}
+		return true;
+	}
+	public Boolean validateFinalYear() {
+		Date dt=new Date();
+		if(!(model.getAppraisal().getEndYearSummaryEndDate().compareTo(dt)>=0 && model.getAppraisal().getEndYearSummaryStartDate().compareTo(dt)<=0)) {
+			return FacesContextMessages.ErrorMessages("date not valide in appraisal Final year date");
 		}
 		return true;
 	}

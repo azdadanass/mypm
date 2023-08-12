@@ -85,7 +85,7 @@
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.ApprovedLM()}" update=":main_form"
 							title="Approved LM"
-							rendered="#{userAppraisalView.canApprovedLMMidYear()}">
+							rendered="#{userAppraisalView.canApprovedLM()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="ApprovedLM" />
 						</p:commandLink>
@@ -114,9 +114,9 @@
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.Approved()}" update=":main_form"
+							action="#{userAppraisalView.approvedMidYear()}" update=":main_form"
 							title="MYR Approved"
-							rendered="#{userAppraisalView.canApproved()}">
+							rendered="#{userAppraisalView.canApprovedMidYear()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="MYR Approved" />
 						</p:commandLink>
