@@ -3,8 +3,10 @@ package ma.azdad.repos;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import ma.azdad.model.Appraisals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 
@@ -13,4 +15,8 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 
 	
 	List<UserAppraisal> findByEmployOrAppraisee(User employ,User apraisee);
+	
+	@Query("from UserAppraisal  u where u.appraisal=?1 ")
+	List<UserAppraisal> findByAppraisal(Appraisals ap);
+	
 }

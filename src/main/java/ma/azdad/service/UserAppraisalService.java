@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-
+import ma.azdad.model.Appraisals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.UserAppraisalRepos;
@@ -58,4 +58,21 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return userAppraisal;
 	}
 
+	
+	@Cacheable("userAppraisalService.findByAppraisal")
+	public List<UserAppraisal> findByAppraisal(Appraisals appraisals) {
+
+		List<UserAppraisal> list = repos.findByAppraisal(appraisals);
+		for (UserAppraisal userAppraisal : list) {
+			initialize(userAppraisal.getAppraisal());
+			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getAppraisee());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			
+		}
+
+		return list;
+	}
 }

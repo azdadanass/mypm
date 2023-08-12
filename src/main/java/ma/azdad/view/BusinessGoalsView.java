@@ -2,7 +2,6 @@ package ma.azdad.view;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +18,6 @@ import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.BusinessGoalsComment;
 import ma.azdad.model.BusinessGoalsFile;
 import ma.azdad.model.BusinessGoalsHistory;
-import ma.azdad.model.Sections;
 import ma.azdad.repos.BusinessGoalsRepos;
 import ma.azdad.service.BusinessGoalsService;
 import ma.azdad.service.UtilsFunctions;
