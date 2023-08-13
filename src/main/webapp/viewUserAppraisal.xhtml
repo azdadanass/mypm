@@ -147,7 +147,7 @@
 												<p:column headerText="Mid Year Review">
 													<p:inputNumber value="#{item.midYearReview}"
 														disabled="#{not userAppraisalView.validateBusinessMidYear()}"
-														validator="#{userAppraisalView.validateRating}"	/>
+														validator="#{userAppraisalView.validateRating}" />
 												</p:column>
 												<p:column headerText="Final Year Rate">
 													<p:inputNumber value="#{item.summaryRaiting}"
@@ -155,20 +155,6 @@
 														validator="#{userAppraisalView.validateRating}" />
 												</p:column>
 
-
-												<!-- 	<p:column headerText="Actions" styleClass="center"
-													width="100">
-													<div class="action-buttons center">
-														<p:commandLink title="Remove row"
-															action="#{userAppraisalView.delete(item)}"
-															update="businessGoalsList" partialSubmit="true"
-															process="businessGoalsList"
-															rendered="#{userAppraisalView.canDelete()}">
-															<i class="ace-icon fa fa-remove bigger-130 red" />
-														</p:commandLink>
-													</div>
-												</p:column>
- -->
 												<f:facet name="footer">
 													<div class="action-buttons center">
 														<p:commandLink title="Add New Item"
@@ -201,7 +187,7 @@
 											<i class="fa fa-list" />
 											<h:outputText value="Supplementary Goals" />
 										</div>
-										<ui:fragment rendered="#{item.sectionsNumber == 2}">
+										<ui:fragment>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="jobExcutionList" var="item"
 													value="#{userAppraisalView.findSectionsByEligible()}"
@@ -210,18 +196,18 @@
 													paginatorAlwaysVisible="false" paginator="true"
 													paginatorPosition="bottom"
 													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
+													rendered="#{item.sectionsNumber == 2}" rowIndexVar="index">
 
-													<p:column headerText="Final Year Rate">
-
+													<p:column headerText="Goal Title">
+														<h:outputText value="#{item.sectionsTitle}" />
 													</p:column>
 
 													<f:facet name="footer">
 														<div class="action-buttons center">
 															<p:commandLink title="Add New Item"
-																action="#{userAppraisalView.addBusiness()}"
-																update="businessGoalsList" partialSubmit="true"
-																process="businessGoalsList" rendered="true">
+																action="#{userAppraisalView.addSupplementaryGoal()}"
+																update="jobExcutionList" partialSubmit="true"
+																process="jobExcutionList" rendered="true">
 																<i class="fa fa-plus green" />
 															</p:commandLink>
 														</div>

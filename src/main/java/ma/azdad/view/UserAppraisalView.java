@@ -18,11 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
+import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.model.UserAppraisalComment;
 import ma.azdad.model.UserAppraisalFile;
@@ -258,23 +258,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	// Business Goal
 	public Boolean validateBusinessMidYear() {
 		Date dt=new Date();
-		if(!(model.getAppraisal().getMidYearReviewEndDate().compareTo(dt)>=0 && model.getAppraisal().getMidYearReviewStartDate().compareTo(dt)<=0)) {
-			return FacesContextMessages.ErrorMessages("date not valide in appraisal mid year date");
+		if(model.getAppraisal().getMidYearReviewEndDate().compareTo(dt)>=0 && model.getAppraisal().getMidYearReviewStartDate().compareTo(dt)<=0) {
+			return false;
 		}
 		return true;
 	}
 	public Boolean validateBusinessFinalYear() {
 		Date dt=new Date();
-		if(!(model.getAppraisal().getEndYearSummaryEndDate().compareTo(dt)>=0 && model.getAppraisal().getEndYearSummaryStartDate().compareTo(dt)<=0)) {
-			return FacesContextMessages.ErrorMessages("date not valide in appraisal Final year date");
-		}
-		return true;
-	}
-	public Boolean validateFinalYear() {
-		Date dt=new Date();
-		if(!(model.getAppraisal().getEndYearSummaryEndDate().compareTo(dt)>=0 && model.getAppraisal().getEndYearSummaryStartDate().compareTo(dt)<=0)) {
-			return FacesContextMessages.ErrorMessages("date not valide in appraisal Final year date");
-		}
+		if(model.getAppraisal().getEndYearSummaryEndDate().compareTo(dt)>=0 && model.getAppraisal().getEndYearSummaryStartDate().compareTo(dt)<=0) {
+			return false;
+		}	
 		return true;
 	}
 	
@@ -303,6 +296,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void addBusiness() {
 		if (canAddBusiness()) {
 			businessGoalsList.add(new BusinessGoals(null, goalTitleList.get(goaltitlecount), 0, findSectionId()));
+			goaltitlecount++;
+		}
+	}
+	public Boolean canAddSupplement() {
+		return true;
+	}
+
+	public void addSupplement() {
+		if (canAddBusiness()) {
+			businessGoalsList.add(new SupplementaryGoals(null, goalTitleList.get(goaltitlecount), 0, findSectionId()));
 			goaltitlecount++;
 		}
 	}
@@ -350,15 +353,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					
 					);
 
-			/*
-			 * businessGoals.setGoalTitle(businessGoalsList.get(i).getGoalTitle());
-			 * businessGoals.setGoalDetails(businessGoalsList.get(i).getGoalDetails());
-			 * businessGoals.setGoalWeight(businessGoalsList.get(i).getGoalWeight());
-			 * businessGoals.setMidYearReview(businessGoalsList.get(i).getMidYearReview());
-			 * businessGoals.setSummaryRaiting(businessGoalsList.get(i).getSummaryRaiting())
-			 * ; businessGoals.setSections(businessGoalsList.get(i).getSections());
-			 */
-			
 			businessGoalsService.save(businessGoals);
 
 		}
@@ -694,7 +688,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			step++;
 			break;
 		case 3:
-			return saveSections();
+			
+			//saveSections();
+			step++;
+			break;
 		}
 		return null;
 	}

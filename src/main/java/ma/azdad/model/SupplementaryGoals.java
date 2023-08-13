@@ -24,9 +24,9 @@ import ma.azdad.service.UtilsFunctions;
 @Table(name = "mypm_supplementary_goals_new")
 public class SupplementaryGoals extends GenericModel<Integer> {
 
-	private String midYearReview;
+	private Integer midYearReview;
 	private Integer summaryRaiting;
-	private double weight;// possible type int ??
+	private Integer weight;
 	private Sections sections;
 	private SectionsData sectionsData;
 
@@ -36,6 +36,18 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 	private List<SupplementaryGoalsHistory> historyList = new ArrayList<>();
 	private List<SupplementaryGoalsComment> commentList = new ArrayList<>();
 	private List<CommentGroup<SupplementaryGoalsComment>> commentGroupList;
+
+	
+
+	public SupplementaryGoals(Integer midYearReview, Integer summaryRaiting, Integer weight, Sections sections,
+			SectionsData sectionsData) {
+		super();
+		this.midYearReview = midYearReview;
+		this.summaryRaiting = summaryRaiting;
+		this.weight = weight;
+		this.sections = sections;
+		this.sectionsData = sectionsData;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,11 +61,11 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 	}
 
 	@Column(name = "midYearReview")
-	public String getMidYearReview() {
+	public Integer getMidYearReview() {
 		return midYearReview;
 	}
 
-	public void setMidYearReview(String midYearReview) {
+	public void setMidYearReview(Integer midYearReview) {
 		this.midYearReview = midYearReview;
 	}
 
@@ -67,15 +79,15 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 	}
 
 	@Column(name = "weight")
-	public double getWeight() {
+	public Integer getWeight() {
 		return weight;
 	}
 
-	public void setWeight(double weight) {
+	public void setWeight(Integer weight) {
 		this.weight = weight;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	public Sections getSections() {
 		return sections;
 	}
@@ -84,7 +96,7 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 		this.sections = sections;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	public SectionsData getSectionsData() {
 		return sectionsData;
 	}
