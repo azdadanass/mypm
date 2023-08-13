@@ -80,7 +80,7 @@ public class Sections extends GenericModel<Integer> {
 
 
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	public UserAppraisal getUserappraisal() {
 		return userappraisal;
 	}

@@ -93,7 +93,7 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 		this.weight = weight;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	public Sections getSections() {
 		return sections;
 	}

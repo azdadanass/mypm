@@ -125,7 +125,7 @@ public class UserAppraisal extends GenericModel<Integer>{
 	}
 
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	public Appraisals getAppraisal() {
 		return appraisal;
 	}
