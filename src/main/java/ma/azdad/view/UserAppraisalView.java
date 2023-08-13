@@ -7,7 +7,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -257,6 +261,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 		return true;
 	}
+	
+	public void validateRating(FacesContext context, UIComponent component, Object value) {
+        int rating = (Integer) value;
+
+        if (rating < 0 || rating > 100) {
+            FacesMessage message = new FacesMessage("La valeur doit être entre 0 et 100.");
+            throw new ValidatorException(message);
+        }
+    }
+	
 	
 	public List<BusinessGoals> getBusinessGoalsList() {
 		return businessGoalsList;

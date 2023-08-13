@@ -30,8 +30,9 @@
 		</ul>
 	</ui:define>
 	<ui:define name="body">
-		<p:importEnum type="ma.azdad.model.UserAppraisalStatus" var="userappraisalStatus" allSuffix="ALL_ENUM_VALUES" />
-	
+		<p:importEnum type="ma.azdad.model.UserAppraisalStatus"
+			var="userappraisalStatus" allSuffix="ALL_ENUM_VALUES" />
+
 		<h:form id="main_form">
 			<div class="widget-box">
 				<div class="widget-header widget-header-blue widget-header-flat">
@@ -144,10 +145,14 @@
 													<h:outputText value="#{item.sections.sectionsTitle}" />
 												</p:column>
 												<p:column headerText="Mid Year Review">
-													<p:inputNumber value="#{item.midYearReview}" disabled="#{not userAppraisalView.validateBusinessMidYear()}"/>
+													<p:inputNumber value="#{item.midYearReview}"
+														disabled="#{not userAppraisalView.validateBusinessMidYear()}"
+														validator="#{userAppraisalView.validateRating}"	/>
 												</p:column>
 												<p:column headerText="Final Year Rate">
-													<p:inputNumber value="#{item.summaryRaiting}" disabled="#{not userAppraisalView.validateBusinessFinalYear()}"/>
+													<p:inputNumber value="#{item.summaryRaiting}"
+														disabled="#{not userAppraisalView.validateBusinessFinalYear()}"
+														validator="#{userAppraisalView.validateRating}" />
 												</p:column>
 
 
