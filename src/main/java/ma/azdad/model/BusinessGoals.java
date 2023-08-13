@@ -166,7 +166,7 @@ public class BusinessGoals extends GenericModel<Integer> {
 		this.commentappEY = commentappEY;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
 	public Sections getSections() {
 		return sections;
 	}

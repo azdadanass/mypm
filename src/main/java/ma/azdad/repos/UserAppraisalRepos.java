@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import ma.azdad.model.Appraisals;
 import ma.azdad.model.Sections;
+import ma.azdad.model.SectionsData;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 
@@ -22,5 +23,11 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	
 	@Query("from Sections  s where s.userappraisal=?1 and s.eligible='true' ")
 	List<Sections> findSectionByEligible(UserAppraisal ua);
+	
+	@Query("from SectionsData  s where s.goaldId=?1 ")
+	List<SectionsData> findSectionDataByGoalId(Integer goaldid);
+	
+	@Query("from Sections  s where s.userappraisal=?1 ")
+	List<Sections> findSectionByUserAppraisal(UserAppraisal userappraisal);
 	
 }

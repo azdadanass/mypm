@@ -48,6 +48,12 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 		this.sections = sections;
 		this.sectionsData = sectionsData;
 	}
+	
+
+	public SupplementaryGoals() {
+		super();
+	}
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,7 +93,7 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 		this.weight = weight;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
 	public Sections getSections() {
 		return sections;
 	}

@@ -90,6 +90,14 @@ public class SectionsView extends GenericView<Integer, Sections, SectionsRepos, 
 		if (!canDelete())
 			return null;
 		try {
+			
+			/*
+			 * List<Sections> sec = sectionsService.findSectionsByUserAppraisal(model); if
+			 * (sec.size() > 0) { for (Sections sect : sec) {
+			 * 
+			 * sectionsService.delete(sect); } }
+			 */
+			
 			service.delete(model);
 		} catch (DataIntegrityViolationException e) {
 			FacesContextMessages.ErrorMessages("Can not delete this item (contains childs)");

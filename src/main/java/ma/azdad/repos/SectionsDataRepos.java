@@ -8,4 +8,5 @@ import ma.azdad.model.SectionsData;
 @Repository
 public interface SectionsDataRepos extends JpaRepository<SectionsData, Integer>{
 
+	
 }

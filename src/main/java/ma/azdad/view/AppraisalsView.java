@@ -103,21 +103,20 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				getIsAddPage() ? null : UtilsFunctions.getChanges(model, old)));
 		model.setUserStatsOpen(sessionView.getUser());
 		model.setDateStatsOpen(new Date());
-		
+
 		model = service.save(model);
 
-			for (User usr : users) {
+		for (User usr : users) {
 
-				UserAppraisal userAppraisal = new UserAppraisal();
-				userAppraisal.setAppraisee(sessionView.getUser());
-				userAppraisal.setAppraisal(model);
-				userAppraisal.setEmploy(usr);
-				userAppraisal.setDateStatsCreated(new Date());
-				userAppraisal.setUserStatsCreated(sessionView.getUser());
-				userAppraisalService.save(userAppraisal);
+			UserAppraisal userAppraisal = new UserAppraisal();
+			userAppraisal.setAppraisee(sessionView.getUser());
+			userAppraisal.setAppraisal(model);
+			userAppraisal.setEmploy(usr);
+			userAppraisal.setDateStatsCreated(new Date());
+			userAppraisal.setUserStatsCreated(sessionView.getUser());
+			userAppraisalService.save(userAppraisal);
 
-			}
-		
+		}
 
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 	}
@@ -127,20 +126,23 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	}
 
 	public Boolean validateMidYear() {
-		Date dt=new Date();
-		if(!(model.getMidYearReviewEndDate().compareTo(dt)>=0 && model.getMidYearReviewStartDate().compareTo(dt)<=0)) {
+		Date dt = new Date();
+		if (!(model.getMidYearReviewEndDate().compareTo(dt) >= 0
+				&& model.getMidYearReviewStartDate().compareTo(dt) <= 0)) {
 			return FacesContextMessages.ErrorMessages("date not valide in appraisals Mid year date");
 		}
 		return true;
 	}
+
 	public Boolean validateFinalYear() {
-		Date dt=new Date();
-		if(!(model.getEndYearSummaryEndDate().compareTo(dt)>=0 && model.getEndYearSummaryStartDate().compareTo(dt)<=0)){
+		Date dt = new Date();
+		if (!(model.getEndYearSummaryEndDate().compareTo(dt) >= 0
+				&& model.getEndYearSummaryStartDate().compareTo(dt) <= 0)) {
 			return FacesContextMessages.ErrorMessages("date not valide in appraisals Final year date");
 		}
 		return true;
 	}
-	
+
 	public Boolean validate1() {
 		if (model.getEndDate() != null && model.getStartDate().compareTo(model.getEndDate()) > 0)
 			return FacesContextMessages.ErrorMessages("Start Date should be lower than end date");
@@ -226,6 +228,13 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (!canDelete())
 			return null;
 		try {
+			List<UserAppraisal> userapp = userAppraisalService.findByAppraisal(model);
+			if (userapp.size() > 0) {
+				for (UserAppraisal usap : userapp) {
+
+					userAppraisalService.delete(usap);
+				}
+			}
 			service.delete(model);
 		} catch (DataIntegrityViolationException e) {
 			FacesContextMessages.ErrorMessages("Can not delete this item (contains childs)");
@@ -362,9 +371,11 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (!validateMidYear()) {
 			return;
 		}
-		model.setDateStatsMid(new Date()); model.setUserStatsMid(sessionView.getUser());
+		model.setDateStatsMid(new Date());
+		model.setUserStatsMid(sessionView.getUser());
 		model.setAppraisalsStatus(AppraisalsStatus.MID_YEAR_REVIEW);
-		model.addHistory(new AppraisalsHistory(model.getAppraisalsStatus().getValue(), sessionView.getUser(),"change AppraisalsStats from OPEN to MID_YEAR_REVIEW"));
+		model.addHistory(new AppraisalsHistory(model.getAppraisalsStatus().getValue(), sessionView.getUser(),
+				"change AppraisalsStats from OPEN to MID_YEAR_REVIEW"));
 
 		service.save(model);
 		model = service.findOne(model.getId());

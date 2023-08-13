@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
+import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.model.UserAppraisalComment;
@@ -32,6 +33,7 @@ import ma.azdad.repos.BusinessGoalsRepos;
 import ma.azdad.repos.UserAppraisalRepos;
 import ma.azdad.service.BusinessGoalsService;
 import ma.azdad.service.SectionsService;
+import ma.azdad.service.SupplementaryGoalsService;
 import ma.azdad.service.UserAppraisalService;
 import ma.azdad.service.UtilsFunctions;
 import ma.azdad.utils.FacesContextMessages;
@@ -52,10 +54,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	@Autowired
 	SectionsService sectionsService;
-	
+
 	@Autowired
 	BusinessGoalsService businessGoalsService;
-	
+
+	@Autowired
+	SupplementaryGoalsService supplementaryGoalsService;
+
 	@Autowired
 	BusinessGoalsView businessGoalsView;
 
@@ -64,7 +69,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	@Autowired
 	BusinessGoalsRepos businessGoalsRepos;
-	
+
 	@Autowired
 	UserAppraisalRepos userAppraisalRepos;
 
@@ -75,7 +80,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<String> goalTitleList;
 	private int goaltitlecount = 0;
 	private List<BusinessGoals> businessGoalsList;
-	
+	private List<SupplementaryGoals> supplementaryGoalsList;
 
 	@Override
 	@PostConstruct
@@ -86,6 +91,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		titleList = new ArrayList<>();
 		goalTitleList = new ArrayList<>();
 		businessGoalsList = new ArrayList<>();
+		supplementaryGoalsList = new ArrayList<>();
 
 		titleList.add("BUSINESS Goals");
 		titleList.add("JOB EXECUTION");
@@ -159,9 +165,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 	}
 
-	
-	
-	
 	// sections
 	public List<String> gettitleList() {
 		return titleList;
@@ -244,43 +247,41 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	}
 
-	
-	
-	//Eligible True
-	
-	
-	public List<Sections> findSectionsByEligible(UserAppraisal ua)
-	{
-		 List<Sections>  s =userAppraisalRepos.findSectionByEligible(ua);
-		 return s;
+	// Eligible True
+
+	public List<Sections> findSectionsByEligible(UserAppraisal ua) {
+		List<Sections> s = userAppraisalRepos.findSectionByEligible(ua);
+		return s;
 	}
-	
-	// Business Goal
+
+	// Business Goals
 	public Boolean validateBusinessMidYear() {
-		Date dt=new Date();
-		if(model.getAppraisal().getMidYearReviewEndDate().compareTo(dt)>=0 && model.getAppraisal().getMidYearReviewStartDate().compareTo(dt)<=0) {
+		Date dt = new Date();
+		if (model.getAppraisal().getMidYearReviewEndDate().compareTo(dt) >= 0
+				&& model.getAppraisal().getMidYearReviewStartDate().compareTo(dt) <= 0) {
 			return false;
 		}
 		return true;
 	}
+
 	public Boolean validateBusinessFinalYear() {
-		Date dt=new Date();
-		if(model.getAppraisal().getEndYearSummaryEndDate().compareTo(dt)>=0 && model.getAppraisal().getEndYearSummaryStartDate().compareTo(dt)<=0) {
+		Date dt = new Date();
+		if (model.getAppraisal().getEndYearSummaryEndDate().compareTo(dt) >= 0
+				&& model.getAppraisal().getEndYearSummaryStartDate().compareTo(dt) <= 0) {
 			return false;
-		}	
+		}
 		return true;
 	}
-	
-	public void validateRating(FacesContext context, UIComponent component, Object value) {
-        int rating = (Integer) value;
 
-        if (rating < 0 || rating > 100) {
-            FacesMessage message = new FacesMessage("La valeur doit être entre 0 et 100.");
-            throw new ValidatorException(message);
-        }
-    }
-	
-	
+	public void validateRating(FacesContext context, UIComponent component, Object value) {
+		int rating = (Integer) value;
+
+		if (rating < 0 || rating > 100) {
+			FacesMessage message = new FacesMessage("La valeur doit être entre 0 et 100.");
+			throw new ValidatorException(message);
+		}
+	}
+
 	public List<BusinessGoals> getBusinessGoalsList() {
 		return businessGoalsList;
 	}
@@ -299,21 +300,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			goaltitlecount++;
 		}
 	}
-	public Boolean canAddSupplement() {
-		return true;
-	}
-
-	public void addSupplement() {
-		if (canAddBusiness()) {
-			businessGoalsList.add(new SupplementaryGoals(null, goalTitleList.get(goaltitlecount), 0, findSectionId()));
-			goaltitlecount++;
-		}
-	}
 
 	public Sections findSectionId() {
 		return businessGoalsRepos.findSectionId(id);
 	}
-	
+
 	public Boolean validateWeightBusinessGoals() {
 
 		double weightTotal = 0;
@@ -325,12 +316,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 		return true;
 	}
+
 	public Boolean validateIsMidYear() {
 
-		
 		return true;
 	}
-
 
 	public Boolean canSaveBusinessGoals() {
 		return sessionView.getIsMyPm();
@@ -343,15 +333,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		if (!validateWeightBusinessGoals())
 			return null;
 		for (int i = 0; i < businessGoalsList.size(); i++) {
-					
+
 			BusinessGoals businessGoals = new BusinessGoals(businessGoalsList.get(i).getGoalDetails(),
-					businessGoalsList.get(i).getGoalTitle(),
-					businessGoalsList.get(i).getGoalWeight(),
-					businessGoalsList.get(i).getMidYearReview(),
-					businessGoalsList.get(i).getSummaryRaiting(),
+					businessGoalsList.get(i).getGoalTitle(), businessGoalsList.get(i).getGoalWeight(),
+					businessGoalsList.get(i).getMidYearReview(), businessGoalsList.get(i).getSummaryRaiting(),
 					businessGoalsList.get(i).getSections()
-					
-					);
+
+			);
 
 			businessGoalsService.save(businessGoals);
 
@@ -361,11 +349,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 
 	}
-	
-	//UserAppraisals status 
+
+	// UserAppraisals status
 	public Boolean canSubmited() {
-		return UserAppraisalStatus.CREATED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() ;
+		return UserAppraisalStatus.CREATED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void submited() {
 		if (!canSubmited())
 			return;
@@ -377,11 +366,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
-	
-	//test for submited only 
+
+	// test for submited only
 	public Boolean canSubmiteduser() {
 		return UserAppraisalStatus.CREATED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void submiteduser() {
 		if (!canSubmiteduser())
 			return;
@@ -394,11 +384,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
-	}	
-	//end test submited
+	}
+
+	// end test submited
 	public Boolean canApprovedLM() {
 		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void approvedLM() {
 		if (!canApprovedLM())
 			return;
@@ -411,10 +403,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
-	}	
+	}
+
 	public Boolean canApproved() {
 		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void approved() {
 		if (!canApproved())
 			return;
@@ -427,10 +421,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
-	}	
+	}
+
 	public Boolean canSubmitedMidYear() {
 		return UserAppraisalStatus.APPROVED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void submitedMidYear() {
 		if (!canSubmitedMidYear())
 			return;
@@ -444,9 +440,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
+
 	public Boolean canApprovedLMMidYear() {
 		return UserAppraisalStatus.SUBMITED_MID_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void approvedLMMidYear() {
 		if (!canApprovedLMMidYear())
 			return;
@@ -460,9 +458,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
+
 	public Boolean canApprovedMidYear() {
 		return UserAppraisalStatus.MYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void approvedMidYear() {
 		if (!canApprovedMidYear())
 			return;
@@ -476,9 +476,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
+
 	public Boolean canSubmitedFinalYear() {
 		return UserAppraisalStatus.MYR_APPROVED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void submitedFinalYear() {
 		if (!canSubmitedFinalYear())
 			return;
@@ -492,9 +494,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
+
 	public Boolean canApprovedLMFinalYear() {
-		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus())
+				&& sessionView.getIsMyPm();
 	}
+
 	public void approvedLMFinalYear() {
 		if (!canApprovedLMFinalYear())
 			return;
@@ -508,9 +513,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
+
 	public Boolean canApprovedFinalYear() {
 		return UserAppraisalStatus.FYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void approvedFinalYear() {
 		if (!canApprovedFinalYear())
 			return;
@@ -524,10 +531,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
-	
+
 	public Boolean canClosed() {
 		return UserAppraisalStatus.FYR_APPROVED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
+
 	public void closed() {
 		if (!canClosed())
 			return;
@@ -542,13 +550,28 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 	}
 
+	public Boolean isElig(Integer id) {
+		for (Sections sections : userAppraisalRepos.findSectionByUserAppraisal(model)) {
 
+			if (sections.getSectionsNumber() == id && sections.getEligible().booleanValue() == true) {
+				System.out.println("true");
+				return true;
+			}
+		}
+		System.out.println("false");
+		return false;
+	}
 
+	public List<SectionsData> findSectionsDataByGoalId(Integer goalid) {
 
+		List<SectionsData> lst = userAppraisalRepos.findSectionDataByGoalId(goalid);
+		return lst;
+	}
 
 	public Boolean validate() {
 		return true;
 	}
+
 	// delete
 	public Boolean canDelete() {
 		return true;
@@ -558,6 +581,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		if (!canDelete())
 			return null;
 		try {
+			List<Sections> sec = sectionsService.findSectionsByUserAppraisal(model);
+			if (sec.size() > 0) {
+				for (Sections sect : sec) {
+
+					sectionsService.delete(sect);
+				}
+			}
 			service.delete(model);
 		} catch (DataIntegrityViolationException e) {
 			FacesContextMessages.ErrorMessages("Can not delete this item (contains childs)");
@@ -653,6 +683,58 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		this.comment = comment;
 	}
 
+	// Supplementary Goals
+	public List<SupplementaryGoals> getSupplementaryGoalsList() {
+		return supplementaryGoalsList;
+	}
+
+	public void setSupplementaryGoalsList(List<SupplementaryGoals> supplementaryGoalsList) {
+		this.supplementaryGoalsList = supplementaryGoalsList;
+	}
+
+	public Boolean canAddSupplementaryGoals() {
+		return true;
+	}
+
+	/*
+	 * public void addSupplementaryGoals(Integer id) { if
+	 * (canAddSupplementaryGoals()) {
+	 * 
+	 * List<Sections> s = userAppraisalRepos.findSectionByEligible(model); for
+	 * (Sections sections : s) {
+	 * 
+	 * List<SectionsData> lst = userAppraisalRepos.findSectionDataByGoalId(id);
+	 * 
+	 * supplementaryGoalsList.add(new SupplementaryGoals(0,0,0,s,)) }
+	 * 
+	 * } }
+	 */
+
+	public String saveSupplementaryGoals() {
+		/*
+		 * if (!canSaveBusinessGoals()) return addParameters(listPage,
+		 * "faces-redirect=true");
+		 * 
+		 * if (!validateWeightBusinessGoals()) return null;
+		 */
+		for (int i = 0; i < supplementaryGoalsList.size(); i++) {
+
+			SupplementaryGoals supplementaryGoals = new SupplementaryGoals(
+					supplementaryGoalsList.get(i).getMidYearReview(), supplementaryGoalsList.get(i).getSummaryRaiting(),
+					supplementaryGoalsList.get(i).getWeight(), supplementaryGoalsList.get(i).getSections(),
+					supplementaryGoalsList.get(i).getSectionsData()
+
+			);
+
+			supplementaryGoalsService.save(supplementaryGoals);
+
+		}
+		System.out.println("Saved");
+
+		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
+
+	}
+
 	// getters & setters
 	public UserAppraisal getModel() {
 		return model;
@@ -688,8 +770,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			step++;
 			break;
 		case 3:
-			
-			//saveSections();
+
+			// saveSections();
 			step++;
 			break;
 		}
