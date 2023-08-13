@@ -186,6 +186,54 @@
 								<div class="space-16" />
 							</f:subview>
 
+
+
+
+
+
+							<f:subview id="step3" rendered="#{userAppraisalView.step==3}">
+								<h4 class="header blue bolder smaller">
+									<h:outputText value="Supplementary Goals List" />
+								</h4>
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10">
+										<div class="table-header col-sm-12 col-xs-12">
+											<i class="fa fa-list" />
+											<h:outputText value="Supplementary Goals" />
+										</div>
+										<ui:fragment rendered="#{item.sectionsNumber == 2}">
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="jobExcutionList" var="item"
+													value="#{userAppraisalView.findSectionsByEligible()}"
+													rows="20"
+													styleClass="table table-striped table-hover center"
+													paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom"
+													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+													rowIndexVar="index">
+
+													<p:column headerText="Final Year Rate">
+
+													</p:column>
+
+													<f:facet name="footer">
+														<div class="action-buttons center">
+															<p:commandLink title="Add New Item"
+																action="#{userAppraisalView.addBusiness()}"
+																update="businessGoalsList" partialSubmit="true"
+																process="businessGoalsList" rendered="true">
+																<i class="fa fa-plus green" />
+															</p:commandLink>
+														</div>
+													</f:facet>
+												</p:dataTable>
+											</div>
+										</ui:fragment>
+
+									</div>
+								</div>
+								<div class="space-16" />
+							</f:subview>
 						</h:panelGroup>
 						<hr />
 						<div class="wizard-actions">

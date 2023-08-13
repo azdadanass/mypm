@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ma.azdad.model.BusinessGoals;
@@ -63,6 +64,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	@Autowired
 	BusinessGoalsRepos businessGoalsRepos;
+	
+	@Autowired
+	UserAppraisalRepos userAppraisalRepos;
 
 	private List<String> titleList;
 	private List<Boolean> eligibleList;
@@ -71,6 +75,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<String> goalTitleList;
 	private int goaltitlecount = 0;
 	private List<BusinessGoals> businessGoalsList;
+	
 
 	@Override
 	@PostConstruct
@@ -239,6 +244,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	}
 
+	
+	
+	//Eligible True
+	
+	
+	public List<Sections> findSectionsByEligible(UserAppraisal ua)
+	{
+		 List<Sections>  s =userAppraisalRepos.findSectionByEligible(ua);
+		 return s;
+	}
+	
 	// Business Goal
 	public Boolean validateBusinessMidYear() {
 		Date dt=new Date();
