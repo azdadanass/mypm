@@ -592,12 +592,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		int i=1;
 		for (SectionsData sectionsData : userAppraisalService.findSectionDataByGoalId(goalid)) {
 			supplementaryGoalsList.add(new SupplementaryGoals(userAppraisalService.findSectionByUserAppraisalAndNumber(model,i),sectionsData));
+			if (isElig(goalid)) {
+				supplementaryGoalsListSave.add(new SupplementaryGoals(userAppraisalService.findSectionByUserAppraisalAndNumber(model,i),sectionsData));				
+			}
 			i++;
 		}
-		for (int j = i; j < supplementaryGoalsList.size(); j++) {
-			//supplementaryGoalsService.save(supplementaryGoalsList.get(j));
-			supplementaryGoalsListSave.add(supplementaryGoalsList.get(j));
-		}
+		/*
+		 * for (int j = i; j < supplementaryGoalsList.size(); j++) {
+		 * //supplementaryGoalsService.save(supplementaryGoalsList.get(j));
+		 * supplementaryGoalsListSave.add(supplementaryGoalsList.get(j)); }
+		 */
 			
 		//List<SupplementaryGoals> lst = userAppraisalService.findSupplementaryByGoaldId(goalid);
 		
