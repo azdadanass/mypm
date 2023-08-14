@@ -48,7 +48,10 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 		this.sections = sections;
 		this.sectionsData = sectionsData;
 	}
-	
+	public SupplementaryGoals(SectionsData sectionsData) {
+		super();
+		this.sectionsData = sectionsData;
+	}
 
 	public SupplementaryGoals() {
 		super();

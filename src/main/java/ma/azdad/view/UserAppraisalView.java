@@ -32,6 +32,7 @@ import ma.azdad.model.UserAppraisalStatus;
 import ma.azdad.repos.BusinessGoalsRepos;
 import ma.azdad.repos.UserAppraisalRepos;
 import ma.azdad.service.BusinessGoalsService;
+import ma.azdad.service.SectionsDataService;
 import ma.azdad.service.SectionsService;
 import ma.azdad.service.SupplementaryGoalsService;
 import ma.azdad.service.UserAppraisalService;
@@ -73,6 +74,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	@Autowired
 	UserAppraisalRepos userAppraisalRepos;
 
+	@Autowired
+	SectionsDataService sectionsDataService;
+
 	private List<String> titleList;
 	private List<Boolean> eligibleList;
 	private List<Integer> weightList;
@@ -81,12 +85,25 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private int goaltitlecount = 0;
 	private List<BusinessGoals> businessGoalsList;
 	private List<SupplementaryGoals> supplementaryGoalsList;
+	private List<SectionsData> sectionsDatas;
+
+	public List<SectionsData> getSectionsDatas() {
+		return sectionsDatas;
+	}
+
+	public void setSectionsDatas(List<SectionsData> sectionsDatas) {
+		this.sectionsDatas = sectionsDatas;
+	}
 
 	@Override
 	@PostConstruct
 	public void init() {
 		super.init();
-
+		sectionsDatas=sectionsDataService.findAll();
+		for (SectionsData sectionsData : sectionsDatas) {
+			supplementaryGoalsList.add(new SupplementaryGoals(sectionsData));
+		}
+		
 		// Sections Title
 		titleList = new ArrayList<>();
 		goalTitleList = new ArrayList<>();
@@ -561,9 +578,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		System.out.println("false");
 		return false;
 	}
+	
 
 	public List<SectionsData> findSectionsDataByGoalId(Integer goalid) {
-
+//Mid and Final in Supp goals
+		
 		List<SectionsData> lst = userAppraisalRepos.findSectionDataByGoalId(goalid);
 		return lst;
 	}
