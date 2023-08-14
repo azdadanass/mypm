@@ -182,7 +182,6 @@
 									<h:outputText value="Supplementary Goals List" />
 								</h4>
 								<ui:fragment rendered="#{userAppraisalView.isElig(1)}">
-
 									<div class="row">
 										<div class="col-sm-offset-1 col-sm-10">
 											<div class="table-header col-sm-12 col-xs-12">
@@ -192,7 +191,7 @@
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="Jobexecution"
 													rendered="#{userAppraisalView.isElig(1)}"
-													value="#{userAppraisalView.findSectionsDataByGoalId(1)}"
+													value="#{userAppraisalView.findSupplementaryByGoaldId(1)}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -203,15 +202,21 @@
 														<h:outputText value="#{index+1}" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.goalTitle}" />
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
 													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.goalDescription}" />
+														<h:outputText value="#{item.sectionsData.goalDescription}" />
+													</p:column>
+													<p:column headerText="Mid Year Rating">
+														<h:outputText value="#{item.midYearReview}" />
+													</p:column>
+													<p:column headerText="Final Year Rating">
+														<h:outputText value="#{item.summaryRaiting}" />
 													</p:column>
 													<p:column headerText="Weight">
-													<p:inputNumber value="#{item.weight}" />
-												</p:column>
-													
+														<p:inputNumber value="#{item.weight}" />
+													</p:column>
+
 												</p:dataTable>
 											</div>
 										</div>
@@ -220,7 +225,6 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(2)}">
-
 									<div class="row">
 										<div class="col-sm-offset-1 col-sm-10">
 											<div class="table-header col-sm-12 col-xs-12">
@@ -230,7 +234,7 @@
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="CODE"
 													rendered="#{userAppraisalView.isElig(2)}"
-													value="#{userAppraisalView.findSectionsDataByGoalId(2)}"
+													value="#{userAppraisalView.findSupplementaryByGoaldId(2)}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -241,10 +245,19 @@
 														<h:outputText value="#{index+1}" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.goalTitle}" />
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.goalDescription}" />
+													<p:column headerText="Goal Description">
+														<h:outputText value="#{item.sectionsData.goalDescription}" />
+													</p:column>
+													<p:column headerText="Mid Year Rating">
+														<h:outputText value="#{item.midYearReview}" />
+													</p:column>
+													<p:column headerText="Final Year Rating">
+														<h:outputText value="#{item.summaryRaiting}" />
+													</p:column>
+													<p:column headerText="Weight">
+														<p:inputNumber value="#{item.weight}" />
 													</p:column>
 												</p:dataTable>
 											</div>
@@ -263,9 +276,9 @@
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="LEADERSHIP"
-													value="#{userAppraisalView.findSectionsDataByGoalId(3)}"
-													rendered="#{userAppraisalView.isElig(3)}" var="item"
-													rows="20"
+													rendered="#{userAppraisalView.isElig(3)}"
+													value="#{userAppraisalView.findSupplementaryByGoaldId(3)}"
+													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
 													paginatorPosition="bottom"
@@ -275,10 +288,19 @@
 														<h:outputText value="#{index+1}" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.goalTitle}" />
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.goalDescription}" />
+													<p:column headerText="Goal Description">
+														<h:outputText value="#{item.sectionsData.goalDescription}" />
+													</p:column>
+													<p:column headerText="Mid Year Rating">
+														<h:outputText value="#{item.midYearReview}" />
+													</p:column>
+													<p:column headerText="Final Year Rating">
+														<h:outputText value="#{item.summaryRaiting}" />
+													</p:column>
+													<p:column headerText="Weight">
+														<p:inputNumber value="#{item.weight}" />
 													</p:column>
 												</p:dataTable>
 											</div>
@@ -297,9 +319,9 @@
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="PERSONALITY"
-													value="#{userAppraisalView.findSectionsDataByGoalId(4)}"
-													rendered="#{userAppraisalView.isElig(4)}" var="item"
-													rows="20"
+													rendered="#{userAppraisalView.isElig(4)}"
+													value="#{userAppraisalView.findSupplementaryByGoaldId(4)}"
+													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
 													paginatorPosition="bottom"
@@ -309,10 +331,19 @@
 														<h:outputText value="#{index+1}" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.goalTitle}" />
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.goalDescription}" />
+													<p:column headerText="Goal Description">
+														<h:outputText value="#{item.sectionsData.goalDescription}" />
+													</p:column>
+													<p:column headerText="Mid Year Rating">
+														<h:outputText value="#{item.midYearReview}" />
+													</p:column>
+													<p:column headerText="Final Year Rating">
+														<h:outputText value="#{item.summaryRaiting}" />
+													</p:column>
+													<p:column headerText="Weight">
+														<p:inputNumber value="#{item.weight}" />
 													</p:column>
 												</p:dataTable>
 											</div>
@@ -322,7 +353,6 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(5)}">
-
 									<div class="row">
 										<div class="col-sm-offset-1 col-sm-10">
 											<div class="table-header col-sm-12 col-xs-12">
@@ -331,9 +361,9 @@
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="MANAGEMENT"
-													value="#{userAppraisalView.findSectionsDataByGoalId(5)}"
-													rendered="#{userAppraisalView.isElig(5)}" var="item"
-													rows="20"
+													rendered="#{userAppraisalView.isElig(5)}"
+													value="#{userAppraisalView.findSupplementaryByGoaldId(5)}"
+													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
 													paginatorPosition="bottom"
@@ -343,10 +373,19 @@
 														<h:outputText value="#{index+1}" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.goalTitle}" />
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.goalDescription}" />
+													<p:column headerText="Goal Description">
+														<h:outputText value="#{item.sectionsData.goalDescription}" />
+													</p:column>
+													<p:column headerText="Mid Year Rating">
+														<h:outputText value="#{item.midYearReview}" />
+													</p:column>
+													<p:column headerText="Final Year Rating">
+														<h:outputText value="#{item.summaryRaiting}" />
+													</p:column>
+													<p:column headerText="Weight">
+														<p:inputNumber value="#{item.weight}" />
 													</p:column>
 												</p:dataTable>
 											</div>
@@ -369,7 +408,7 @@
 								update="messages,nav-wizard,next,steps"
 								styleClass="btn btn-success btn-next">
 								<h:outputText
-									value="#{userAppraisalView.step==3?'Finish':'Next'}" />
+									value="#{userAppraisalView.step==4?'Finish':'Next'}" />
 								<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 							</p:commandLink>
 

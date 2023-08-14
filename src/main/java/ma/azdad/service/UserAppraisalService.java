@@ -6,6 +6,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import ma.azdad.model.Appraisals;
+import ma.azdad.model.Sections;
+import ma.azdad.model.SectionsData;
+import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.UserAppraisalRepos;
@@ -58,6 +61,13 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return userAppraisal;
 	}
 
+	@Cacheable("userAppraisalService.findSectionByUserAppraisalAndNumber")
+	public Sections findSectionByUserAppraisalAndNumber(UserAppraisal uap,Integer number) {
+		Sections sections = repos.findSectionByUserAppraisalAndNumber(uap,number);
+
+		return sections;
+	}
+
 	
 	@Cacheable("userAppraisalService.findByAppraisal")
 	public List<UserAppraisal> findByAppraisal(Appraisals appraisals) {
@@ -75,4 +85,28 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 
 		return list;
 	}
+	
+	@Cacheable("userAppraisalService.findByAppraisal")
+	public List<SectionsData> findSectionDataByGoalId(Integer goalid) {
+
+		return repos.findSectionDataByGoalId(goalid);
+	}
+	
+	@Cacheable("userAppraisalService.findSupplementaryByGoaldId")
+	public List<SupplementaryGoals> findSupplementaryByGoaldId(Integer goalid) {
+
+		List<SupplementaryGoals> list = repos.findSupplementaryByGoaldId(goalid);
+		for (SupplementaryGoals supplementaryGoals : list) {
+			initialize(supplementaryGoals.getSections());
+			initialize(supplementaryGoals.getSectionsData());
+
+		}
+
+		return list;
+	}
+	
+	
+	
+
+	
 }
