@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import ma.azdad.model.Appraisals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
-import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.UserAppraisalRepos;
@@ -86,25 +85,12 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return list;
 	}
 	
-	@Cacheable("userAppraisalService.findByAppraisal")
+	@Cacheable("userAppraisalService.findSectionDataByGoalId")
 	public List<SectionsData> findSectionDataByGoalId(Integer goalid) {
 
 		return repos.findSectionDataByGoalId(goalid);
 	}
-	
-	@Cacheable("userAppraisalService.findSupplementaryByGoaldId")
-	public List<SupplementaryGoals> findSupplementaryByGoaldId(Integer goalid) {
 
-		List<SupplementaryGoals> list = repos.findSupplementaryByGoaldId(goalid);
-		for (SupplementaryGoals supplementaryGoals : list) {
-			initialize(supplementaryGoals.getSections());
-			initialize(supplementaryGoals.getSectionsData());
-
-		}
-
-		return list;
-	}
-	
 	
 	
 

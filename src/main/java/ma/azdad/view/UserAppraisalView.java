@@ -85,7 +85,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private int goaltitlecount = 0;
 	private List<BusinessGoals> businessGoalsList;
 	private List<SupplementaryGoals> supplementaryGoalsList;
-	private List<SupplementaryGoals> supplementaryGoalsListSave;
+	private List<SupplementaryGoals> supplementaryGoalsListBg;
 	private List<SectionsData> sectionsDatas;
 
 	public List<SectionsData> getSectionsDatas() {
@@ -100,14 +100,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	@PostConstruct
 	public void init() {
 		super.init();
-		
-	
+
 		// Sections Title
 		titleList = new ArrayList<>();
 		goalTitleList = new ArrayList<>();
 		businessGoalsList = new ArrayList<>();
 		supplementaryGoalsList = new ArrayList<>();
-		supplementaryGoalsListSave = new ArrayList<>();
+		supplementaryGoalsListBg = new ArrayList<>();
 		titleList.add("BUSINESS Goals");
 		titleList.add("JOB EXECUTION");
 		titleList.add("CODE OF CONDUCT");
@@ -131,7 +130,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			eligibleList.add(false);
 			weightList.add(0);
 		}
-		//getAllsupp();
 		time();
 	}
 
@@ -359,7 +357,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			businessGoalsService.save(businessGoals);
 
 		}
-		System.out.println("Saved");
 
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 
@@ -565,49 +562,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 	}
 
-	public Boolean isElig(Integer id) {
-		for (Sections sections : userAppraisalRepos.findSectionByUserAppraisal(model)) {
-
-			if (sections.getSectionsNumber() == id && sections.getEligible().booleanValue() == true) {
-				System.out.println("true");
-				return true;
-			}
-		}
-		System.out.println("false");
-		return false;
-	}
-	public void getAllsupp() {
-		sectionsDatas = new ArrayList<>();
-		sectionsDatas=sectionsDataService.findAll();
-	}
-	
-	public List<SectionsData> getSectionsDataGoaldId(Integer goaldid){
-		return userAppraisalRepos.findSectionDataByGoalId(goaldid);
-	
-	}
-
-	public List<SupplementaryGoals> findSupplementaryByGoaldId(Integer goalid) {
-		
-		supplementaryGoalsList = new ArrayList<>();
-		int i=1;
-		for (SectionsData sectionsData : userAppraisalService.findSectionDataByGoalId(goalid)) {
-			supplementaryGoalsList.add(new SupplementaryGoals(userAppraisalService.findSectionByUserAppraisalAndNumber(model,i),sectionsData));
-			if (isElig(goalid)) {
-				supplementaryGoalsListSave.add(new SupplementaryGoals(userAppraisalService.findSectionByUserAppraisalAndNumber(model,i),sectionsData));				
-			}
-			i++;
-		}
-		/*
-		 * for (int j = i; j < supplementaryGoalsList.size(); j++) {
-		 * //supplementaryGoalsService.save(supplementaryGoalsList.get(j));
-		 * supplementaryGoalsListSave.add(supplementaryGoalsList.get(j)); }
-		 */
-			
-		//List<SupplementaryGoals> lst = userAppraisalService.findSupplementaryByGoaldId(goalid);
-		
-		return supplementaryGoalsList;
-	}	
-
 	public Boolean validate() {
 		return true;
 	}
@@ -724,9 +678,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	// Supplementary Goals
-	
-	
-	
 	public List<SupplementaryGoals> getSupplementaryGoalsList() {
 		return supplementaryGoalsList;
 	}
@@ -735,46 +686,46 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		this.supplementaryGoalsList = supplementaryGoalsList;
 	}
 
+	public Boolean isElig(Integer idd) {
+		for (Sections sections : userAppraisalRepos.findSectionByUserAppraisal(model)) {
+
+			if (sections.getSectionsNumber() == idd && sections.getEligible() == true) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public List<SupplementaryGoals> findSupplementaryByGoaldId(Integer goalid) {
+		if (isElig(goalid)) {
+			System.out.println(goalid);
+			List<SupplementaryGoals> supplementaryGoalsList = new ArrayList<>();
+
+			for (SectionsData sectionsData : userAppraisalService.findSectionDataByGoalId(goalid)) {
+				System.out.println(sectionsData);
+				supplementaryGoalsList.add(new SupplementaryGoals(sectionsData));
+				supplementaryGoalsListBg.add(new SupplementaryGoals(sectionsData));
+
+			}
+		}
+
+		return supplementaryGoalsList;
+	}
+
 	public Boolean canAddSupplementaryGoals() {
 		return true;
 	}
 
-	/*
-	 * public void addSupplementaryGoals(Integer id) { if
-	 * (canAddSupplementaryGoals()) {
-	 * 
-	 * List<Sections> s = userAppraisalRepos.findSectionByEligible(model); for
-	 * (Sections sections : s) {
-	 * 
-	 * List<SectionsData> lst = userAppraisalRepos.findSectionDataByGoalId(id);
-	 * 
-	 * supplementaryGoalsList.add(new SupplementaryGoals(0,0,0,s,)) }
-	 * 
-	 * } }
-	 */
-
 	public String saveSupplementaryGoals() {
-			
-		//if can etc validation
-		
-		for (int i = 0; i < supplementaryGoalsListSave.size(); i++) {
-
+		// if can etc validation
+		for (int i = 0; i < supplementaryGoalsListBg.size(); i++) {
 			SupplementaryGoals supplementaryGoals = new SupplementaryGoals(
-					supplementaryGoalsListSave.get(i).getMidYearReview(),
-					supplementaryGoalsListSave.get(i).getSummaryRaiting(),
-					supplementaryGoalsListSave.get(i).getWeight(), 
-					supplementaryGoalsListSave.get(i).getSections(),
-					supplementaryGoalsListSave.get(i).getSectionsData()
-
-			);
-
+					supplementaryGoalsListBg.get(i).getMidYearReview(),
+					supplementaryGoalsListBg.get(i).getSummaryRaiting(), supplementaryGoalsListBg.get(i).getWeight(),
+					supplementaryGoalsListBg.get(i).getSections(), supplementaryGoalsListBg.get(i).getSectionsData());
 			supplementaryGoalsService.save(supplementaryGoals);
-
 		}
-		System.out.println("Saved");
-
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
-
 	}
 
 	// getters & setters
@@ -813,10 +764,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			break;
 		case 3:
 			saveSupplementaryGoals();
-			step++;
+			// step++;
 			break;
 		case 4:
-			//saveSupplementaryGoals();
+			// saveSupplementaryGoals();
 			step++;
 			break;
 		}

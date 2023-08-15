@@ -34,6 +34,7 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("from Sections  s where s.userappraisal=?1 and s.sectionsNumber=?2 ")
 	Sections findSectionByUserAppraisalAndNumber(UserAppraisal userappraisal,Integer number);
 	
+	//not used
 	@Query("from SupplementaryGoals s where s.sectionsData.goaldId=?1")
 	List<SupplementaryGoals> findSupplementaryByGoaldId(Integer goaldid);
 	
