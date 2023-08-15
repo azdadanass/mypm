@@ -82,8 +82,8 @@
 										</div>
 									</div>
 								</div>
-																<div class="space-8" />
-								
+								<div class="space-8" />
+
 								<div class="row">
 									<div class="col-xs-12 col-sm-3">
 										<label class="control-label pull-right"> <h:outputText
@@ -92,9 +92,13 @@
 									</div>
 									<div class="col-xs-12 col-sm-9">
 										<div class="clearfix">
-											<p:inputText value="#{appraisalsView.model.year}"
+											<p:selectOneMenu id="yearComboBox"
+												value="#{appraisalsView.model.year}"
 												styleClass="col-xs-12 col-sm-6" required="true"
-												requiredMessage="Year should not be null" />
+												requiredMessage="Year should not be null">
+												<f:selectItem itemLabel="Select Year" itemValue="" />
+												<f:selectItems value="#{appraisalsView.yearRange}" />
+											</p:selectOneMenu>
 											<br />
 										</div>
 									</div>
@@ -285,7 +289,7 @@
 												<h:outputText value="#{item.status}"
 													styleClass="bolder blue" />
 											</p:column>
-										<p:column headerText="Line Manager">
+											<p:column headerText="Line Manager">
 												<h:outputText value="#{item.affectation.lineManager}"
 													styleClass="bolder blue" />
 											</p:column>

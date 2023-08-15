@@ -54,7 +54,8 @@
 											src="resources/img/menu/2.jpg" alt="" class="no_resize"
 											width="100" height="50" />
 										</span>
-										<f:setPropertyActionListener value="#{Role.ROLE_MYPM_LINE_MANAGER}"
+										<f:setPropertyActionListener
+											value="#{Role.ROLE_MYPM_LINE_MANAGER}"
 											target="#{indexView.role}" />
 									</p:commandLink>
 									<h3>
@@ -66,62 +67,6 @@
 					</table>
 				</div>
 			</f:subview>
-			<!--  Mypm Role Dashboard -->
-			<f:subview rendered="#{Role.ROLE_MYPM==indexView.role}">
-				<div class="row">
-					<div class="col-sm-offset-1 col-sm-10">
-						<div class="col-sm-12">
-							<div class="row">
-								<div class="col-sm-3">
-									<div class="center">
-										<h:outputLink value="viewUser.xhtml" styleClass="img1"
-											style="width: 100px;margin:auto;margin-bottom:20px">
-											<span class="rotate_section"> <img
-												src="resources/img/menu/user_user.png" alt=""
-												class="no_resize" style="width: 100px; height: 100px" />
-											</span>
-										</h:outputLink>
-										<h3>
-											<h:outputText value="My Personal Data" style="font-size:14px" />
-										</h3>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="center">
-										<h:outputLink value="userAppraisalList.xhtml"
-											styleClass="img1"
-											style="width: 100px;margin:auto;margin-bottom:20px">
-											<span class="rotate_section"> <img
-												src="resources/img/menu/costcenter.png" alt=""
-												class="no_resize" style="width: 100px; height: 100px" />
-											</span>
-										</h:outputLink>
-										<h3>
-											<h:outputText value="My UserAppraisal Resource" style="font-size:14px" />
-										</h3>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="center">
-										<h:outputLink value="projectList.xhtml" styleClass="img1"
-											style="width: 100px;margin:auto;margin-bottom:20px">
-											<span class="rotate_section"> <img
-												src="resources/img/menu/project.png" alt=""
-												class="no_resize" style="width: 100px; height: 100px" />
-											</span>
-											<f:param name="pageIndex" value="2" />
-										</h:outputLink>
-										<h3>
-											<h:outputText value="My Projects" style="font-size:14px" />
-										</h3>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</f:subview>
-			<!-- ==================== -->
 			<!--  Mypm_HR Role Dashboard -->
 			<f:subview rendered="#{Role.ROLE_MYPM_HR==indexView.role}">
 				<div class="row">
@@ -130,85 +75,54 @@
 							<div class="row">
 								<div class="col-sm-3">
 									<div class="center">
-										<h:outputLink value="viewUser.xhtml" styleClass="img1"
+										<h:outputLink value="userAppraisalList.xhtml" styleClass="img1"
 											style="width: 100px;margin:auto;margin-bottom:20px">
 											<span class="rotate_section"> <img
-												src="resources/img/menu/user_user.png" alt=""
+												src="resources/img/menu/project.png" alt="My Appraisals"
 												class="no_resize" style="width: 100px; height: 100px" />
 											</span>
 										</h:outputLink>
 										<h3>
-											<h:outputText value="My Personal Data" style="font-size:14px" />
+											<h:outputText value="My Appraisals" style="font-size:14px" />
 										</h3>
 									</div>
 								</div>
 								<div class="col-sm-3">
 									<div class="center">
-										<h:outputLink value="appraisalsList.xhtml"
-											styleClass="img1"
+										<h:outputLink value="userAppraisalList.xhtml" styleClass="img1"
 											style="width: 100px;margin:auto;margin-bottom:20px">
 											<span class="rotate_section"> <img
-												src="resources/img/menu/costcenter.png" alt=""
+												src="resources/img/menu/user.png" alt="my team Appraislas"
 												class="no_resize" style="width: 100px; height: 100px" />
 											</span>
 										</h:outputLink>
 										<h3>
-											<h:outputText value="My Appraisals HR" style="font-size:14px" />
+											<h:outputText value="myTeam Appraisal" style="font-size:14px" />
 										</h3>
 									</div>
 								</div>
 								<div class="col-sm-3">
 									<div class="center">
-										<h:outputLink value="sectionsList.xhtml"
-											styleClass="img1"
+										<h:outputLink value="appraisalsList.xhtml" styleClass="img1"
 											style="width: 100px;margin:auto;margin-bottom:20px">
 											<span class="rotate_section"> <img
-												src="resources/img/menu/costcenter.png" alt=""
+												src="resources/img/menu/company.png" alt="HR Management"
 												class="no_resize" style="width: 100px; height: 100px" />
 											</span>
 										</h:outputLink>
 										<h3>
-											<h:outputText value="Sections" style="font-size:14px" />
+											<h:outputText value="HR Management" style="font-size:14px" />
 										</h3>
 									</div>
 								</div>
-								<div class="col-sm-3">
-									<div class="center">
-										<h:outputLink value="supplementaryGoalsList.xhtml"
-											styleClass="img1"
-											style="width: 100px;margin:auto;margin-bottom:20px">
-											<span class="rotate_section"> <img
-												src="resources/img/menu/costcenter.png" alt=""
-												class="no_resize" style="width: 100px; height: 100px" />
-											</span>
-										</h:outputLink>
-										<h3>
-											<h:outputText value="Supplementary Goals" style="font-size:14px" />
-										</h3>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="center">
-										<h:outputLink value="businessGoalsList.xhtml"
-											styleClass="img1"
-											style="width: 100px;margin:auto;margin-bottom:20px">
-											<span class="rotate_section"> <img
-												src="resources/img/menu/costcenter.png" alt=""
-												class="no_resize" style="width: 100px; height: 100px" />
-											</span>
-										</h:outputLink>
-										<h3>
-											<h:outputText value="Business Goals" style="font-size:14px" />
-										</h3>
-									</div>
-								</div>
+
 							</div>
 						</div>
 					</div>
 				</div>
 			</f:subview>
 			<!-- ==================== -->
-				<!--  Mypm_Linemanager Role Dashboard -->
+			<!--  Mypm_Linemanager Role Dashboard -->
 			<f:subview rendered="#{Role.ROLE_MYPM_LINE_MANAGER==indexView.role}">
 				<div class="row">
 					<div class="col-sm-offset-1 col-sm-10">
@@ -216,75 +130,29 @@
 							<div class="row">
 								<div class="col-sm-3">
 									<div class="center">
-										<h:outputLink value="viewUser.xhtml" styleClass="img1"
+										<h:outputLink value="userAppraisalList.xhtml" styleClass="img1"
 											style="width: 100px;margin:auto;margin-bottom:20px">
 											<span class="rotate_section"> <img
-												src="resources/img/menu/user_user.png" alt=""
+												src="resources/img/menu/project.png" alt=""
 												class="no_resize" style="width: 100px; height: 100px" />
 											</span>
 										</h:outputLink>
 										<h3>
-											<h:outputText value="My Personal Data" style="font-size:14px" />
+											<h:outputText value="My Appraisal" style="font-size:14px" />
 										</h3>
 									</div>
 								</div>
 								<div class="col-sm-3">
 									<div class="center">
-										<h:outputLink value="appraisalsList.xhtml"
-											styleClass="img1"
+										<h:outputLink value="userAppraisalList.xhtml" styleClass="img1"
 											style="width: 100px;margin:auto;margin-bottom:20px">
 											<span class="rotate_section"> <img
-												src="resources/img/menu/costcenter.png" alt=""
+												src="resources/img/menu/user.png" alt=""
 												class="no_resize" style="width: 100px; height: 100px" />
 											</span>
 										</h:outputLink>
 										<h3>
-											<h:outputText value="My Appraisals Line manager" style="font-size:14px" />
-										</h3>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="center">
-										<h:outputLink value="sectionsList.xhtml"
-											styleClass="img1"
-											style="width: 100px;margin:auto;margin-bottom:20px">
-											<span class="rotate_section"> <img
-												src="resources/img/menu/costcenter.png" alt=""
-												class="no_resize" style="width: 100px; height: 100px" />
-											</span>
-										</h:outputLink>
-										<h3>
-											<h:outputText value="Sections" style="font-size:14px" />
-										</h3>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="center">
-										<h:outputLink value="supplementaryGoalsList.xhtml"
-											styleClass="img1"
-											style="width: 100px;margin:auto;margin-bottom:20px">
-											<span class="rotate_section"> <img
-												src="resources/img/menu/costcenter.png" alt=""
-												class="no_resize" style="width: 100px; height: 100px" />
-											</span>
-										</h:outputLink>
-										<h3>
-											<h:outputText value="Supplementary Goals" style="font-size:14px" />
-										</h3>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="center">
-										<h:outputLink value="businessGoalsList.xhtml"
-											styleClass="img1"
-											style="width: 100px;margin:auto;margin-bottom:20px">
-											<span class="rotate_section"> <img
-												src="resources/img/menu/costcenter.png" alt=""
-												class="no_resize" style="width: 100px; height: 100px" />
-											</span>
-										</h:outputLink>
-										<h3>
-											<h:outputText value="Business Goals" style="font-size:14px" />
+											<h:outputText value="My Team Appraisals" style="font-size:14px" />
 										</h3>
 									</div>
 								</div>

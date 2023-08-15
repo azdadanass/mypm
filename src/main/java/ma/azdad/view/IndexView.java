@@ -41,10 +41,10 @@ public class IndexView {
 			sessionView.setMenu(1);
 			break;
 		case ROLE_MYPM_HR:
-			sessionView.setMenu(1);
+			sessionView.setMenu(2);
 			break;
 		case ROLE_MYPM_LINE_MANAGER:
-			sessionView.setMenu(1);
+			sessionView.setMenu(3);
 			break;
 		default:
 			break;

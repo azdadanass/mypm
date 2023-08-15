@@ -61,19 +61,32 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	private int step = 1;
 	private List<User> users;
-
+    private List<Integer> yearRange;
 	private List<User> usersBackup; // Ajoutez cette liste pour stocker le backup
 
 	@Override
 	@PostConstruct
 	public void init() {
 		super.init();
+		yearRange = new ArrayList<>();
+        for (int i = 2000; i <= 2040; i++) {
+            yearRange.add(i);
+        }
 		time();
 	}
 
 	@Override
 	protected void initParameters() {
 		super.initParameters();
+	}
+
+	
+	public List<Integer> getYearRange() {
+		return yearRange;
+	}
+
+	public void setYearRange(List<Integer> yearRange) {
+		this.yearRange = yearRange;
 	}
 
 	@Override
@@ -160,14 +173,11 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (model.getEndYearSummaryEndDate() != null
 				&& model.getEndYearSummaryStartDate().compareTo(model.getEndYearSummaryEndDate()) > 0)
 			return FacesContextMessages.ErrorMessages("Start Summary Date should be lower than end Summary date");
-		if (model.getStartDate().compareTo(model.getPlanningStartDate()) > 0)
-			return FacesContextMessages.ErrorMessages("Planning Date should be between Start Date and End Date");
 		if (model.getPlanningEndDate().compareTo(model.getMidYearReviewStartDate()) > 0)
 			return FacesContextMessages.ErrorMessages("Mid Year Start Date should be after Planning Date");
 		if (model.getMidYearReviewEndDate().compareTo(model.getEndYearSummaryStartDate()) > 0)
 			return FacesContextMessages.ErrorMessages("Final Year Start Date should be after Mid Year Date");
-		if (model.getEndYearSummaryEndDate().compareTo(model.getEndDate()) > 0)
-			return FacesContextMessages.ErrorMessages("Summary End Date should be befor End Date");
+		
 		return true;
 	}
 

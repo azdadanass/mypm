@@ -46,8 +46,15 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 		Cookie cookie = new Cookie("username", "hello");
 		response.addCookie(cookie);
+		
+		if (user.getIsMyPm() && !user.getIsMyPmHr() && !user.getIsMyPmLineManager()) {
+			response.sendRedirect("/userAppraisalList.xhtml");
 
-		response.sendRedirect("/index.xhtml");
+		}else {
+			response.sendRedirect("/index.xhtml");
+			
+		}
+		
 	}
 
 }

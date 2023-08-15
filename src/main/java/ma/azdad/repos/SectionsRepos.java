@@ -6,9 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import ma.azdad.model.Appraisals;
 import ma.azdad.model.Sections;
-import ma.azdad.model.SectionsData;
 import ma.azdad.model.UserAppraisal;
 
 @Repository
