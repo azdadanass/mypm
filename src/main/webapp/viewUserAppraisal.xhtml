@@ -190,8 +190,7 @@
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="Jobexecution"
-													rendered="#{userAppraisalView.isElig(1)}"
-													value="#{userAppraisalView.findSupplementaryByGoaldId(1)}"
+													value="#{userAppraisalView.findSuppByGoaldId(1)}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -233,8 +232,7 @@
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="CODE"
-													rendered="#{userAppraisalView.isElig(2)}"
-													value="#{userAppraisalView.findSupplementaryByGoaldId(2)}"
+													value="#{userAppraisalView.findSuppByGoaldId(2)}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -265,7 +263,7 @@
 									</div>
 								</ui:fragment>
 
-								<div class="space-16" />
+									<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(3)}">
 
 									<div class="row">

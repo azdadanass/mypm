@@ -261,9 +261,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	// Eligible True
-
 	public List<Sections> findSectionsByEligible(UserAppraisal ua) {
-		List<Sections> s = userAppraisalRepos.findSectionByEligible(ua);
+		List<Sections> s = userAppraisalService.findSectionByEligible(ua);
 		return s;
 	}
 
@@ -696,19 +695,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return false;
 	}
 
-	public List<SupplementaryGoals> findSupplementaryByGoaldId(Integer goalid) {
-		if (isElig(goalid)) {
-			System.out.println(goalid);
-			List<SupplementaryGoals> supplementaryGoalsList = new ArrayList<>();
+	public List<SupplementaryGoals> findSuppByGoaldId(Integer goalid){
 
-			for (SectionsData sectionsData : userAppraisalService.findSectionDataByGoalId(goalid)) {
-				System.out.println(sectionsData);
-				supplementaryGoalsList.add(new SupplementaryGoals(sectionsData));
-				supplementaryGoalsListBg.add(new SupplementaryGoals(sectionsData));
-
-			}
-		}
-
+		List<SectionsData> secdata = new ArrayList<>();
+		List<SupplementaryGoals> supplementaryGoalsList = new ArrayList<>(); 
+		
+		secdata = userAppraisalService.findSectionDataByGoalId(goalid);
+		
+		  for (SectionsData se : secdata) { 
+			  supplementaryGoalsList.add(new SupplementaryGoals(se));
+			  supplementaryGoalsListBg.add(new SupplementaryGoals(se));
+		  }
+		 
 		return supplementaryGoalsList;
 	}
 

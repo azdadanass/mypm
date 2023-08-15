@@ -60,13 +60,14 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return userAppraisal;
 	}
 
-	@Cacheable("userAppraisalService.findSectionByUserAppraisalAndNumber")
-	public Sections findSectionByUserAppraisalAndNumber(UserAppraisal uap,Integer number) {
-		Sections sections = repos.findSectionByUserAppraisalAndNumber(uap,number);
+	@Cacheable("userAppraisalService.findSectionByEligible")
+	public List<Sections> findSectionByEligible(UserAppraisal userAppraisal) {
 
-		return sections;
+		return repos.findSectionByEligible(userAppraisal);
 	}
 
+	
+	
 	
 	@Cacheable("userAppraisalService.findByAppraisal")
 	public List<UserAppraisal> findByAppraisal(Appraisals appraisals) {
