@@ -13,6 +13,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +22,15 @@ import ma.azdad.model.AppraisalsComment;
 import ma.azdad.model.AppraisalsFile;
 import ma.azdad.model.AppraisalsHistory;
 import ma.azdad.model.AppraisalsStatus;
-
+import ma.azdad.model.BusinessGoals;
+import ma.azdad.model.Sections;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.AffectationRepos;
 import ma.azdad.repos.AppraisalsRepos;
 import ma.azdad.service.AppraisalsService;
+import ma.azdad.service.BusinessGoalsService;
+import ma.azdad.service.SectionsService;
 import ma.azdad.service.UserAppraisalService;
 import ma.azdad.service.UtilsFunctions;
 import ma.azdad.utils.FacesContextMessages;
@@ -56,6 +60,12 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	@Autowired
 	AppraisalsService appraisalsService;
+	
+	@Autowired
+	SectionsService sectionsService;
+	
+	@Autowired
+	BusinessGoalsService businessGoalsService;
 
 	private boolean undoMode; // Ajoutez cette propriété pour gérer le mode annulation de suppression
 
@@ -68,6 +78,8 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	@PostConstruct
 	public void init() {
 		super.init();
+		
+		
 		yearRange = new ArrayList<>();
 		for (int i = 2000; i <= 2040; i++) {
 			yearRange.add(i);
@@ -242,9 +254,23 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (!canDelete())
 			return null;
 		try {
-			List<UserAppraisal> userapp = appraisalsService.findByAppraisalAndManager(sessionView.getUser(),model);
+			List<UserAppraisal> userapp = userAppraisalService.findUserAppraisalByAppraisal(model);
 			if (userapp.size() > 0) {
 				for (UserAppraisal usap : userapp) {
+					List<Sections> sec = sectionsService.findSectionsByUserAppraisal(usap);
+					if (sec.size() > 0) {
+						for (Sections sect : sec) {
+								
+							List<BusinessGoals> bgoal = businessGoalsService.findBySections(sect);
+							if (sec.size() > 0) {
+								for (BusinessGoals bg : bgoal) {
+
+									businessGoalsService.delete(bg);
+								}
+							}
+							sectionsService.delete(sect);
+						}
+					}
 					userAppraisalService.delete(usap);
 				}
 			}
@@ -351,12 +377,14 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				return null;
 			}
 			step++;
+			
 			break;
 
 		case 2:
 			if (!validate2()) {
 				return null;
 			}
+			
 			step++;
 			break;
 		case 3:
@@ -375,9 +403,10 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	// MidYearReview
 	public Boolean canMidYearReview() {
-		return AppraisalsStatus.OPEN.equals(model.getAppraisalsStatus()) && sessionView.getIsMyPm();
+		return AppraisalsStatus.OPEN.equals(model.getAppraisalsStatus());
 	}
-
+	
+	@Scheduled(fixedRate = 600000)
 	public void midYearReview() {
 		if (!canMidYearReview())
 			return;
@@ -396,9 +425,10 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	// FinalYearReview
 	public Boolean canFinalYearReview() {
-		return AppraisalsStatus.MID_YEAR_REVIEW.equals(model.getAppraisalsStatus()) && sessionView.getIsMyPm();
+		return AppraisalsStatus.MID_YEAR_REVIEW.equals(model.getAppraisalsStatus());
 	}
-
+	
+	@Scheduled(fixedRate = 600000)
 	public void finalYearReview() {
 		if (!canFinalYearReview())
 			return;
@@ -417,19 +447,18 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	// Closed
 	public Boolean canClosed() {
-		return AppraisalsStatus.FINAL_REVIEW.equals(model.getAppraisalsStatus()) && sessionView.getIsMyPm();
+		return AppraisalsStatus.FINAL_REVIEW.equals(model.getAppraisalsStatus()) && sessionView.getIsMyPmHr();
 	}
 
 	public void closed() {
 		if (!canClosed())
 			return;
-
+		
 		model.setDateStatsClosed(new Date());
 		model.setUserStatsClosed(sessionView.getUser());
 		model.setAppraisalsStatus(AppraisalsStatus.CLOSED);
 		model.addHistory(new AppraisalsHistory(model.getAppraisalsStatus().getValue(), sessionView.getUser(),
 				"change AppraisalsStats from FINAL_YEAR_REVIEW to CLOSED"));
-
 		service.save(model);
 		model = service.findOne(model.getId());
 	}

@@ -47,7 +47,7 @@ public class AppraisalsService extends GenericService<Integer, Appraisals,Apprai
 		return repos.findByHr(a, b, c);
 	}
 
-	@Cacheable("userAppraisalService.findByAppraisalAndManager")
+	@Cacheable("userAppraisalService.findUserAppraisalByManager")
 	public List<UserAppraisal> findByAppraisalAndManager(User appraisee,Appraisals appraisals) {
 
 		List<UserAppraisal> list = repos.findByAppraisalAndManager(appraisee,appraisals);

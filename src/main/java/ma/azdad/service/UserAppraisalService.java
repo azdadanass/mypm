@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+import ma.azdad.model.Appraisals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
 import ma.azdad.model.User;
@@ -107,7 +108,39 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 
 		return list;
 	}
+	@Cacheable("userAppraisalService.findUserAppraisalByLM")
+	public List<UserAppraisal> findUserAppraisalByLM(Boolean t1,Boolean t2,User employe) {
+
+		List<UserAppraisal> list = repos.findUserAppraisalByLM(t1,t2,employe);
+		for (UserAppraisal userAppraisal : list) {
+			initialize(userAppraisal.getAppraisal());
+			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getAppraisee());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			
+		}
+
+		return list;
+	}
 	
+	@Cacheable("userAppraisalService.findSectionByUserAppraisal")
+	public List<UserAppraisal> findUserAppraisalByAppraisal(Appraisals appraisal) {
+
+		List<UserAppraisal> list = repos.findUserAppraisalByAppraisal(appraisal);
+		for (UserAppraisal userAppraisal : list) {
+			initialize(userAppraisal.getAppraisal());
+			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getAppraisee());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			
+		}
+
+		return list;
+	}
 
 	
 }

@@ -13,6 +13,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
+import org.apache.ecs.xhtml.iframe;
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -90,31 +91,31 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SectionsData> sectionsDatas;
 	private List<UserAppraisal> userAppraisalList;
 
-	
 	public List<UserAppraisal> getUserAppraisalList() {
 		return userAppraisalList;
 	}
-
 
 	public void setUserAppraisalList(List<UserAppraisal> userAppraisalList) {
 		this.userAppraisalList = userAppraisalList;
 	}
 
-
 	public List<SectionsData> getSectionsDatas() {
 		return sectionsDatas;
 	}
-	
-	
+
 	public List<UserAppraisal> findUserAppraisalByHR() {
-		return userAppraisalService.findUserAppraisalByHR(true,true,sessionView.getUser());
+		return userAppraisalService.findUserAppraisalByHR(true, true, sessionView.getUser());
+	}
+
+	public List<UserAppraisal> findUserAppraisalByLM() {
+		return userAppraisalService.findUserAppraisalByLM(true, true, sessionView.getUser());
 	}
 
 	public List<UserAppraisal> findByAppraisal(User employe) {
-		userAppraisalList=userAppraisalService.findUserAppraisalByUser(employe);
+		userAppraisalList = userAppraisalService.findUserAppraisalByUser(employe);
 		return userAppraisalList;
 	}
-
+	
 	public void setSectionsDatas(List<SectionsData> sectionsDatas) {
 		this.sectionsDatas = sectionsDatas;
 	}
@@ -161,9 +162,22 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	@Override
 	public void refreshList() {
 
-		if (isListPage) {
-			initLists(findByEmployOrAppraisee());
+		if (pageIndex != null) {
+			switch (pageIndex) {
+			case 1:
+				initLists(service.findUserAppraisalByUser(sessionView.getUser()));
+				break;
+			case 3:
+				initLists(service.findUserAppraisalByHR(true,true,sessionView.getUser()));
+				break;
+			case 4:
+				initLists(service.findUserAppraisalByLM(true,true,sessionView.getUser()));
+				break;
+			default:
+				break;
+			}
 		}
+		
 	}
 
 	@Override
@@ -176,13 +190,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return sessionView.getIsInternalAdmin();
 	}
 
-	
-	
-	
-	public List<UserAppraisal> findUserAppraisalByUser(){
-		
+	public List<UserAppraisal> findUserAppraisalByUser() {
+
 		return userAppraisalService.findUserAppraisalByUser(sessionView.getUser());
 	}
+
 	@Override
 	public void setSearchBean(String searchBean) {
 		this.searchBean = searchBean;
@@ -725,18 +737,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return false;
 	}
 
-	public List<SupplementaryGoals> findSuppByGoaldId(Integer goalid){
+	public List<SupplementaryGoals> findSuppByGoaldId(Integer goalid) {
 
 		List<SectionsData> secdata = new ArrayList<>();
-		List<SupplementaryGoals> supplementaryGoalsList = new ArrayList<>(); 
-		
+		List<SupplementaryGoals> supplementaryGoalsList = new ArrayList<>();
+
 		secdata = userAppraisalService.findSectionDataByGoalId(goalid);
-		
-		  for (SectionsData se : secdata) { 
-			  supplementaryGoalsList.add(new SupplementaryGoals(se));
-			  supplementaryGoalsListBg.add(new SupplementaryGoals(se));
-		  }
-		 
+
+		for (SectionsData se : secdata) {
+			supplementaryGoalsList.add(new SupplementaryGoals(se));
+			supplementaryGoalsListBg.add(new SupplementaryGoals(se));
+		}
+
 		return supplementaryGoalsList;
 	}
 

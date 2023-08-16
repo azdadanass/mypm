@@ -81,21 +81,7 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited" />
 						</p:commandLink>
-						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.ApprovedLM()}" update=":main_form"
-							title="Approved LM"
-							rendered="#{userAppraisalView.canApprovedLM()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="ApprovedLM" />
-						</p:commandLink>
-						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.Approved()}" update=":main_form"
-							title="Approved" rendered="#{userAppraisalView.canApproved()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Approved" />
-						</p:commandLink>
+					
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.SubmitedMidYear()}"
@@ -104,23 +90,8 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited Mid Year" />
 						</p:commandLink>
-						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.ApprovedLMMidYear()}"
-							update=":main_form" title="MYR Approved LM"
-							rendered="#{userAppraisalView.canApprovedLMMidYear()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="MYR ApprovedLM" />
-						</p:commandLink>
-						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.approvedMidYear()}"
-							update=":main_form" title="MYR Approved"
-							rendered="#{userAppraisalView.canApprovedMidYear()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="MYR Approved" />
-						</p:commandLink>
-
+					
+					
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.SubmitedFinalYear()}"
@@ -129,22 +100,8 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited Final Year" />
 						</p:commandLink>
-						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.ApprovedLMFinalYear()}"
-							update=":main_form" title="FYR Approved LM"
-							rendered="#{userAppraisalView.canApprovedLMFinalYear()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="FYR ApprovedLM" />
-						</p:commandLink>
-						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.ApprovedFinalYear()}"
-							update=":main_form" title="MYR Approved"
-							rendered="#{userAppraisalView.canApprovedFinalYear()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="FYR Approved" />
-						</p:commandLink>
+				
+				
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.closed()}" update=":main_form"
@@ -193,8 +150,103 @@
 										<h:outputText escape="false"
 											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsCreated,userAppraisalView.model.userStatsCreated.username)}" />
 									</p:overlayPanel></li>
+								<li
+									class="#{userAppraisalView.model.dateStatsSubmited!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step1"
+											value="#{userAppraisalStatus.SUBMITED.value}" /> <br />
+								</span> <p:overlayPanel for="step1"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsSubmited,userAppraisalView.model.userStatsSubmited.username)}" />
+									</p:overlayPanel></li>
+								<li
+									class="#{userAppraisalView.model.dateStatsApprovedLM!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step2"
+											value="#{userAppraisalStatus.APPROVED_LM.value}" /> <br />
+								</span> <p:overlayPanel for="step2"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsApprovedLM,userAppraisalView.model.userStatsApprovedLM.username)}" />
+									</p:overlayPanel></li>
+								<li
+									class="#{userAppraisalView.model.dateStatsApproved!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step3"
+											value="#{userAppraisalStatus.APPROVED.value}" /> <br />
+								</span> <p:overlayPanel for="step3"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsApproved,userAppraisalView.model.userStatsApproved.username)}" />
+									</p:overlayPanel></li>
+								<li
+									class="#{userAppraisalView.model.dateStatsSubmitedMidYear!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step4"
+											value="#{userAppraisalStatus.SUBMITED_MID_YEAR.value}" /> <br />
+								</span> <p:overlayPanel for="step4"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsSubmitedMidYear,userAppraisalView.model.userStatsSubmitedMidYear.username)}" />
+									</p:overlayPanel></li>
+								<li
+									class="#{userAppraisalView.model.dateStatsApprovedLMMidYear!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step5"
+											value="#{userAppraisalStatus.MYR_APPROVED_LM.value}" /> <br />
+								</span> <p:overlayPanel for="step5"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsApprovedLMMidYear,userAppraisalView.model.userStatsApprovedLMMidYear.username)}" />
+									</p:overlayPanel></li>
+								<li
+									class="#{userAppraisalView.model.dateStatsApprovedMidYear!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step6"
+											value="#{userAppraisalStatus.MYR_APPROVED.value}" /> <br />
+								</span> <p:overlayPanel for="step6"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsApprovedMidYear,userAppraisalView.model.userStatsApprovedMidYear.username)}" />
+									</p:overlayPanel></li>
 
-
+								<li
+									class="#{userAppraisalView.model.dateStatsSubmitedFinalYear!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step7"
+											value="#{userAppraisalStatus.SUBMITED_FINAL_YEAR.value}" /> <br />
+								</span> <p:overlayPanel for="step7"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsSubmitedFinalYear,userAppraisalView.model.userStatsSubmitedFinalYear.username)}" />
+									</p:overlayPanel></li>
+								<li
+									class="#{userAppraisalView.model.dateStatsApprovedLMFinalYear!=null?'complete':''}"><span
+									class="step"> <i
+										class="ace-icon fa fa-spinner fa-spin grey" />
+								</span> <span class="title"> <h:outputText id="step8"
+											value="#{userAppraisalStatus.FYR_APPROVED_LM.value}" /> <br />
+								</span> <p:overlayPanel for="step8"
+										style="text-align: left;width:350px" showEvent="mouseover"
+										hideEvent="mouseout">
+										<h:outputText escape="false"
+											value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsApprovedLMFinalYear,userAppraisalView.model.userStatsApprovedLMFinalYear.username)}" />
+									</p:overlayPanel></li>
 								<li
 									class="#{userAppraisalView.model.dateStatsApprovedFinalYear!=null?'complete':''}"><span
 									class="step"> <i
@@ -244,10 +296,6 @@
 					<li><a data-toggle="tab" href="#tab4"> <i
 							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
 								value=" History" styleClass="hidden-xs" />
-					</a></li>
-					<li><a data-toggle="tab" href="#tab5"> <i
-							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
-								value="MyPm" styleClass="hidden-xs" />
 					</a></li>
 				</ul>
 
@@ -527,81 +575,6 @@
 										<p:column headerText="Description" width="400">
 											<h:outputText value="#{item.description}" escape="false"
 												styleClass="aa-cut-text" />
-										</p:column>
-									</p:dataTable>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div id="tab5" class="tab-pane">
-						<div class="space-8" />
-						<div class="row">
-							<div class="col-sm-offset-1 col-sm-10">
-								<div class="table-header col-sm-12 col-xs-12">
-									<div class="col-sm-9 hidden-xs">
-										<i class="fa fa-list" />
-										<h:outputText value="MyPm" />
-									</div>
-								</div>
-								<div class="col-sm-12 col-xs-12 aa-datatable-container">
-									<p:dataTable
-										value="#{userAppraisalView.findUserAppraisalByUser()}"
-										filteredValue="#{userAppraisalView.list3}" rowKey="#{item.id}"
-										selection="#{userAppraisalView.list4}" id="userAppraisalList"
-										widgetVar="userAppraisalList" var="item" rows="20"
-										styleClass="table table-striped table-hover center"
-										paginatorAlwaysVisible="false" paginator="true"
-										paginatorPosition="bottom"
-										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-										rowSelectMode="checkbox">
-										<p:column headerText="Name">
-											<h:outputText value="#{item.appraisalName}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Summary rate start date">
-											<h:outputText
-												value="#{item.appraisal.endYearSummaryStartDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Summary rate end date">
-											<h:outputText value="#{item.appraisal.endYearSummaryEndDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Mid year Review start date">
-											<h:outputText
-												value="#{item.appraisal.midYearReviewStartDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Mid year Review end date">
-											<h:outputText value="#{item.appraisal.midYearReviewEndDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Planning Date">
-											<h:outputText value="#{item.appraisal.planningStartDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Planning end">
-											<h:outputText value="#{item.appraisal.planningEndDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Status">
-											<h:outputText value="#{item.userAppraisalStatus}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Actions" width="150" exportable="false">
-											<div class="action-buttons center">
-												<h:outputLink value="#{userAppraisalView.viewPage}"
-													title="Edit UserAppraisal"
-													styleClass="aa-toolt ip tooltip-info">
-													<i class="ace-icon fa fa-pencil-square-o bigger-130 green" />
-													<f:param name="id" value="#{item.id}" />
-												</h:outputLink>
-												<h:outputLink value="#{userAppraisalView.addEditPage}"
-													title="Show Details" styleClass="aa-tooltip tooltip-info">
-													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
-													<f:param name="id" value="#{item.id}" />
-												</h:outputLink>
-											</div>
 										</p:column>
 									</p:dataTable>
 								</div>

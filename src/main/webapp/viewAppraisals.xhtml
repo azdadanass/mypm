@@ -74,22 +74,6 @@
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{appraisalsView.midYearReview()}" update=":main_form"
-							title="Mid Year Review"
-							rendered="#{appraisalsView.canMidYearReview()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="MidYearReview" />
-						</p:commandLink>
-						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{appraisalsView.finalYearReview()}" update=":main_form"
-							title="Final Year Review"
-							rendered="#{appraisalsView.canFinalYearReview()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="FinalYearReview" />
-						</p:commandLink>
-						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{appraisalsView.closed()}" update=":main_form"
 							title="Closed" rendered="#{appraisalsView.canClosed()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
@@ -748,14 +732,16 @@
 												styleClass="bolder blue" />
 										</p:column>
 										<p:column headerText="Employe Status">
-											<h:outputText value="#{item.employ.status}" styleClass="bolder blue" />
+											<h:outputText value="#{item.employ.status}"
+												styleClass="bolder blue" />
 										</p:column>
 										<p:column headerText="LOB">
 											<h:outputText value="#{item.employ.lobName}"
 												styleClass="bolder blue" />
 										</p:column>
 										<p:column headerText="Function">
-											<h:outputText value="#{item.employ.job}" styleClass="bolder blue" />
+											<h:outputText value="#{item.employ.job}"
+												styleClass="bolder blue" />
 										</p:column>
 										<p:column headerText="Status">
 											<h:outputText value="#{item.userAppraisalStatus}"

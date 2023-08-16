@@ -88,7 +88,7 @@
 						</div>
 					</div>
 					<div class="col-sm-12 col-xs-12 aa-datatable-container">
-						<p:dataTable value="#{userAppraisalView.findUserAppraisalByHR()}"
+						<p:dataTable value="#{userAppraisalView.list2}"
 							filteredValue="#{userAppraisalView.list3}" rowKey="#{item.id}"
 							selection="#{userAppraisalView.list4}" id="userAppraisalList"
 							widgetVar="userAppraisalList" var="item" rows="20"
@@ -99,6 +99,14 @@
 							rowSelectMode="checkbox">
 							<p:column headerText="Name">
 								<h:outputText value="#{item.appraisalName}"
+									styleClass="bolder blue" />
+							</p:column>
+							<p:column headerText="Name">
+								<h:outputText value="#{item.employ}"
+									styleClass="bolder blue" />
+							</p:column>
+							<p:column headerText="Name">
+								<h:outputText value="#{item.appraisee}"
 									styleClass="bolder blue" />
 							</p:column>
 							<p:column headerText="Summary rate start date">

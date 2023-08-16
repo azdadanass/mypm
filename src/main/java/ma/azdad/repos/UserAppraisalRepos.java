@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import ma.azdad.model.Appraisals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
 import ma.azdad.model.User;
@@ -21,6 +22,9 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 
 	@Query("from UserAppraisal u where u.appraisee=?1")
 	List<UserAppraisal> findAppraisalByManager(User employe);
+	
+	@Query("from UserAppraisal u where u.appraisal=?1")
+	List<UserAppraisal> findUserAppraisalByAppraisal(Appraisals appraisal);
 
 	@Query("from Sections  s where s.userappraisal=?1 and s.eligible='true' ")
 	List<Sections> findSectionByEligible(UserAppraisal ua);
@@ -33,11 +37,12 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 
 	@Query("from Sections  s where s.userappraisal=?1 and s.sectionsNumber=?2 ")
 	Sections findSectionByUserAppraisalAndNumber(UserAppraisal userappraisal, Integer number);
-	
-	
-	
+		
 	@Query("from UserAppraisal u where u.employ.active=?1 and u.employ.internal=?2  and u.employ.affectation.hrManager=?3")
 	List<UserAppraisal> findUserAppraisalByHR(Boolean act,Boolean inter,User u3);
+	
+	@Query("from UserAppraisal u where u.employ.active=?1 and u.employ.internal=?2  and u.employ.affectation.lineManager=?3")
+	List<UserAppraisal> findUserAppraisalByLM(Boolean act,Boolean inter,User u3);
 
 	/*
 	 * //not used

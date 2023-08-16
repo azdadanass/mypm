@@ -6,6 +6,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import ma.azdad.model.BusinessGoals;
+import ma.azdad.model.Sections;
+import ma.azdad.model.User;
+import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.BusinessGoalsRepos;
 
 @Component
@@ -22,6 +25,22 @@ public class BusinessGoalsService extends GenericService<Integer, BusinessGoals,
 		BusinessGoals businessGoals = super.findOne(id);
 
 		return businessGoals;
+	}
+
+	@Cacheable("businessGoalsService.findBySections")
+	public List<BusinessGoals> findBySections(Sections sections) {
+
+		List<BusinessGoals> list = repos.findBySections(sections);
+		for (BusinessGoals userAppraisal : list) {
+	
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			initialize(userAppraisal.getSections());
+			
+		}
+
+		return list;
 	}
 
 }

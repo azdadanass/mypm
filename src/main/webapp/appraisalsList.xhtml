@@ -39,6 +39,7 @@
 							<h:outputLink
 								styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 								title="Add New appraisals" value="#{appraisalsView.addEditPage}"
+								 onclick="#{appraisalsView.evictCache()}"
 								rendered="#{appraisalsView.canSave()}">
 								<i class="ace-icon fa fa-plus bigger-230"></i>
 								<h:outputText value="Add" />

@@ -28,7 +28,7 @@
 							</ul></li>
 					</f:subview>
 
-<!-- 					HR manager MEnu -->
+					<!-- 					HR manager MEnu -->
 
 					<f:subview rendered="#{sessionView.menu==2}">
 						<li class="open"><a href="#" class="dropdown-toggle"> <i
@@ -42,24 +42,30 @@
 										<i class="ace-icon fa fa-user bigger-130 blue"
 											style="margin-right: 10px" />
 										<h:outputText value="MyPm" />
+										<f:param name="pageIndex" value="1" />
 									</h:outputLink> <b class="arrow"></b></li>
-									<li><h:outputLink value="appraisalsList.xhtml">
+
+
+								<li><h:outputLink value="appraisalsList.xhtml">
 										<i class="menu-icon fa fa-caret-right"></i>
 										<i class="ace-icon fa fa-user bigger-130 blue"
 											style="margin-right: 10px" />
 										<h:outputText value="HR Management" />
 									</h:outputLink> <b class="arrow"></b></li>
-									<li><h:outputLink value="userAppraisalList.xhtml">
+
+
+								<li><h:outputLink value="userAppraisalList.xhtml">
 										<i class="menu-icon fa fa-caret-right"></i>
 										<i class="ace-icon fa fa-user bigger-130 blue"
 											style="margin-right: 10px" />
 										<h:outputText value="My Team Appraisal" />
+										<f:param name="pageIndex" value="3" />
 									</h:outputLink> <b class="arrow"></b></li>
 							</ul></li>
 					</f:subview>
-					
-<!-- 					Line manager MEnu -->
-						<f:subview rendered="#{sessionView.menu==3}">
+
+					<!-- 					Line manager MEnu -->
+					<f:subview rendered="#{sessionView.menu==3}">
 						<li class="open"><a href="#" class="dropdown-toggle"> <i
 								class="menu-icon fa fa-list"></i> <span class="menu-text">
 									<h:outputText value="Menu" />
@@ -71,12 +77,16 @@
 										<i class="ace-icon fa fa-user bigger-130 blue"
 											style="margin-right: 10px" />
 										<h:outputText value="MyPm" />
-									</h:outputLink> <b class="arrow"></b></li>							
-									<li><h:outputLink value="userAppraisalList.xhtml">
+										<f:param name="pageIndex" value="1" />
+
+									</h:outputLink> <b class="arrow"></b></li>
+								<li><h:outputLink value="userAppraisalList.xhtml">
 										<i class="menu-icon fa fa-caret-right"></i>
 										<i class="ace-icon fa fa-user bigger-130 blue"
 											style="margin-right: 10px" />
 										<h:outputText value="My Team Appraisals" />
+										<f:param name="pageIndex" value="4" />
+
 									</h:outputLink> <b class="arrow"></b></li>
 							</ul></li>
 					</f:subview>
