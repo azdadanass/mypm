@@ -238,7 +238,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (!canDelete())
 			return null;
 		try {
-			List<UserAppraisal> userapp = userAppraisalService.findByAppraisal(model);
+			List<UserAppraisal> userapp = userAppraisalService.findByAppraisal(sessionView.getUser());
 			if (userapp.size() > 0) {
 				for (UserAppraisal usap : userapp) {
 

@@ -70,9 +70,9 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 	
 	
 	@Cacheable("userAppraisalService.findByAppraisal")
-	public List<UserAppraisal> findByAppraisal(Appraisals appraisals) {
+	public List<UserAppraisal> findByAppraisal( User employe) {
 
-		List<UserAppraisal> list = repos.findByAppraisal(appraisals);
+		List<UserAppraisal> list = repos.findByAppraisal(employe);
 		for (UserAppraisal userAppraisal : list) {
 			initialize(userAppraisal.getAppraisal());
 			initialize(userAppraisal.getEmploy());

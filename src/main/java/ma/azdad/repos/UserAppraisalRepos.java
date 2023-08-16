@@ -18,8 +18,8 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	
 	List<UserAppraisal> findByEmployOrAppraisee(User employ,User apraisee);
 	
-	@Query("from UserAppraisal  u where u.appraisal=?1 ")
-	List<UserAppraisal> findByAppraisal(Appraisals ap);
+	@Query("from UserAppraisal  u where u.employ=?1")
+	List<UserAppraisal> findByAppraisal( User employe);
 	
 	@Query("from Sections  s where s.userappraisal=?1 and s.eligible='true' ")
 	List<Sections> findSectionByEligible(UserAppraisal ua);

@@ -24,6 +24,7 @@ import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
+import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.model.UserAppraisalComment;
 import ma.azdad.model.UserAppraisalFile;
@@ -87,9 +88,27 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SupplementaryGoals> supplementaryGoalsList;
 	private List<SupplementaryGoals> supplementaryGoalsListBg;
 	private List<SectionsData> sectionsDatas;
+	private List<UserAppraisal> userAppraisalList;
+
+	
+	public List<UserAppraisal> getUserAppraisalList() {
+		return userAppraisalList;
+	}
+
+
+	public void setUserAppraisalList(List<UserAppraisal> userAppraisalList) {
+		this.userAppraisalList = userAppraisalList;
+	}
+
 
 	public List<SectionsData> getSectionsDatas() {
 		return sectionsDatas;
+	}
+	
+
+	public List<UserAppraisal> findByAppraisal(User employe) {
+		userAppraisalList=userAppraisalService.findByAppraisal(employe);
+		return userAppraisalList;
 	}
 
 	public void setSectionsDatas(List<SectionsData> sectionsDatas) {
