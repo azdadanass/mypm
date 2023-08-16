@@ -105,6 +105,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return sectionsDatas;
 	}
 	
+	
+	public List<UserAppraisal> findUserAppraisalByHR() {
+		return userAppraisalService.findUserAppraisalByHR(true,true,sessionView.getUser());
+	}
 
 	public List<UserAppraisal> findByAppraisal(User employe) {
 		userAppraisalList=userAppraisalService.findUserAppraisalByUser(employe);

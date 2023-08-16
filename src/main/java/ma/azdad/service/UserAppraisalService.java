@@ -91,7 +91,22 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return repos.findSectionDataByGoalId(goalid);
 	}
 
-	
+	@Cacheable("userAppraisalService.findUserAppraisalByHR")
+	public List<UserAppraisal> findUserAppraisalByHR(Boolean t1,Boolean t2,User employe) {
+
+		List<UserAppraisal> list = repos.findUserAppraisalByHR(t1,t2,employe);
+		for (UserAppraisal userAppraisal : list) {
+			initialize(userAppraisal.getAppraisal());
+			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getAppraisee());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			
+		}
+
+		return list;
+	}
 	
 
 	
