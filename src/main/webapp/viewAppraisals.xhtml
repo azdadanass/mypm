@@ -26,7 +26,8 @@
 		</ul>
 	</ui:define>
 	<ui:define name="body">
-	<p:importEnum type="ma.azdad.model.AppraisalsStatus" var="appraisalsStatus" allSuffix="ALL_ENUM_VALUES" />
+		<p:importEnum type="ma.azdad.model.AppraisalsStatus"
+			var="appraisalsStatus" allSuffix="ALL_ENUM_VALUES" />
 		<h:form id="main_form">
 			<div class="page-header hidden-xs">
 				<h1>
@@ -131,25 +132,27 @@
 											value="#{appraisalsStatus.OPEN.value}" />
 								</span> <p:overlayPanel for="step0"
 										style="text-align: left;width:350px" showEvent="mouseover"
-										hideEvent="mouseout" >
+										hideEvent="mouseout">
 										<h:outputText escape="false"
 											value="#{htmlView.generateOverlayPanelContent(appraisalsView.model.dateStatsOpen,appraisalsView.model.userStatsOpen.username)}" />
 									</p:overlayPanel></li>
 
-								<li class="#{appraisalsView.model.dateStatsMid!=null?'complete':''}"><span
+								<li
+									class="#{appraisalsView.model.dateStatsMid!=null?'complete':''}"><span
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step1"
 											value="#{appraisalsStatus.MID_YEAR_REVIEW.value}" /> <br />
 								</span> <p:overlayPanel for="step1"
 										style="text-align: left;width:350px" showEvent="mouseover"
-										hideEvent="mouseout" >
+										hideEvent="mouseout">
 										<h:outputText escape="false"
 											value="#{htmlView.generateOverlayPanelContent(appraisalsView.model.dateStatsMid,appraisalsView.model.userStatsMid.username)}" />
 									</p:overlayPanel></li>
 
 
-								<li class="#{appraisalsView.model.dateStatsFinal!=null?'complete':''}"><span
+								<li
+									class="#{appraisalsView.model.dateStatsFinal!=null?'complete':''}"><span
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step2"
@@ -162,7 +165,8 @@
 									</p:overlayPanel></li>
 
 
-								<li class="#{appraisalsView.model.dateStatsClosed!=null?'complete':''}"><span
+								<li
+									class="#{appraisalsView.model.dateStatsClosed!=null?'complete':''}"><span
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step3"
@@ -198,6 +202,10 @@
 					<li><a data-toggle="tab" href="#tab4"> <i
 							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
 								value=" History" styleClass="hidden-xs" />
+					</a></li>
+					<li><a data-toggle="tab" href="#tab5"> <i
+							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
+								value="Team Appraisal" styleClass="hidden-xs" />
 					</a></li>
 				</ul>
 
@@ -516,7 +524,6 @@
 
 							</div>
 						</div>
-						<div class="space-16" />
 					</div>
 					<div id="tab3" class="tab-pane">
 						<h:panelGroup id="commentPanel">
@@ -705,6 +712,80 @@
 							</div>
 						</div>
 					</div>
+					<div id="tab5" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value="Team Appraisals" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable
+										value="#{appraisalsView.findByAppraisalAndManager()}"
+										filteredValue="#{appraisalsView.list3}" rowKey="#{item.id}"
+										selection="#{appraisalsView.list4}" id="myTeamAppraisal"
+										widgetVar="myTeamAppraisals" var="item" rows="20"
+										styleClass="table table-striped table-hover center"
+										paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+										rowSelectMode="checkbox">
+										<p:column headerText="Name">
+											<h:outputText value="#{item.appraisalName}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Name">
+											<h:outputText value="#{item.employ.username}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Summary rate start date">
+											<h:outputText
+												value="#{item.appraisal.endYearSummaryStartDate}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Summary rate end date">
+											<h:outputText value="#{item.appraisal.endYearSummaryEndDate}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Mid year Review start date">
+											<h:outputText
+												value="#{item.appraisal.midYearReviewStartDate}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Mid year Review end date">
+											<h:outputText value="#{item.appraisal.midYearReviewEndDate}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Planning Date">
+											<h:outputText value="#{item.appraisal.planningStartDate}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Planning end">
+											<h:outputText value="#{item.appraisal.planningEndDate}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Status">
+											<h:outputText value="#{item.userAppraisalStatus}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Actions" width="150" exportable="false">
+											<div class="action-buttons center">
+												<h:outputLink value="#{userAppraisalView.addEditPage}"
+													title="Show Details" styleClass="aa-tooltip tooltip-info">
+													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
+													<f:param name="id" value="#{item.id}" />
+												</h:outputLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</h:form>

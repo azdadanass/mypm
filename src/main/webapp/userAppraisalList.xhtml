@@ -36,14 +36,6 @@
 				<div class="col-sm-12">
 					<h:panelGroup id="widgetPanel">
 						<div class=" col-sm-offset-1 col-sm-6">
-							<h:outputLink
-								styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-								title="Add New userAppraisal"
-								value="#{userAppraisalView.addEditPage}"
-								rendered="#{userAppraisalView.canSave()}">
-								<i class="ace-icon fa fa-plus bigger-230"></i>
-								<h:outputText value="Add" />
-							</h:outputLink>
 							<p:commandLink
 								styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info"
 								title="Reload page" action="#{userAppraisalView.evictCache()}">
@@ -96,7 +88,7 @@
 						</div>
 					</div>
 					<div class="col-sm-12 col-xs-12 aa-datatable-container">
-						<p:dataTable value="#{userAppraisalView.list2}"
+						<p:dataTable value="#{userAppraisalView.findByUserAppraisalUser()}"
 							filteredValue="#{userAppraisalView.list3}" rowKey="#{item.id}"
 							selection="#{userAppraisalView.list4}" id="userAppraisalList"
 							widgetVar="userAppraisalList" var="item" rows="20"

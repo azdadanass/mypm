@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.jws.soap.SOAPBinding.Use;
 
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
+import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.model.UserAppraisalComment;
 import ma.azdad.model.UserAppraisalFile;
@@ -153,6 +155,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return sessionView.getIsInternalAdmin();
 	}
 
+	
+	
+	
+	public List<UserAppraisal> findByUserAppraisalUser(){
+		
+		return userAppraisalService.findUserAppraisalByUser(sessionView.getUser());
+	}
 	@Override
 	public void setSearchBean(String searchBean) {
 		this.searchBean = searchBean;
