@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import ma.azdad.model.Appraisals;
 import ma.azdad.model.User;
+import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.AppraisalsRepos;
 
 @Component
@@ -46,4 +47,20 @@ public class AppraisalsService extends GenericService<Integer, Appraisals,Apprai
 		return repos.findByHr(a, b, c);
 	}
 
+	@Cacheable("userAppraisalService.findByAppraisalAndManager")
+	public List<UserAppraisal> findByAppraisalAndManager(User appraisee,Appraisals appraisals) {
+
+		List<UserAppraisal> list = repos.findByAppraisalAndManager(appraisee,appraisals);
+		for (UserAppraisal userAppraisal : list) {
+			initialize(userAppraisal.getAppraisal());
+			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getAppraisee());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			
+		}
+
+		return list;
+	}
 }

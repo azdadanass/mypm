@@ -61,7 +61,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	private int step = 1;
 	private List<User> users;
-    private List<Integer> yearRange;
+	private List<Integer> yearRange;
 	private List<User> usersBackup; // Ajoutez cette liste pour stocker le backup
 
 	@Override
@@ -69,9 +69,9 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	public void init() {
 		super.init();
 		yearRange = new ArrayList<>();
-        for (int i = 2000; i <= 2040; i++) {
-            yearRange.add(i);
-        }
+		for (int i = 2000; i <= 2040; i++) {
+			yearRange.add(i);
+		}
 		time();
 	}
 
@@ -80,7 +80,6 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		super.initParameters();
 	}
 
-	
 	public List<Integer> getYearRange() {
 		return yearRange;
 	}
@@ -99,6 +98,11 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		this.searchBean = searchBean;
 
 		filterBean(searchBean);
+	}
+
+	public List<UserAppraisal> findByAppraisalAndManager() {
+
+		return appraisalsService.findByAppraisalAndManager( sessionView.getUser(),model);
 	}
 
 	// save
@@ -177,7 +181,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 			return FacesContextMessages.ErrorMessages("Mid Year Start Date should be after Planning Date");
 		if (model.getMidYearReviewEndDate().compareTo(model.getEndYearSummaryStartDate()) > 0)
 			return FacesContextMessages.ErrorMessages("Final Year Start Date should be after Mid Year Date");
-		
+
 		return true;
 	}
 
@@ -238,10 +242,10 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (!canDelete())
 			return null;
 		try {
-			List<UserAppraisal> userapp = userAppraisalService.findByAppraisal(sessionView.getUser());
+			List<UserAppraisal> userapp = appraisalsService.findByAppraisalAndManager(sessionView.getUser(),model);
+			System.out.println(sessionView.getUser());
 			if (userapp.size() > 0) {
 				for (UserAppraisal usap : userapp) {
-
 					userAppraisalService.delete(usap);
 				}
 			}

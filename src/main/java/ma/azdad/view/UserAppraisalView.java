@@ -108,7 +108,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	
 
 	public List<UserAppraisal> findByAppraisal(User employe) {
-		userAppraisalList=userAppraisalService.findByAppraisal(employe);
+		userAppraisalList=userAppraisalService.findUserAppraisalByUser(employe);
 		return userAppraisalList;
 	}
 
@@ -176,7 +176,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	
 	
 	
-	public List<UserAppraisal> findByUserAppraisalUser(){
+	public List<UserAppraisal> findUserAppraisalByUser(){
 		
 		return userAppraisalService.findUserAppraisalByUser(sessionView.getUser());
 	}
