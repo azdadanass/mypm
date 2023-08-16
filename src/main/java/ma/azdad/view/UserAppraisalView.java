@@ -89,9 +89,27 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SupplementaryGoals> supplementaryGoalsList;
 	private List<SupplementaryGoals> supplementaryGoalsListBg;
 	private List<SectionsData> sectionsDatas;
+	private List<UserAppraisal> userAppraisalList;
+
+	
+	public List<UserAppraisal> getUserAppraisalList() {
+		return userAppraisalList;
+	}
+
+
+	public void setUserAppraisalList(List<UserAppraisal> userAppraisalList) {
+		this.userAppraisalList = userAppraisalList;
+	}
+
 
 	public List<SectionsData> getSectionsDatas() {
 		return sectionsDatas;
+	}
+	
+
+	public List<UserAppraisal> findByAppraisal(User employe) {
+		userAppraisalList=userAppraisalService.findByAppraisal(employe);
+		return userAppraisalList;
 	}
 
 	public void setSectionsDatas(List<SectionsData> sectionsDatas) {
