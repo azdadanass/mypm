@@ -524,7 +524,7 @@
 
 							</div>
 						</div>
-					</div>	
+					</div>
 					<div id="tab3" class="tab-pane">
 						<h:panelGroup id="commentPanel">
 							<div class="row">
@@ -733,39 +733,29 @@
 										paginatorPosition="bottom"
 										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
 										rowSelectMode="checkbox">
-										<p:column headerText="Name">
+										<p:column headerText="Photo">
+											<p:graphicImage value="#{fileUploadView.stream}"
+												styleClass="img-circle aa-datatable-photo">
+												<f:param name="fileName" value="#{item.employ.photo}" />
+											</p:graphicImage>
+										</p:column>
+										<p:column headerText="Appraisal">
 											<h:outputText value="#{item.appraisalName}"
 												styleClass="bolder blue" />
 										</p:column>
-										<p:column headerText="Name">
+										<p:column headerText="Full Name">
 											<h:outputText value="#{item.employ.username}"
 												styleClass="bolder blue" />
 										</p:column>
-										<p:column headerText="Summary rate start date">
-											<h:outputText
-												value="#{item.appraisal.endYearSummaryStartDate}"
+										<p:column headerText="Employe Status">
+											<h:outputText value="#{item.employ.status}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="LOB">
+											<h:outputText value="#{item.employ.lobName}"
 												styleClass="bolder blue" />
 										</p:column>
-										<p:column headerText="Summary rate end date">
-											<h:outputText value="#{item.appraisal.endYearSummaryEndDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Mid year Review start date">
-											<h:outputText
-												value="#{item.appraisal.midYearReviewStartDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Mid year Review end date">
-											<h:outputText value="#{item.appraisal.midYearReviewEndDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Planning Date">
-											<h:outputText value="#{item.appraisal.planningStartDate}"
-												styleClass="bolder blue" />
-										</p:column>
-										<p:column headerText="Planning end">
-											<h:outputText value="#{item.appraisal.planningEndDate}"
-												styleClass="bolder blue" />
+										<p:column headerText="Function">
+											<h:outputText value="#{item.employ.job}" styleClass="bolder blue" />
 										</p:column>
 										<p:column headerText="Status">
 											<h:outputText value="#{item.userAppraisalStatus}"

@@ -102,7 +102,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	public List<UserAppraisal> findByAppraisalAndManager() {
 
-		return appraisalsService.findByAppraisalAndManager( sessionView.getUser(),model);
+		return appraisalsService.findByAppraisalAndManager(sessionView.getUser(),model);
 	}
 
 	// save
@@ -243,7 +243,6 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 			return null;
 		try {
 			List<UserAppraisal> userapp = appraisalsService.findByAppraisalAndManager(sessionView.getUser(),model);
-			System.out.println(sessionView.getUser());
 			if (userapp.size() > 0) {
 				for (UserAppraisal usap : userapp) {
 					userAppraisalService.delete(usap);

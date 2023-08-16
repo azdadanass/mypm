@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-import ma.azdad.model.Appraisals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
 import ma.azdad.model.User;
