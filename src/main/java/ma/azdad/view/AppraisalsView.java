@@ -60,10 +60,10 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	@Autowired
 	AppraisalsService appraisalsService;
-	
+
 	@Autowired
 	SectionsService sectionsService;
-	
+
 	@Autowired
 	BusinessGoalsService businessGoalsService;
 
@@ -78,8 +78,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	@PostConstruct
 	public void init() {
 		super.init();
-		
-		
+
 		yearRange = new ArrayList<>();
 		for (int i = 2000; i <= 2040; i++) {
 			yearRange.add(i);
@@ -114,7 +113,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	public List<UserAppraisal> findByAppraisalAndManager() {
 
-		return appraisalsService.findByAppraisalAndManager(sessionView.getUser(),model);
+		return appraisalsService.findByAppraisalAndManager(sessionView.getUser(), model);
 	}
 
 	// save
@@ -135,15 +134,30 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 		model = service.save(model);
 
-		for (User usr : users) {
+		if (userAppraisalService.findUserAppraisalByAppraisal(model).size() == 0) {
+			for (User usr : users) {
 
-			UserAppraisal userAppraisal = new UserAppraisal();
-			userAppraisal.setAppraisee(sessionView.getUser());
-			userAppraisal.setAppraisal(model);
-			userAppraisal.setEmploy(usr);
-			userAppraisal.setDateStatsCreated(new Date());
-			userAppraisal.setUserStatsCreated(sessionView.getUser());
-			userAppraisalService.save(userAppraisal);
+				UserAppraisal userAppraisal = new UserAppraisal();
+				userAppraisal.setAppraisee(sessionView.getUser());
+				userAppraisal.setAppraisal(model);
+				userAppraisal.setEmploy(usr);
+				userAppraisal.setDateStatsCreated(new Date());
+				userAppraisal.setUserStatsCreated(sessionView.getUser());
+				userAppraisalService.save(userAppraisal);
+
+			}
+
+		} else {
+			List<UserAppraisal> liUser = userAppraisalService.findUserAppraisalByAppraisal(model);
+
+			for (UserAppraisal usr : liUser) {
+
+				// List<UserAppraisal> uss =
+				// userAppraisalService.findUserAppraisalByUser(usr.getEmploy());
+				usr.setAppraisal(model);
+				userAppraisalService.save(usr);
+
+			}
 
 		}
 
@@ -260,7 +274,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 					List<Sections> sec = sectionsService.findSectionsByUserAppraisal(usap);
 					if (sec.size() > 0) {
 						for (Sections sect : sec) {
-								
+
 							List<BusinessGoals> bgoal = businessGoalsService.findBySections(sect);
 							if (sec.size() > 0) {
 								for (BusinessGoals bg : bgoal) {
@@ -337,7 +351,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	public List<User> getUsersByManager() {
 
-		users = appraisalsService.findByHr(true,true,sessionView.getUser());
+		users = appraisalsService.findByHr(true, true, sessionView.getUser());
 
 		return users;
 	}
@@ -377,14 +391,14 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				return null;
 			}
 			step++;
-			
+
 			break;
 
 		case 2:
 			if (!validate2()) {
 				return null;
 			}
-			
+
 			step++;
 			break;
 		case 3:
@@ -405,7 +419,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	public Boolean canMidYearReview() {
 		return AppraisalsStatus.OPEN.equals(model.getAppraisalsStatus());
 	}
-	
+
 	@Scheduled(fixedRate = 600000)
 	public void midYearReview() {
 		if (!canMidYearReview())
@@ -427,7 +441,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	public Boolean canFinalYearReview() {
 		return AppraisalsStatus.MID_YEAR_REVIEW.equals(model.getAppraisalsStatus());
 	}
-	
+
 	@Scheduled(fixedRate = 600000)
 	public void finalYearReview() {
 		if (!canFinalYearReview())
@@ -453,7 +467,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	public void closed() {
 		if (!canClosed())
 			return;
-		
+
 		model.setDateStatsClosed(new Date());
 		model.setUserStatsClosed(sessionView.getUser());
 		model.setAppraisalsStatus(AppraisalsStatus.CLOSED);
