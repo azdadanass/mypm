@@ -337,7 +337,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	public List<User> getUsersByManager() {
 
-		users = appraisalsService.findByHr(true, true, sessionView.getUser());
+		users = appraisalsService.findByHr(sessionView.getUser());
 
 		return users;
 	}
