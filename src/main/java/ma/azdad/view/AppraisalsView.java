@@ -292,9 +292,9 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		return service.findAll();
 	}
 
-	public List<User> findByHr(Boolean a, Boolean b, User c) {
+	public List<User> findByHr() {
 
-		return appraisalsService.findByHr(true, true, sessionView.getUser());
+		return appraisalsService.findByHr(sessionView.getUser());
 	}
 
 	// getters & setters
@@ -337,7 +337,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	public List<User> getUsersByManager() {
 
-		users = appraisalsService.findByHr(true,true,sessionView.getUser());
+		users = appraisalsService.findByHr(sessionView.getUser());
 
 		return users;
 	}
