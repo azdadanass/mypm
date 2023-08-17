@@ -174,7 +174,7 @@ public class Appraisals extends GenericModel<Integer> {
 		this.appraisalName = appraisalName;
 	}
 
-	@Column(name = "description")
+	@Column(name = "description",columnDefinition = "TEXT")
 	public String getDescription() {
 		return description;
 	}

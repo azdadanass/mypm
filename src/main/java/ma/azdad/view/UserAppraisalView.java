@@ -13,7 +13,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.ecs.xhtml.iframe;
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -388,7 +387,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			return null;
 		for (int i = 0; i < businessGoalsList.size(); i++) {
 
-			BusinessGoals businessGoals = new BusinessGoals(businessGoalsList.get(i).getGoalDetails(),
+			BusinessGoals businessGoals = new BusinessGoals(
+					businessGoalsList.get(i).getGoalDts(),
 					businessGoalsList.get(i).getGoalTitle(), businessGoalsList.get(i).getGoalWeight(),
 					businessGoalsList.get(i).getMidYearReview(), businessGoalsList.get(i).getSummaryRaiting(),
 					businessGoalsList.get(i).getSections()

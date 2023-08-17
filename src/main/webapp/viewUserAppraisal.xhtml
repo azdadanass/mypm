@@ -72,6 +72,7 @@
 								</h3>
 
 								<div class="space-8" />
+								<div class="space-8" />
 								<div class="row">
 									<div class="col-sm-12 col-xs-12 aa-datatable-container">
 										<p:dataTable value="#{userAppraisalView.titleList}"
@@ -139,9 +140,9 @@
 													<h:outputText value="%" styleClass="bolder blue" />
 												</p:column>
 												<p:column headerText="Goal Details">
-													<p:inputText value="#{item.goalDetails}" />
+													<p:inputText value="#{item.goalDts}" />
 												</p:column>
-												<p:column headerText="Section">
+												<!-- <p:column headerText="Section">
 													<h:outputText value="#{item.sections.sectionsTitle}" />
 												</p:column>
 												<p:column headerText="Mid Year Review">
@@ -154,7 +155,7 @@
 														disabled="#{ userAppraisalView.validateBusinessFinalYear()}"
 														validator="#{userAppraisalView.validateRating}" />
 												</p:column>
-
+ -->
 												<f:facet name="footer">
 													<div class="action-buttons center">
 														<p:commandLink title="Add New Item"
@@ -416,7 +417,6 @@
 				</div>
 			</div>
 		</h:form>
-		<ui:include src="userAppraisalFooter.xhtml" />
 		<ui:include src="fileFooter.xhtml" />
 	</ui:define>
 

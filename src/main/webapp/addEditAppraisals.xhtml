@@ -272,6 +272,7 @@
 											paginatorPosition="bottom"
 											paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
 											rowSelectMode="checkbox">
+
 											<p:column headerText="Photo">
 												<p:graphicImage value="#{fileUploadView.stream}"
 													styleClass="img-circle aa-datatable-photo">
@@ -283,8 +284,7 @@
 													styleClass="bolder green" />
 											</p:column>
 											<p:column headerText="Email">
-												<h:outputText value="#{item.email}" 
-												styleClass="bolder pink" />
+												<h:outputText value="#{item.email}" styleClass="bolder pink" />
 											</p:column>
 											<p:column headerText="Employe Status">
 												<h:outputText value="#{item.status}"

@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -25,6 +26,7 @@ import ma.azdad.service.UtilsFunctions;
 public class BusinessGoals extends GenericModel<Integer> {
 
 	private String goalDetails;
+	private String goalDts;
 	private String goalTitle;
 	private double goalWeight;
 	private Integer midYearReview;
@@ -84,7 +86,16 @@ public class BusinessGoals extends GenericModel<Integer> {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+	
+	
+	@Column(columnDefinition = "TEXT")
+	public String getGoalDts() {
+		return goalDts;
+	}
+	public void setGoalDts(String goalDts) {
+		this.goalDts = goalDts;
+	}
+	
 	@Column(name = "goalDetails")
 	public String getGoalDetails() {
 		return goalDetails;
