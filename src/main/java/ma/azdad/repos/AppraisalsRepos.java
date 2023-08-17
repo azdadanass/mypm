@@ -13,8 +13,8 @@ import ma.azdad.model.UserAppraisal;
 @Repository
 public interface AppraisalsRepos extends JpaRepository<Appraisals, Integer>{
 	
-	@Query("from User u where u.affectation.hrManager=?1 and u.username in (select r.user.username from UserRole r where r.user.username=u.username and r.role='ROLE_MYPM')")
-	List<User> findByHr(User u3);
+	@Query("from User u where u.active=?1 and u.internal=?2  and u.affectation.hrManager=?3 and u.username in (select r.user.username from UserRole r where r.user.username=u.username and r.role='ROLE_MYPM')")
+	List<User> findByHr(Boolean act,Boolean inter,User u3);
 	
 	@Query("from User u where u.active=?1 and u.internal=?2  and u.affectation.lineManager=?3 and u.username in (select r.user.username from UserRole r where r.user.username=u.username and r.role='ROLE_MYPM')")
 	List<User> findByLineManager(Boolean act,Boolean inter,User u3);

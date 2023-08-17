@@ -25,12 +25,9 @@ public class IndexView {
 			setRole(Role.ROLE_MYPM);
 		if (sessionView.getIsMyPmHr())
 			setRole(Role.ROLE_MYPM_HR);
-		if (sessionView.getIsMyPmLineManager() || sessionView.getIsMyPmHr())
-			setRole(Role.ROLE_MYPM_HR);
-		/*
-		 * if (sessionView.getIsMyPmLineManager()) setRole(Role.ROLE_MYPM_LINE_MANAGER);
-		 */
-		
+		if (sessionView.getIsMyPmLineManager())
+			setRole(Role.ROLE_MYPM_LINE_MANAGER);
+
 	}
 
 	public Role getRole() {

@@ -97,24 +97,22 @@
 							paginatorPosition="bottom"
 							paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
 							rowSelectMode="checkbox">
-							<p:column headerText="Name">
+							<p:column headerText="Appraisal Name">
 								<h:outputText value="#{item.appraisalName}"
 									styleClass="bolder blue" />
 							</p:column>
-							<p:column headerText="Name">
-								<h:outputText value="#{item.employ}"
+							<p:column headerText="Resource Name">
+								<h:outputText value="#{item.employ}" styleClass="bolder blue" />
+							</p:column>
+							<p:column headerText="Appraisee Name">
+								<h:outputText value="#{item.appraisee}" styleClass="bolder blue" />
+							</p:column>
+							<p:column headerText="Planning Date">
+								<h:outputText value="#{item.appraisal.planningStartDate}"
 									styleClass="bolder blue" />
 							</p:column>
-							<p:column headerText="Name">
-								<h:outputText value="#{item.appraisee}"
-									styleClass="bolder blue" />
-							</p:column>
-							<p:column headerText="Summary rate start date">
-								<h:outputText value="#{item.appraisal.endYearSummaryStartDate}"
-									styleClass="bolder blue" />
-							</p:column>
-							<p:column headerText="Summary rate end date">
-								<h:outputText value="#{item.appraisal.endYearSummaryEndDate}"
+							<p:column headerText="Planning end">
+								<h:outputText value="#{item.appraisal.planningEndDate}"
 									styleClass="bolder blue" />
 							</p:column>
 							<p:column headerText="Mid year Review start date">
@@ -125,12 +123,12 @@
 								<h:outputText value="#{item.appraisal.midYearReviewEndDate}"
 									styleClass="bolder blue" />
 							</p:column>
-							<p:column headerText="Planning Date">
-								<h:outputText value="#{item.appraisal.planningStartDate}"
+							<p:column headerText="Summary rate start date">
+								<h:outputText value="#{item.appraisal.endYearSummaryStartDate}"
 									styleClass="bolder blue" />
 							</p:column>
-							<p:column headerText="Planning end">
-								<h:outputText value="#{item.appraisal.planningEndDate}"
+							<p:column headerText="Summary rate end date">
+								<h:outputText value="#{item.appraisal.endYearSummaryEndDate}"
 									styleClass="bolder blue" />
 							</p:column>
 							<p:column headerText="Status">
@@ -157,6 +155,6 @@
 				</div>
 			</div>
 		</h:form>
-		
+
 	</ui:define>
 </ui:composition>

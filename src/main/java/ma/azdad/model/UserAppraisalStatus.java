@@ -7,24 +7,24 @@ import ma.azdad.utils.Color;
 
 
 public enum UserAppraisalStatus {
-	CREATED("Created", Color.GREEN),
+	CREATED("CREATED", Color.GREEN),
 	
 	SUBMITED("Submited", Color.BLUE),
-	APPROVED_LM("Approved 1", Color.GREY),
-	APPROVED("Approved 2", Color.PINK),
+	APPROVED_LM("APPROVED_LM", Color.GREY),
+	APPROVED("APPROVED", Color.PINK),
 	
 	//Mid Year 
-	SUBMITED_MID_YEAR("Submited", Color.L_BLUE),
-	MYR_APPROVED_LM("Approved 1", Color.PURPLE),
-	MYR_APPROVED("Approved 2", Color.YELLOW),
+	SUBMITED_MID_YEAR("SUBMITED_MID_YEAR", Color.L_BLUE),
+	MYR_APPROVED_LM("MYR_APPROVED_LM", Color.PURPLE),
+	MYR_APPROVED("MYR_APPROVED", Color.YELLOW),
 	
 	//Final year
-	SUBMITED_FINAL_YEAR("Submited", Color.L_BLUE),
-	FYR_APPROVED_LM("Approved 1", Color.PURPLE),
-	FYR_APPROVED("Approved 2", Color.YELLOW),
+	SUBMITED_FINAL_YEAR("SUBMITED_FINAL_YEAR", Color.L_BLUE),
+	FYR_APPROVED_LM("FYR_APPROVED_LM", Color.PURPLE),
+	FYR_APPROVED("FYR_APPROVED", Color.YELLOW),
 	
 	//CANCELED("Canceled", Color.RED),
-	CLOSED("Closed", Color.RED),
+	CLOSED("CLOSED", Color.RED),
 	;
 	private final String value;
 	private final Color color;
