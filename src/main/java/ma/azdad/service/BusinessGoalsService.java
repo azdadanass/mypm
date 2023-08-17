@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 
 import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
-import ma.azdad.model.User;
-import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.BusinessGoalsRepos;
 
 @Component

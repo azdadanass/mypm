@@ -97,43 +97,56 @@
 							paginatorPosition="bottom"
 							paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
 							rowSelectMode="checkbox">
-							<p:column headerText="Appraisal Name">
-								<h:outputText value="#{item.appraisalName}"
-									styleClass="bolder blue" />
+
+							<p:column headerText="Photo" styleClass="center">
+								<p:graphicImage id="photo" value="#{item.employ.photo}"
+									styleClass="img-circle aa-datatable-photo" />
+								<p:overlayPanel for="photo" style="text-align: left;width:350px"
+									showEvent="mouseover" hideEvent="mouseout">
+									<h:outputText escape="false"
+										value="#{htmlView.generateOverlayPanelContent(item.employ.username)}" />
+								</p:overlayPanel>
 							</p:column>
-							<p:column headerText="Resource Name">
+							<p:column headerText="Full Name">
 								<h:outputText value="#{item.employ}" styleClass="bolder blue" />
 							</p:column>
-							<p:column headerText="Appraisee Name">
-								<h:outputText value="#{item.appraisee}" styleClass="bolder blue" />
+							<p:column headerText="Appraisal Name">
+								<h:outputText value="#{item.appraisalName}"
+									styleClass="bolder green" />
 							</p:column>
 							<p:column headerText="Planning Date">
-								<h:outputText value="#{item.appraisal.planningStartDate}"
-									styleClass="bolder blue" />
+								<h:outputText value="#{item.appraisal.planningStartDate}">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Planning end">
-								<h:outputText value="#{item.appraisal.planningEndDate}"
-									styleClass="bolder blue" />
+								<h:outputText value="#{item.appraisal.planningEndDate}">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Mid year Review start date">
-								<h:outputText value="#{item.appraisal.midYearReviewStartDate}"
-									styleClass="bolder blue" />
+								<h:outputText value="#{item.appraisal.midYearReviewStartDate}">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Mid year Review end date">
-								<h:outputText value="#{item.appraisal.midYearReviewEndDate}"
-									styleClass="bolder blue" />
+								<h:outputText value="#{item.appraisal.midYearReviewEndDate}">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Summary rate start date">
-								<h:outputText value="#{item.appraisal.endYearSummaryStartDate}"
-									styleClass="bolder blue" />
+								<h:outputText value="#{item.appraisal.endYearSummaryStartDate}">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Summary rate end date">
-								<h:outputText value="#{item.appraisal.endYearSummaryEndDate}"
-									styleClass="bolder blue" />
+								<h:outputText value="#{item.appraisal.endYearSummaryEndDate}">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Status">
 								<h:outputText value="#{item.userAppraisalStatus}"
-									styleClass="bolder blue" />
+									styleClass="#{item.userAppraisalStatus.color.badge}" />
 							</p:column>
 							<p:column headerText="Actions" width="150" exportable="false">
 								<div class="action-buttons center">

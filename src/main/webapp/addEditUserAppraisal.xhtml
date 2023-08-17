@@ -72,7 +72,6 @@
 							<i class="ace-icon fa fa-file bigger-230"></i>
 							<h:outputText value="Files" />
 						</p:commandLink>
-						<!-- ===================-->
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submiteduser()}" update=":main_form"
@@ -81,7 +80,6 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited" />
 						</p:commandLink>
-					
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.SubmitedMidYear()}"
@@ -90,8 +88,6 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited Mid Year" />
 						</p:commandLink>
-					
-					
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.SubmitedFinalYear()}"
@@ -100,8 +96,8 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited Final Year" />
 						</p:commandLink>
-				
-				
+
+
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.closed()}" update=":main_form"
@@ -220,7 +216,8 @@
 									class="step"> <i
 										class="ace-icon fa fa-spinner fa-spin grey" />
 								</span> <span class="title"> <h:outputText id="step7"
-											value="#{userAppraisalStatus.SUBMITED_FINAL_YEAR.value}" /> <br />
+											value="#{userAppraisalStatus.SUBMITED_FINAL_YEAR.value}" />
+										<br />
 								</span> <p:overlayPanel for="step7"
 										style="text-align: left;width:350px" showEvent="mouseover"
 										hideEvent="mouseout">

@@ -6,7 +6,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import ma.azdad.model.SupplementaryGoals;
-import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.SupplementaryGoalsRepos;
 
 @Component

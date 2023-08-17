@@ -39,7 +39,7 @@
 							<h:outputLink
 								styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 								title="Add New appraisals" value="#{appraisalsView.addEditPage}"
-								 onclick="#{appraisalsView.evictCache()}"
+								onclick="#{appraisalsView.evictCache()}"
 								rendered="#{appraisalsView.canSave()}">
 								<i class="ace-icon fa fa-plus bigger-230"></i>
 								<h:outputText value="Add" />
@@ -106,35 +106,47 @@
 							rowSelectMode="checkbox">
 							<p:column headerText="Name">
 								<h:outputText value="#{item.appraisalName}"
-									styleClass="bolder blue" />
+									styleClass="bolder green" />
 							</p:column>
 							<p:column headerText="Summary rate start date">
 								<h:outputText value="#{item.endYearSummaryStartDate}"
-									styleClass="bolder blue" />
+									styleClass="blue">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Summary rate end date">
 								<h:outputText value="#{item.endYearSummaryEndDate}"
-									styleClass="bolder blue" />
+									styleClass="blue">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Mid year Review start date">
 								<h:outputText value="#{item.midYearReviewStartDate}"
-									styleClass="bolder blue" />
+									styleClass="blue">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Mid year Review end date">
 								<h:outputText value="#{item.midYearReviewEndDate}"
-									styleClass="bolder blue" />
+									styleClass="blue">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Planning Date">
 								<h:outputText value="#{item.planningStartDate}"
-									styleClass="bolder blue" />
+									styleClass="blue">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Planning end">
 								<h:outputText value="#{item.planningEndDate}"
-									styleClass="bolder blue" />
+									styleClass="blue">
+									<f:convertDateTime pattern="yyyy/MM/dd" />
+								</h:outputText>
 							</p:column>
 							<p:column headerText="Status">
 								<h:outputText value="#{item.appraisalsStatus}"
-									styleClass="bolder blue" />
+									styleClass="#{item.appraisalsStatus.color.badge}" />
 							</p:column>
 							<p:column headerText="Actions" width="150" exportable="false">
 								<div class="action-buttons center">

@@ -80,7 +80,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		super.init();
 
 		yearRange = new ArrayList<>();
-		for (int i = 2000; i <= 2040; i++) {
+		for (int i = 2020; i <= 2050; i++) {
 			yearRange.add(i);
 		}
 		time();

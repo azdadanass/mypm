@@ -188,7 +188,7 @@
 								value=" History" styleClass="hidden-xs" />
 					</a></li>
 					<li><a data-toggle="tab" href="#tab5"> <i
-							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
+							class="orange ace-icon fa fa-users bigger-120"></i> <h:outputText
 								value="Team Appraisal" styleClass="hidden-xs" />
 					</a></li>
 				</ul>
@@ -387,125 +387,18 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
-									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="Description" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText value="#{appraisalsView.model.description}"
-												styleClass="bolder green" />
-											&nbsp;
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
-									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="Date Status MidYear" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText value="#{appraisalsView.model.dateStatsMid}">
-												<f:convertDateTime pattern="yyyy-MM-dd"
-													styleClass="bolder green" />
-											</h:outputText>
-											&nbsp;
-										</div>
-									</div>
-								</div>
+						</div>
+						<div class="space-8" />
+						<div class="space-8" />
+						<div class="space-8" />
 
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
-									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="User Status MidYear" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText
-												value="#{appraisalsView.model.userStatsMid.fullName}">
-												<f:convertDateTime pattern="yyyy-MM-dd"
-													styleClass="bolder green" />
-											</h:outputText>
-											&nbsp;
-										</div>
-									</div>
-								</div>
-
-							</div>
-
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
-									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="Date Status FinalYear" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText value="#{appraisalsView.model.dateStatsFinal}">
-												<f:convertDateTime pattern="yyyy-MM-dd"
-													styleClass="bolder green" />
-											</h:outputText>
-											&nbsp;
-										</div>
-									</div>
-								</div>
-
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
-									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="User Status FinalYear" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText
-												value="#{appraisalsView.model.userStatsFinal.fullName}">
-												<f:convertDateTime pattern="yyyy-MM-dd"
-													styleClass="bolder green" />
-											</h:outputText>
-											&nbsp;
-										</div>
-									</div>
-								</div>
-
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
-									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="Date Status Closed" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText value="#{appraisalsView.model.dateStatsClosed}">
-												<f:convertDateTime pattern="yyyy-MM-dd"
-													styleClass="bolder green" />
-											</h:outputText>
-											&nbsp;
-										</div>
-									</div>
-								</div>
-
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
-									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="User Status Closed" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText
-												value="#{appraisalsView.model.userStatsClosed.fullName}">
-												<f:convertDateTime pattern="yyyy-MM-dd"
-													styleClass="bolder green" />
-											</h:outputText>
-											&nbsp;
-										</div>
-									</div>
-								</div>
-
+						<div style="width: 90%; margin: auto;">
+							<div class="well">
+								<h4 class="green smaller lighter">
+									<h:outputText value="Description" />
+								</h4>
+								<h:outputText value="#{appraisalsView.model.description}"
+									style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%;"  styleClass="preformatted" />
 							</div>
 						</div>
 					</div>
@@ -723,21 +616,21 @@
 												<f:param name="fileName" value="#{item.employ.photo}" />
 											</p:graphicImage>
 										</p:column>
-										<p:column headerText="Appraisal">
-											<h:outputText value="#{item.appraisalName}"
-												styleClass="bolder blue" />
-										</p:column>
 										<p:column headerText="Full Name">
 											<h:outputText value="#{item.employ.username}"
 												styleClass="bolder blue" />
 										</p:column>
+										<p:column headerText="Appraisal Name">
+											<h:outputText value="#{item.appraisalName}"
+												styleClass="bolder green" />
+										</p:column>
 										<p:column headerText="Employe Status">
 											<h:outputText value="#{item.employ.status}"
-												styleClass="bolder blue" />
+												styleClass="bolder pink" />
 										</p:column>
 										<p:column headerText="LOB">
 											<h:outputText value="#{item.employ.lobName}"
-												styleClass="bolder blue" />
+												styleClass="light-green" />
 										</p:column>
 										<p:column headerText="Function">
 											<h:outputText value="#{item.employ.job}"
@@ -745,7 +638,7 @@
 										</p:column>
 										<p:column headerText="Status">
 											<h:outputText value="#{item.userAppraisalStatus}"
-												styleClass="bolder blue" />
+												styleClass="#{item.userAppraisalStatus.color.badge}" />
 										</p:column>
 										<p:column headerText="Actions" width="150" exportable="false">
 											<div class="action-buttons center">
