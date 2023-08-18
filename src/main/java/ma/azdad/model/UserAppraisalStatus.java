@@ -8,8 +8,9 @@ import ma.azdad.utils.Color;
 
 public enum UserAppraisalStatus {
 	CREATED("CREATED", Color.GREEN),
-	
-	SUBMITED("Submited", Color.BLUE),
+	EDITED("EDITED", Color.ORANGE),
+	SUBMITED("SUBMITED", Color.BLUE),
+	//REJECTED("REJECTED", Color.BLUE),
 	APPROVED_LM("APPROVED_LM", Color.GREY),
 	APPROVED("APPROVED", Color.PINK),
 	

@@ -150,16 +150,14 @@
 														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
 													</p:selectOneMenu>
 												</p:column>
-												
-												
-												
-												<p:column headerText="Goal Title">
-        <p:selectOneMenu>
-            <f:selectItems value="#{userAppraisalView.goalTitleList}" />
-            <p:ajax update="businessGoalsList" partialSubmit="true" process="@this"
-                    listener="#{userAppraisalView.addBusiness(item.goalTitle)}" />
-        </p:selectOneMenu>
-    </p:column>
+												<!-- <p:column headerText="Goal Title">
+    <p:selectOneMenu value="#{userAppraisalView.selectedGoalTitle}">
+<f:selectItem itemLabel="****" noSelectionOption="true" />
+    <f:selectItems value="#{userAppraisalView.goalTitleList}" />
+</p:selectOneMenu>
+
+</p:column> -->
+
 												
 												
 												
@@ -190,11 +188,13 @@
 												<f:facet name="footer">
 													<div class="action-buttons center">
 														<p:commandLink title="Add New Item"
-															action="#{userAppraisalView.addBusiness()}"
-															update="businessGoalsList" partialSubmit="true"
-															process="businessGoalsList" rendered="#{item.index==0}">
-															<i class="fa fa-plus green" />
-														</p:commandLink>
+    action="#{userAppraisalView.addBusiness()}"
+    update="businessGoalsList"
+    partialSubmit="true" process="businessGoalsList" rendered="true">
+    <i class="fa fa-plus green" />
+</p:commandLink>
+
+
 														
 													</div>
 												</f:facet>

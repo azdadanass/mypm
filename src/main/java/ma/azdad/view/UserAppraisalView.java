@@ -13,12 +13,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
+import org.primefaces.context.PrimeFacesContext;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
@@ -90,6 +93,15 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SupplementaryGoals> supplementaryGoalsListBg;
 	private List<SectionsData> sectionsDatas;
 	private List<UserAppraisal> userAppraisalList;
+	private String selectedGoalTitle;
+
+    public String getSelectedGoalTitle() {
+        return selectedGoalTitle;
+    }
+
+    public void setSelectedGoalTitle(String selectedGoalTitle) {
+        this.selectedGoalTitle = selectedGoalTitle;
+    }
 
 	public List<UserAppraisal> getUserAppraisalList() {
 		return userAppraisalList;
@@ -357,13 +369,22 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public void addBusiness() {
-		if (canAddBusiness()) {
+	    if (canAddBusiness()) {
+	        businessGoalsList.add(new BusinessGoals(null,goalTitleList.get(0), 0, findSectionId()));
+	        System.out.println("Selected Goal Title: " + selectedGoalTitle);
+	        //goalTitleList.remove(selectedGoalTitle);
 
-			businessGoalsList.add(new BusinessGoals(null, goalTitleList.get(0), 0, findSectionId()));
-			//goalTitleList.remove(Bg);
-		}	        	
+	       // RequestContext.getCurrentInstance().update("goalTitleCombo");
 
+	    }
 	}
+
+
+
+
+
+
+
 
 	public Sections findSectionId() {
 		return businessGoalsRepos.findSectionId(id);
