@@ -83,6 +83,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Integer> weightList;
 
 	private List<String> goalTitleList;
+
 	private int goaltitlecount = 0;
 	private List<BusinessGoals> businessGoalsList;
 	private List<SupplementaryGoals> supplementaryGoalsList;
@@ -114,9 +115,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		userAppraisalList = userAppraisalService.findUserAppraisalByUser(employe);
 		return userAppraisalList;
 	}
-	
+
 	public void setSectionsDatas(List<SectionsData> sectionsDatas) {
 		this.sectionsDatas = sectionsDatas;
+	}
+
+	public List<String> getGoalTitleList() {
+		return goalTitleList;
+	}
+
+	public void setGoalTitleList(List<String> goalTitleList) {
+		this.goalTitleList = goalTitleList;
 	}
 
 	@Override
@@ -167,16 +176,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				initLists(service.findUserAppraisalByUser(sessionView.getUser()));
 				break;
 			case 3:
-				initLists(service.findUserAppraisalByHR(true,true,sessionView.getUser()));
+				initLists(service.findUserAppraisalByHR(true, true, sessionView.getUser()));
 				break;
 			case 4:
-				initLists(service.findUserAppraisalByLM(true,true,sessionView.getUser()));
+				initLists(service.findUserAppraisalByLM(true, true, sessionView.getUser()));
 				break;
 			default:
 				break;
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -349,9 +358,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public void addBusiness() {
 		if (canAddBusiness()) {
-			businessGoalsList.add(new BusinessGoals(null, goalTitleList.get(goaltitlecount), 0, findSectionId()));
-			goaltitlecount++;
-		}
+
+			businessGoalsList.add(new BusinessGoals(null, goalTitleList.get(0), 0, findSectionId()));
+			//goalTitleList.remove(Bg);
+		}	        	
+
 	}
 
 	public Sections findSectionId() {
@@ -387,8 +398,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			return null;
 		for (int i = 0; i < businessGoalsList.size(); i++) {
 
-			BusinessGoals businessGoals = new BusinessGoals(
-					businessGoalsList.get(i).getGoalDts(),
+			BusinessGoals businessGoals = new BusinessGoals(businessGoalsList.get(i).getGoalDts(),
 					businessGoalsList.get(i).getGoalTitle(), businessGoalsList.get(i).getGoalWeight(),
 					businessGoalsList.get(i).getMidYearReview(), businessGoalsList.get(i).getSummaryRaiting(),
 					businessGoalsList.get(i).getSections()

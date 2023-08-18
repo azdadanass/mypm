@@ -66,15 +66,30 @@
 						<h:panelGroup id="steps">
 
 							<f:subview id="step1" rendered="#{userAppraisalView.step==1}">
-								<h3 class="lighter block green">
+								<!-- <h3 class="lighter block green">
 									<i class="ace-icon fa fa-list-alt" />
 									<h:outputText value="Sections" />
-								</h3>
+								</h3> -->
 
 								<div class="space-8" />
-								<div class="space-8" />
 								<div class="row">
+									<div class="table-header col-sm-12 col-xs-12">
+										<div class="col-sm-8 col-xs-8">
+											<i class="fa fa-list" />
+											<h:outputText value=" Section List" />
+										</div>
+										<div class="col-sm-2 hidden-xs">
+											<div class="action-buttons center">
+												<h:commandLink styleClass="aa-tooltip tooltip-success"
+													title="Export to excel">
+
+												</h:commandLink>
+											</div>
+										</div>
+
+									</div>
 									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
 										<p:dataTable value="#{userAppraisalView.titleList}"
 											var="title" rowKey="#{title}" id="appraisalsList"
 											widgetVar="sectionslist" rows="20"
@@ -131,16 +146,32 @@
 													<h:outputText value="#{index+1}" styleClass="bolder blue" />
 												</p:column>
 												<p:column headerText="Goal Title">
-													<h:outputText value="#{item.goalTitle}" />
+													<p:selectOneMenu>
+														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
+													</p:selectOneMenu>
+												</p:column>
+												
+												
+												
+												<p:column headerText="Goal Title">
+        <p:selectOneMenu>
+            <f:selectItems value="#{userAppraisalView.goalTitleList}" />
+            <p:ajax update="businessGoalsList" partialSubmit="true" process="@this"
+                    listener="#{userAppraisalView.addBusiness(item.goalTitle)}" />
+        </p:selectOneMenu>
+    </p:column>
+												
+												
+												
+
+												<p:column headerText="Goal Details">
+													<p:inputText value="#{item.goalDts}" />
 												</p:column>
 												<p:column headerText="Goal weight">
 													<h:inputText value="#{item.goalWeight}"
 														converter="javax.faces.Integer" min="0" max="100"
 														style="width: 40px" />
 													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
-												<p:column headerText="Goal Details">
-													<p:inputText value="#{item.goalDts}" />
 												</p:column>
 												<!-- <p:column headerText="Section">
 													<h:outputText value="#{item.sections.sectionsTitle}" />
@@ -161,9 +192,10 @@
 														<p:commandLink title="Add New Item"
 															action="#{userAppraisalView.addBusiness()}"
 															update="businessGoalsList" partialSubmit="true"
-															process="businessGoalsList" rendered="true">
+															process="businessGoalsList" rendered="#{item.index==0}">
 															<i class="fa fa-plus green" />
 														</p:commandLink>
+														
 													</div>
 												</f:facet>
 											</p:dataTable>
@@ -207,12 +239,12 @@
 													<p:column headerText="Goal Description">
 														<h:outputText value="#{item.sectionsData.goalDescription}" />
 													</p:column>
-													<p:column headerText="Mid Year Rating">
+													<!-- <p:column headerText="Mid Year Rating">
 														<h:outputText value="#{item.midYearReview}" />
 													</p:column>
 													<p:column headerText="Final Year Rating">
 														<h:outputText value="#{item.summaryRaiting}" />
-													</p:column>
+													</p:column> -->
 													<p:column headerText="Weight">
 														<p:inputNumber value="#{item.weight}" />
 													</p:column>
@@ -264,7 +296,7 @@
 									</div>
 								</ui:fragment>
 
-									<div class="space-16" />
+								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(3)}">
 
 									<div class="row">

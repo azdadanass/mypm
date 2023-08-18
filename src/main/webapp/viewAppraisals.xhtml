@@ -175,6 +175,10 @@
 							class="green ace-icon fa fa-list-alt bigger-120"></i> <h:outputText
 								value=" Informations" styleClass="hidden-xs" />
 					</a></li>
+					<li><a data-toggle="tab" href="#tab5"> <i
+							class="orange ace-icon fa fa-users bigger-120"></i> <h:outputText
+								value="Team Appraisal" styleClass="hidden-xs" />
+					</a></li>
 					<li><a data-toggle="tab" href="#tab2"> <i
 							class="blue ace-icon fa fa-file bigger-120"></i> <h:outputText
 								value=" Attachements" styleClass="hidden-xs" />
@@ -187,16 +191,13 @@
 							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
 								value=" History" styleClass="hidden-xs" />
 					</a></li>
-					<li><a data-toggle="tab" href="#tab5"> <i
-							class="orange ace-icon fa fa-users bigger-120"></i> <h:outputText
-								value="Team Appraisal" styleClass="hidden-xs" />
-					</a></li>
+
 				</ul>
 
 				<div class="tab-content no-border padding-24">
 					<div id="tab1" class="tab-pane in active">
 						<div class="row">
-							<div class="col-xs-12 col-sm-6">
+							<!-- <div class="col-xs-12 col-sm-6">
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
 										<div class="profile-info-name">
@@ -208,7 +209,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<div class="col-xs-12 col-sm-6">
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
@@ -293,7 +294,7 @@
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
 										<div class="profile-info-name">
-											<h:outputText value="Mid Year Review Start Date" />
+											<h:outputText value="Mid Year Start Date" />
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
@@ -310,7 +311,7 @@
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
 										<div class="profile-info-name">
-											<h:outputText value="Mid Year Review End Date" />
+											<h:outputText value="Mid Year End Date" />
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
@@ -327,7 +328,7 @@
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
 										<div class="profile-info-name">
-											<h:outputText value="End Year Summary Start Date" />
+											<h:outputText value="Final Year Start Date" />
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
@@ -344,7 +345,7 @@
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
 										<div class="profile-info-name">
-											<h:outputText value="End Year Summary End Date" />
+											<h:outputText value="Final Year End Date" />
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
@@ -361,7 +362,7 @@
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
 										<div class="profile-info-name">
-											<h:outputText value="AppraisalsStatus" />
+											<h:outputText value="Appraisals Status" />
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
@@ -398,7 +399,8 @@
 									<h:outputText value="Description" />
 								</h4>
 								<h:outputText value="#{appraisalsView.model.description}"
-									style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%;"  styleClass="preformatted" />
+									style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%;"
+									styleClass="preformatted" />
 							</div>
 						</div>
 					</div>
@@ -628,7 +630,7 @@
 											<h:outputText value="#{item.employ.status}"
 												styleClass="bolder pink" />
 										</p:column>
-										<p:column headerText="LOB">
+										<p:column headerText="LOB" width="160">
 											<h:outputText value="#{item.employ.lobName}"
 												styleClass="light-green" />
 										</p:column>
