@@ -47,7 +47,7 @@ public enum UserAppraisalStatus {
 
 	public Color getColor() {
 		return color;
-	}
+	} 
 
 	@Override
 	public String toString() {
