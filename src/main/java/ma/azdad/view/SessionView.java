@@ -55,7 +55,6 @@ public class SessionView implements Serializable {
 	private List<Integer> companyCfoIdList = new ArrayList<>(Arrays.asList(-1));
 	private List<Integer> companyCashControllerIdList = new ArrayList<>(Arrays.asList(-1));
 	private List<Integer> delegatedProjectIdList = new ArrayList<>(Arrays.asList(-1));
-
 	private Integer menu = 1;
 	private Integer supplierId;
 
