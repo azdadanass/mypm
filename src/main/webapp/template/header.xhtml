@@ -24,56 +24,7 @@
 				</div>
 				<div class="navbar-buttons navbar-header pull-right" role="navigation" style="float: right !important">
 					<ul class="nav ace-nav">
-						<f:subview rendered="#{sessionView.isAdmin}">
-							<li class="green">
-								<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-									<i class="ace-icon fa fa-tasks"></i>
-									<span class="badge badge-grey">
-										<h:outputText value="#{taskView.total}" />
-									</span>
-								</a>
-								<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close" style="width: 200px">
-									<li class="dropdown-header">
-										<i class="ace-icon fa fa-check"></i>
-										<h:outputText value="Project Tasks" />
-									</li>
-									<li class="dropdown-content">
-										<ul class="dropdown-menu dropdown-navbar">
-											<li>
-												<h:outputLink value="projectList.xhtml">
-													<span class="clearfix">
-														<span class="pull-left">
-															<i class="ace-icon fa fa-remove red " style="font-size: 20px" />
-															&nbsp;&nbsp;
-															<h:outputText value=" Without Tasks " />
-														</span>
-														<span class="pull-right badge badge-danger">
-															<h:outputText value="#{taskView.totalProject}" />
-														</span>
-													</span>
-													<f:param name="pageIndex" value="1" />
-												</h:outputLink>
-											</li>
-											<li>
-												<h:outputLink value="restrictionList.xhtml">
-													<span class="clearfix">
-														<span class="pull-left">
-															<i class="ace-icon fa fa-remove red " style="font-size: 20px" />
-															&nbsp;&nbsp;
-															<h:outputText value=" Active Restricions " />
-														</span>
-														<span class="pull-right badge badge-danger">
-															<h:outputText value="#{taskView.totalActiveRestriction}" />
-														</span>
-													</span>
-													<f:param name="pageIndex" value="1" />
-												</h:outputLink>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</f:subview>
+						
 						<li class="#{erpView.erp('light-blue','light-orange','light-green')}">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 								<p:graphicImage value="#{fileUploadView.stream}" styleClass="nav-user-photo">
@@ -90,7 +41,7 @@
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 								<li>
 									<p:importEnum type="ma.azdad.utils.App" var="App" />
-									<h:outputLink value="#{App.APPS.link}">
+									<h:outputLink value="index.xhtml">
 										<i class="ace-icon fa fa-home blue"></i>
 										<h:outputText value="Home" />
 									</h:outputLink>
