@@ -13,8 +13,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
-import org.primefaces.context.PrimeFacesContext;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -87,7 +85,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	private List<String> goalTitleList;
 
-	private int goaltitlecount = 0;
+	//private int goaltitlecount = 0;
 	private List<BusinessGoals> businessGoalsList;
 	private List<SupplementaryGoals> supplementaryGoalsList;
 	private List<SupplementaryGoals> supplementaryGoalsListBg;
