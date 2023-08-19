@@ -45,6 +45,10 @@ public class UserAppraisal extends GenericModel<Integer>{
 	// Created
 	private Date dateStatsCreated;
 	private User userStatsCreated;
+
+	// Edited
+		private Date dateStatsEdited;
+		private User userStatsEdited;
 	
 	// Submited
 	private Date dateStatsSubmited;
@@ -57,7 +61,15 @@ public class UserAppraisal extends GenericModel<Integer>{
 	// Approved
 	private Date dateStatsApproved;
 	private User userStatsApproved;
+	
+	// Rejected
+	private Date dateStatsRejected;
+	private User userStatsRejected;
 
+	// Assessment Mid
+	private Date dateStatsSelfAssessmentMidYear;
+	private User userStatsSelfAssessmentMidYear;
+	
 	// Submited Mid
 	private Date dateStatsSubmitedMidYear;
 	private User userStatsSubmitedMidYear;
@@ -66,21 +78,28 @@ public class UserAppraisal extends GenericModel<Integer>{
 	private Date dateStatsApprovedLMMidYear;
 	private User userStatsApprovedLMMidYear;
 
-	// Approved Mid Year
-	private Date dateStatsApprovedMidYear;
-	private User userStatsApprovedMidYear;
+	// Rejected Mid
+	private Date dateStatsRejectedMidYear;
+	private User userStatsRejectedMidYear;
+	
+	// Assessment Final
+	private Date dateStatsSelfAssessmentFinalYear;
+	private User userStatsSelfAssessmentFinalYear;
+	
 	
 	// Submited Final
 	private Date dateStatsSubmitedFinalYear;
 	private User userStatsSubmitedFinalYear;
 
-	// ApprovedLM mid year
+	// ApprovedLM Final year
 	private Date dateStatsApprovedLMFinalYear;
 	private User userStatsApprovedLMFinalYear;
 
-	// Approved Mid Year
-	private Date dateStatsApprovedFinalYear;
-	private User userStatsApprovedFinalYear;
+
+
+	// Rejected Final
+	private Date dateStatsRejectedFinalYear;
+	private User userStatsRejectedFinalYear;
 	
 	// Closed
 	private Date dateStatsClosed;
@@ -381,23 +400,6 @@ public class UserAppraisal extends GenericModel<Integer>{
 				this.userStatsApprovedLMMidYear = userStatsApprovedLMMidYear;
 			}
 
-			public Date getDateStatsApprovedMidYear() {
-				return dateStatsApprovedMidYear;
-			}
-
-			public void setDateStatsApprovedMidYear(Date dateStatsApprovedMidYear) {
-				this.dateStatsApprovedMidYear = dateStatsApprovedMidYear;
-			}
-
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsApprovedMidYear() {
-				return userStatsApprovedMidYear;
-			}
-
-			public void setUserStatsApprovedMidYear(User userStatsApprovedMidYear) {
-				this.userStatsApprovedMidYear = userStatsApprovedMidYear;
-			}
-
 			public Date getDateStatsSubmitedFinalYear() {
 				return dateStatsSubmitedFinalYear;
 			}
@@ -432,23 +434,6 @@ public class UserAppraisal extends GenericModel<Integer>{
 				this.userStatsApprovedLMFinalYear = userStatsApprovedLMFinalYear;
 			}
 
-			public Date getDateStatsApprovedFinalYear() {
-				return dateStatsApprovedFinalYear;
-			}
-
-			public void setDateStatsApprovedFinalYear(Date dateStatsApprovedFinalYear) {
-				this.dateStatsApprovedFinalYear = dateStatsApprovedFinalYear;
-			}
-
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsApprovedFinalYear() {
-				return userStatsApprovedFinalYear;
-			}
-
-			public void setUserStatsApprovedFinalYear(User userStatsApprovedFinalYear) {
-				this.userStatsApprovedFinalYear = userStatsApprovedFinalYear;
-			}
-
 			public Date getDateStatsClosed() {
 				return dateStatsClosed;
 			}
@@ -466,6 +451,105 @@ public class UserAppraisal extends GenericModel<Integer>{
 				this.userStatsClosed = userStatsClosed;
 			}
 
+			public Date getDateStatsEdited() {
+				return dateStatsEdited;
+			}
+
+			public void setDateStatsEdited(Date dateStatsEdited) {
+				this.dateStatsEdited = dateStatsEdited;
+			}
+
+			@ManyToOne(fetch = FetchType.LAZY)
+			public User getUserStatsEdited() {
+				return userStatsEdited;
+			}
+
+			public void setUserStatsEdited(User userStatsEdited) {
+				this.userStatsEdited = userStatsEdited;
+			}
+
+			public Date getDateStatsRejected() {
+				return dateStatsRejected;
+			}
+
+			public void setDateStatsRejected(Date dateStatsRejected) {
+				this.dateStatsRejected = dateStatsRejected;
+			}
 			
+			@ManyToOne(fetch = FetchType.LAZY)
+			public User getUserStatsRejected() {
+				return userStatsRejected;
+			}
+
+			public void setUserStatsRejected(User userStatsRejected) {
+				this.userStatsRejected = userStatsRejected;
+			}
+
+			public Date getDateStatsSelfAssessmentMidYear() {
+				return dateStatsSelfAssessmentMidYear;
+			}
+
+			public void setDateStatsSelfAssessmentMidYear(Date dateStatsSelfAssessmentMidYear) {
+				this.dateStatsSelfAssessmentMidYear = dateStatsSelfAssessmentMidYear;
+			}
 			
+			@ManyToOne(fetch = FetchType.LAZY)
+			public User getUserStatsSelfAssessmentMidYear() {
+				return userStatsSelfAssessmentMidYear;
+			}
+
+			public void setUserStatsSelfAssessmentMidYear(User userStatsSelfAssessmentMidYear) {
+				this.userStatsSelfAssessmentMidYear = userStatsSelfAssessmentMidYear;
+			}
+
+			public Date getDateStatsRejectedMidYear() {
+				return dateStatsRejectedMidYear;
+			}
+
+			public void setDateStatsRejectedMidYear(Date dateStatsRejectedMidYear) {
+				this.dateStatsRejectedMidYear = dateStatsRejectedMidYear;
+			}
+
+			@ManyToOne(fetch = FetchType.LAZY)
+			public User getUserStatsRejectedMidYear() {
+				return userStatsRejectedMidYear;
+			}
+
+			public void setUserStatsRejectedMidYear(User userStatsRejectedMidYear) {
+				this.userStatsRejectedMidYear = userStatsRejectedMidYear;
+			}
+
+			public Date getDateStatsSelfAssessmentFinalYear() {
+				return dateStatsSelfAssessmentFinalYear;
+			}
+
+			public void setDateStatsSelfAssessmentFinalYear(Date dateStatsSelfAssessmentFinalYear) {
+				this.dateStatsSelfAssessmentFinalYear = dateStatsSelfAssessmentFinalYear;
+			}
+			
+			@ManyToOne(fetch = FetchType.LAZY)
+			public User getUserStatsSelfAssessmentFinalYear() {
+				return userStatsSelfAssessmentFinalYear;
+			}
+
+			public void setUserStatsSelfAssessmentFinalYear(User userStatsSelfAssessmentFinalYear) {
+				this.userStatsSelfAssessmentFinalYear = userStatsSelfAssessmentFinalYear;
+			}
+
+			public Date getDateStatsRejectedFinalYear() {
+				return dateStatsRejectedFinalYear;
+			}
+
+			public void setDateStatsRejectedFinalYear(Date dateStatsRejectedFinalYear) {
+				this.dateStatsRejectedFinalYear = dateStatsRejectedFinalYear;
+			}
+			
+			@ManyToOne(fetch = FetchType.LAZY)
+			public User getUserStatsRejectedFinalYear() {
+				return userStatsRejectedFinalYear;
+			}
+
+			public void setUserStatsRejectedFinalYear(User userStatsRejectedFinalYear) {
+				this.userStatsRejectedFinalYear = userStatsRejectedFinalYear;
+			}
 }
