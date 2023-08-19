@@ -22,7 +22,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
@@ -94,14 +93,39 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SectionsData> sectionsDatas;
 	private List<UserAppraisal> userAppraisalList;
 	private String selectedGoalTitle;
+	private Integer isMid=1;
+	
 
-    public String getSelectedGoalTitle() {
-        return selectedGoalTitle;
-    }
+	public Integer getIsMid() {
+		return isMid;
+	}
+	
+	public void setIsMid(Integer isMid) {
+		this.isMid = isMid;
+	}
+	
+	public void onDebut() {
+		isMid=1;
+		
+	}
+	public void onMid() {
+		isMid=2;
+		
+	}
+	public void onFinal(){
+		isMid=3;
 
-    public void setSelectedGoalTitle(String selectedGoalTitle) {
-        this.selectedGoalTitle = selectedGoalTitle;
-    }
+	}
+
+	
+
+	public String getSelectedGoalTitle() {
+		return selectedGoalTitle;
+	}
+
+	public void setSelectedGoalTitle(String selectedGoalTitle) {
+		this.selectedGoalTitle = selectedGoalTitle;
+	}
 
 	public List<UserAppraisal> getUserAppraisalList() {
 		return userAppraisalList;
@@ -369,20 +393,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public void addBusiness() {
-	    if (canAddBusiness()) {
-	        businessGoalsList.add(new BusinessGoals(null,goalTitleList.get(0), 0, findSectionId()));
-	        System.out.println("Selected Goal Title: " + selectedGoalTitle);
-	        //goalTitleList.remove(selectedGoalTitle);
+		if (canAddBusiness()) {
+			businessGoalsList.add(new BusinessGoals(null, goalTitleList.get(0), 0, findSectionId()));
+			System.out.println("Selected Goal Title: " + selectedGoalTitle);
+			// goalTitleList.remove(selectedGoalTitle);
 
-	       // RequestContext.getCurrentInstance().update("goalTitleCombo");
+			// RequestContext.getCurrentInstance().update("goalTitleCombo");
 
-	    }
+		}
 	}
 
-
-
-
-
+	
 
 
 
@@ -450,10 +471,27 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
+	
+	public Boolean canEdited() {
+		return UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+	}
 
-	// test for submited only
+	public void edited() {
+		if (!canEdited())
+			return;
+
+		model.setDateStatsEdited(new Date());
+		model.setUserStatsEdited(sessionView.getUser());
+		model.setUserAppraisalStatus(UserAppraisalStatus.EDITED);
+		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
+				"change User AppraisalsStats from CREATED to Edited"));
+
+		service.save(model);
+		model = service.findOne(model.getId());
+	}
+
 	public Boolean canSubmiteduser() {
-		return UserAppraisalStatus.CREATED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
 
 	public void submiteduser() {
@@ -464,13 +502,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsSubmited(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from CREATED to SUBMITED"));
+				"change User AppraisalsStats from EDITED to SUBMITED"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
+	
+	
 
-	// end test submited
 	public Boolean canApprovedLM() {
 		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
@@ -506,11 +545,49 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
-
-	public Boolean canSubmitedMidYear() {
-		return UserAppraisalStatus.APPROVED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+	
+	public Boolean canMidSelfAssessment() {
+		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
 
+	public void midSelfAssessment() {
+		if (!canMidSelfAssessment())
+			return;
+
+		model.setDateStatsSelfAssessmentMidYear(new Date());
+		model.setUserStatsSelfAssessmentMidYear(sessionView.getUser());
+		model.setUserAppraisalStatus(UserAppraisalStatus.MYR_SELF_ASSESSMENT);
+		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
+				"change User AppraisalsStats from APPROVED to MYR_SELF_ASSESSMENT"));
+
+		service.save(model);
+		model = service.findOne(model.getId());
+	}
+
+	public Boolean canFinalSelfAssessment() {
+		return UserAppraisalStatus.MYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+	}
+
+	public void finalSelfAssessment() {
+		if (!canFinalSelfAssessment())
+			return;
+
+		model.setDateStatsSelfAssessmentFinalYear(new Date());
+		model.setUserStatsSelfAssessmentFinalYear(sessionView.getUser());
+		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_SELF_ASSESSMENT);
+		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
+				"change User AppraisalsStats from MYD_APPROVED to MYR_SELF_ASSESSMENT"));
+
+		service.save(model);
+		model = service.findOne(model.getId());
+	}
+
+	
+	public Boolean canSubmitedMidYear() {
+		return UserAppraisalStatus.MYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+	}
+
+	
 	public void submitedMidYear() {
 		if (!canSubmitedMidYear())
 			return;
@@ -520,7 +597,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED_MID_YEAR);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
 				"change User AppraisalsStats from APPROVED to MID_YEAR_SUBMITED"));
-
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
@@ -543,26 +619,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 	}
 
-	public Boolean canApprovedMidYear() {
-		return UserAppraisalStatus.MYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
-	}
-
-	public void approvedMidYear() {
-		if (!canApprovedMidYear())
-			return;
-
-		model.setDateStatsApprovedMidYear(new Date());
-		model.setUserStatsApprovedMidYear(sessionView.getUser());
-		model.setUserAppraisalStatus(UserAppraisalStatus.MYR_APPROVED);
-		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from Mid_YEAR_APPROVED_LM to MID_YEAR_APPROVED"));
-
-		service.save(model);
-		model = service.findOne(model.getId());
-	}
 
 	public Boolean canSubmitedFinalYear() {
-		return UserAppraisalStatus.MYR_APPROVED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.FYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
 
 	public void submitedFinalYear() {
@@ -573,7 +632,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsSubmitedFinalYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED_FINAL_YEAR);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from MID_YEAR_APPROVED to FINAL_YEAR_SUBMITED"));
+				"change User AppraisalsStats from FYT_SELF_ASSESSMENT to FINAL_YEAR_SUBMITED"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -598,26 +657,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 	}
 
-	public Boolean canApprovedFinalYear() {
-		return UserAppraisalStatus.FYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
-	}
-
-	public void approvedFinalYear() {
-		if (!canApprovedFinalYear())
-			return;
-
-		model.setDateStatsApprovedFinalYear(new Date());
-		model.setUserStatsApprovedFinalYear(sessionView.getUser());
-		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_APPROVED);
-		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from FINAL_YEAR_APPROVED_LM to FINAL_YEAR_APPROVED"));
-
-		service.save(model);
-		model = service.findOne(model.getId());
-	}
-
 	public Boolean canClosed() {
-		return UserAppraisalStatus.FYR_APPROVED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.FYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
 
 	public void closed() {
