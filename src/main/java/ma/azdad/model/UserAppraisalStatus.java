@@ -54,6 +54,7 @@ public enum UserAppraisalStatus {
 		return this.value;
 	}
 	
+	
 	public static UserAppraisalStatus getByValue(String status) {
 		try {
 			return Stream.of(values()).filter(i -> status.equals(i.getValue())).findFirst().get();
