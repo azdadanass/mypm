@@ -94,8 +94,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SectionsData> sectionsDatas;
 	private List<UserAppraisal> userAppraisalList;
 	private String selectedGoalTitle;
+	private List<String> selectedGoalTitlesList = new ArrayList<>();
 
-    public String getSelectedGoalTitle() {
+
+    public List<String> getSelectedGoalTitlesList() {
+		return selectedGoalTitlesList;
+	}
+
+	public void setSelectedGoalTitlesList(List<String> selectedGoalTitlesList) {
+		this.selectedGoalTitlesList = selectedGoalTitlesList;
+	}
+
+	public String getSelectedGoalTitle() {
         return selectedGoalTitle;
     }
 
@@ -370,20 +380,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public void addBusiness() {
 	    if (canAddBusiness()) {
-	        businessGoalsList.add(new BusinessGoals(null,goalTitleList.get(0), 0, findSectionId()));
-	        System.out.println("Selected Goal Title: " + selectedGoalTitle);
-	        //goalTitleList.remove(selectedGoalTitle);
-
-	       // RequestContext.getCurrentInstance().update("goalTitleCombo");
-
+	        businessGoalsList.add(new BusinessGoals(null, goalTitleList.get(0), 0, findSectionId()));
+	        //System.out.println("Selected Goal Title: " + selectedGoalTitle);
+	        //System.out.println(businessGoalsList.get(businessGoalsList.size()-1).getGoalTitle());
+	        goalTitleList.remove(businessGoalsList.get(businessGoalsList.size()-1).getGoalTitle());
+	        //selectedGoalTitle = null;
+	        // RequestContext.getCurrentInstance().update("goalTitleCombo");
 	    }
 	}
-
-
-
-
-
-
 
 
 	public Sections findSectionId() {
