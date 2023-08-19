@@ -47,12 +47,13 @@ public enum UserAppraisalStatus {
 
 	public Color getColor() {
 		return color;
-	}
+	} 
 
 	@Override
 	public String toString() {
 		return this.value;
 	}
+	
 	
 	public static UserAppraisalStatus getByValue(String status) {
 		try {
