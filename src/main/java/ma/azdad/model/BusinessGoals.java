@@ -26,7 +26,6 @@ import ma.azdad.service.UtilsFunctions;
 public class BusinessGoals extends GenericModel<Integer> {
 
 	private String goalDetails;
-	private String goalDts;
 	private String goalTitle;
 	private double goalWeight;
 	private Integer midYearReview;
@@ -88,15 +87,7 @@ public class BusinessGoals extends GenericModel<Integer> {
 	}
 	
 	
-	@Column(columnDefinition = "TEXT")
-	public String getGoalDts() {
-		return goalDts;
-	}
-	public void setGoalDts(String goalDts) {
-		this.goalDts = goalDts;
-	}
-	
-	@Column(name = "goalDetails")
+	@Column(name = "goalDetails",columnDefinition = "TEXT")
 	public String getGoalDetails() {
 		return goalDetails;
 	}

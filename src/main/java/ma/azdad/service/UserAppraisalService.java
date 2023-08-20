@@ -6,8 +6,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import ma.azdad.model.Appraisals;
+import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
+import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.UserAppraisalRepos;
@@ -66,6 +68,41 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return repos.findSectionByEligible(userAppraisal);
 	}
 
+	@Cacheable("userAppraisalService.findBusinessGoalsBySection0")
+	public List<BusinessGoals> findBusinessGoalsBySection0(UserAppraisal userAppraisal) {
+
+		return repos.findBusinessGoalsBySection0(userAppraisal);
+	}
+	
+	@Cacheable("userAppraisalService.findSupGoalsBySection1")
+	public List<SupplementaryGoals> findSupGoalsBySection1(UserAppraisal userAppraisal) {
+
+		return repos.findSuppBySection1(userAppraisal);
+	}
+	
+	
+	@Cacheable("userAppraisalService.findSupGoalsBySection2")
+	public List<SupplementaryGoals> findSupGoalsBySection2(UserAppraisal userAppraisal) {
+
+		return repos.findSuppBySection1(userAppraisal);
+	}
+	@Cacheable("userAppraisalService.findSupGoalsBySection3")
+	public List<SupplementaryGoals> findSupGoalsBySection3(UserAppraisal userAppraisal) {
+
+		return repos.findSuppBySection1(userAppraisal);
+	}
+	@Cacheable("userAppraisalService.findSupGoalsBySection4")
+	public List<SupplementaryGoals> findSupGoalsBySection4(UserAppraisal userAppraisal) {
+
+		return repos.findSuppBySection1(userAppraisal);
+	}
+	@Cacheable("userAppraisalService.findSupGoalsBySection5")
+	public List<SupplementaryGoals> findSupGoalsBySection5(UserAppraisal userAppraisal) {
+
+		return repos.findSuppBySection1(userAppraisal);
+	}
+	
+	
 	
 	
 	
