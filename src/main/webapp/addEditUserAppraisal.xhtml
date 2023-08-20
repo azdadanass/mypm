@@ -9,6 +9,8 @@
 	template="template/template.xhtml"
 	xmlns:pe="http://primefaces.org/ui/extensions">
 	<ui:define name="title">
+	    <script src="https://code.highcharts.com/highcharts.js"></script>
+	
 		<h:outputText value="#{staticView.applicationName}" />
 	</ui:define>
 	<ui:define name="header">
@@ -437,6 +439,484 @@
 									</div>
 								</div>
 							</div>
+							&nbsp;&nbsp;
+
+							<!-- 							***********************************Sections Details*******************************-->
+							<h1 style="color: blue; font-size: 20px">I- Appraisal
+								Weighting Details</h1>
+
+							<div class="table-header col-sm-12 col-xs-12">
+								<div class="col-sm-8 col-xs-8">
+									<i class="fa fa-list" />
+									<h:outputText value=" Section List" />
+								</div>
+								<div class="col-sm-2 hidden-xs">
+									<div class="action-buttons center">
+										<h:commandLink styleClass="aa-tooltip tooltip-success"
+											title="Export to excel">
+
+										</h:commandLink>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+								<p:dataTable
+									value="#{userAppraisalView.findSectionByUserAppraisal()}"
+									var="item" rowKey="#{title}" id="appraisalsList"
+									widgetVar="sectionslist" rows="20"
+									styleClass="table table-striped table-hover center"
+									paginator="true" paginatorAlwaysVisible="false"
+									paginatorPosition="bottom"
+									paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+									rowSelectMode="checkbox" rowIndexVar="index">
+
+									<p:column headerText="ID">
+										<h:outputText value="#{index+1}" styleClass="bolder blue" />
+									</p:column>
+									<p:column headerText="Title">
+										<h:outputText value="#{item.sectionsTitle}"
+											styleClass="bolder green" />
+									</p:column>
+									<p:column headerText="Eligible">
+										<p:selectBooleanCheckbox value="#{item.eligible}"
+											disabled="true" />
+									</p:column>
+									<p:column headerText="Weight">
+										<h:outputText value="#{item.weight}"
+											converter="javax.faces.Integer" min="0" max="100"
+											style="width: 40px" />
+										<h:outputText value="%" styleClass="bolder blue" />
+									</p:column>
+
+								</p:dataTable>
+							</div>
+							&nbsp;
+						<h1 style="color: black; text-align: center;font-size: 40px">Appraisal Weighting Details</h1>
+						
+						
+						
+														
+							      <div class="pie-chart-container">
+							
+    <p:chart type="pie" model="#{userAppraisalView.pieChartModel}" />
+							    							</div>
+							
+							<!-- 							***********************************Appraisal Time Line*******************************-->
+							<h1 style="color: blue; font-size: 20px">II- Appraisal Time Line</h1>
+
+								
+						<div class="row" style="margin-right: -15px; margin-left: -15px;">
+							<div class="col-xs-4">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Planning" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userAppraisal.model.dateStatsSubmited}"
+												styleClass="purple" />
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Approved By Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userAppraisal.model.dateStatsApproved}"
+												styleClass="green" />
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="111" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="44444"
+												styleClass="bolder #{userView.model.companyType.color.name}" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Line Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="55555"
+												styleClass="blue" />
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Logistic Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="2222222"
+												styleClass="orange" />
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xs-4">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Line Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="55555"
+												styleClass="blue" />
+											&nbsp;
+										</div>
+									</div>
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Logistic Manager" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="2222222"
+												styleClass="orange" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+
+							<!-- 							<**************************************Business Goals******************************-->
+							<h1 style="color: blue; font-size: 20px">I- Section Raiting
+								Summary</h1>
+							<div class="row">
+
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value=" Business Goals" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+
+											</h:commandLink>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+									<p:dataTable
+										value="#{userAppraisalView.findBusinessGoalSection0()}"
+										var="item" rowKey="#{title}" id="sectionRaitingSummary"
+										widgetVar="sectionslist" rows="20"
+										styleClass="table table-striped table-hover center"
+										paginator="true" paginatorAlwaysVisible="false"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+										rowSelectMode="checkbox" rowIndexVar="index">
+
+										<p:column headerText="ID">
+											<h:outputText value="#{index+1}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Goal Title">
+											<h:outputText value="#{item.goalTitle}"
+												styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Goal Description">
+											<h:outputText value="#{item.goalDetails}"
+												styleClass="bolder orange" />
+										</p:column>
+										<p:column headerText="Goal Weight">
+											<h:outputText value="#{item.goalWeight}"
+												converter="javax.faces.Integer" min="0" max="100"
+												style="width: 40px" />
+											<h:outputText value="%" styleClass="bolder blue" />
+										</p:column>
+
+									</p:dataTable>
+								</div>
+							</div>
+
+							&nbsp;
+
+							<!-- 							<**************************************Job Excecution******************************-->
+							<div class="row">
+
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value=" Job Execution" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+
+											</h:commandLink>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+									<p:dataTable
+										value="#{userAppraisalView.findSuppGoalSection1()}" var="item"
+										rowKey="#{title}" id="jobExecution" widgetVar="sectionslist"
+										rows="20" styleClass="table table-striped table-hover center"
+										paginator="true" paginatorAlwaysVisible="false"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+										rowSelectMode="checkbox" rowIndexVar="index">
+
+										<p:column headerText="ID">
+											<h:outputText value="#{index+1}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Goal Title">
+											<h:outputText value="#{item.sectionsData.goalTitle}"
+												styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Goal Description">
+											<h:outputText value="#{item.sectionsData.goalDescription}"
+												styleClass="bolder orange" />
+										</p:column>
+										<p:column headerText="Goal Weight">
+											<h:outputText value="#{item.weight}"
+												converter="javax.faces.Integer" min="0" max="100"
+												style="width: 40px" />
+											<h:outputText value="%" styleClass="bolder blue" />
+										</p:column>
+
+									</p:dataTable>
+								</div>
+							</div>
+							&nbsp;
+
+							<!-- <**************************************Code of conduct******************************-->
+							<div class="row">
+
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value="Code of Conduct" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+
+											</h:commandLink>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+									<p:dataTable
+										value="#{userAppraisalView.findSuppGoalSection2()}" var="item"
+										rowKey="#{title}" id="codeofconduct" widgetVar="sectionslist"
+										rows="20" styleClass="table table-striped table-hover center"
+										paginator="true" paginatorAlwaysVisible="false"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+										rowSelectMode="checkbox" rowIndexVar="index">
+
+										<p:column headerText="ID">
+											<h:outputText value="#{index+1}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Goal Title">
+											<h:outputText value="#{item.sectionsData.goalTitle}"
+												styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Goal Description">
+											<h:outputText value="#{item.sectionsData.goalDescription}"
+												styleClass="bolder orange" />
+										</p:column>
+										<p:column headerText="Goal Weight">
+											<h:outputText value="#{item.weight}"
+												converter="javax.faces.Integer" min="0" max="100"
+												style="width: 40px" />
+											<h:outputText value="%" styleClass="bolder blue" />
+										</p:column>
+
+									</p:dataTable>
+								</div>
+
+							</div>
+							&nbsp;
+
+							<!-- <**************************************Leadership and Dependability******************************-->
+							<div class="row">
+
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value=" Leadership and Dependability" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+
+											</h:commandLink>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+									<p:dataTable
+										value="#{userAppraisalView.findSuppGoalSection3()}" var="item"
+										rowKey="#{title}" id="LeadershipandDependability"
+										widgetVar="sectionslist" rows="20"
+										styleClass="table table-striped table-hover center"
+										paginator="true" paginatorAlwaysVisible="false"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+										rowSelectMode="checkbox" rowIndexVar="index">
+
+										<p:column headerText="ID">
+											<h:outputText value="#{index+1}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Goal Title">
+											<h:outputText value="#{item.sectionsData.goalTitle}"
+												styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Goal Description">
+											<h:outputText value="#{item.sectionsData.goalDescription}"
+												styleClass="bolder orange" />
+										</p:column>
+										<p:column headerText="Goal Weight">
+											<h:outputText value="#{item.weight}"
+												converter="javax.faces.Integer" min="0" max="100"
+												style="width: 40px" />
+											<h:outputText value="%" styleClass="bolder blue" />
+										</p:column>
+
+									</p:dataTable>
+								</div>
+							</div>
+							&nbsp;
+
+							<!-- <**************************************Personality Attributes******************************-->
+							<div class="row">
+
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value="Personality Attributes" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+
+											</h:commandLink>
+										</div>
+									</div>
+
+								</div>
+							
+								
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+									<p:dataTable
+										value="#{userAppraisalView.findSuppGoalSection4()}" var="item"
+										rowKey="#{title}" id="PersonalityAttributes"
+										widgetVar="sectionslist" rows="20"
+										styleClass="table table-striped table-hover center"
+										paginator="true" paginatorAlwaysVisible="false"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+										rowSelectMode="checkbox" rowIndexVar="index">
+
+										<p:column headerText="ID">
+											<h:outputText value="#{index+1}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Goal Title">
+											<h:outputText value="#{item.sectionsData.goalTitle}"
+												styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Goal Description">
+											<h:outputText value="#{item.sectionsData.goalDescription}"
+												styleClass="bolder orange" />
+										</p:column>
+										<p:column headerText="Goal Weight">
+											<h:outputText value="#{item.weight}"
+												converter="javax.faces.Integer" min="0" max="100"
+												style="width: 40px" />
+											<h:outputText value="%" styleClass="bolder blue" />
+										</p:column>
+
+									</p:dataTable>
+								</div>
+							</div>
+							&nbsp;
+							<!-- <**************************************Management Responsabilities******************************-->
+							<div class="row">
+
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value=" Management Responsabilities" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+
+											</h:commandLink>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+									<p:dataTable
+										value="#{userAppraisalView.findSuppGoalSection5()}" var="item"
+										rowKey="#{title}" id="ManagementResponsabilities"
+										widgetVar="sectionslist" rows="20"
+										styleClass="table table-striped table-hover center"
+										paginator="true" paginatorAlwaysVisible="false"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+										rowSelectMode="checkbox" rowIndexVar="index">
+
+										<p:column headerText="ID">
+											<h:outputText value="#{index+1}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Goal Title">
+											<h:outputText value="#{item.sectionsData.goalTitle}"
+												styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Goal Description">
+											<h:outputText value="#{item.sectionsData.goalDescription}"
+												styleClass="bolder orange" />
+										</p:column>
+										<p:column headerText="Goal Weight">
+											<h:outputText value="#{item.weight}"
+												converter="javax.faces.Integer" min="0" max="100"
+												style="width: 40px" />
+											<h:outputText value="%" styleClass="bolder blue" />
+										</p:column>
+
+									</p:dataTable>
+								</div>
+							</div>
+							&nbsp;
+
+
+
 						</div>
 						<div class="space-16" />
 					</div>

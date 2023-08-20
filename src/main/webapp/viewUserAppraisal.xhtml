@@ -145,12 +145,14 @@
 												<p:column headerText="ID">
 													<h:outputText value="#{index+1}" styleClass="bolder blue" />
 												</p:column>
-
-
-
-												<p:column headerText="Goal Title">
-													<p:selectOneMenu value="#{item.goalTitle}"
-														onchange="#{userAppraisalView.removeGoalTitle(item.goalTitle)}">
+												<p:column headerText="Goal Title"
+													rendered="#{item.goalTitle != null}">
+													<h:outputText value="#{item.goalTitle}"
+														styleClass="bolder blue" />
+												</p:column>
+												<p:column headerText="Goal Title"
+													rendered="#{item.goalTitle == null}">
+													<p:selectOneMenu value="#{item.goalTitle}">
 														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
 													</p:selectOneMenu>
 												</p:column>
@@ -163,10 +165,12 @@
 
 </p:column> -->
 
-
+												
+												
+												
 
 												<p:column headerText="Goal Details">
-													<p:inputText value="#{item.goalDts}" />
+													<p:inputText value="#{item.goalDetails}" />
 												</p:column>
 												<p:column headerText="Goal weight">
 													<h:inputText value="#{item.goalWeight}"
@@ -187,15 +191,32 @@
 														disabled="#{ userAppraisalView.validateBusinessFinalYear()}"
 														validator="#{userAppraisalView.validateRating}" />
 												</p:column>
- -->
+ --><p:column headerText="Actions" width="150"
+											style="text-align : center;">
+											<div class="action-buttons center">
+												<p:commandLink
+													action="#{userAppraisalView.removeBusinessGoal(item)}"
+													update="businessGoalsList" process="businessGoalsList" title="delete"
+													rendered="true"
+													styleClass="aa-tooltip">
+													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+
+												</p:commandLink>
+												
+											</div>
+										</p:column>
 												<f:facet name="footer">
 													<div class="action-buttons center">
 														<p:commandLink title="Add New Item"
 															action="#{userAppraisalView.addBusiness()}"
 															update="businessGoalsList" process="businessGoalsList"
-															rendered="true">
+															rendered="#{userAppraisalView.canAddBusiness()}">
 															<i class="fa fa-plus green" />
 														</p:commandLink>
+
+
+
+
 													</div>
 												</f:facet>
 											</p:dataTable>

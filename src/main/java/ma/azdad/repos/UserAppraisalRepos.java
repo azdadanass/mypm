@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import ma.azdad.model.Appraisals;
+import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
+import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 
@@ -43,7 +45,25 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	
 	@Query("from UserAppraisal u where u.employ.active=?1 and u.employ.internal=?2  and u.employ.affectation.lineManager=?3")
 	List<UserAppraisal> findUserAppraisalByLM(Boolean act,Boolean inter,User u3);
-
+	
+	@Query("from BusinessGoals b where b.sections.sectionsNumber=0 and b.sections.userappraisal=?1")
+	List<BusinessGoals> findBusinessGoalsBySection0(UserAppraisal u);
+	
+	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=1 and s.sections.userappraisal=?1")
+	List<SupplementaryGoals> findSuppBySection1(UserAppraisal u);
+	
+	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=2 and s.sections.userappraisal=?1")
+	List<SupplementaryGoals> findSuppBySection2(UserAppraisal u);
+	
+	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=3 and s.sections.userappraisal=?1")
+	List<SupplementaryGoals> findSuppBySection3(UserAppraisal u);
+	
+	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=4 and s.sections.userappraisal=?1")
+	List<SupplementaryGoals> findSuppBySection4(UserAppraisal u);
+	
+	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=5 and s.sections.userappraisal=?1")
+	List<SupplementaryGoals> findSuppBySection5(UserAppraisal u);
+	
 	/*
 	 * //not used
 	 * 

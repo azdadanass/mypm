@@ -14,6 +14,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.PieChartModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -83,8 +86,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Integer> weightList;
 
 	private List<String> goalTitleList;
+	
 
-	//private int goaltitlecount = 0;
+	private int goaltitlecount = 0;
 	private List<BusinessGoals> businessGoalsList;
 	private List<SupplementaryGoals> supplementaryGoalsList;
 	private List<SupplementaryGoals> supplementaryGoalsListBg;
@@ -92,7 +96,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<UserAppraisal> userAppraisalList;
 	private String selectedGoalTitle;
 	private Integer isMid=1;
-	
+	private List<Sections> sectionList;
+
+
+	public List<Sections> getSectionList() {
+		return sectionList;
+	}
+
+	public void setSectionList(List<Sections> sectionList) {
+		this.sectionList = sectionList;
+	}
 
 	public Integer getIsMid() {
 		return isMid;
@@ -161,12 +174,35 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void setGoalTitleList(List<String> goalTitleList) {
 		this.goalTitleList = goalTitleList;
 	}
+    private PieChartModel pieChartModel;
+
+
+	public PieChartModel getPieChartModel() {
+		return pieChartModel;
+	}
+
+	public void setPieChartModel(PieChartModel pieChartModel) {
+		this.pieChartModel = pieChartModel;
+	}
 
 	@Override
 	@PostConstruct
 	public void init() {
 		super.init();
+		//chart*****************************
+pieChartModel = new PieChartModel();
+        
+        // Iterate through the data and add to the pie chart model
+        for (Sections item : findSectionByUserAppraisal()) {
+            pieChartModel.set(item.getSectionsTitle(), item.getWeight());
+        }
 
+        pieChartModel.setTitle("Appraisal Weighting Details");
+        pieChartModel.setLegendPosition("e");
+        pieChartModel.setShowDataLabels(true);
+		
+		
+		
 		// Sections Title
 		titleList = new ArrayList<>();
 		goalTitleList = new ArrayList<>();
@@ -199,6 +235,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		time();
 	}
 
+	
 	private int step = 1;
 
 	@Override
@@ -386,25 +423,68 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		this.businessGoalsList = businessGoalsList;
 	}
 
-	public Boolean canAddBusiness() {
-		return true;
+
+	public List<Sections> findSectionByUserAppraisal() {
+		return sectionsService.findSectionsByUserAppraisal(model);
 	}
 	
-	public void removeGoalTitle(String goalttl) {
-		goalTitleList.remove(goalttl);
-		System.out.println(businessGoalsList.size());
-
+	public List<BusinessGoals> findBusinessGoalSection0() {
+		return userAppraisalService.findBusinessGoalsBySection0(model);
+	}
+	
+	
+	public List<SupplementaryGoals> findSuppGoalSection1() {
+		return userAppraisalService.findSupGoalsBySection1(model);
+	}
+	
+	public List<SupplementaryGoals> findSuppGoalSection2() {
+		return userAppraisalService.findSupGoalsBySection2(model);
+	}
+	
+	public List<SupplementaryGoals> findSuppGoalSection3() {
+		return userAppraisalService.findSupGoalsBySection3(model);
+	}
+	
+	public List<SupplementaryGoals> findSuppGoalSection4() {
+		return userAppraisalService.findSupGoalsBySection4(model);
+	}
+	
+	public List<SupplementaryGoals> findSuppGoalSection5() {
+		return userAppraisalService.findSupGoalsBySection5(model);
+	}
+	
+	
+	public Boolean canAddBusiness() {
+		return goaltitlecount<5;
 	}
 
 	public void addBusiness() {
 		if (canAddBusiness()) {
 			
+			if(goaltitlecount>=1) {
+				System.out.println("last item in businessGoalList : " + businessGoalsList.get(businessGoalsList.size()-1).getGoalTitle());
+				goalTitleList.remove(businessGoalsList.get(businessGoalsList.size()-1).getGoalTitle());
+			}
+			
 			businessGoalsList.add(new BusinessGoals(null, null, 0, findSectionId()));
-			//System.out.println("Selected Goal Title: " + selectedGoalTitle);
+			
+			goaltitlecount++;
+			// goalTitleList.remove(selectedGoalTitle);
+
 			// RequestContext.getCurrentInstance().update("goalTitleCombo");
 
 		}
 	}
+	
+	public void removeBusinessGoal(BusinessGoals bg) {
+		if(!goalTitleList.contains(bg.getGoalTitle()))
+		goalTitleList.add(bg.getGoalTitle());
+		
+		businessGoalsList.remove(bg);	
+		goaltitlecount--;
+	}
+
+
 
 	
 
@@ -443,7 +523,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			return null;
 		for (int i = 0; i < businessGoalsList.size(); i++) {
 
-			BusinessGoals businessGoals = new BusinessGoals(businessGoalsList.get(i).getGoalDts(),
+			BusinessGoals businessGoals = new BusinessGoals(businessGoalsList.get(i).getGoalDetails(),
 					businessGoalsList.get(i).getGoalTitle(), businessGoalsList.get(i).getGoalWeight(),
 					businessGoalsList.get(i).getMidYearReview(), businessGoalsList.get(i).getSummaryRaiting(),
 					businessGoalsList.get(i).getSections()
