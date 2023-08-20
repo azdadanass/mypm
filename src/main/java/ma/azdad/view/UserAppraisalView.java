@@ -389,13 +389,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean canAddBusiness() {
 		return true;
 	}
+	
+	public void removeGoalTitle(String goalttl) {
+		goalTitleList.remove(goalttl);
+		System.out.println(businessGoalsList.size());
+
+	}
 
 	public void addBusiness() {
 		if (canAddBusiness()) {
-			businessGoalsList.add(new BusinessGoals(null, goalTitleList.get(0), 0, findSectionId()));
-			System.out.println("Selected Goal Title: " + selectedGoalTitle);
-			// goalTitleList.remove(selectedGoalTitle);
-
+			
+			businessGoalsList.add(new BusinessGoals(null, null, 0, findSectionId()));
+			//System.out.println("Selected Goal Title: " + selectedGoalTitle);
 			// RequestContext.getCurrentInstance().update("goalTitleCombo");
 
 		}

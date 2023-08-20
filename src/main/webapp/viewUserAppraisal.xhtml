@@ -145,11 +145,15 @@
 												<p:column headerText="ID">
 													<h:outputText value="#{index+1}" styleClass="bolder blue" />
 												</p:column>
+												
+												
+												
 												<p:column headerText="Goal Title">
-    <p:selectOneMenu value="#{item.goalTitle}" onchange="addBusiness()">
-        <f:selectItems value="#{userAppraisalView.goalTitleList}" />
-    </p:selectOneMenu>
-</p:column>
+													<p:selectOneMenu value="#{item.goalTitle}"
+														onchange="#{userAppraisalView.removeGoalTitle(item.goalTitle)}">
+														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
+													</p:selectOneMenu>
+												</p:column>
 
 												<!-- <p:column headerText="Goal Title">
     <p:selectOneMenu value="#{userAppraisalView.selectedGoalTitle}">
@@ -159,9 +163,9 @@
 
 </p:column> -->
 
-												
-												
-												
+
+
+
 
 												<p:column headerText="Goal Details">
 													<p:inputText value="#{item.goalDts}" />
@@ -189,16 +193,11 @@
 												<f:facet name="footer">
 													<div class="action-buttons center">
 														<p:commandLink title="Add New Item"
-    action="#{userAppraisalView.addBusiness()}"
-    update="businessGoalsList"
-    process="businessGoalsList"
-    rendered="true">
-    <i class="fa fa-plus green" />
-</p:commandLink>
-
-
-
-														
+															action="#{userAppraisalView.addBusiness()}"
+															update="businessGoalsList" process="businessGoalsList"
+															rendered="true">
+															<i class="fa fa-plus green" />
+														</p:commandLink>
 													</div>
 												</f:facet>
 											</p:dataTable>
