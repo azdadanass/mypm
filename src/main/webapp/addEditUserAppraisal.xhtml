@@ -501,72 +501,50 @@
 
 
 
-													<div  id="chartContainer1" style="width: 45%;margin-left:300px; height: 275px;display: inline-block;"></div> 
+							<div id="chartContainer1" style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div>
 <script type="text/javascript">
-						Highcharts.chart('chartContainer1', {
-						    chart: {
-						        plotBackgroundColor: null,
-						        plotBorderWidth: null,
-						        plotShadow: false,
-						        type: 'pie'
-						    },
-						    title: {
-						        text: 'Appraisal Weighting Details'
-						    },
-						    tooltip: {
-						        pointFormat: '{series.name}: <b>{point.y}</b>%'
-						    },
-						    accessibility: {
-						        point: {
-						            valueSuffix: '%'
-						        }
-						    },
-						    plotOptions: {
-						        pie: {
-						            allowPointSelect: true,
-						            cursor: 'pointer',
-						            dataLabels: {
-						                enabled: true,
-						                format: '<b>{point.name}</b>'
-						            }
-						        }
-						    },
-						    series: [{
-						        name: 'Section',
-						        colorByPoint: true,
-						        data: [{
-						            name: 'Business Goals',
-						            y: #{userAppraisalView.findSection(0).getWeight()},
-						            sliced: true,
-						            selected: true
-						        }, {
-						            name: 'Job Execution',
-						            y: #{userAppraisalView.findSection(1).getWeight()},
-						        	visible: #{userAppraisalView.findSection(1).getWeight() != 0}
+    const data = [
+        { name: 'Business Goals', weight: #{userAppraisalView.findSection(0).getWeight()} },
+        { name: 'Job Execution', weight: #{userAppraisalView.findSection(1).getWeight()} },
+        { name: 'Code of Conduct', weight: #{userAppraisalView.findSection(2).getWeight()} },
+        { name: 'Leadership and Dependability', weight: #{userAppraisalView.findSection(3).getWeight()} },
+        { name: 'Personality Attributes', weight: #{userAppraisalView.findSection(4).getWeight()} },
+        { name: 'Management Responsibilities', weight: #{userAppraisalView.findSection(5).getWeight()} }
+    ];
 
-						        },  {
-						            name: 'Code of Conduct',
-						            y: #{userAppraisalView.findSection(2).getWeight()},
-						        	visible: #{userAppraisalView.findSection(2).getWeight() != 0}
-						        }, {
-						            name: 'Leadership and Dependability',
-						            y: #{userAppraisalView.findSection(3).getWeight()},
-					        	visible: #{userAppraisalView.findSection(3).getWeight() != 0}
+    for (const section of data) {
+        if (section.weight === null) {
+            section.weight = 0;
+        }
+    }
 
-						        }, {
-						            name: 'Personality Attributes',
-						            y: #{userAppraisalView.findSection(4).getWeight()},
-						        	visible: #{userAppraisalView.findSection(4).getWeight() != 0}
+    Highcharts.chart('chartContainer1', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Appraisal Weighting Details'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>%'
+        },
+        // ... (autres propriétés du graphique)
+        series: [{
+            name: 'Section',
+            colorByPoint: true,
+            data: data.map(section => ({
+                name: section.name,
+                y: section.weight,
+                sliced: true,
+                selected: true
+            }))
+        }]
+    });
+</script>
 
-						        },  {
-						            name: 'Management Responsibilities',
-						            y: #{userAppraisalView.findSection(5).getWeight()},
-						        	visible: #{userAppraisalView.findSection(5).getWeight() != 0}
-
-						        }]
-						    }]
-						});
-						</script>
 
 
 							<!-- 							***********************************Appraisal Time Line*******************************-->
