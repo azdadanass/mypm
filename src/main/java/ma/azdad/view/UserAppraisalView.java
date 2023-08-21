@@ -503,6 +503,19 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return true;
 	}
 
+	public Boolean validateWeightSuppGoals() {
+
+		double weightTotal = 0;
+		for (int i = 0; i < supplementaryGoalsListBg.size(); i++) {
+			weightTotal = weightTotal + supplementaryGoalsListBg.get(i).getWeight();
+			System.out.println(weightTotal);
+		}
+		if (weightTotal != 100) {
+			return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
+		}
+		return true;
+	}
+
 	public Boolean validateIsMidYear() {
 
 		return true;
@@ -672,7 +685,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public Boolean canSubmitedMidYear() {
-		return UserAppraisalStatus.MYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.MYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus())
+				&& sessionView.getIsMyPm();
 	}
 
 	public void submitedMidYear() {
@@ -997,8 +1011,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				for (SectionsData se : secdata) {
 
-					supplementaryGoalsListBg
-							.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(i, model), se));
+					supplementaryGoalsListBg.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(i, model),
+							se));
 
 				}
 
@@ -1111,14 +1125,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			step++;
 			break;
 		case 3:
+			if (!validateWeightSuppGoals()) {
+				return null;
+			}
 			saveSupplementaryGoals();
 			edited();
 			// step++;
 			break;
-		case 4:
-			// saveSupplementaryGoals();
-			step++;
-			break;
+		/*
+		 * case 4: // saveSupplementaryGoals(); step++; break;
+		 */
 		}
 		return null;
 	}

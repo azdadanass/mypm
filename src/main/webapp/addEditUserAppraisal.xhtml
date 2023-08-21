@@ -114,9 +114,9 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Rejected RH" />
 						</p:commandLink>
-						
+
 						<!-- 	################# MID year ################## -->
-						
+
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submitedMidYear()}"
@@ -141,7 +141,7 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="MYR Rejected RH" />
 						</p:commandLink>
-						
+
 						<!-- 	##################  Final Year  ################# -->
 
 						<p:commandLink
@@ -168,7 +168,7 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="FYR Rejected RH" />
 						</p:commandLink>
-						
+
 						<!-- 	################################### -->
 
 						<p:commandLink
@@ -534,10 +534,13 @@
 							&nbsp;&nbsp;
 
 							<!-- 							***********************************Sections Details*******************************-->
-							<h:panelGroup>
-								<h1 style="color: blue; font-size: 20px">I- Appraisal
-									Weighting Details</h1>
-							</h:panelGroup>
+							<div class="page-header hidden-xs">
+								<h1>
+									<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+									<h:outputText value=" Appraisal Weighting Details" />
+
+								</h1>
+							</div>
 
 
 							<div class="table-header col-sm-12 col-xs-12">
@@ -663,8 +666,13 @@
 							</f:subview>
 
 							<!-- 							***********************************Appraisal Time Line*******************************-->
-							<h1 style="color: blue; font-size: 20px">II- Appraisal Time
-								Line</h1>
+							<div class="page-header hidden-xs">
+								<h1>
+									<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+									<h:outputText value=" Appraisal Time Line" />
+
+								</h1>
+							</div>
 							<style>
 .tbl {
 	margin: 0 auto;
@@ -780,8 +788,14 @@
 								</table>
 							</div>
 							<!-- 							<**************************************Business Goals******************************-->
-							<h1 style="color: blue; font-size: 20px">I- Section Raiting
-								Summary</h1>
+							<div class="space-16" />
+
+							<div class="page-header hidden-xs">
+								<h1>
+									<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+									<h:outputText value=" Section Raiting Summary" />
+								</h1>
+							</div>
 							<div class="row">
 
 								<div class="table-header col-sm-12 col-xs-12">
