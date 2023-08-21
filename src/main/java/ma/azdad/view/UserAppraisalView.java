@@ -86,7 +86,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Integer> weightList;
 
 	private List<String> goalTitleList;
-	
 
 	private int goaltitlecount = 0;
 	private List<BusinessGoals> businessGoalsList;
@@ -95,9 +94,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SectionsData> sectionsDatas;
 	private List<UserAppraisal> userAppraisalList;
 	private String selectedGoalTitle;
-	private Integer isMid=1;
+	private Integer isMid = 1;
 	private List<Sections> sectionList;
-
 
 	public List<Sections> getSectionList() {
 		return sectionList;
@@ -110,29 +108,29 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Integer getIsMid() {
 		return isMid;
 	}
-	
+
 	public void setIsMid(Integer isMid) {
 		this.isMid = isMid;
 	}
-	
+
 	public void onDebut() {
-		isMid=1;
-		
+		isMid = 1;
+
 		System.out.println(isMid);
-		
+
 	}
+
 	public void onMid() {
-		isMid=2;
-		System.out.println(isMid);
-
-	}
-	public void onFinal(){
-		isMid=3;
+		isMid = 2;
 		System.out.println(isMid);
 
 	}
 
-	
+	public void onFinal() {
+		isMid = 3;
+		System.out.println(isMid);
+
+	}
 
 	public String getSelectedGoalTitle() {
 		return selectedGoalTitle;
@@ -178,8 +176,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void setGoalTitleList(List<String> goalTitleList) {
 		this.goalTitleList = goalTitleList;
 	}
-    private PieChartModel pieChartModel;
 
+	private PieChartModel pieChartModel;
 
 	public PieChartModel getPieChartModel() {
 		return pieChartModel;
@@ -193,20 +191,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	@PostConstruct
 	public void init() {
 		super.init();
-		//chart*****************************
-pieChartModel = new PieChartModel();
-        
-        // Iterate through the data and add to the pie chart model
-        for (Sections item : findSectionByUserAppraisal()) {
-            pieChartModel.set(item.getSectionsTitle(), item.getWeight());
-        }
+		// chart*****************************
+		pieChartModel = new PieChartModel();
 
-        pieChartModel.setTitle("Appraisal Weighting Details");
-        pieChartModel.setLegendPosition("e");
-        pieChartModel.setShowDataLabels(true);
-		
-		
-		
+		// Iterate through the data and add to the pie chart model
+		for (Sections item : findSectionByUserAppraisal()) {
+			pieChartModel.set(item.getSectionsTitle(), item.getWeight());
+		}
+
+		pieChartModel.setTitle("Appraisal Weighting Details");
+		pieChartModel.setLegendPosition("e");
+		pieChartModel.setShowDataLabels(true);
+
 		// Sections Title
 		titleList = new ArrayList<>();
 		goalTitleList = new ArrayList<>();
@@ -239,7 +235,6 @@ pieChartModel = new PieChartModel();
 		time();
 	}
 
-	
 	private int step = 1;
 
 	@Override
@@ -427,56 +422,54 @@ pieChartModel = new PieChartModel();
 		this.businessGoalsList = businessGoalsList;
 	}
 
-
 	public List<Sections> findSectionByUserAppraisal() {
 		return sectionsService.findSectionsByUserAppraisal(model);
 	}
-	
+
 	public Sections findSection(int i) {
-		
-		
-		return sectionsService.findSectionsByUserAppraisal(model).get(i);		
+
+		return sectionsService.findSectionsByUserAppraisal(model).get(i);
 	}
-	
+
 	public List<BusinessGoals> findBusinessGoalSection0() {
 		return userAppraisalService.findBusinessGoalsBySection0(model);
 	}
-	
+
 	public List<SupplementaryGoals> findSuppGoalSection1() {
 		return userAppraisalService.findSupGoalsBySection1(model);
 	}
-	
+
 	public List<SupplementaryGoals> findSuppGoalSection2() {
 		return userAppraisalService.findSupGoalsBySection2(model);
 	}
-	
+
 	public List<SupplementaryGoals> findSuppGoalSection3() {
 		return userAppraisalService.findSupGoalsBySection3(model);
 	}
-	
+
 	public List<SupplementaryGoals> findSuppGoalSection4() {
 		return userAppraisalService.findSupGoalsBySection4(model);
 	}
-	
+
 	public List<SupplementaryGoals> findSuppGoalSection5() {
 		return userAppraisalService.findSupGoalsBySection5(model);
 	}
-	
-	
+
 	public Boolean canAddBusiness() {
-		return goaltitlecount<5;
+		return goaltitlecount < 5;
 	}
 
 	public void addBusiness() {
 		if (canAddBusiness()) {
-			
-			if(goaltitlecount>=1) {
-				System.out.println("last item in businessGoalList : " + businessGoalsList.get(businessGoalsList.size()-1).getGoalTitle());
-				goalTitleList.remove(businessGoalsList.get(businessGoalsList.size()-1).getGoalTitle());
+
+			if (goaltitlecount >= 1) {
+				System.out.println("last item in businessGoalList : "
+						+ businessGoalsList.get(businessGoalsList.size() - 1).getGoalTitle());
+				goalTitleList.remove(businessGoalsList.get(businessGoalsList.size() - 1).getGoalTitle());
 			}
-			
+
 			businessGoalsList.add(new BusinessGoals(null, null, 0, findSectionId()));
-			
+
 			goaltitlecount++;
 			// goalTitleList.remove(selectedGoalTitle);
 
@@ -484,20 +477,14 @@ pieChartModel = new PieChartModel();
 
 		}
 	}
-	
+
 	public void removeBusinessGoal(BusinessGoals bg) {
-		if(!goalTitleList.contains(bg.getGoalTitle()))
-		goalTitleList.add(bg.getGoalTitle());
-		
-		businessGoalsList.remove(bg);	
+		if (!goalTitleList.contains(bg.getGoalTitle()))
+			goalTitleList.add(bg.getGoalTitle());
+
+		businessGoalsList.remove(bg);
 		goaltitlecount--;
 	}
-
-
-
-	
-
-
 
 	public Sections findSectionId() {
 		return businessGoalsRepos.findSectionId(id);
@@ -549,7 +536,8 @@ pieChartModel = new PieChartModel();
 
 	// UserAppraisals status
 	public Boolean canSubmited() {
-		return UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && model.getEmploy().equals(sessionView.getUser());
+		return UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& model.getEmploy().equals(sessionView.getUser());
 	}
 
 	public void submited() {
@@ -563,7 +551,7 @@ pieChartModel = new PieChartModel();
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
-	
+
 	public Boolean canEdited() {
 		return UserAppraisalStatus.CREATED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
@@ -582,7 +570,6 @@ pieChartModel = new PieChartModel();
 		model = service.findOne(model.getId());
 	}
 
-	
 	/*
 	 * public Boolean canSubmiteduser() { return
 	 * UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) &&
@@ -600,11 +587,11 @@ pieChartModel = new PieChartModel();
 	 * 
 	 * service.save(model); model = service.findOne(model.getId()); }
 	 */
-	 
-	
 
 	public Boolean canApprovedLM() {
-		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmLineManager();}
+		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& sessionView.getIsMyPmLineManager();
+	}
 
 	public void approvedLM() {
 		if (!canApprovedLM())
@@ -621,7 +608,9 @@ pieChartModel = new PieChartModel();
 	}
 
 	public Boolean canRejectedLM() {
-		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmLineManager();}
+		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& sessionView.getIsMyPmLineManager();
+	}
 
 	public void rejectedLM() {
 		if (!canRejectedLM())
@@ -637,10 +626,10 @@ pieChartModel = new PieChartModel();
 		model = service.findOne(model.getId());
 	}
 
-	
 	public Boolean canApproved() {
 		System.out.println(sessionView.getIsMyPmHr());
-		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmHr();
+		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& sessionView.getIsMyPmHr();
 	}
 
 	public void approved() {
@@ -656,9 +645,11 @@ pieChartModel = new PieChartModel();
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
-	
+
 	public Boolean canRejected() {
-		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmHr() ;}
+		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& sessionView.getIsMyPmHr();
+	}
 
 	public void rejected() {
 		if (!canRejected())
@@ -675,7 +666,6 @@ pieChartModel = new PieChartModel();
 		model = service.findOne(model.getId());
 	}
 
-	
 	public Boolean canMidSelfAssessment() {
 		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
@@ -712,12 +702,11 @@ pieChartModel = new PieChartModel();
 		model = service.findOne(model.getId());
 	}
 
-	
 	public Boolean canSubmitedMidYear() {
-		return UserAppraisalStatus.MYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.MYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus())
+				&& sessionView.getIsMyPm();
 	}
 
-	
 	public void submitedMidYear() {
 		if (!canSubmitedMidYear())
 			return;
@@ -749,9 +738,9 @@ pieChartModel = new PieChartModel();
 		model = service.findOne(model.getId());
 	}
 
-
 	public Boolean canSubmitedFinalYear() {
-		return UserAppraisalStatus.FYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.FYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus())
+				&& sessionView.getIsMyPm();
 	}
 
 	public void submitedFinalYear() {
@@ -948,10 +937,93 @@ pieChartModel = new PieChartModel();
 
 		for (SectionsData se : secdata) {
 			supplementaryGoalsList.add(new SupplementaryGoals(se));
-			supplementaryGoalsListBg.add(new SupplementaryGoals(se));
+			// supplementaryGoalsListBg.add(new SupplementaryGoals(se));
 		}
 
 		return supplementaryGoalsList;
+	}
+
+	// SUUPLEMENTARY GOALS
+	public List<SupplementaryGoals> findSuppGoalSection(int number) {
+
+		return userAppraisalService.findSupGoalsBySection(number, model);
+	}
+
+	public Sections findSectionByNumberAndUserAppraisal(int number, UserAppraisal us) {
+		return businessGoalsRepos.findSectionByNumberAndUserAppraisal(number, us);
+	}
+
+	public void addSuppGoals() {
+
+		List<SectionsData> secdata = new ArrayList<>();
+
+		for (int i = 1; i < 6; i++) {
+
+			secdata = userAppraisalService.findSectionDataByGoalId(i);
+
+			if (isElig(i)) {
+
+				for (SectionsData se : secdata) {
+
+					supplementaryGoalsListBg
+							.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(i, model), se));
+
+				}
+
+			}
+
+		}
+		System.out.print(supplementaryGoalsListBg.size());
+
+	}
+
+	public void initSuppGoals() {
+
+		supplementaryGoalsListBg = new ArrayList<>();
+
+	}
+
+	public void initBg() {
+
+		if (businessGoalsList.size() > 0)
+			for (BusinessGoals bg : businessGoalsList) {
+
+				bg.setSections(findSectionId());
+			}
+
+	}
+
+	public void removeBgFromDB() {
+
+		List<BusinessGoals> list = businessGoalsRepos.findBySectionsUserAppraisal(model);
+
+		for (BusinessGoals businessGoals : list) {
+
+			try {
+				businessGoalsService.delete(businessGoals);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public void removeSections() {
+
+		List<Sections> sections = sectionsService.findSectionsByUserAppraisal(model);
+
+		for (Sections section : sections) {
+
+			try {
+				sectionsService.delete(section);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 
 	public Boolean canAddSupplementaryGoals() {
@@ -994,6 +1066,8 @@ pieChartModel = new PieChartModel();
 			if (!validateSections())
 				return null;
 			saveSections();
+			addSuppGoals();
+			initBg();
 			step++;
 			break;
 
@@ -1026,8 +1100,18 @@ pieChartModel = new PieChartModel();
 	}
 
 	public void previousStep() {
-		if (step != 1)
+		if (step != 1) {
+			if (step == 2) {
+
+				initSuppGoals();
+
+				removeBgFromDB();
+				removeSections();
+
+			}
+
 			step--;
+		}
 	}
 
 }

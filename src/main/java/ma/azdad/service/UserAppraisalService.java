@@ -98,6 +98,20 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return list;
 	}
 	
+	@Cacheable("userAppraisalService.findSupGoalsBySection")
+	public List<SupplementaryGoals> findSupGoalsBySection(int number,UserAppraisal userAppraisal) {
+
+		List<SupplementaryGoals> list = repos.findSuppBySection(number,userAppraisal);
+		
+		for (SupplementaryGoals supplementaryGoals : list) {
+			
+			initialize(supplementaryGoals.getSections());
+			initialize(supplementaryGoals.getSectionsData());
+		}
+		
+		return repos.findSuppBySection(number,userAppraisal);
+	}
+	
 	@Cacheable("userAppraisalService.findSupGoalsBySection3")
 	public List<SupplementaryGoals> findSupGoalsBySection3(UserAppraisal userAppraisal) {
 

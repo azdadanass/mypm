@@ -64,6 +64,9 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("from SupplementaryGoals s where s.sectionsData.goaldId=5 and s.sections.userappraisal=?1")
 	List<SupplementaryGoals> findSuppBySection5(UserAppraisal u);
 	
+	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=?1 and s.sections.userappraisal=?2")
+	List<SupplementaryGoals> findSuppBySection(int number,UserAppraisal u);
+	
 	/*
 	 * //not used
 	 * 
