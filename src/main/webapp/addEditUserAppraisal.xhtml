@@ -554,10 +554,10 @@
 
 
 
-
-							<!-- <div id="chartContainer1"
-								style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div> -->
-						<!-- 	<script type="text/javascript">
+						<f:subview rendered="#{userAppraisalView.findSection(1).getWeight()!=0}">
+							 <div id="chartContainer1"
+								style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div> 
+							<script type="text/javascript">
 						Highcharts.chart('chartContainer1', {
 						    chart: {
 						        plotBackgroundColor: null,
@@ -621,8 +621,9 @@
 						        }]
 						    }]
 						});
-						</script> -->
+						</script>  
  
+							</f:subview>
 
 							<!-- 							***********************************Appraisal Time Line*******************************-->
 							<h1 style="color: blue; font-size: 20px">II- Appraisal Time
