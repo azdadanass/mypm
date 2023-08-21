@@ -80,11 +80,43 @@
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.submiteduser()}" update=":main_form"
+							action="#{userAppraisalView.submited()}" update=":main_form"
 							title="Submited"
-							rendered="#{userAppraisalView.canSubmiteduser()}">
+							rendered="#{userAppraisalView.canSubmited()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							action="#{userAppraisalView.approvedLM()}" update=":main_form"
+							title="Approved LM"
+							rendered="#{userAppraisalView.canApprovedLM()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Approved LM" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							action="#{userAppraisalView.approved()}" update=":main_form"
+							title="Approved"
+							rendered="#{userAppraisalView.canApproved()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Approved RH" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
+							action="#{userAppraisalView.rejected()}" update=":main_form"
+							title="Rejected"
+							rendered="#{userAppraisalView.canRejected()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Rejected RH" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
+							action="#{userAppraisalView.rejectedLM()}" update=":main_form"
+							title="Rejected"
+							rendered="#{userAppraisalView.canRejectedLM()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Rejected" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
@@ -596,6 +628,11 @@
 							<h1 style="color: blue; font-size: 20px">II- Appraisal Time
 								Line</h1>
 							<style>
+.tbl {
+	margin:0 auto;
+	text-align: center;
+	
+}
 .tg {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -642,7 +679,7 @@
 	font-weight: bold;
 }
 </style>
-							<div class="col-sm-12 col-xs-12" style="margin-left: 400px">
+							<div class="tbl">
 								<table class="tg">
 									<thead>
 										<tr>

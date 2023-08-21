@@ -549,7 +549,7 @@ pieChartModel = new PieChartModel();
 
 	// UserAppraisals status
 	public Boolean canSubmited() {
-		return UserAppraisalStatus.CREATED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && model.getEmploy().equals(sessionView.getUser());
 	}
 
 	public void submited() {
@@ -565,7 +565,7 @@ pieChartModel = new PieChartModel();
 	}
 	
 	public Boolean canEdited() {
-		return UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.CREATED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
 
 	public void edited() {
@@ -582,29 +582,29 @@ pieChartModel = new PieChartModel();
 		model = service.findOne(model.getId());
 	}
 
-	public Boolean canSubmiteduser() {
-		return UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
-	}
-
-	public void submiteduser() {
-		if (!canSubmiteduser())
-			return;
-
-		model.setDateStatsSubmited(new Date());
-		model.setUserStatsSubmited(sessionView.getUser());
-		model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED);
-		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from EDITED to SUBMITED"));
-
-		service.save(model);
-		model = service.findOne(model.getId());
-	}
 	
+	/*
+	 * public Boolean canSubmiteduser() { return
+	 * UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) &&
+	 * sessionView.getIsMyPm() && sessionView.getUser().equals(model.getEmploy()); }
+	 * 
+	 * public void submiteduser() { if (!canSubmiteduser()) return;
+	 * 
+	 * model.setDateStatsSubmited(new Date());
+	 * model.setUserStatsSubmited(sessionView.getUser());
+	 * model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED);
+	 * model.addHistory(new
+	 * UserAppraisalHistory(model.getUserAppraisalStatus().getValue(),
+	 * sessionView.getUser(),
+	 * "change User AppraisalsStats from EDITED to SUBMITED"));
+	 * 
+	 * service.save(model); model = service.findOne(model.getId()); }
+	 */
+	 
 	
 
 	public Boolean canApprovedLM() {
-		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
-	}
+		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmLineManager();}
 
 	public void approvedLM() {
 		if (!canApprovedLM())
@@ -620,8 +620,27 @@ pieChartModel = new PieChartModel();
 		model = service.findOne(model.getId());
 	}
 
+	public Boolean canRejectedLM() {
+		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmLineManager();}
+
+	public void rejectedLM() {
+		if (!canRejectedLM())
+			return;
+
+		model.setDateStatsSubmited(null);
+		model.setDateStatsApprovedLM(null);
+		model.setUserAppraisalStatus(UserAppraisalStatus.EDITED);
+		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
+				"change User AppraisalsStats from SUBMITED to EDITED"));
+
+		service.save(model);
+		model = service.findOne(model.getId());
+	}
+
+	
 	public Boolean canApproved() {
-		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		System.out.println(sessionView.getIsMyPmHr());
+		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmHr();
 	}
 
 	public void approved() {
@@ -637,6 +656,25 @@ pieChartModel = new PieChartModel();
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
+	
+	public Boolean canRejected() {
+		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmHr() ;}
+
+	public void rejected() {
+		if (!canRejected())
+			return;
+
+		model.setDateStatsSubmited(null);
+		model.setDateStatsApprovedLM(null);
+		model.setDateStatsApproved(null);
+		model.setUserAppraisalStatus(UserAppraisalStatus.EDITED);
+		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
+				"change User AppraisalsStats from Approved to EDITED"));
+
+		service.save(model);
+		model = service.findOne(model.getId());
+	}
+
 	
 	public Boolean canMidSelfAssessment() {
 		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
@@ -968,6 +1006,7 @@ pieChartModel = new PieChartModel();
 			break;
 		case 3:
 			saveSupplementaryGoals();
+			edited();
 			// step++;
 			break;
 		case 4:
