@@ -77,29 +77,61 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 	@Cacheable("userAppraisalService.findSupGoalsBySection1")
 	public List<SupplementaryGoals> findSupGoalsBySection1(UserAppraisal userAppraisal) {
 
-		return repos.findSuppBySection1(userAppraisal);
+		List<SupplementaryGoals> list = repos.findSuppBySection1(userAppraisal);
+		for (SupplementaryGoals suppgoals : list) {
+			initialize(suppgoals.getSections());
+			initialize(suppgoals.getSectionsData());		
+		}
+		
+		return list;
 	}
-	
 	
 	@Cacheable("userAppraisalService.findSupGoalsBySection2")
 	public List<SupplementaryGoals> findSupGoalsBySection2(UserAppraisal userAppraisal) {
 
-		return repos.findSuppBySection1(userAppraisal);
+		List<SupplementaryGoals> list = repos.findSuppBySection2(userAppraisal);
+		for (SupplementaryGoals suppgoals : list) {
+			initialize(suppgoals.getSections());
+			initialize(suppgoals.getSectionsData());		
+		}
+		
+		return list;
 	}
+	
 	@Cacheable("userAppraisalService.findSupGoalsBySection3")
 	public List<SupplementaryGoals> findSupGoalsBySection3(UserAppraisal userAppraisal) {
 
-		return repos.findSuppBySection1(userAppraisal);
+		List<SupplementaryGoals> list = repos.findSuppBySection3(userAppraisal);
+		for (SupplementaryGoals suppgoals : list) {
+			initialize(suppgoals.getSections());
+			initialize(suppgoals.getSectionsData());		
+		}
+		
+		return list;
 	}
+	
 	@Cacheable("userAppraisalService.findSupGoalsBySection4")
 	public List<SupplementaryGoals> findSupGoalsBySection4(UserAppraisal userAppraisal) {
 
-		return repos.findSuppBySection1(userAppraisal);
+		List<SupplementaryGoals> list = repos.findSuppBySection4(userAppraisal);
+		for (SupplementaryGoals suppgoals : list) {
+			initialize(suppgoals.getSections());
+			initialize(suppgoals.getSectionsData());		
+		}
+		
+		return list;
 	}
+	
 	@Cacheable("userAppraisalService.findSupGoalsBySection5")
 	public List<SupplementaryGoals> findSupGoalsBySection5(UserAppraisal userAppraisal) {
 
-		return repos.findSuppBySection1(userAppraisal);
+		List<SupplementaryGoals> list = repos.findSuppBySection5(userAppraisal);
+		for (SupplementaryGoals suppgoals : list) {
+			initialize(suppgoals.getSections());
+			initialize(suppgoals.getSectionsData());		
+		}
+		
+		return list;
 	}
 	
 	

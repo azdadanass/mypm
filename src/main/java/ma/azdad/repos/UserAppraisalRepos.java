@@ -49,19 +49,19 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("from BusinessGoals b where b.sections.sectionsNumber=0 and b.sections.userappraisal=?1")
 	List<BusinessGoals> findBusinessGoalsBySection0(UserAppraisal u);
 	
-	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=1 and s.sections.userappraisal=?1")
+	@Query("from SupplementaryGoals s where s.sectionsData.goaldId=1 and s.sections.userappraisal=?1")
 	List<SupplementaryGoals> findSuppBySection1(UserAppraisal u);
 	
-	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=2 and s.sections.userappraisal=?1")
+	@Query("from SupplementaryGoals s where s.sectionsData.goaldId=2 and s.sections.userappraisal=?1")
 	List<SupplementaryGoals> findSuppBySection2(UserAppraisal u);
 	
-	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=3 and s.sections.userappraisal=?1")
+	@Query("from SupplementaryGoals s where s.sectionsData.goaldId=3 and s.sections.userappraisal=?1")
 	List<SupplementaryGoals> findSuppBySection3(UserAppraisal u);
 	
-	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=4 and s.sections.userappraisal=?1")
+	@Query("from SupplementaryGoals s where s.sectionsData.goaldId=4 and s.sections.userappraisal=?1")
 	List<SupplementaryGoals> findSuppBySection4(UserAppraisal u);
 	
-	@Query("from SupplementaryGoals s where s.sections.sectionsNumber=5 and s.sections.userappraisal=?1")
+	@Query("from SupplementaryGoals s where s.sectionsData.goaldId=5 and s.sections.userappraisal=?1")
 	List<SupplementaryGoals> findSuppBySection5(UserAppraisal u);
 	
 	/*

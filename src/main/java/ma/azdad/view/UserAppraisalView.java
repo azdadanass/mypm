@@ -118,13 +118,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void onDebut() {
 		isMid=1;
 		
+		System.out.println(isMid);
+		
 	}
 	public void onMid() {
 		isMid=2;
-		
+		System.out.println(isMid);
+
 	}
 	public void onFinal(){
 		isMid=3;
+		System.out.println(isMid);
 
 	}
 
@@ -437,7 +441,6 @@ pieChartModel = new PieChartModel();
 	public List<BusinessGoals> findBusinessGoalSection0() {
 		return userAppraisalService.findBusinessGoalsBySection0(model);
 	}
-	
 	
 	public List<SupplementaryGoals> findSuppGoalSection1() {
 		return userAppraisalService.findSupGoalsBySection1(model);

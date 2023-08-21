@@ -149,7 +149,7 @@
 									<h:panelGroup rendered="#{userAppraisalView.isMid==1}">
 										<li
 											class="#{userAppraisalView.model.dateStatsEdited!=null?'complete':''}"><span
-											class="step"> <i
+											class="step"> <i                 
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step1"
 													value="#{userAppraisalStatus.EDITED.value}" /> <br />
@@ -354,39 +354,45 @@
 				<div class="tab-content no-border padding-24">
 					<div id="tab1" class="tab-pane in active">
 						<div class="row">
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
+							<div class="col-xs-12 col-sm-5">
+								<div class="profile-user-info ">
 									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="Numero" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText value="#{userAppraisalView.model.idStr}" />
-											&nbsp;
-										</div>
+										<p:graphicImage id="photo"
+											value="#{userAppraisalView.model.employ.photo}"
+											styleClass="img-circle aa-datatable-photo "
+											style="width:200px;height:200px;margin-left:200px;" />
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6">
+
+							<div class="col-xs-12 col-sm-7">
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
 										<div class="profile-info-name">
-											<h:outputText value="Appraisals Name" />
+											<h:outputText value="Name and Surname :" />
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
-												value="#{userAppraisalView.model.appraisal.appraisalName}"
+												value="#{userAppraisalView.model.employ.fullName}"
 												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
+
 									<div class="profile-info-row">
 										<div class="profile-info-name">
-											<h:outputText value="Resource Name" />
+											<h:outputText value="Job Title :" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userAppraisalView.model.employ.job}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Hire Date" />
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
@@ -395,48 +401,61 @@
 											&nbsp;
 										</div>
 									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
+
 									<div class="profile-info-row">
 										<div class="profile-info-name">
-											<h:outputText value="Appraisee Name" />
+											<h:outputText value="Appraise" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText value="#{userAppraisalView.model.appraisee}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Region" />
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
-												value="#{userAppraisalView.model.appraisee.username}"
+												value="#{userAppraisalView.model.employ.userData.region}"
 												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
+
 									<div class="profile-info-row">
 										<div class="profile-info-name">
-											<h:outputText value="Rating" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText value="#{userAppraisalView.model.raiting}"
-												styleClass="bolder green" />
-											&nbsp;
-										</div>
-									</div>
-								</div>
-							</div>
-
-
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
-									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="userAppraisalStatus" />
+											<h:outputText value="DEP" />
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.userAppraisalStatus}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Grade" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userAppraisalView.model.employ.userData.grade}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+
+									<div class="profile-info-row">
+										<div class="profile-info-name">
+											<h:outputText value="Ladder" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{userAppraisalView.model.employ.userData.ladder}"
 												styleClass="bolder green" />
 											&nbsp;
 										</div>
@@ -446,8 +465,11 @@
 							&nbsp;&nbsp;
 
 							<!-- 							***********************************Sections Details*******************************-->
-							<h1 style="color: blue; font-size: 20px">I- Appraisal
-								Weighting Details</h1>
+							<h:panelGroup>
+								<h1 style="color: blue; font-size: 20px">I- Appraisal
+									Weighting Details</h1>
+							</h:panelGroup>
+
 
 							<div class="table-header col-sm-12 col-xs-12">
 								<div class="col-sm-8 col-xs-8">
@@ -501,137 +523,181 @@
 
 
 
-							<div id="chartContainer1" style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div>
-<script type="text/javascript">
-    const data = [
-        { name: 'Business Goals', weight: #{userAppraisalView.findSection(0).getWeight()} },
-        { name: 'Job Execution', weight: #{userAppraisalView.findSection(1).getWeight()} },
-        { name: 'Code of Conduct', weight: #{userAppraisalView.findSection(2).getWeight()} },
-        { name: 'Leadership and Dependability', weight: #{userAppraisalView.findSection(3).getWeight()} },
-        { name: 'Personality Attributes', weight: #{userAppraisalView.findSection(4).getWeight()} },
-        { name: 'Management Responsibilities', weight: #{userAppraisalView.findSection(5).getWeight()} }
-    ];
+							<!-- <div id="chartContainer1"
+								style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div> -->
+						<!-- 	<script type="text/javascript">
+						Highcharts.chart('chartContainer1', {
+						    chart: {
+						        plotBackgroundColor: null,
+						        plotBorderWidth: null,
+						        plotShadow: false,
+						        type: 'pie'
+						    },
+						    title: {
+						        text: 'Appraisal Weighting Details'
+						    },
+						    tooltip: {
+						        pointFormat: '{series.name}: <b>{point.y}</b>%'
+						    },
+						    accessibility: {
+						        point: {
+						            valueSuffix: '%'
+						        }
+						    },
+						    plotOptions: {
+						        pie: {
+						            allowPointSelect: true,
+						            cursor: 'pointer',
+						            dataLabels: {
+						                enabled: true,
+						                format: '<b>{point.name}</b>'
+						            }
+						        }
+						    },
+						    series: [{
+						        name: 'Section',
+						        colorByPoint: true,
+						        data: [{
+						            name: 'Business Goals',
+						            y: #{userAppraisalView.findSection(0).getWeight() },
+						            sliced: true,
+						            selected: true
+						        }, {
+						            name: 'Job Execution',
+						            y: #{userAppraisalView.findSection(1).getWeight() },
+						        	visible: #{userAppraisalView.findSection(1).getWeight() != 0}
 
-    for (const section of data) {
-        if (section.weight === null) {
-            section.weight = 0;
-        }
-    }
+						        },  {
+						            name: 'Code of Conduct',
+						            y: #{userAppraisalView.findSection(2).getWeight()},
+						        	visible: #{userAppraisalView.findSection(2).getWeight() != 0}
+						        }, {
+						            name: 'Leadership and Dependability',
+						            y: #{userAppraisalView.findSection(3).getWeight() },
+					      		  	visible: #{userAppraisalView.findSection(3).getWeight() != 0}
 
-    Highcharts.chart('chartContainer1', {
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: 'Appraisal Weighting Details'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.y}</b>%'
-        },
-        // ... (autres propriétés du graphique)
-        series: [{
-            name: 'Section',
-            colorByPoint: true,
-            data: data.map(section => ({
-                name: section.name,
-                y: section.weight,
-                sliced: true,
-                selected: true
-            }))
-        }]
-    });
-</script>
+						        }, {	
+						            name: 'Personality Attributes',
+						            y: #{userAppraisalView.findSection(4).getWeight()},
+						        	visible: #{userAppraisalView.findSection(4).getWeight() != 0}
 
+						        },  {
+						            name: 'Management Responsibilities',
+						            y: #{userAppraisalView.findSection(5).getWeight()},
+						        	visible: #{userAppraisalView.findSection(5).getWeight() != 0}
+
+						        }]
+						    }]
+						});
+						</script> -->
 
 
 							<!-- 							***********************************Appraisal Time Line*******************************-->
 							<h1 style="color: blue; font-size: 20px">II- Appraisal Time
 								Line</h1>
+							<style>
+.tg {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 800px;
+	text-align: center;
+}
 
+.tg td {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
 
-							<div class="row" style="margin-right: -15px; margin-left: -15px;">
-								<div class="col-xs-4">
-									<div class="profile-user-info profile-user-info-striped">
-										<div class="profile-info-row">
-											<div class="profile-info-name">
-												<h:outputText value="Planning" />
-											</div>
-											<div class="profile-info-value">
-												<h:outputText
-													value="#{userAppraisal.model.dateStatsSubmited}"
-													styleClass="purple" />
-											</div>
-										</div>
-										<div class="profile-info-row">
-											<div class="profile-info-name">
-												<h:outputText value="Approved By Manager" />
-											</div>
-											<div class="profile-info-value">
-												<h:outputText
-													value="#{userAppraisal.model.dateStatsApproved}"
-													styleClass="green" />
-											</div>
-										</div>
-										<div class="profile-info-row">
-											<div class="profile-info-name">
-												<h:outputText value="111" />
-											</div>
-											<div class="profile-info-value">
-												<h:outputText value="44444"
-													styleClass="bolder #{userView.model.companyType.color.name}" />
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-xs-4">
-									<div class="profile-user-info profile-user-info-striped">
-										<div class="profile-info-row">
-											<div class="profile-info-name">
-												<h:outputText value="Line Manager" />
-											</div>
-											<div class="profile-info-value">
-												<h:outputText value="55555" styleClass="blue" />
-											</div>
-										</div>
-										<div class="profile-info-row">
-											<div class="profile-info-name">
-												<h:outputText value="Logistic Manager" />
-											</div>
-											<div class="profile-info-value">
-												<h:outputText value="2222222" styleClass="orange" />
-											</div>
-										</div>
-									</div>
-								</div>
+.tg th {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
 
-								<div class="col-xs-4">
-									<div class="profile-user-info profile-user-info-striped">
-										<div class="profile-info-row">
-											<div class="profile-info-name">
-												<h:outputText value="Line Manager" />
-											</div>
-											<div class="profile-info-value">
-												<h:outputText value="55555" styleClass="blue" />
-												&nbsp;
-											</div>
-										</div>
-										<div class="profile-info-row">
-											<div class="profile-info-name">
-												<h:outputText value="Logistic Manager" />
-											</div>
-											<div class="profile-info-value">
-												<h:outputText value="2222222" styleClass="orange" />
-												&nbsp;
-											</div>
-										</div>
-									</div>
-								</div>
+.tg .tg-lboi {
+	border-color: inherit;
+	text-align: left;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.tg .tg-9wq8 {
+	border-color: inherit;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+}
+</style>
+							<div class="col-sm-12 col-xs-12" style="margin-left: 400px">
+								<table class="tg">
+									<thead>
+										<tr>
+											<th class="tg-9wq8" style="background-color: #b8cce4"
+												rowspan="2">Planning</th>
+											<th class="tg-lboi"
+												style="background-color: #17375d; color: white;">Planning
+												submitted to Manager</th>
+											<th class="tg-lboi"
+												style="background-color: #17375d; color: white;">Planning
+												approved by Manager</th>
+										</tr>
+										<tr>
+											<th class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsSubmited}"
+											styleClass="bolder" /></th>
+											<th class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsApproved}"
+											styleClass="bolder" /></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="tg-9wq8" style="background-color: #dbe5f1"
+												rowspan="2">Midyear Review</td>
+											<td class="tg-lboi"
+												style="background-color: #17375d; color: white;">Mid
+												Year Review submitted by employee</td>
+											<td class="tg-lboi"
+												style="background-color: #17375d; color: white;">Mid
+												Year Review approved by Manager</td>
+										</tr>
+										<tr>
+											<td class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsSubmitedMidYear}"
+											styleClass="bolder" /></td>
+											<td class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsApprovedLMMidYear}"
+											styleClass="bolder" /></td>
+										</tr>
+										<tr>
+											<td class="tg-9wq8" style="background-color: #b8cce4"
+												rowspan="2">Final summary</td>
+											<td class="tg-lboi"
+												style="background-color: #17375d; color: white;">Summary
+												submitted by employee</td>
+											<td class="tg-lboi"
+												style="background-color: #17375d; color: white;">Summary
+												approved by Manager</td>
+										</tr>
+										<tr>
+											<td class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsSubmitedFinalYear}"
+											styleClass="bolder" /></td>
+											<td class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsApprovedLMFinalYear}"
+											styleClass="bolder" /></td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
-
-
 							<!-- 							<**************************************Business Goals******************************-->
 							<h1 style="color: blue; font-size: 20px">I- Section Raiting
 								Summary</h1>

@@ -47,8 +47,8 @@ public class UserAppraisal extends GenericModel<Integer>{
 	private User userStatsCreated;
 
 	// Edited
-		private Date dateStatsEdited;
-		private User userStatsEdited;
+	private Date dateStatsEdited;
+	private User userStatsEdited;
 	
 	// Submited
 	private Date dateStatsSubmited;
