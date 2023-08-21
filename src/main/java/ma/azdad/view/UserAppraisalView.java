@@ -23,6 +23,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import ma.azdad.model.AppraisalsStatus;
 import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
@@ -570,24 +571,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 	}
 
-	/*
-	 * public Boolean canSubmiteduser() { return
-	 * UserAppraisalStatus.EDITED.equals(model.getUserAppraisalStatus()) &&
-	 * sessionView.getIsMyPm() && sessionView.getUser().equals(model.getEmploy()); }
-	 * 
-	 * public void submiteduser() { if (!canSubmiteduser()) return;
-	 * 
-	 * model.setDateStatsSubmited(new Date());
-	 * model.setUserStatsSubmited(sessionView.getUser());
-	 * model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED);
-	 * model.addHistory(new
-	 * UserAppraisalHistory(model.getUserAppraisalStatus().getValue(),
-	 * sessionView.getUser(),
-	 * "change User AppraisalsStats from EDITED to SUBMITED"));
-	 * 
-	 * service.save(model); model = service.findOne(model.getId()); }
-	 */
-
 	public Boolean canApprovedLM() {
 		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
 				&& sessionView.getIsMyPmLineManager();
@@ -666,8 +649,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 	}
 
+	// ################################# MID YEAr
+	// ################################################
+
 	public Boolean canMidSelfAssessment() {
-		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW);
 	}
 
 	public void midSelfAssessment() {
@@ -684,27 +671,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 	}
 
-	public Boolean canFinalSelfAssessment() {
-		return UserAppraisalStatus.MYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
-	}
-
-	public void finalSelfAssessment() {
-		if (!canFinalSelfAssessment())
-			return;
-
-		model.setDateStatsSelfAssessmentFinalYear(new Date());
-		model.setUserStatsSelfAssessmentFinalYear(sessionView.getUser());
-		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_SELF_ASSESSMENT);
-		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from MYD_APPROVED to MYR_SELF_ASSESSMENT"));
-
-		service.save(model);
-		model = service.findOne(model.getId());
-	}
-
 	public Boolean canSubmitedMidYear() {
-		return UserAppraisalStatus.MYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus())
-				&& sessionView.getIsMyPm();
+		return UserAppraisalStatus.MYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
 
 	public void submitedMidYear() {
@@ -715,13 +683,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsSubmitedMidYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED_MID_YEAR);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from APPROVED to MID_YEAR_SUBMITED"));
+				"change User AppraisalsStats from MYD self Assessement to MID_YEAR_SUBMITED"));
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
 
 	public Boolean canApprovedLMMidYear() {
-		return UserAppraisalStatus.SUBMITED_MID_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.SUBMITED_MID_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW);
 	}
 
 	public void approvedLMMidYear() {
@@ -738,9 +707,51 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 	}
 
+	public Boolean canRejectedLMMid() {
+		return UserAppraisalStatus.SUBMITED_MID_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& sessionView.getIsMyPmHr()
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW);
+	}
+
+	public void rejectedLMMid() {
+		if (!canRejected())
+			return;
+
+		model.setDateStatsSubmitedMidYear(null);
+		model.setDateStatsApprovedLMMidYear(null);
+		model.setUserAppraisalStatus(UserAppraisalStatus.MYR_SELF_ASSESSMENT);
+		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
+				"change User AppraisalsStats from Approved to MYR_SELF_ASSESSMENT"));
+
+		service.save(model);
+		model = service.findOne(model.getId());
+	}
+
+	// ################################# Final YEAr
+	// ###############################################
+
+	public Boolean canFinalSelfAssessment() {
+		return UserAppraisalStatus.MYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
+	}
+
+	public void finalSelfAssessment() {
+		if (!canFinalSelfAssessment())
+			return;
+
+		model.setDateStatsSelfAssessmentFinalYear(new Date());
+		model.setUserStatsSelfAssessmentFinalYear(sessionView.getUser());
+		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_SELF_ASSESSMENT);
+		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
+				"change User AppraisalsStats from MYD_APPROVED to MYR_SELF_ASSESSMENT"));
+
+		service.save(model);
+		model = service.findOne(model.getId());
+	}
+
 	public Boolean canSubmitedFinalYear() {
-		return UserAppraisalStatus.FYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus())
-				&& sessionView.getIsMyPm();
+		return UserAppraisalStatus.FYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
 	}
 
 	public void submitedFinalYear() {
@@ -758,8 +769,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public Boolean canApprovedLMFinalYear() {
-		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus())
-				&& sessionView.getIsMyPm();
+		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
 	}
 
 	public void approvedLMFinalYear() {
@@ -776,8 +787,29 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 	}
 
+	public Boolean canRejectedLMFinal() {
+		return UserAppraisalStatus.SUBMITED_MID_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& sessionView.getIsMyPmHr()
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
+	}
+
+	public void rejectedLMFinal() {
+		if (!canRejected())
+			return;
+
+		model.setDateStatsSubmitedFinalYear(null);
+		model.setDateStatsApprovedLMFinalYear(null);
+		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_SELF_ASSESSMENT);
+		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
+				"change User AppraisalsStats from FYT_Approved to MYR_SELF_ASSESSMENT"));
+
+		service.save(model);
+		model = service.findOne(model.getId());
+	}
+
 	public Boolean canClosed() {
-		return UserAppraisalStatus.FYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
+		return UserAppraisalStatus.FYR_APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
 	}
 
 	public void closed() {

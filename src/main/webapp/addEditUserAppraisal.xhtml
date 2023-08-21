@@ -81,8 +81,7 @@
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submited()}" update=":main_form"
-							title="Submited"
-							rendered="#{userAppraisalView.canSubmited()}">
+							title="Submited" rendered="#{userAppraisalView.canSubmited()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited" />
 						</p:commandLink>
@@ -95,37 +94,56 @@
 							<h:outputText value="Approved LM" />
 						</p:commandLink>
 						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
+							action="#{userAppraisalView.rejectedLM()}" update=":main_form"
+							title="Rejected" rendered="#{userAppraisalView.canRejectedLM()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="Rejected LM" />
+						</p:commandLink>
+						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.approved()}" update=":main_form"
-							title="Approved"
-							rendered="#{userAppraisalView.canApproved()}">
+							title="Approved" rendered="#{userAppraisalView.canApproved()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Approved RH" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
 							action="#{userAppraisalView.rejected()}" update=":main_form"
-							title="Rejected"
-							rendered="#{userAppraisalView.canRejected()}">
+							title="Rejected" rendered="#{userAppraisalView.canRejected()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Rejected RH" />
 						</p:commandLink>
-						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
-							action="#{userAppraisalView.rejectedLM()}" update=":main_form"
-							title="Rejected"
-							rendered="#{userAppraisalView.canRejectedLM()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Rejected" />
-						</p:commandLink>
+						
+						<!-- 	################# MID year ################## -->
+						
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.SubmitedMidYear()}"
-							update=":main_form" title="Submited Mid Year"
+							action="#{userAppraisalView.submitedMidYear()}"
+							update=":main_form" title="Submited Mid"
 							rendered="#{userAppraisalView.canSubmitedMidYear()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited Mid Year" />
 						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							action="#{userAppraisalView.approvedLMMidYear()}"
+							update=":main_form" title="MYR Approved LM"
+							rendered="#{userAppraisalView.canApprovedLMMidYear()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="MYR Approved LM" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
+							action="#{userAppraisalView.rejectedLMMid()}" update=":main_form"
+							title="MYR Rejected"
+							rendered="#{userAppraisalView.canRejectedLMMid()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="MYR Rejected RH" />
+						</p:commandLink>
+						
+						<!-- 	##################  Final Year  ################# -->
+
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.SubmitedFinalYear()}"
@@ -134,6 +152,25 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submited Final Year" />
 						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							action="#{userAppraisalView.approvedLMFinalYear()}"
+							update=":main_form" title="FYR Approved LM"
+							rendered="#{userAppraisalView.canApprovedLMFinalYear()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="FYR Approved LM" />
+						</p:commandLink>
+						<p:commandLink
+							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
+							action="#{userAppraisalView.rejectedLMFinal()}"
+							update=":main_form" title="FYR Rejected"
+							rendered="#{userAppraisalView.canRejectedLMFinal()}">
+							<i class="ace-icon fa fa-save bigger-230"></i>
+							<h:outputText value="FYR Rejected RH" />
+						</p:commandLink>
+						
+						<!-- 	################################### -->
+
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.closed()}" update=":main_form"
@@ -181,7 +218,7 @@
 									<h:panelGroup rendered="#{userAppraisalView.isMid==1}">
 										<li
 											class="#{userAppraisalView.model.dateStatsEdited!=null?'complete':''}"><span
-											class="step"> <i                 
+											class="step"> <i
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step1"
 													value="#{userAppraisalStatus.EDITED.value}" /> <br />
@@ -552,14 +589,13 @@
 							</div>
 							&nbsp;
 
+							<f:subview
+								rendered="#{userAppraisalView.findSectionsByEligible(userAppraisalView.model).size()!=0}">
 
+								<div id="chartContainer1"
+									style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div>
 
-							<f:subview rendered="#{userAppraisalView.findSectionsByEligible(userAppraisalView.model).size()!=0}">
-
-							<div id="chartContainer1"
-								style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div>
-								
-							<script type="text/javascript">
+								<script type="text/javascript">
 						Highcharts.chart('chartContainer1', {
 						    chart: {
 						        plotBackgroundColor: null,
@@ -624,17 +660,17 @@
 						    }]
 						});
 						</script>
- </f:subview>
+							</f:subview>
 
 							<!-- 							***********************************Appraisal Time Line*******************************-->
 							<h1 style="color: blue; font-size: 20px">II- Appraisal Time
 								Line</h1>
 							<style>
 .tbl {
-	margin:0 auto;
+	margin: 0 auto;
 	text-align: center;
-	
 }
+
 .tg {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -695,10 +731,12 @@
 												approved by Manager</th>
 										</tr>
 										<tr>
-											<th class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsSubmited}"
-											styleClass="bolder" /></th>
-											<th class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsApproved}"
-											styleClass="bolder" /></th>
+											<th class="tg-lboi"><h:outputText
+													value="#{userAppraisalView.model.dateStatsSubmited}"
+													styleClass="bolder" /></th>
+											<th class="tg-lboi"><h:outputText
+													value="#{userAppraisalView.model.dateStatsApproved}"
+													styleClass="bolder" /></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -713,10 +751,12 @@
 												Year Review approved by Manager</td>
 										</tr>
 										<tr>
-											<td class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsSubmitedMidYear}"
-											styleClass="bolder" /></td>
-											<td class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsApprovedLMMidYear}"
-											styleClass="bolder" /></td>
+											<td class="tg-lboi"><h:outputText
+													value="#{userAppraisalView.model.dateStatsSubmitedMidYear}"
+													styleClass="bolder" /></td>
+											<td class="tg-lboi"><h:outputText
+													value="#{userAppraisalView.model.dateStatsApprovedLMMidYear}"
+													styleClass="bolder" /></td>
 										</tr>
 										<tr>
 											<td class="tg-9wq8" style="background-color: #b8cce4"
@@ -729,10 +769,12 @@
 												approved by Manager</td>
 										</tr>
 										<tr>
-											<td class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsSubmitedFinalYear}"
-											styleClass="bolder" /></td>
-											<td class="tg-lboi"><h:outputText value="#{userAppraisalView.model.dateStatsApprovedLMFinalYear}"
-											styleClass="bolder" /></td>
+											<td class="tg-lboi"><h:outputText
+													value="#{userAppraisalView.model.dateStatsSubmitedFinalYear}"
+													styleClass="bolder" /></td>
+											<td class="tg-lboi"><h:outputText
+													value="#{userAppraisalView.model.dateStatsApprovedLMFinalYear}"
+													styleClass="bolder" /></td>
 										</tr>
 									</tbody>
 								</table>
