@@ -137,6 +137,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (userAppraisalService.findUserAppraisalByAppraisal(model).size() == 0) {
 			for (User usr : users) {
 
+
 				UserAppraisal userAppraisal = new UserAppraisal();
 				userAppraisal.setAppraisee(sessionView.getUser());
 				userAppraisal.setAppraisal(model);
