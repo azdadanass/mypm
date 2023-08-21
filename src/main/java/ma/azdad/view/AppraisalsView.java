@@ -142,7 +142,20 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				userAppraisal.setAppraisal(model);
 				userAppraisal.setEmploy(usr);
 				userAppraisal.setDateStatsCreated(new Date());
+				
 				userAppraisal.setUserStatsCreated(sessionView.getUser());
+				userAppraisal.setUserStatsEdited(usr);
+				userAppraisal.setUserStatsSubmited(usr);
+				userAppraisal.setUserStatsApprovedLM(usr.getAffectation().getLineManager());
+				userAppraisal.setUserStatsApproved(sessionView.getUser());
+				userAppraisal.setUserStatsSelfAssessmentMidYear(usr);
+				userAppraisal.setUserStatsApprovedLMMidYear(usr);
+				userAppraisal.setUserStatsSubmitedMidYear(usr);
+				userAppraisal.setUserStatsSelfAssessmentFinalYear(usr);
+				userAppraisal.setUserStatsSubmitedFinalYear(usr);
+				userAppraisal.setUserStatsApprovedLMFinalYear(usr.getAffectation().getLineManager());
+				userAppraisal.setUserStatsClosed(usr);
+				
 				userAppraisalService.save(userAppraisal);
 
 			}

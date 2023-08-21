@@ -672,10 +672,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public Boolean canSubmitedMidYear() {
+		
 		return UserAppraisalStatus.MYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm();
 	}
 
 	public void submitedMidYear() {
+		
 		if (!canSubmitedMidYear())
 			return;
 

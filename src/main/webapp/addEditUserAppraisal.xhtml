@@ -114,9 +114,9 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Rejected RH" />
 						</p:commandLink>
-						
+
 						<!-- 	################# MID year ################## -->
-						
+
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submitedMidYear()}"
@@ -141,7 +141,7 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="MYR Rejected RH" />
 						</p:commandLink>
-						
+
 						<!-- 	##################  Final Year  ################# -->
 
 						<p:commandLink
@@ -168,7 +168,7 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="FYR Rejected RH" />
 						</p:commandLink>
-						
+
 						<!-- 	################################### -->
 
 						<p:commandLink
@@ -237,7 +237,7 @@
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step2"
 													value="#{userAppraisalStatus.SUBMITED.value}" /> <br />
-										</span> <p:overlayPanel for="step1"
+										</span> <p:overlayPanel for="step2"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -251,7 +251,7 @@
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step3"
 													value="#{userAppraisalStatus.APPROVED_LM.value}" /> <br />
-										</span> <p:overlayPanel for="step2"
+										</span> <p:overlayPanel for="step3"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -265,7 +265,7 @@
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step4"
 													value="#{userAppraisalStatus.APPROVED.value}" /> <br />
-										</span> <p:overlayPanel for="step3"
+										</span> <p:overlayPanel for="step4"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -284,7 +284,7 @@
 										</span> <span class="title"> <h:outputText id="step5"
 													value="#{userAppraisalStatus.MYR_SELF_ASSESSMENT.value}" />
 												<br />
-										</span> <p:overlayPanel for="step3"
+										</span> <p:overlayPanel for="step5"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -299,7 +299,7 @@
 										</span> <span class="title"> <h:outputText id="step6"
 													value="#{userAppraisalStatus.SUBMITED_MID_YEAR.value}" />
 												<br />
-										</span> <p:overlayPanel for="step1"
+										</span> <p:overlayPanel for="step6"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -313,7 +313,7 @@
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step7"
 													value="#{userAppraisalStatus.MYR_APPROVED_LM.value}" /> <br />
-										</span> <p:overlayPanel for="step2"
+										</span> <p:overlayPanel for="step7"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -331,7 +331,7 @@
 										</span> <span class="title"> <h:outputText id="step8"
 													value="#{userAppraisalStatus.FYR_SELF_ASSESSMENT.value}" />
 												<br />
-										</span> <p:overlayPanel for="step3"
+										</span> <p:overlayPanel for="step8"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -346,7 +346,7 @@
 										</span> <span class="title"> <h:outputText id="step9"
 													value="#{userAppraisalStatus.SUBMITED_FINAL_YEAR.value}" />
 												<br />
-										</span> <p:overlayPanel for="step1"
+										</span> <p:overlayPanel for="step9"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -360,7 +360,7 @@
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step10"
 													value="#{userAppraisalStatus.FYR_APPROVED_LM.value}" /> <br />
-										</span> <p:overlayPanel for="step2"
+										</span> <p:overlayPanel for="step10"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
