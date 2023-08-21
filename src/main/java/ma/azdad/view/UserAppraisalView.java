@@ -432,6 +432,12 @@ pieChartModel = new PieChartModel();
 		return sectionsService.findSectionsByUserAppraisal(model);
 	}
 	
+	public Sections findSection(int i) {
+		
+		
+		return sectionsService.findSectionsByUserAppraisal(model).get(i);		
+	}
+	
 	public List<BusinessGoals> findBusinessGoalSection0() {
 		return userAppraisalService.findBusinessGoalsBySection0(model);
 	}

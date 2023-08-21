@@ -8,15 +8,19 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	template="template/template.xhtml"
 	xmlns:pe="http://primefaces.org/ui/extensions">
+
 	<ui:define name="title">
-		<script src="https://code.highcharts.com/highcharts.js"></script>
 
 		<h:outputText value="#{staticView.applicationName}" />
 	</ui:define>
 	<ui:define name="header">
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/modules/export-data.js"></script>
 		<ui:include src="template/header.xhtml" />
 	</ui:define>
 	<ui:define name="sider">
+
 		<ui:include src="template/sider.xhtml" />
 	</ui:define>
 	<ui:define name="navigator">
@@ -200,6 +204,7 @@
 											</p:overlayPanel></li>
 									</h:panelGroup>
 
+
 									<!-- ########################## MID YEAR ##########################################" -->
 
 									<h:panelGroup rendered="#{userAppraisalView.isMid==2}">
@@ -306,76 +311,46 @@
 			<div class="tabbable">
 				<ul id="tabs" class="nav nav-tabs padding-18">
 
-					<!-- 	<li class="active"><p:commandLink onclick="openTab(1)"
-							data-toggle="tab" update=":main_form:steps"
+					<li id="tab1" class="active"><p:commandLink
+							onclick="openTab(1)" update=":main_form:steps"
 							action="#{userAppraisalView.onDebut}">
 							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
 							<h:outputText value="Informations" styleClass="hidden-xs" />
 						</p:commandLink></li>
 
-					<li><p:commandLink onclick="openTab(2)" data-toggle="tab"
+					<li id="tab2"><p:commandLink onclick="openTab(2)"
 							update=":main_form:steps" action="#{userAppraisalView.onMid}">
 							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
 							<h:outputText value="Mid Year" styleClass="hidden-xs" />
 						</p:commandLink></li>
-
-					<li><p:commandLink onclick="openTab(3)" data-toggle="tab"
+					<li id="tab3"><p:commandLink onclick="openTab(3)"
 							update=":main_form:steps" action="#{userAppraisalView.onFinal}">
 							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
-							<h:outputText value="Final Year" styleClass="hidden-xs" />
-						</p:commandLink></li> -->
-					<!-- 
-					<li><p:commandLink onclick="openTab(3)" data-toggle="steps"
-							update=":main_form:steps" action="#{userAppraisalView.onFinal}">
-							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
-							<h:outputText value="Final Year" styleClass="hidden-xs" />
+							<h:outputText value=" Final Year" styleClass="hidden-xs" />
 						</p:commandLink></li>
- --> 
- 
-					<li><a data-toggle="tab" href="#tab1"
-						onclick="#{userAppraisalView.onDebut()}"> <i
-							class="blue ace-icon fa fa-file bigger-120"></i> <h:outputText
-								value=" infos" styleClass="hidden-xs" />
-					</a></li>
 
-					<li><a data-toggle="tab" href="#tab1"
-						onclick="#{userAppraisalView.onMid()}"> <i
-							class="blue ace-icon fa fa-file bigger-120"></i> <h:outputText
-								value=" mid" styleClass="hidden-xs" />
-					</a></li>
-
-					<li><a data-toggle="tab" href="#tab1"
-						onclick="#{userAppraisalView.onFinal()}"> <i
-							class="blue ace-icon fa fa-file bigger-120"></i> <h:outputText
-								value=" final" styleClass="hidden-xs" />
-					</a></li>
-
-					<li><a data-toggle="tab" href="#tab4"> <i
+					<li id="tab4"><a data-toggle="tab" href="#tab4"> <i
 							class="blue ace-icon fa fa-file bigger-120"></i> <h:outputText
 								value=" Attachements" styleClass="hidden-xs" />
 					</a></li>
 
 
-					<li><a data-toggle="tab" href="#tab5"> <i
+					<li id="tab5"><a data-toggle="tab" href="#tab5"> <i
 							class="red ace-icon fa fa-comment-o bigger-120"></i> <h:outputText
 								value=" Comments" styleClass="hidden-xs" />
 					</a></li>
-
 					<li><a data-toggle="tab" href="#tab6"> <i
 							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
 								value=" History" styleClass="hidden-xs" />
 					</a></li>
 				</ul>
-				
-				<!-- 
 				<script>
 					function openTab(index) {
+						console.log('openTab called with index', index);
 						$('#tabs li.active').removeClass('active');
 						$('#tab' + index).addClass('active');
 					}
 				</script>
-				 -->
-
 				<div class="tab-content no-border padding-24">
 					<div id="tab1" class="tab-pane in active">
 						<div class="row">
@@ -522,23 +497,94 @@
 								</p:dataTable>
 							</div>
 							&nbsp;
-							<h1 style="color: black; text-align: center; font-size: 40px">Appraisal
-								Weighting Details</h1>
 
-							<div class="pie-chart-container">
 
-								<p:chart type="pie" model="#{userAppraisalView.pieChartModel}" />
-							</div>
+
+
+													<div  id="chartContainer1" style="width: 45%;margin-left:300px; height: 275px;display: inline-block;"></div> 
+<script type="text/javascript">
+						Highcharts.chart('chartContainer1', {
+						    chart: {
+						        plotBackgroundColor: null,
+						        plotBorderWidth: null,
+						        plotShadow: false,
+						        type: 'pie'
+						    },
+						    title: {
+						        text: 'Appraisal Weighting Details'
+						    },
+						    tooltip: {
+						        pointFormat: '{series.name}: <b>{point.y}</b>%'
+						    },
+						    accessibility: {
+						        point: {
+						            valueSuffix: '%'
+						        }
+						    },
+						    plotOptions: {
+						        pie: {
+						            allowPointSelect: true,
+						            cursor: 'pointer',
+						            dataLabels: {
+						                enabled: true,
+						                format: '<b>{point.name}</b>'
+						            }
+						        }
+						    },
+						    series: [{
+						        name: 'Section',
+						        colorByPoint: true,
+						        data: [{
+						            name: 'Business Goals',
+						            y: #{userAppraisalView.findSection(0).getWeight()},
+						            sliced: true,
+						            selected: true
+						        }, {
+						            name: 'Job Execution',
+						            y: #{userAppraisalView.findSection(1).getWeight()},
+						        	visible: #{userAppraisalView.findSection(1).getWeight() != 0}
+
+						        },  {
+						            name: 'Code of Conduct',
+						            y: #{userAppraisalView.findSection(2).getWeight()},
+						        	visible: #{userAppraisalView.findSection(2).getWeight() != 0}
+						        }, {
+						            name: 'Leadership and Dependability',
+						            y: #{userAppraisalView.findSection(3).getWeight()},
+					        	visible: #{userAppraisalView.findSection(3).getWeight() != 0}
+
+						        }, {
+						            name: 'Personality Attributes',
+						            y: #{userAppraisalView.findSection(4).getWeight()},
+						        	visible: #{userAppraisalView.findSection(4).getWeight() != 0}
+
+						        },  {
+						            name: 'Management Responsibilities',
+						            y: #{userAppraisalView.findSection(5).getWeight()},
+						        	visible: #{userAppraisalView.findSection(5).getWeight() != 0}
+
+						        }]
+						    }]
+						});
+						</script>
+
 
 							<!-- 							***********************************Appraisal Time Line*******************************-->
 							<h1 style="color: blue; font-size: 20px">II- Appraisal Time
 								Line</h1>
+
+
 							<div class="row" style="margin-right: -15px; margin-left: -15px;">
 								<div class="col-xs-4">
 									<div class="profile-user-info profile-user-info-striped">
 										<div class="profile-info-row">
 											<div class="profile-info-name">
 												<h:outputText value="Planning" />
+											</div>
+											<div class="profile-info-value">
+												<h:outputText
+													value="#{userAppraisal.model.dateStatsSubmited}"
+													styleClass="purple" />
 											</div>
 										</div>
 										<div class="profile-info-row">
@@ -928,10 +974,13 @@
 								</div>
 							</div>
 							&nbsp;
+
+
+
 						</div>
 						<div class="space-16" />
 					</div>
-					<div id="tab5" class="tab-pane">
+					<div id="tab3" class="tab-pane">
 						<h:panelGroup id="commentPanel">
 							<div class="row">
 								<div class="col-xs-12 col-sm-10 col-sm-offset-1">
@@ -988,7 +1037,7 @@
 							</div>
 						</h:panelGroup>
 					</div>
-					<div id="tab4" class="tab-pane">
+					<div id="tab2" class="tab-pane">
 						<div class="row">
 							<div class="col-sm-offset-1 col-sm-10">
 								<div class="table-header col-sm-12 col-xs-12">
@@ -1068,7 +1117,7 @@
 							</div>
 						</div>
 					</div>
-					<div id="tab6" class="tab-pane">
+					<div id="tab4" class="tab-pane">
 						<div class="space-8" />
 						<div class="row">
 							<div class="col-sm-offset-1 col-sm-10">
@@ -1119,7 +1168,6 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</h:form>
 		<f:event type="preRenderView"
