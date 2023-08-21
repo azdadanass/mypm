@@ -554,9 +554,11 @@
 
 
 
-						<f:subview rendered="#{userAppraisalView.findSection(1).getWeight()!=0}">
-							 <div id="chartContainer1"
-								style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div> 
+							<f:subview rendered="#{userAppraisalView.findSectionsByEligible(userAppraisalView.model).size()!=0}">
+
+							<div id="chartContainer1"
+								style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div>
+								
 							<script type="text/javascript">
 						Highcharts.chart('chartContainer1', {
 						    chart: {
@@ -621,9 +623,8 @@
 						        }]
 						    }]
 						});
-						</script>  
- 
-							</f:subview>
+						</script>
+ </f:subview>
 
 							<!-- 							***********************************Appraisal Time Line*******************************-->
 							<h1 style="color: blue; font-size: 20px">II- Appraisal Time
@@ -813,7 +814,7 @@
 								<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
 									<p:dataTable
-										value="#{userAppraisalView.findSuppGoalSection1()}" var="item"
+										value="#{userAppraisalView.findSuppGoalSection(1)}" var="item"
 										rowKey="#{title}" id="jobExecution" widgetVar="sectionslist"
 										rows="20" styleClass="table table-striped table-hover center"
 										paginator="true" paginatorAlwaysVisible="false"
@@ -865,7 +866,7 @@
 								<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
 									<p:dataTable
-										value="#{userAppraisalView.findSuppGoalSection2()}" var="item"
+										value="#{userAppraisalView.findSuppGoalSection(2)}" var="item"
 										rowKey="#{title}" id="codeofconduct" widgetVar="sectionslist"
 										rows="20" styleClass="table table-striped table-hover center"
 										paginator="true" paginatorAlwaysVisible="false"
@@ -918,7 +919,7 @@
 								<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
 									<p:dataTable
-										value="#{userAppraisalView.findSuppGoalSection3()}" var="item"
+										value="#{userAppraisalView.findSuppGoalSection(3)}" var="item"
 										rowKey="#{title}" id="LeadershipandDependability"
 										widgetVar="sectionslist" rows="20"
 										styleClass="table table-striped table-hover center"
@@ -973,7 +974,7 @@
 								<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
 									<p:dataTable
-										value="#{userAppraisalView.findSuppGoalSection4()}" var="item"
+										value="#{userAppraisalView.findSuppGoalSection(4)}" var="item"
 										rowKey="#{title}" id="PersonalityAttributes"
 										widgetVar="sectionslist" rows="20"
 										styleClass="table table-striped table-hover center"
@@ -1025,7 +1026,7 @@
 								<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
 									<p:dataTable
-										value="#{userAppraisalView.findSuppGoalSection5()}" var="item"
+										value="#{userAppraisalView.findSuppGoalSection(5)}" var="item"
 										rowKey="#{title}" id="ManagementResponsabilities"
 										widgetVar="sectionslist" rows="20"
 										styleClass="table table-striped table-hover center"
