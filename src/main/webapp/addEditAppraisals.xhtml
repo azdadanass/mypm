@@ -255,13 +255,17 @@
 								<div class="space-8" />
 							</f:subview>
 							<f:subview id="step3" rendered="#{appraisalsView.step==3}">
-								<h3 class="lighter block green">
-									<i class="ace-icon fa fa-list-alt" />
-									<h:outputText value="Employees" />
-								</h3>
+								
 
 								<div class="space-8" />
 								<div class="row">
+								<div class="table-header col-sm-12 col-xs-12">
+										<div class="col-sm-8 col-xs-8">
+											<i class="fa fa-list" />
+											<h:outputText value=" Employees List" />
+										</div>
+
+									</div>
 									<div class="col-sm-12 col-xs-12 aa-datatable-container">
 										<p:dataTable value="#{appraisalsView.getUsersByManager()}"
 											filteredValue="#{appraisalsView.list3}" rowKey="#{item.id}"

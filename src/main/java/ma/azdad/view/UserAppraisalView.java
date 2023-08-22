@@ -739,7 +739,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsSubmited(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from CREATED to SUBMITED"));
+				sessionView.getUser()+" has submitted "+model.getEmploy().getFullName()+" Appraisal"));
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
@@ -756,7 +756,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsEdited(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.EDITED);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from CREATED to Edited"));
+				sessionView.getUser()+" has Edited "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -775,7 +775,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsApprovedLM(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.APPROVED_LM);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from SUBMITED to APPROVED_LM"));
+				sessionView.getUser()+" has Approved "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -793,8 +793,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setDateStatsSubmited(null);
 		model.setDateStatsApprovedLM(null);
 		model.setUserAppraisalStatus(UserAppraisalStatus.EDITED);
-		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from SUBMITED to EDITED"));
+		model.addHistory(new UserAppraisalHistory(UserAppraisalStatus.REJECTED.getValue(), sessionView.getUser(),
+				sessionView.getUser()+" has Rejected "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -814,7 +814,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsApproved(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.APPROVED);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from APPROVED_LM to APPROVED"));
+				sessionView.getUser()+" has Approved "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -833,8 +833,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setDateStatsApprovedLM(null);
 		model.setDateStatsApproved(null);
 		model.setUserAppraisalStatus(UserAppraisalStatus.EDITED);
-		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from Approved to EDITED"));
+		model.addHistory(new UserAppraisalHistory(UserAppraisalStatus.REJECTED.getValue(), sessionView.getUser(),
+				sessionView.getUser()+" has Rejected "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -856,7 +856,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsSelfAssessmentMidYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.MYR_SELF_ASSESSMENT);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from APPROVED to MYR_SELF_ASSESSMENT"));
+				sessionView.getUser()+" has Edited "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -875,7 +875,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsSubmitedMidYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED_MID_YEAR);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from MYD self Assessement to MID_YEAR_SUBMITED"));
+				sessionView.getUser()+" has Submitted "+model.getEmploy().getFullName()+" Appraisal"));
 		service.save(model);
 		model = service.findOne(model.getId());
 	}
@@ -893,7 +893,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsApprovedLMMidYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.MYR_APPROVED_LM);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from Mid_YEAR_SUBMITED to MID_YEAR_APPROVED_LM"));
+				sessionView.getUser()+" has Approved "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -912,8 +912,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setDateStatsSubmitedMidYear(null);
 		model.setDateStatsApprovedLMMidYear(null);
 		model.setUserAppraisalStatus(UserAppraisalStatus.MYR_SELF_ASSESSMENT);
-		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from Approved to MYR_SELF_ASSESSMENT"));
+		model.addHistory(new UserAppraisalHistory(UserAppraisalStatus.MYR_REJECTED.getValue(), sessionView.getUser(),
+				sessionView.getUser()+" has Rejected "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -935,7 +935,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsSelfAssessmentFinalYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_SELF_ASSESSMENT);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from MYD_APPROVED to MYR_SELF_ASSESSMENT"));
+				sessionView.getUser()+" has Edited "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -954,7 +954,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsSubmitedFinalYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.SUBMITED_FINAL_YEAR);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from FYT_SELF_ASSESSMENT to FINAL_YEAR_SUBMITED"));
+				sessionView.getUser()+" has Submitted "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -973,7 +973,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsApprovedLMFinalYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_APPROVED_LM);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from FINAL_YEAR_SUBMITED to FINAL_YEAR_APPROVED_LM"));
+				sessionView.getUser()+" has Approved "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -992,8 +992,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setDateStatsSubmitedFinalYear(null);
 		model.setDateStatsApprovedLMFinalYear(null);
 		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_SELF_ASSESSMENT);
-		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from FYT_Approved to MYR_SELF_ASSESSMENT"));
+		model.addHistory(new UserAppraisalHistory(UserAppraisalStatus.FYR_REJECTED.getValue(), sessionView.getUser(),
+				sessionView.getUser()+" has Rejected "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -1012,7 +1012,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsClosed(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.CLOSED);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				"change User AppraisalsStats from FINAL_YEAR_APPROVED to CLOSED"));
+				sessionView.getUser()+" has Closed "+model.getEmploy().getFullName()+" Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
