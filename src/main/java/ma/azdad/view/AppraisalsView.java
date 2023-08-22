@@ -456,51 +456,77 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	}
 
 	// MidYearReview
-	public Boolean canMidYearReview() {
-		return AppraisalsStatus.OPEN.equals(model.getAppraisalsStatus());
-	}
-
-	@Scheduled(fixedRate = 600000)
-	public void midYearReview() {
-		
-		if (!canMidYearReview())
-			return;
-		if (!validateMidYear()) {
-			return;
+		public Boolean canMidYearReview(Appraisals ap) {
+			return AppraisalsStatus.OPEN.equals(ap.getAppraisalsStatus());
 		}
-		model.setDateStatsMid(new Date());
-		model.setUserStatsMid(sessionView.getUser());
-		model.setAppraisalsStatus(AppraisalsStatus.MID_YEAR_REVIEW);
-		model.addHistory(new AppraisalsHistory(model.getAppraisalsStatus().getValue(), sessionView.getUser(),
-				"change AppraisalsStats from OPEN to MID_YEAR_REVIEW"));
 
-		service.save(model);
-		model = service.findOne(model.getId());
 		
-		
-	}
+		public void midYearReview(Appraisals ap) {
 
-	// FinalYearReview
-	public Boolean canFinalYearReview() {
-		return AppraisalsStatus.MID_YEAR_REVIEW.equals(model.getAppraisalsStatus());
-	}
+			if (!canMidYearReview(ap))
+				return;
+			if (!validateMidYear(ap)) {
+				return;
+			}
+			ap.setDateStatsMid(new Date());
+			ap.setUserStatsMid(sessionView.getUser());
+			ap.setAppraisalsStatus(AppraisalsStatus.MID_YEAR_REVIEW);
+			ap.addHistory(new AppraisalsHistory(ap.getAppraisalsStatus().getValue(), sessionView.getUser(),
+					"change AppraisalsStats from OPEN to MID_YEAR_REVIEW"));
 
-	@Scheduled(fixedRate = 600000)
-	public void finalYearReview() {
-		if (!canFinalYearReview())
-			return;
-		if (!validateFinalYear()) {
-			return;
+			service.save(ap);
+			// model = service.findOne(model.getId());
+
 		}
-		model.setDateStatsFinal(new Date());
-		model.setUserStatsFinal(sessionView.getUser());
-		model.setAppraisalsStatus(AppraisalsStatus.FINAL_REVIEW);
-		model.addHistory(new AppraisalsHistory(model.getAppraisalsStatus().getValue(), sessionView.getUser(),
-				"change AppraisalsStats from MID_YEAR_REVIEW to FINAL_YEAR_REVIEW"));
 
-		service.save(model);
-		model = service.findOne(model.getId());
-	}
+		@Scheduled(fixedRate = 600000)
+		public void autoMidFinalYear() {
+			for (Appraisals ap : findAll()) {
+				
+			midYearReview(ap);
+			finalYearReview(ap);
+			
+			}
+		}
+
+		// FinalYearReview
+		public Boolean canFinalYearReview(Appraisals ap) {
+			return AppraisalsStatus.MID_YEAR_REVIEW.equals(ap.getAppraisalsStatus());
+		}
+
+		
+		public void finalYearReview(Appraisals ap) {
+			if (!canFinalYearReview(ap))
+				return;
+			if (!validateFinalYear(ap)) {
+				return;
+			}
+			ap.setDateStatsFinal(new Date());
+			ap.setUserStatsFinal(sessionView.getUser());
+			ap.setAppraisalsStatus(AppraisalsStatus.FINAL_REVIEW);
+			ap.addHistory(new AppraisalsHistory(ap.getAppraisalsStatus().getValue(), sessionView.getUser(),
+					"change AppraisalsStats from MID_YEAR_REVIEW to FINAL_YEAR_REVIEW"));
+
+			service.save(ap);
+			//model = service.findOne(model.getId());
+		}
+		
+		public Boolean validateMidYear(Appraisals ap) {
+			Date dt = new Date();
+			if (!(ap.getMidYearReviewEndDate().compareTo(dt) >= 0 && ap.getMidYearReviewStartDate().compareTo(dt) <= 0)) {
+				return false;
+			}
+			return true;
+		}
+
+		public Boolean validateFinalYear(Appraisals ap) {
+			Date dt = new Date();
+			if (!(ap.getEndYearSummaryEndDate().compareTo(dt) >= 0
+					&& ap.getEndYearSummaryStartDate().compareTo(dt) <= 0)) {
+				return false;
+			}
+			return true;
+		}
 
 	// Closed
 	public Boolean canClosed() {
