@@ -49,9 +49,21 @@
 					<div class=" col-sm-offset-1 col-sm-7">
 						<h:outputLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							title="Return to Home " value="index.xhtml">
+							title="Return to Home " value="index.xhtml"
+							rendered="#{sessionView.isMyPmHr or sessionView.isMyPmLineManager}">
 							<i class="ace-icon fa fa-home bigger-230"></i>
 							<h:outputText value="Home" />
+							<f:param name="pageIndex" value="1" />
+
+						</h:outputLink>
+						<h:outputLink
+							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
+							title="Return to Home " value="userAppraisalList.xhtml"
+							rendered="#{not sessionView.isMyPmHr and not sessionView.isMyPmLineManager}">
+							<i class="ace-icon fa fa-home bigger-230"></i>
+							<h:outputText value="Home" />
+							<f:param name="pageIndex" value="1" />
+
 						</h:outputLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info"
@@ -380,9 +392,8 @@
 			<div class="tabbable">
 				<ul id="tabs" class="nav nav-tabs padding-18">
 
-					<li class="active"><p:commandLink
-							onclick="openTab(1)" update=":main_form:steps"
-							action="#{userAppraisalView.onDebut}">
+					<li class="active"><p:commandLink onclick="openTab(1)"
+							update=":main_form:steps" action="#{userAppraisalView.onDebut}">
 							<i class="green ace-icon fa fa-list-alt bigger-120"></i>
 							<h:outputText value="Informations" styleClass="hidden-xs" />
 						</p:commandLink></li>

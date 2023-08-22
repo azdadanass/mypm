@@ -1,70 +1,85 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 	<h:form id="header_form">
 		<div id="navbar" class="navbar navbar-default">
 			<div class="navbar-container" id="navbar-container">
-				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
-					<span class="sr-only">Toggle sidebar</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
+				<button type="button" class="navbar-toggle menu-toggler pull-left"
+					id="menu-toggler" data-target="#sidebar">
+					<span class="sr-only">Toggle sidebar</span> <span class="icon-bar"></span>
+					<span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
 				<div class="navbar-header pull-left" style="float: left !important;">
-					<h:outputLink value="index.xhtml" styleClass="navbar-brand hidden-xs">
-						<small>
-							<i>
-							 	<h:graphicImage value="/resources/img/logo.png" width="200" height="200"
-									style="float : left; height: auto; vertical-align: middle; display: block; padding: 0px 0px 0px 0px;" /> 
-							</i>
+					<h:outputLink value="index.xhtml"
+						styleClass="navbar-brand hidden-xs"
+						rendered="#{sessionView.isMyPmHr or sessionView.isMyPmLineManager}">
+						<small> <i> <h:graphicImage
+									value="/resources/img/logo.png" width="200" height="200"
+									style="float : left; height: auto; vertical-align: middle; display: block; padding: 0px 0px 0px 0px;" />
+						</i>
+						</small>
+						<f:param name="state" value="0" />
+						<f:param name="pageIndex" value="1" />
+					</h:outputLink>
+					<h:outputLink value="userAppraisalList.xhtml"
+						styleClass="navbar-brand hidden-xs"
+						rendered="#{not sessionView.isMyPmHr and not sessionView.isMyPmLineManager}">
+						<small> <i> <h:graphicImage
+									value="/resources/img/logo.png" width="200" height="200"
+									style="float : left; height: auto; vertical-align: middle; display: block; padding: 0px 0px 0px 0px;" />
+						</i>
 						</small>
 						<f:param name="state" value="0" />
 						<f:param name="pageIndex" value="1" />
 					</h:outputLink>
 				</div>
-				<div class="navbar-buttons navbar-header pull-right" role="navigation" style="float: right !important">
+				<div class="navbar-buttons navbar-header pull-right"
+					role="navigation" style="float: right !important">
 					<ul class="nav ace-nav">
-						
-						<li class="#{erpView.erp('light-blue','light-orange','light-green')}">
-							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<p:graphicImage value="#{fileUploadView.stream}" styleClass="nav-user-photo">
+
+						<li
+							class="#{erpView.erp('light-blue','light-orange','light-green')}">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle"> <p:graphicImage
+									value="#{fileUploadView.stream}" styleClass="nav-user-photo">
 									<f:param name="fileName" value="#{sessionView.user.photo}" />
-								</p:graphicImage>
-								<span class="user-info hidden-xs">
-									<small>
-										<h:outputText value="Welcome," />
-									</small>
-									<h:outputText value="#{sessionView.user.fullName}" />
-								</span>
-								<i class="ace-icon fa fa-caret-down"></i>
-							</a>
-							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-								<li>
-									<p:importEnum type="ma.azdad.utils.App" var="App" />
-									<h:outputLink value="index.xhtml">
+								</p:graphicImage> <span class="user-info hidden-xs"> <small> <h:outputText
+											value="Welcome," />
+								</small> <h:outputText value="#{sessionView.user.fullName}" />
+							</span> <i class="ace-icon fa fa-caret-down"></i>
+						</a>
+							<ul
+								class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+								<li><p:importEnum type="ma.azdad.utils.App" var="App" /> <h:outputLink
+										value="index.xhtml"
+										rendered="#{sessionView.isMyPmHr or sessionView.isMyPmLineManager}">
 										<i class="ace-icon fa fa-home blue"></i>
 										<h:outputText value="Home" />
-									</h:outputLink>
-								</li>
-								<li>
-									<h:outputLink value="mailto:#{App.SYSTEM_MAIL.link}">
+										<f:param name="pageIndex" value="1" />
+
+									</h:outputLink> <h:outputLink value="userAppraisalList.xhtml"
+										rendered="#{not sessionView.isMyPmHr and not sessionView.isMyPmLineManager}">
+										<i class="ace-icon fa fa-home blue"></i>
+										<h:outputText value="Home" />
+										<f:param name="pageIndex" value="1" />
+
+									</h:outputLink></li>
+								<li><h:outputLink value="mailto:#{App.SYSTEM_MAIL.link}">
 										<i class="ace-icon fa fa-envelope orange"></i>
 										<h:outputText value="Send Mail To Support" />
-									</h:outputLink>
-								</li>
-								<li>
-									<p:commandLink onclick="PF('changePasswordDlg').show()">
+									</h:outputLink></li>
+								<li><p:commandLink onclick="PF('changePasswordDlg').show()">
 										<i class="ace-icon fa fa-cog pink"></i>
 										<h:outputText value="Change Password" />
-									</p:commandLink>
-								</li>
+									</p:commandLink></li>
 								<li class="divider"></li>
-								<li>
-									<a href="logout">
-										<i class="ace-icon fa fa-power-off red"></i>
-										<h:outputText value="Logout" />
-									</a>
-								</li>
+								<li><a href="logout"> <i
+										class="ace-icon fa fa-power-off red"></i> <h:outputText
+											value="Logout" />
+								</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -73,8 +88,10 @@
 		</div>
 	</h:form>
 	<h:form id="changePasswordForm">
-		<p:dialog widgetVar="changePasswordDlg" modal="true" closable="false" resizable="false" showHeader="false">
-			<button type="button" class="bootbox-close-button close" onclick="PF('changePasswordDlg').hide()">
+		<p:dialog widgetVar="changePasswordDlg" modal="true" closable="false"
+			resizable="false" showHeader="false">
+			<button type="button" class="bootbox-close-button close"
+				onclick="PF('changePasswordDlg').hide()">
 				<h:outputText value="x" />
 			</button>
 			<div class="modal-header">
@@ -86,36 +103,45 @@
 			<div class="modal-body">
 				<p:messages id="messages" closable="true" />
 				<div class="col-sm-12 row">
-					<div class="col-sm-offset-2 col-sm-10  col-sm-offset-1 col-xs-10 form-group">
+					<div
+						class="col-sm-offset-2 col-sm-10  col-sm-offset-1 col-xs-10 form-group">
 						<div class="col-sm-3 col-xs-5">
 							<h:outputText value="Old Password" />
 						</div>
 						<div class="col-sm-9 col-xs-7">
-							<p:password value="#{passwordView.oldPassword}" required="true" requiredMessage="You should insert your old password" />
+							<p:password value="#{passwordView.oldPassword}" required="true"
+								requiredMessage="You should insert your old password" />
 						</div>
 					</div>
-					<div class="col-sm-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 form-group">
+					<div
+						class="col-sm-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 form-group">
 						<div class="col-sm-3 col-xs-5">
 							<h:outputText value="New Password" />
 						</div>
 						<div class="col-sm-9 col-xs-7">
-							<p:password value="#{passwordView.newPassword}" required="true" requiredMessage="New password is required" />
+							<p:password value="#{passwordView.newPassword}" required="true"
+								requiredMessage="New password is required" />
 						</div>
 					</div>
-					<div class="col-sm-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 form-group">
+					<div
+						class="col-sm-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 form-group">
 						<div class="col-sm-3 col-xs-5">
 							<h:outputText value="Repeat Password" />
 						</div>
 						<div class="col-sm-9 col-xs-7">
-							<p:password value="#{passwordView.confirmation}" required="true" requiredMessage="Please do up your new password" />
+							<p:password value="#{passwordView.confirmation}" required="true"
+								requiredMessage="Please do up your new password" />
 						</div>
 					</div>
 				</div>
 				<div class="row"></div>
 			</div>
 			<div class="modal-footer">
-				<p:commandButton onclick="PF('changePasswordDlg').hide()" value="Hide" styleClass="btn btn-warning" partialSubmit="true" process="@this" />
-				<p:commandButton action="#{passwordView.updatePassword()}" value="Change" styleClass="btn btn-success" update="messages" />
+				<p:commandButton onclick="PF('changePasswordDlg').hide()"
+					value="Hide" styleClass="btn btn-warning" partialSubmit="true"
+					process="@this" />
+				<p:commandButton action="#{passwordView.updatePassword()}"
+					value="Change" styleClass="btn btn-success" update="messages" />
 			</div>
 		</p:dialog>
 	</h:form>
