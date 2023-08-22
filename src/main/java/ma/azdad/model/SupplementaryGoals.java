@@ -65,6 +65,7 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 		this.sectionsData = sectionsData;
 		this.weight=weight;
 	}
+	
 	public SupplementaryGoals() {
 		super();
 	}

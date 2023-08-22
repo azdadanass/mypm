@@ -164,7 +164,7 @@
 </p:selectOneMenu>
 
 </p:column> -->
-				
+
 
 												<p:column headerText="Goal Details">
 													<p:inputText value="#{item.goalDetails}" />
@@ -188,20 +188,20 @@
 														disabled="#{ userAppraisalView.validateBusinessFinalYear()}"
 														validator="#{userAppraisalView.validateRating}" />
 												</p:column>
- --><p:column headerText="Actions" width="150"
-											style="text-align : center;">
-											<div class="action-buttons center">
-												<p:commandLink
-													action="#{userAppraisalView.removeBusinessGoal(item)}"
-													update="businessGoalsList" process="businessGoalsList" title="delete"
-													rendered="true"
-													styleClass="aa-tooltip">
-													<i class="ace-icon fa fa-trash-o bigger-130 red" />
+ -->
+												<p:column headerText="Actions" width="150"
+													style="text-align : center;">
+													<div class="action-buttons center">
+														<p:commandLink
+															action="#{userAppraisalView.removeBusinessGoal(item)}"
+															update="businessGoalsList" process="businessGoalsList"
+															title="delete" rendered="true" styleClass="aa-tooltip">
+															<i class="ace-icon fa fa-trash-o bigger-130 red" />
 
-												</p:commandLink>
-												
-											</div>
-										</p:column>
+														</p:commandLink>
+
+													</div>
+												</p:column>
 												<f:facet name="footer">
 													<div class="action-buttons center">
 														<p:commandLink title="Add New Item"
@@ -238,7 +238,7 @@
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="Jobexecution"
-													value="#{userAppraisalView.findSuppByGoaldId(1)}"
+													value="#{userAppraisalView.suppl1}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -260,14 +260,13 @@
 													<p:column headerText="Final Year Rating">
 														<h:outputText value="#{item.summaryRaiting}" />
 													</p:column> -->
-													
-													<p:column headerText="Goal weight">
-													<h:inputText value="#{item.weight}"
-														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
 
+													<p:column headerText="Goal weight">
+														<h:inputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
 												</p:dataTable>
 											</div>
 										</div>
@@ -284,7 +283,7 @@
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="CODE"
-													value="#{userAppraisalView.findSuppByGoaldId(2)}"
+													value="#{userAppraisalView.suppl2}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -307,11 +306,11 @@
 														<h:outputText value="#{item.summaryRaiting}" />
 													</p:column> -->
 													<p:column headerText="Goal weight">
-													<h:inputText value="#{item.weight}"
-														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
+														<h:inputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
 												</p:dataTable>
 											</div>
 										</div>
@@ -330,7 +329,7 @@
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="LEADERSHIP"
 													rendered="#{userAppraisalView.isElig(3)}"
-													value="#{userAppraisalView.findSuppByGoaldId(3)}"
+													value="#{userAppraisalView.suppl3}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -353,11 +352,11 @@
 														<h:outputText value="#{item.summaryRaiting}" />
 													</p:column> -->
 													<p:column headerText="Goal weight">
-													<h:inputText value="#{item.weight}"
-														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
+														<h:inputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
 												</p:dataTable>
 											</div>
 										</div>
@@ -376,7 +375,7 @@
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="PERSONALITY"
 													rendered="#{userAppraisalView.isElig(4)}"
-													value="#{userAppraisalView.findSuppByGoaldId(4)}"
+													value="#{userAppraisalView.suppl4}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -399,11 +398,11 @@
 														<h:outputText value="#{item.summaryRaiting}" />
 													</p:column> -->
 													<p:column headerText="Goal weight">
-													<h:inputText value="#{item.weight}"
-														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
+														<h:inputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
 												</p:dataTable>
 											</div>
 										</div>
@@ -421,7 +420,7 @@
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="MANAGEMENT"
 													rendered="#{userAppraisalView.isElig(5)}"
-													value="#{userAppraisalView.findSuppByGoaldId(5)}"
+													value="#{userAppraisalView.suppl1}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -444,11 +443,11 @@
 														<h:outputText value="#{item.summaryRaiting}" />
 													</p:column> -->
 													<p:column headerText="Goal weight">
-													<h:inputText value="#{item.weight}"
-														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
+														<h:inputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
 												</p:dataTable>
 											</div>
 										</div>

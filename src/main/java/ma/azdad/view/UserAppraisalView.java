@@ -86,6 +86,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Boolean> eligibleList;
 	private List<Integer> weightList;
 
+	private List<SupplementaryGoals> suppl1 = new ArrayList<>();
+	private List<SupplementaryGoals> suppl2 = new ArrayList<>();
+	private List<SupplementaryGoals> suppl3 = new ArrayList<>();
+	private List<SupplementaryGoals> suppl4 = new ArrayList<>();
+	private List<SupplementaryGoals> suppl5 = new ArrayList<>();
+	
+
 	private List<String> goalTitleList;
 
 	private int goaltitlecount = 0;
@@ -97,6 +104,47 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private String selectedGoalTitle;
 	private Integer isMid = 1;
 	private List<Sections> sectionList;
+
+	
+	public List<SupplementaryGoals> getSuppl1() {
+		return suppl1;
+	}
+
+	public void setSuppl1(List<SupplementaryGoals> suppl1) {
+		this.suppl1 = suppl1;
+	}
+
+	public List<SupplementaryGoals> getSuppl2() {
+		return suppl2;
+	}
+
+	public void setSuppl2(List<SupplementaryGoals> suppl2) {
+		this.suppl2 = suppl2;
+	}
+
+	public List<SupplementaryGoals> getSuppl3() {
+		return suppl3;
+	}
+
+	public void setSuppl3(List<SupplementaryGoals> suppl3) {
+		this.suppl3 = suppl3;
+	}
+
+	public List<SupplementaryGoals> getSuppl4() {
+		return suppl4;
+	}
+
+	public void setSuppl4(List<SupplementaryGoals> suppl4) {
+		this.suppl4 = suppl4;
+	}
+
+	public List<SupplementaryGoals> getSuppl5() {
+		return suppl5;
+	}
+
+	public void setSuppl5(List<SupplementaryGoals> suppl5) {
+		this.suppl5 = suppl5;
+	}
 
 	public List<Sections> getSectionList() {
 		return sectionList;
@@ -433,7 +481,108 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public List<BusinessGoals> findBusinessGoalSection0() {
+
 		return userAppraisalService.findBusinessGoalsBySection0(model);
+	}
+
+	public void fillSupp1() {
+
+		List<SectionsData> secdata = new ArrayList<>();
+		suppl1=new ArrayList<>();
+
+		secdata = userAppraisalService.findSectionDataByGoalId(1);
+
+		if (isElig(1)) {
+
+			for (SectionsData se : secdata) {
+					
+				System.out.println(findSectionByNumberAndUserAppraisal(1, model));
+				System.out.println(se);
+				// supplementaryGoalsListBg.add();
+
+				suppl1.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(1, model), se));
+			}
+
+		}
+
+	}
+
+	public void fillSupp2() {
+
+		List<SectionsData> secdata = new ArrayList<>();
+		suppl2=new ArrayList<>();
+
+		secdata = userAppraisalService.findSectionDataByGoalId(2);
+
+		if (isElig(2)) {
+
+			for (SectionsData se : secdata) {
+
+				// supplementaryGoalsListBg.add();
+
+				suppl2.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(2, model), se));
+			}
+
+		}
+
+	}
+	public void fillSupp3() {
+
+		List<SectionsData> secdata = new ArrayList<>();
+		suppl3=new ArrayList<>();
+		secdata = userAppraisalService.findSectionDataByGoalId(3);
+
+		if (isElig(3)) {
+
+			for (SectionsData se : secdata) {
+
+				// supplementaryGoalsListBg.add();
+
+				suppl3.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(3, model), se));
+			}
+
+		}
+
+	}
+
+	public void fillSupp4() {
+
+		List<SectionsData> secdata = new ArrayList<>();
+		suppl4=new ArrayList<>();
+
+		secdata = userAppraisalService.findSectionDataByGoalId(4);
+
+		if (isElig(4)) {
+
+			for (SectionsData se : secdata) {
+
+				// supplementaryGoalsListBg.add();
+
+				suppl4.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(4, model), se));
+			}
+
+		}
+
+	}
+
+	public void fillSupp5() {
+
+		List<SectionsData> secdata = new ArrayList<>();
+		suppl5=new ArrayList<>();
+
+		secdata = userAppraisalService.findSectionDataByGoalId(5);
+
+		if (isElig(5)) {
+
+			for (SectionsData se : secdata) {
+
+				// supplementaryGoalsListBg.add();
+
+				suppl5.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(5, model), se));
+			}
+
+		}
+
 	}
 
 	public List<SupplementaryGoals> findSuppGoalSection1() {
@@ -505,14 +654,44 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public Boolean validateWeightSuppGoals() {
 
-		double weightTotal = 0;
-		for (int i = 0; i < supplementaryGoalsListBg.size(); i++) {
-			weightTotal = weightTotal + supplementaryGoalsListBg.get(i).getWeight();
-			System.out.println(weightTotal);
+		double weightTotal1 = 0;
+		double weightTotal2 = 0;
+		double weightTotal3 = 0;
+		double weightTotal4 = 0;
+		double weightTotal5 = 0;
+
+		for (int i = 0; i < suppl1.size(); i++) {
+			weightTotal1 = weightTotal1 + suppl1.get(i).getWeight();
 		}
-		if (weightTotal != 100) {
+		for (int i = 0; i < suppl2.size(); i++) {
+			weightTotal2 = weightTotal2 + suppl2.get(i).getWeight();
+		}
+		for (int i = 0; i < suppl3.size(); i++) {
+			weightTotal3 = weightTotal3 + suppl3.get(i).getWeight();
+		}
+		for (int i = 0; i < suppl4.size(); i++) {
+			weightTotal4 = weightTotal4 + suppl4.get(i).getWeight();
+		}
+		for (int i = 0; i < suppl5.size(); i++) {
+			weightTotal5 = weightTotal5 + suppl5.get(i).getWeight();
+		}
+		
+		if (suppl1.size()>0 && weightTotal1 != 100) {
 			return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
 		}
+		if (suppl2.size()>0 && weightTotal2 != 100) {
+			return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
+		}
+		if (suppl3.size()>0 && weightTotal3 != 100) {
+			return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
+		}
+		if (suppl4.size()>0 && weightTotal4 != 100) {
+			return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
+		}
+		if (suppl5.size()>0 && weightTotal5 != 100) {
+			return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
+		}
+		
 		return true;
 	}
 
@@ -999,29 +1178,30 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return businessGoalsRepos.findSectionByNumberAndUserAppraisal(number, us);
 	}
 
-	public void addSuppGoals() {
-
-		List<SectionsData> secdata = new ArrayList<>();
-
-		for (int i = 1; i < 6; i++) {
-
-			secdata = userAppraisalService.findSectionDataByGoalId(i);
-
-			if (isElig(i)) {
-
-				for (SectionsData se : secdata) {
-
-					supplementaryGoalsListBg.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(i, model),
-							se));
-
-				}
-
-			}
-
-		}
-		System.out.print(supplementaryGoalsListBg.size());
-
-	}
+	/*
+	 * public void addSuppGoals() {
+	 * 
+	 * List<SectionsData> secdata = new ArrayList<>();
+	 * 
+	 * for (int i = 1; i < 6; i++) {
+	 * 
+	 * secdata = userAppraisalService.findSectionDataByGoalId(i);
+	 * 
+	 * if (isElig(i)) {
+	 * 
+	 * for (SectionsData se : secdata) {
+	 * 
+	 * supplementaryGoalsListBg .add(new
+	 * SupplementaryGoals(findSectionByNumberAndUserAppraisal(i, model), se));
+	 * 
+	 * }
+	 * 
+	 * }
+	 * 
+	 * } // System.out.print(supplementaryGoalsListBg.size());
+	 * 
+	 * }
+	 */
 
 	public void initSuppGoals() {
 
@@ -1048,7 +1228,20 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			try {
 				businessGoalsService.delete(businessGoals);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+	public void removeSuppgoal() {
+
+		List<BusinessGoals> list = businessGoalsRepos.findBySectionsUserAppraisal(model);
+
+		for (BusinessGoals businessGoals : list) {
+
+			try {
+				businessGoalsService.delete(businessGoals);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -1078,13 +1271,34 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public String saveSupplementaryGoals() {
 		// if can etc validation
-		for (int i = 0; i < supplementaryGoalsListBg.size(); i++) {
-			SupplementaryGoals supplementaryGoals = new SupplementaryGoals(
-					supplementaryGoalsListBg.get(i).getMidYearReview(),
-					supplementaryGoalsListBg.get(i).getSummaryRaiting(), supplementaryGoalsListBg.get(i).getWeight(),
-					supplementaryGoalsListBg.get(i).getSections(), supplementaryGoalsListBg.get(i).getSectionsData());
-			supplementaryGoalsService.save(supplementaryGoals);
+		/*
+		 * for (int i = 0; i < supplementaryGoalsListBg.size(); i++) {
+		 * SupplementaryGoals supplementaryGoals = new SupplementaryGoals(
+		 * supplementaryGoalsListBg.get(i).getMidYearReview(),
+		 * supplementaryGoalsListBg.get(i).getSummaryRaiting(),
+		 * supplementaryGoalsListBg.get(i).getWeight(),
+		 * supplementaryGoalsListBg.get(i).getSections(),
+		 * supplementaryGoalsListBg.get(i).getSectionsData());
+		 * supplementaryGoalsService.save(supplementaryGoals); }
+		 */
+		
+		
+		for (SupplementaryGoals sup : suppl1) {
+			supplementaryGoalsService.save(sup);
 		}
+		for (SupplementaryGoals sup : suppl2) {
+			supplementaryGoalsService.save(sup);
+		}
+		for (SupplementaryGoals sup : suppl3) {
+			supplementaryGoalsService.save(sup);
+		}
+		for (SupplementaryGoals sup : suppl4) {
+			supplementaryGoalsService.save(sup);
+		}
+		for (SupplementaryGoals sup : suppl5) {
+			supplementaryGoalsService.save(sup);
+		}
+		
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 	}
 
@@ -1112,7 +1326,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (!validateSections())
 				return null;
 			saveSections();
-			addSuppGoals();
+
+			fillSupp1();
+			fillSupp2();
+			fillSupp3();
+			fillSupp4();
+			fillSupp5();
+
+			//addSuppGoals();
 			initBg();
 			step++;
 			break;
@@ -1155,6 +1376,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				removeBgFromDB();
 				removeSections();
+
+			}
+			if (step == 3) {
+
+				removeBgFromDB();
 
 			}
 
