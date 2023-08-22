@@ -41,6 +41,8 @@
 								title="Add New appraisals" value="#{appraisalsView.addEditPage}"
 								onclick="#{appraisalsView.evictCache()}"
 								rendered="#{appraisalsView.canSave()}">
+								<f:param name="pageIndex" value="9" />
+								
 								<i class="ace-icon fa fa-plus bigger-230"></i>
 								<h:outputText value="Add" />
 							</h:outputLink>
@@ -104,6 +106,15 @@
 							paginatorPosition="bottom"
 							paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
 							rowSelectMode="checkbox">
+							<p:column headerText="Photo" styleClass="center">
+								<p:graphicImage id="photo" value="#{sessionView.getUser().photo}"
+									styleClass="img-circle aa-datatable-photo" />
+								<p:overlayPanel for="photo" style="text-align: left;width:350px"
+									showEvent="mouseover" hideEvent="mouseout">
+									<h:outputText escape="false"
+										value="#{htmlView.generateOverlayPanelContent(sessionView.getUser().username)}" />
+								</p:overlayPanel>
+							</p:column>
 							<p:column headerText="Name">
 								<h:outputText value="#{item.appraisalName}"
 									styleClass="bolder green" />

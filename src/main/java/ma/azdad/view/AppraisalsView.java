@@ -189,7 +189,13 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 		}
 
-		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
+		  String listPage = "viewAppraisals.xhtml";
+	        String parameters = "faces-redirect=true&pageIndex=9&id="+model.getId(); // Replace 91 with the actual ID value
+
+	        return addParameters(listPage, parameters);
+
+       // return addParameters(listPage, parameters);
+		//return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 	}
 
 	public Boolean validate() {
@@ -386,7 +392,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	public List<User> getUsersByManager() {
 
-		users = appraisalsService.findByHr(true, false, sessionView.getUser());
+		users = appraisalsService.findByHr(true, true, sessionView.getUser());
 		return users;
 	} 
 
@@ -456,6 +462,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	@Scheduled(fixedRate = 600000)
 	public void midYearReview() {
+		
 		if (!canMidYearReview())
 			return;
 		if (!validateMidYear()) {
@@ -469,6 +476,8 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		
+		
 	}
 
 	// FinalYearReview

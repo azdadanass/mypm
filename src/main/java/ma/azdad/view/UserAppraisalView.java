@@ -15,8 +15,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -1037,6 +1035,20 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (sec.size() > 0) {
 				for (Sections sect : sec) {
 
+					List<BusinessGoals> bgoal = businessGoalsService.findBySections(sect);
+					List<SupplementaryGoals> spgoal = userAppraisalRepos.findSuppByUser(model);
+					if (bgoal.size() > 0) {
+						for (BusinessGoals bg : bgoal) {
+
+							businessGoalsService.delete(bg);
+						}
+					}
+					if (spgoal.size() > 0) {
+						for (SupplementaryGoals sp : spgoal) {
+
+							supplementaryGoalsService.delete(sp);
+						}
+					}
 					sectionsService.delete(sect);
 				}
 			}
@@ -1051,7 +1063,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			log.error(e.getMessage());
 			return null;
 		}
-		return addParameters(listPage, "faces-redirect=true");
+//		 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+//		 externalContext.redirect("addEditUserAppraisal.xhtml?id="+model.getId()+"&pageIndex=1");
+		String listPage = "userAppraisalList.xhtml";
+        String parameters = "faces-redirect=true&pageIndex=1";
+
+        return addParameters(listPage, parameters);
 	}
 
 	public List<UserAppraisal> findAll() {
