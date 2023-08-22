@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import ma.azdad.GenericTest;
-import ma.azdad.model.SectionsData;
 import ma.azdad.service.DelegationService;;
 
 @Rollback(false)

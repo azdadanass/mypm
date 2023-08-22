@@ -29,7 +29,6 @@ import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.AffectationRepos;
 import ma.azdad.repos.AppraisalsRepos;
-import ma.azdad.repos.SupplementaryGoalsRepos;
 import ma.azdad.repos.UserAppraisalRepos;
 import ma.azdad.service.AppraisalsService;
 import ma.azdad.service.BusinessGoalsService;
