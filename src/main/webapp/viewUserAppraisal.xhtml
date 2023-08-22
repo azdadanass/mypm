@@ -108,7 +108,7 @@
 											<p:column headerText="Eligible">
 												<p:selectBooleanCheckbox
 													value="#{userAppraisalView.eligibleList[index]}"
-													disabled="#{userAppraisalView.eligibleList[index]}" />
+													disabled="#{index==0}" />
 											</p:column>
 											<p:column headerText="Weight">
 												<h:inputText value="#{userAppraisalView.weightList[index]}"
