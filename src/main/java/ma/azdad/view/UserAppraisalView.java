@@ -1233,20 +1233,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 
 	}
-	public void removeSuppGoal() {
-
-		List<SupplementaryGoals> list = userAppraisalRepos.findSuppByUser(model);
-
-		for (SupplementaryGoals supp : list) {
-
-			try {
-				supplementaryGoalsService.delete(supp);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
+	
 
 	public void removeSections() {
 
@@ -1381,7 +1368,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (step == 3) {
 
 				removeBgFromDB();
-				removeSuppGoal();
 
 			}
 

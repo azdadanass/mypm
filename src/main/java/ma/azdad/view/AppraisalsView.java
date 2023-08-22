@@ -24,13 +24,17 @@ import ma.azdad.model.AppraisalsHistory;
 import ma.azdad.model.AppraisalsStatus;
 import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
+import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.repos.AffectationRepos;
 import ma.azdad.repos.AppraisalsRepos;
+import ma.azdad.repos.SupplementaryGoalsRepos;
+import ma.azdad.repos.UserAppraisalRepos;
 import ma.azdad.service.AppraisalsService;
 import ma.azdad.service.BusinessGoalsService;
 import ma.azdad.service.SectionsService;
+import ma.azdad.service.SupplementaryGoalsService;
 import ma.azdad.service.UserAppraisalService;
 import ma.azdad.service.UtilsFunctions;
 import ma.azdad.utils.FacesContextMessages;
@@ -55,14 +59,23 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	@Autowired
 	UserView userview;
 
+
 	@Autowired
 	UserAppraisalService userAppraisalService;
+
+	@Autowired
+	SupplementaryGoalsService supplementaryGoalsService;
+	
+	@Autowired
+	UserAppraisalRepos userAppraisalRepos;
 
 	@Autowired
 	AppraisalsService appraisalsService;
 
 	@Autowired
 	SectionsService sectionsService;
+	
+
 
 	@Autowired
 	BusinessGoalsService businessGoalsService;
@@ -290,10 +303,17 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 						for (Sections sect : sec) {
 
 							List<BusinessGoals> bgoal = businessGoalsService.findBySections(sect);
-							if (sec.size() > 0) {
+							List<SupplementaryGoals> spgoal = userAppraisalRepos.findSuppByUser(usap);
+							if (bgoal.size() > 0) {
 								for (BusinessGoals bg : bgoal) {
 
 									businessGoalsService.delete(bg);
+								}
+							}
+							if (spgoal.size() > 0) {
+								for (SupplementaryGoals sp : spgoal) {
+
+									supplementaryGoalsService.delete(sp);
 								}
 							}
 							sectionsService.delete(sect);
