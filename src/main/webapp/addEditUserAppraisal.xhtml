@@ -90,41 +90,51 @@
 							<i class="ace-icon fa fa-file bigger-230"></i>
 							<h:outputText value="Files" />
 						</p:commandLink>
+						<h:outputLink value="viewUserAppraisal.xhtml"
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
+							rendered="#{param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED'}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit" />
+							<f:param name="id" value="#{userAppraisalView.model.id}" />
+							<f:param name="pageIndex" value="1" />
+						</h:outputLink>
+
+
+
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submited()}" update=":main_form"
-							title="Submited" rendered="#{userAppraisalView.canSubmited()}">
+							title="Submit" rendered="#{userAppraisalView.canSubmited()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Submited" />
+							<h:outputText value="Submit" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.approvedLM()}" update=":main_form"
-							title="Approved LM"
-							rendered="#{userAppraisalView.canApprovedLM()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Approved LM" />
+							title="Approve" rendered="#{userAppraisalView.canApprovedLM()}">
+							<i class="ace-icon fa fa-check bigger-230"></i>
+							<h:outputText value="Approve" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
 							action="#{userAppraisalView.rejectedLM()}" update=":main_form"
-							title="Rejected" rendered="#{userAppraisalView.canRejectedLM()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Rejected LM" />
+							title="Reject" rendered="#{userAppraisalView.canRejectedLM()}">
+							<i class="ace-icon fa fa-times bigger-230"></i>
+							<h:outputText value="Reject" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.approved()}" update=":main_form"
-							title="Approved" rendered="#{userAppraisalView.canApproved()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Approved RH" />
+							title="Approve" rendered="#{userAppraisalView.canApproved()}">
+							<i class="ace-icon fa fa-check bigger-230"></i>
+							<h:outputText value="Approve" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
 							action="#{userAppraisalView.rejected()}" update=":main_form"
-							title="Rejected" rendered="#{userAppraisalView.canRejected()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Rejected RH" />
+							title="Reject" rendered="#{userAppraisalView.canRejected()}">
+							<i class="ace-icon fa fa-times bigger-230"></i>
+							<h:outputText value="Reject" />
 						</p:commandLink>
 
 						<!-- 	################# MID year ################## -->
@@ -132,26 +142,25 @@
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submitedMidYear()}"
-							update=":main_form" title="Submited Mid"
+							update=":main_form" title="Submit"
 							rendered="#{userAppraisalView.canSubmitedMidYear()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Submited Mid Year" />
+							<h:outputText value="Submit" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.approvedLMMidYear()}"
-							update=":main_form" title="MYR Approved LM"
+							update=":main_form" title="Approve"
 							rendered="#{userAppraisalView.canApprovedLMMidYear()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="MYR Approved LM" />
+							<i class="ace-icon fa fa-check bigger-230"></i>
+							<h:outputText value="Approve" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
 							action="#{userAppraisalView.rejectedLMMid()}" update=":main_form"
-							title="MYR Rejected"
-							rendered="#{userAppraisalView.canRejectedLMMid()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="MYR Rejected RH" />
+							title="Reject" rendered="#{userAppraisalView.canRejectedLMMid()}">
+							<i class="ace-icon fa fa-times bigger-230"></i>
+							<h:outputText value="Reject" />
 						</p:commandLink>
 
 						<!-- 	##################  Final Year  ################# -->
@@ -159,26 +168,26 @@
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.SubmitedFinalYear()}"
-							update=":main_form" title="Submited Final Year"
+							update=":main_form" title="Submit"
 							rendered="#{userAppraisalView.canSubmitedFinalYear()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Submited Final Year" />
+							<h:outputText value="Submit" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.approvedLMFinalYear()}"
-							update=":main_form" title="FYR Approved LM"
+							update=":main_form" title="Approve"
 							rendered="#{userAppraisalView.canApprovedLMFinalYear()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="FYR Approved LM" />
+							<i class="ace-icon fa fa-check bigger-230"></i>
+							<h:outputText value="Approve" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-danger"
 							action="#{userAppraisalView.rejectedLMFinal()}"
-							update=":main_form" title="FYR Rejected"
+							update=":main_form" title="Reject"
 							rendered="#{userAppraisalView.canRejectedLMFinal()}">
-							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="FYR Rejected RH" />
+							<i class="ace-icon fa fa-times bigger-230"></i>
+							<h:outputText value="Reject" />
 						</p:commandLink>
 
 						<!-- 	################################### -->
@@ -186,17 +195,17 @@
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.closed()}" update=":main_form"
-							title="Closed" rendered="#{userAppraisalView.canClosed()}">
+							title="Close" rendered="#{userAppraisalView.canClosed()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Closed" />
+							<h:outputText value="Close" />
 						</p:commandLink>
-						<p:commandLink title="Delete"
+						<!-- <p:commandLink title="Delete"
 							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error"
 							onclick="PF('deleteDlg').show()"
 							rendered="#{userAppraisalView.canDelete()}">
 							<i class="ace-icon fa fa-trash-o bigger-230"></i>
 							<h:outputText value="Delete" />
-						</p:commandLink>
+						</p:commandLink> -->
 					</div>
 				</div>
 			</div>
@@ -475,8 +484,7 @@
 											<h:outputText value="Hire Date" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText
-												styleClass="bolder green" />
+											<h:outputText styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -509,8 +517,7 @@
 											<h:outputText value="DEP" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText
-												styleClass="bolder green" />
+											<h:outputText styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1296,7 +1303,7 @@
 												<f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
 											</h:outputText>
 										</p:column>
-										<!-- 	<p:column headerText="User" width="120">
+										<p:column headerText="User" width="120">
 											<h:outputText id="user" value="#{item.user.fullName}"
 												styleClass="purple bolder" />
 											<p:overlayPanel for="user"
@@ -1305,7 +1312,7 @@
 												<h:outputText escape="false"
 													value="#{htmlView.generateOverlayPanelContent(item.user.username)}" />
 											</p:overlayPanel>
-										</p:column> -->
+										</p:column>
 										<p:column headerText="Description" width="400">
 											<h:outputText value="#{item.description}" escape="false"
 												styleClass="aa-cut-text" />

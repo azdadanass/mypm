@@ -7,28 +7,28 @@ import ma.azdad.utils.Color;
 
 
 public enum UserAppraisalStatus {
-	CREATED("CREATED", Color.GREEN),
-	EDITED("EDITED", Color.ORANGE),
-	SUBMITED("SUBMITED", Color.BLUE),
-	REJECTED("REJECTED", Color.L_GREEN),
-	APPROVED_LM("APPROVED_LM", Color.GREY),
-	APPROVED("APPROVED", Color.PINK),
+	CREATED("Created", Color.GREEN),
+	EDITED("Edited", Color.ORANGE),
+	SUBMITED("Submitted", Color.BLUE),
+	REJECTED("Rejected", Color.L_GREEN),
+	APPROVED_LM("Approved L1", Color.GREY),
+	APPROVED("Approved", Color.PINK),
 	
 	//Mid Year 
-	MYR_SELF_ASSESSMENT("MYR_SELF_ASSESSMENT", Color.ORANGE),
-	SUBMITED_MID_YEAR("SUBMITED_MID_YEAR", Color.L_BLUE),
-	MYR_APPROVED_LM("MYR_APPROVED_LM", Color.PURPLE),
-	MYR_REJECTED("MYR_REJECTED", Color.RED),
+	MYR_SELF_ASSESSMENT("MYR Self Assessment", Color.ORANGE),
+	SUBMITED_MID_YEAR("MYR Submitted", Color.L_BLUE),
+	MYR_APPROVED_LM("MYR Approved", Color.PURPLE),
+	MYR_REJECTED("MYR Rejected", Color.RED),
 
 	
 	//Final year
-	FYR_SELF_ASSESSMENT("FYT_SELF_ASSESSMENT", Color.ORANGE),
-	SUBMITED_FINAL_YEAR("SUBMITED_FINAL_YEAR", Color.L_BLUE),
-	FYR_APPROVED_LM("FYR_APPROVED_LM", Color.PURPLE),
-	FYR_REJECTED("FYR_REJECTED", Color.RED),
+	FYR_SELF_ASSESSMENT("FY Self Assessment", Color.ORANGE),
+	SUBMITED_FINAL_YEAR("FYA Submitted", Color.L_BLUE),
+	FYR_APPROVED_LM("FYA Approved", Color.PURPLE),
+	FYR_REJECTED("FYA Rejected", Color.RED),
 	
 	//CANCELED("Canceled", Color.RED),
-	CLOSED("CLOSED", Color.RED),
+	CLOSED("Closed", Color.RED),
 	;
 	private final String value;
 	private final Color color;
