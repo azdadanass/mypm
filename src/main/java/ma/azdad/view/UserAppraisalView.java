@@ -422,7 +422,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			section.setEligible(eligibleList.get(i));
 			section.setUserappraisal(model);
 			section.setSectionsNumber(i);
-			sectionsService.save(section);
+			sectionsService.save(section); 
 
 		}
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
