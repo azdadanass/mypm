@@ -66,6 +66,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	@Autowired
 	SupplementaryGoalsService supplementaryGoalsService;
 	
+	
 	@Autowired
 	UserAppraisalRepos userAppraisalRepos;
 

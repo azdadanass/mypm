@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
@@ -1251,6 +1252,21 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 
 	}
+	
+	public void removeSuppGoal() {
+
+		List<SupplementaryGoals> list = userAppraisalRepos.findSuppByUser(model);
+
+		for (SupplementaryGoals supp : list) {
+
+			try {
+				supplementaryGoalsService.delete(supp);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
 
 	public Boolean canAddSupplementaryGoals() {
 		return true;
@@ -1299,7 +1315,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	@Transactional
-	public String nextStep() {
+	public String nextStep() throws IOException {
 		if (!canSave())
 			return addParameters(listPage, "faces-redirect=true");
 
@@ -1338,6 +1354,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			}
 			saveSupplementaryGoals();
 			edited();
+			
+		    // step++;
+		    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		    externalContext.redirect("addEditUserAppraisal.xhtml?id="+model.getId()+"&pageIndex=1");
 			// step++;
 			break;
 		/*
@@ -1368,7 +1388,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (step == 3) {
 
 				removeBgFromDB();
-
+				removeSuppGoal();
 			}
 
 			step--;
