@@ -37,7 +37,18 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 	private List<SupplementaryGoalsComment> commentList = new ArrayList<>();
 	private List<CommentGroup<SupplementaryGoalsComment>> commentGroupList;
 
-	
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public SupplementaryGoals(Integer midYearReview, Integer summaryRaiting, Integer weight, Sections sections,
 			SectionsData sectionsData) {
@@ -69,19 +80,7 @@ public class SupplementaryGoals extends GenericModel<Integer> {
 	public SupplementaryGoals() {
 		super();
 	}
-
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+	
 	@Column(name = "midYearReview")
 	public Integer getMidYearReview() {
 		return midYearReview;

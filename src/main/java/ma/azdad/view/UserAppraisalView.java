@@ -578,7 +578,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				// supplementaryGoalsListBg.add();
 
 				suppl5.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(5, model), se));
+				
+				
 			}
+			
+			System.out.println("list supp 5 :"+suppl5);
 
 		}
 
@@ -653,11 +657,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public Boolean validateWeightSuppGoals() {
 
-		double weightTotal1 = 0;
-		double weightTotal2 = 0;
-		double weightTotal3 = 0;
-		double weightTotal4 = 0;
-		double weightTotal5 = 0;
+		int weightTotal1 = 0;
+		int weightTotal2 = 0;
+		int weightTotal3 = 0;
+		int weightTotal4 = 0;
+		int weightTotal5 = 0;
 
 		for (int i = 0; i < suppl1.size(); i++) {
 			weightTotal1 = weightTotal1 + suppl1.get(i).getWeight();
@@ -669,11 +673,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			weightTotal3 = weightTotal3 + suppl3.get(i).getWeight();
 		}
 		for (int i = 0; i < suppl4.size(); i++) {
+			System.out.println(suppl4);
 			weightTotal4 = weightTotal4 + suppl4.get(i).getWeight();
+			
 		}
 		for (int i = 0; i < suppl5.size(); i++) {
+			System.out.println(i);
+			System.out.println(weightTotal5);
+			System.out.println(suppl5);
 			weightTotal5 = weightTotal5 + suppl5.get(i).getWeight();
 		}
+		
 		
 		if (suppl1.size()>0 && weightTotal1 != 100) {
 			return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
@@ -1196,30 +1206,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return businessGoalsRepos.findSectionByNumberAndUserAppraisal(number, us);
 	}
 
-	/*
-	 * public void addSuppGoals() {
-	 * 
-	 * List<SectionsData> secdata = new ArrayList<>();
-	 * 
-	 * for (int i = 1; i < 6; i++) {
-	 * 
-	 * secdata = userAppraisalService.findSectionDataByGoalId(i);
-	 * 
-	 * if (isElig(i)) {
-	 * 
-	 * for (SectionsData se : secdata) {
-	 * 
-	 * supplementaryGoalsListBg .add(new
-	 * SupplementaryGoals(findSectionByNumberAndUserAppraisal(i, model), se));
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 * } // System.out.print(supplementaryGoalsListBg.size());
-	 * 
-	 * }
-	 */
 
 	public void initSuppGoals() {
 
@@ -1291,17 +1277,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public String saveSupplementaryGoals() {
 		// if can etc validation
-		/*
-		 * for (int i = 0; i < supplementaryGoalsListBg.size(); i++) {
-		 * SupplementaryGoals supplementaryGoals = new SupplementaryGoals(
-		 * supplementaryGoalsListBg.get(i).getMidYearReview(),
-		 * supplementaryGoalsListBg.get(i).getSummaryRaiting(),
-		 * supplementaryGoalsListBg.get(i).getWeight(),
-		 * supplementaryGoalsListBg.get(i).getSections(),
-		 * supplementaryGoalsListBg.get(i).getSectionsData());
-		 * supplementaryGoalsService.save(supplementaryGoals); }
-		 */
-		
+
 		
 		for (SupplementaryGoals sup : suppl1) {
 			supplementaryGoalsService.save(sup);
