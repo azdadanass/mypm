@@ -60,14 +60,12 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	@Autowired
 	UserView userview;
 
-
 	@Autowired
 	UserAppraisalService userAppraisalService;
 
 	@Autowired
 	SupplementaryGoalsService supplementaryGoalsService;
-	
-	
+
 	@Autowired
 	UserAppraisalRepos userAppraisalRepos;
 
@@ -76,8 +74,6 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	@Autowired
 	SectionsService sectionsService;
-	
-
 
 	@Autowired
 	BusinessGoalsService businessGoalsService;
@@ -86,6 +82,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	private int step = 1;
 	private List<User> users;
+	private List<User> userNoAppraisalList = new ArrayList<>();
 	private List<Integer> yearRange;
 	private List<User> usersBackup; // Ajoutez cette liste pour stocker le backup
 
@@ -104,6 +101,14 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	@Override
 	protected void initParameters() {
 		super.initParameters();
+	}
+
+	public List<User> getUserNoAppraisalList() {
+		return userNoAppraisalList;
+	}
+
+	public void setUserNoAppraisalList(List<User> userNoAppraisalList) {
+		this.userNoAppraisalList = userNoAppraisalList;
 	}
 
 	public List<Integer> getYearRange() {
@@ -128,7 +133,24 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	public List<UserAppraisal> findByAppraisalAndManager() {
 
-		return appraisalsService.findByAppraisalAndManager(sessionView.getUser(), model);
+		return service.findByAppraisalAndManager(sessionView.getUser(), model);
+	}
+
+	public void saveUserAppraisalForNoUserAppraisal(User userNoAppraisal) {
+		
+		
+			//if (userNoAppraisal!=null) {
+				System.out.println(userNoAppraisal);
+				UserAppraisal userAppraisal = new UserAppraisal();
+				userAppraisal.setAppraisee(sessionView.getUser());
+				userAppraisal.setAppraisal(model);
+				userAppraisal.setEmploy(userNoAppraisal);
+				userAppraisal.setDateStatsCreated(new Date());
+				System.out.println(userAppraisal);
+				userAppraisalService.save(userAppraisal);
+
+				//evaluatedEmployees.add(usr);
+			//}
 	}
 
 	// save
@@ -152,13 +174,12 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (userAppraisalService.findUserAppraisalByAppraisal(model).size() == 0) {
 			for (User usr : users) {
 
-
 				UserAppraisal userAppraisal = new UserAppraisal();
 				userAppraisal.setAppraisee(sessionView.getUser());
 				userAppraisal.setAppraisal(model);
 				userAppraisal.setEmploy(usr);
 				userAppraisal.setDateStatsCreated(new Date());
-				
+
 				userAppraisal.setUserStatsCreated(sessionView.getUser());
 				userAppraisal.setUserStatsEdited(usr);
 				userAppraisal.setUserStatsSubmited(usr);
@@ -171,66 +192,52 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				userAppraisal.setUserStatsSubmitedFinalYear(usr);
 				userAppraisal.setUserStatsApprovedLMFinalYear(usr.getAffectation().getLineManager());
 				userAppraisal.setUserStatsClosed(usr);
-				
+
 				userAppraisalService.save(userAppraisal);
 
 			}
 
-		}  else {
-			
-			
+		} else {
 
-			
-		    List<UserAppraisal> liUser = userAppraisalService.findUserAppraisalByAppraisal(model);
+			List<UserAppraisal> liUser = userAppraisalService.findUserAppraisalByAppraisal(model);
 
-		   /* for (UserAppraisal usr : liUser) {
+			Set<User> evaluatedEmployees = new HashSet<>();
 
-				// List<UserAppraisal> uss =
-				// userAppraisalService.findUserAppraisalByUser(usr.getEmploy());
-				usr.setAppraisal(model);
-				userAppraisalService.save(usr);
+			for (UserAppraisal usr : liUser) {
+				evaluatedEmployees.add(usr.getEmploy());
+			}
 
-			}*/
+			for (User usr : users) {
+				if (!evaluatedEmployees.contains(usr)) {
+					boolean shouldCreateAppraisal = true;
 
-		    Set<User> evaluatedEmployees = new HashSet<>();
-		    
-		    for (UserAppraisal usr : liUser) {
-		        evaluatedEmployees.add(usr.getEmploy());
-		    }
+					for (UserAppraisal existingAppraisal : liUser) {
+						if (existingAppraisal.getEmploy().equals(usr)) {
+							shouldCreateAppraisal = false;
+							break;
+						}
+					}
 
-		    for (User usr : users) {
-		        if (!evaluatedEmployees.contains(usr)) {
-		            boolean shouldCreateAppraisal = true;
-		            
-		            for (UserAppraisal existingAppraisal : liUser) {
-		                if (existingAppraisal.getEmploy().equals(usr)) {
-		                    shouldCreateAppraisal = false;
-		                    break;
-		                }
-		            }
-		            
-		            if (shouldCreateAppraisal) {
-		                UserAppraisal userAppraisal = new UserAppraisal();
-		                userAppraisal.setAppraisee(sessionView.getUser());
-		                userAppraisal.setAppraisal(model);
-		                userAppraisal.setEmploy(usr);
-		                userAppraisal.setDateStatsCreated(new Date());
-		                
-		                userAppraisalService.save(userAppraisal);
+					if (shouldCreateAppraisal) {
+						UserAppraisal userAppraisal = new UserAppraisal();
+						userAppraisal.setAppraisee(sessionView.getUser());
+						userAppraisal.setAppraisal(model);
+						userAppraisal.setEmploy(usr);
+						userAppraisal.setDateStatsCreated(new Date());
 
-		                evaluatedEmployees.add(usr);
-		            }
-		        }
-		    }
+						userAppraisalService.save(userAppraisal);
+
+						evaluatedEmployees.add(usr);
+					}
+				}
+			}
 		}
 
-		  String listPage = "viewAppraisals.xhtml";
-	        String parameters = "faces-redirect=true&pageIndex=9&id="+model.getId(); // Replace 91 with the actual ID value
+		String listPage = "viewAppraisals.xhtml";
+		String parameters = "faces-redirect=true&pageIndex=9&id=" + model.getId();
 
-	        return addParameters(listPage, parameters);
+		return addParameters(listPage, parameters);
 
-       // return addParameters(listPage, parameters);
-		//return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 	}
 
 	public Boolean validate() {
@@ -429,7 +436,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 		users = appraisalsService.findByHr(true, true, sessionView.getUser());
 		return users;
-	} 
+	}
 
 	public void deleteUser(User user) {
 		// Stockez le backup de la liste users avant de supprimer l'utilisateur
@@ -491,77 +498,74 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	}
 
 	// MidYearReview
-		public Boolean canMidYearReview(Appraisals ap) {
-			return AppraisalsStatus.OPEN.equals(ap.getAppraisalsStatus());
+	public Boolean canMidYearReview(Appraisals ap) {
+		return AppraisalsStatus.OPEN.equals(ap.getAppraisalsStatus());
+	}
+
+	public void midYearReview(Appraisals ap) {
+
+		if (!canMidYearReview(ap))
+			return;
+		if (!validateMidYear(ap)) {
+			return;
 		}
+		ap.setDateStatsMid(new Date());
+		ap.setUserStatsMid(sessionView.getUser());
+		ap.setAppraisalsStatus(AppraisalsStatus.MID_YEAR_REVIEW);
+		ap.addHistory(new AppraisalsHistory(ap.getAppraisalsStatus().getValue(), sessionView.getUser(),
+				"change AppraisalsStats from OPEN to MID_YEAR_REVIEW"));
 
-		
-		public void midYearReview(Appraisals ap) {
+		service.save(ap);
+		// model = service.findOne(model.getId());
 
-			if (!canMidYearReview(ap))
-				return;
-			if (!validateMidYear(ap)) {
-				return;
-			}
-			ap.setDateStatsMid(new Date());
-			ap.setUserStatsMid(sessionView.getUser());
-			ap.setAppraisalsStatus(AppraisalsStatus.MID_YEAR_REVIEW);
-			ap.addHistory(new AppraisalsHistory(ap.getAppraisalsStatus().getValue(), sessionView.getUser(),
-					"change AppraisalsStats from OPEN to MID_YEAR_REVIEW"));
+	}
 
-			service.save(ap);
-			// model = service.findOne(model.getId());
+	@Scheduled(fixedRate = 600000)
+	public void autoMidFinalYear() {
+		for (Appraisals ap : findAll()) {
 
-		}
-
-		@Scheduled(fixedRate = 600000)
-		public void autoMidFinalYear() {
-			for (Appraisals ap : findAll()) {
-				
 			midYearReview(ap);
 			finalYearReview(ap);
-			
-			}
-		}
 
-		// FinalYearReview
-		public Boolean canFinalYearReview(Appraisals ap) {
-			return AppraisalsStatus.MID_YEAR_REVIEW.equals(ap.getAppraisalsStatus());
 		}
+	}
 
-		
-		public void finalYearReview(Appraisals ap) {
-			if (!canFinalYearReview(ap))
-				return;
-			if (!validateFinalYear(ap)) {
-				return;
-			}
-			ap.setDateStatsFinal(new Date());
-			ap.setUserStatsFinal(sessionView.getUser());
-			ap.setAppraisalsStatus(AppraisalsStatus.FINAL_REVIEW);
-			ap.addHistory(new AppraisalsHistory(ap.getAppraisalsStatus().getValue(), sessionView.getUser(),
-					"change AppraisalsStats from MID_YEAR_REVIEW to FINAL_YEAR_REVIEW"));
+	// FinalYearReview
+	public Boolean canFinalYearReview(Appraisals ap) {
+		return AppraisalsStatus.MID_YEAR_REVIEW.equals(ap.getAppraisalsStatus());
+	}
 
-			service.save(ap);
-			//model = service.findOne(model.getId());
+	public void finalYearReview(Appraisals ap) {
+		if (!canFinalYearReview(ap))
+			return;
+		if (!validateFinalYear(ap)) {
+			return;
 		}
-		
-		public Boolean validateMidYear(Appraisals ap) {
-			Date dt = new Date();
-			if (!(ap.getMidYearReviewEndDate().compareTo(dt) >= 0 && ap.getMidYearReviewStartDate().compareTo(dt) <= 0)) {
-				return false;
-			}
-			return true;
-		}
+		ap.setDateStatsFinal(new Date());
+		ap.setUserStatsFinal(sessionView.getUser());
+		ap.setAppraisalsStatus(AppraisalsStatus.FINAL_REVIEW);
+		ap.addHistory(new AppraisalsHistory(ap.getAppraisalsStatus().getValue(), sessionView.getUser(),
+				"change AppraisalsStats from MID_YEAR_REVIEW to FINAL_YEAR_REVIEW"));
 
-		public Boolean validateFinalYear(Appraisals ap) {
-			Date dt = new Date();
-			if (!(ap.getEndYearSummaryEndDate().compareTo(dt) >= 0
-					&& ap.getEndYearSummaryStartDate().compareTo(dt) <= 0)) {
-				return false;
-			}
-			return true;
+		service.save(ap);
+		// model = service.findOne(model.getId());
+	}
+
+	public Boolean validateMidYear(Appraisals ap) {
+		Date dt = new Date();
+		if (!(ap.getMidYearReviewEndDate().compareTo(dt) >= 0 && ap.getMidYearReviewStartDate().compareTo(dt) <= 0)) {
+			return false;
 		}
+		return true;
+	}
+
+	public Boolean validateFinalYear(Appraisals ap) {
+		Date dt = new Date();
+		if (!(ap.getEndYearSummaryEndDate().compareTo(dt) >= 0 && ap.getEndYearSummaryStartDate().compareTo(dt) <= 0)) {
+			return false;
+		}
+		return true;
+	}
 
 	// Closed
 	public Boolean canClosed() {
@@ -579,6 +583,13 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				"change AppraisalsStats from FINAL_YEAR_REVIEW to CLOSED"));
 		service.save(model);
 		model = service.findOne(model.getId());
+	}
+
+	public List<User> findUserNoAppraisal() {
+		userNoAppraisalList = new ArrayList<>();
+		List<User> userNoAppraisalList = service.findUserNoAppraisal(true, true, sessionView.getUser(), model);
+
+		return userNoAppraisalList;
 	}
 
 }

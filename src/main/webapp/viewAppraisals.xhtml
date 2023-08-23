@@ -87,7 +87,7 @@
 							<h:outputText value="Edit" />
 							<f:param name="id" value="#{appraisalsView.id}" />
 							<f:param name="pageIndex" value="9" />
-							
+
 						</h:outputLink>
 						<p:commandLink title="Delete"
 							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error"
@@ -135,7 +135,7 @@
 										<h:outputText escape="false"
 											value="#{htmlView.generateOverlayPanelContent(appraisalsView.model.dateStatsMid,appraisalsView.model.userStatsMid.username)}" />
 									</p:overlayPanel></li>
-   
+
 
 								<li
 									class="#{appraisalsView.model.dateStatsFinal!=null?'complete':''}"><span
@@ -181,6 +181,11 @@
 							class="orange ace-icon fa fa-users bigger-120"></i> <h:outputText
 								value="Team Appraisal" styleClass="hidden-xs" />
 					</a></li>
+					<li><a data-toggle="tab" href="#tab6"> <i
+							class="red ace-icon fa fa-users bigger-120"></i> <h:outputText
+								value="Team without Appraisal" styleClass="hidden-xs" />
+					</a></li>
+
 					<li><a data-toggle="tab" href="#tab2"> <i
 							class="blue ace-icon fa fa-file bigger-120"></i> <h:outputText
 								value=" Attachements" styleClass="hidden-xs" />
@@ -651,6 +656,65 @@
 													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
 													<f:param name="id" value="#{item.id}" />
 												</h:outputLink>
+											</div>
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="tab6" class="tab-pane">
+						<div class="space-8" />
+						<div class="row">
+							<div class="col-sm-offset-1 col-sm-10">
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-9 hidden-xs">
+										<i class="fa fa-list" />
+										<h:outputText value="Employ without Appraisal" />
+									</div>
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									<p:dataTable value="#{appraisalsView.findUserNoAppraisal()}"
+										filteredValue="#{appraisalsView.list3}" rowKey="#{item.id}"
+										selection="#{appraisalsView.list4}" id="myTeamNoAppraisal"
+										widgetVar="myTeamAppraisals" var="item" rows="20"
+										styleClass="table table-striped table-hover center"
+										paginatorAlwaysVisible="false" paginator="true"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+										rowSelectMode="checkbox">
+										<p:column headerText="Photo">
+											<p:graphicImage value="#{fileUploadView.stream}"
+												styleClass="img-circle aa-datatable-photo">
+												<f:param name="fileName" value="#{item.photo}" />
+											</p:graphicImage>
+										</p:column>
+										<p:column headerText="Full Name">
+											<h:outputText value="#{item.username}"
+												styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Employe Status">
+											<h:outputText value="#{item.status}" styleClass="bolder pink" />
+										</p:column>
+										<p:column headerText="LOB" width="160">
+											<h:outputText value="#{item.lobName}"
+												styleClass="light-green" />
+										</p:column>
+										<p:column headerText="Function">
+											<h:outputText value="#{item.job}" styleClass="bolder blue" />
+										</p:column>
+										<p:column headerText="Actions" width="150" exportable="true">
+											<div class="action-buttons center">
+												<p:commandLink
+													action="#{appraisalsView.saveUserAppraisalForNoUserAppraisal(item)}"
+													update=":main_form"
+													title="Create Appraisal"
+													styleClass="aa-tooltip tooltip-info">
+													<i class="ace-icon fa fa-plus bigger-130 green" />
+													<f:param name="id" value="#{appraisalsView.model.id}" />
+													<f:param name="pageIndex" value="9" />
+												</p:commandLink>
 											</div>
 										</p:column>
 									</p:dataTable>
