@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -174,18 +176,52 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 			}
 
-		} else {
-			List<UserAppraisal> liUser = userAppraisalService.findUserAppraisalByAppraisal(model);
+		}  else {
+			
+			
 
-			for (UserAppraisal usr : liUser) {
+			
+		    List<UserAppraisal> liUser = userAppraisalService.findUserAppraisalByAppraisal(model);
+
+		   /* for (UserAppraisal usr : liUser) {
 
 				// List<UserAppraisal> uss =
 				// userAppraisalService.findUserAppraisalByUser(usr.getEmploy());
 				usr.setAppraisal(model);
 				userAppraisalService.save(usr);
 
-			}
+			}*/
 
+		    Set<User> evaluatedEmployees = new HashSet<>();
+		    
+		    for (UserAppraisal usr : liUser) {
+		        evaluatedEmployees.add(usr.getEmploy());
+		    }
+
+		    for (User usr : users) {
+		        if (!evaluatedEmployees.contains(usr)) {
+		            boolean shouldCreateAppraisal = true;
+		            
+		            for (UserAppraisal existingAppraisal : liUser) {
+		                if (existingAppraisal.getEmploy().equals(usr)) {
+		                    shouldCreateAppraisal = false;
+		                    break;
+		                }
+		            }
+		            
+		            if (shouldCreateAppraisal) {
+		                UserAppraisal userAppraisal = new UserAppraisal();
+		                userAppraisal.setAppraisee(sessionView.getUser());
+		                userAppraisal.setAppraisal(model);
+		                userAppraisal.setEmploy(usr);
+		                userAppraisal.setDateStatsCreated(new Date());
+		                
+		                userAppraisalService.save(userAppraisal);
+
+		                evaluatedEmployees.add(usr);
+		            }
+		        }
+		    }
 		}
 
 		  String listPage = "viewAppraisals.xhtml";
