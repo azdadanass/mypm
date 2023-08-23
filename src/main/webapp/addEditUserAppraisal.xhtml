@@ -609,13 +609,12 @@
 							&nbsp;
 
 							<f:subview
-								rendered="#{userAppraisalView.findSectionsByEligible(userAppraisalView.model).size()!=0}">
-
+								rendered="#{userAppraisalView.findSectionsByEligible(userAppraisalView.model).size() ne 0}">
 								<div id="chartContainer1"
 									style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div>
 
 								<script type="text/javascript">
-						Highcharts.chart('chartContainer1', {
+							Highcharts.chart('chartContainer1', {
 						    chart: {
 						        plotBackgroundColor: null,
 						        plotBorderWidth: null,

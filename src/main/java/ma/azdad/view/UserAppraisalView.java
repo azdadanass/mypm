@@ -430,6 +430,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	// Eligible True
 	public List<Sections> findSectionsByEligible(UserAppraisal ua) {
+		
 		List<Sections> s = userAppraisalService.findSectionByEligible(ua);
 		return s;
 	}
@@ -495,12 +496,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 			for (SectionsData se : secdata) {
 					
-				System.out.println(findSectionByNumberAndUserAppraisal(1, model));
-				System.out.println(se);
+				System.out.println("section :"+findSectionByNumberAndUserAppraisal(1, model));
+				System.out.println("section DAta : "+se);
 				// supplementaryGoalsListBg.add();
 
 				suppl1.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(1, model), se));
 			}
+			System.out.println("list:");
+			System.out.println(suppl1);
 
 		}
 
@@ -575,11 +578,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 			for (SectionsData se : secdata) {
 
-				// supplementaryGoalsListBg.add();
-
 				suppl5.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(5, model), se));
-				
-				
+						
 			}
 			
 			System.out.println("list supp 5 :"+suppl5);
@@ -588,25 +588,22 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	}
 
-	public List<SupplementaryGoals> findSuppGoalSection1() {
-		return userAppraisalService.findSupGoalsBySection1(model);
-	}
-
-	public List<SupplementaryGoals> findSuppGoalSection2() {
-		return userAppraisalService.findSupGoalsBySection2(model);
-	}
-
-	public List<SupplementaryGoals> findSuppGoalSection3() {
-		return userAppraisalService.findSupGoalsBySection3(model);
-	}
-
-	public List<SupplementaryGoals> findSuppGoalSection4() {
-		return userAppraisalService.findSupGoalsBySection4(model);
-	}
-
-	public List<SupplementaryGoals> findSuppGoalSection5() {
-		return userAppraisalService.findSupGoalsBySection5(model);
-	}
+	/*
+	 * public List<SupplementaryGoals> findSuppGoalSection1() { return
+	 * userAppraisalService.findSupGoalsBySection1(model); }
+	 * 
+	 * public List<SupplementaryGoals> findSuppGoalSection2() { return
+	 * userAppraisalService.findSupGoalsBySection2(model); }
+	 * 
+	 * public List<SupplementaryGoals> findSuppGoalSection3() { return
+	 * userAppraisalService.findSupGoalsBySection3(model); }
+	 * 
+	 * public List<SupplementaryGoals> findSuppGoalSection4() { return
+	 * userAppraisalService.findSupGoalsBySection4(model); }
+	 * 
+	 * public List<SupplementaryGoals> findSuppGoalSection5() { return
+	 * userAppraisalService.findSupGoalsBySection5(model); }
+	 */
 
 	public Boolean canAddBusiness() {
 		return goaltitlecount < 5;
