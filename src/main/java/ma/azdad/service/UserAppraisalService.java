@@ -12,6 +12,7 @@ import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
+import ma.azdad.model.UserAppraisalStatus;
 import ma.azdad.repos.UserAppraisalRepos;
 
 @Component
@@ -206,6 +207,27 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		}
 
 		return list;
+	}
+	
+	@Cacheable("userAppraisalService.countToSubmitted")
+	public Long countToSubmitted(String username) {
+		return repos.countToSubmitted(username, UserAppraisalStatus.EDITED);
+	}
+	
+	@Cacheable("userAppraisalService.countToApproved")
+	public Long countToApproved(User u) {
+		if(u.getIsMyPmLineManager()) {
+			return repos.countToApprovedLM(u, UserAppraisalStatus.SUBMITED);
+
+		}else {
+			return repos.countToApprovedHR(u, UserAppraisalStatus.APPROVED_LM);
+
+		}
+	}
+	
+	@Cacheable("userAppraisalService.countSections")
+	public Integer countSections(UserAppraisal u) {
+		return repos.countSections(u);
 	}
 	
 	@Cacheable("userAppraisalService.findSectionByUserAppraisal")
