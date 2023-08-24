@@ -604,6 +604,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	 * public List<SupplementaryGoals> findSuppGoalSection5() { return
 	 * userAppraisalService.findSupGoalsBySection5(model); }
 	 */
+	
+	
+	public Integer countSections(UserAppraisal u) {
+		return userAppraisalService.countSections(u);
+	}
 
 	public Boolean canAddBusiness() {
 		return goaltitlecount < 5;

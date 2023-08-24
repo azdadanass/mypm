@@ -37,9 +37,68 @@
 						<f:param name="pageIndex" value="1" />
 					</h:outputLink>
 				</div>
+				
+									
 				<div class="navbar-buttons navbar-header pull-right"
 					role="navigation" style="float: right !important">
 					<ul class="nav ace-nav">
+<f:subview rendered="#{sessionView.isMyPm}">
+							<li class="green">
+								<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+									<i class="ace-icon fa fa-tasks"></i>
+									<span class="badge badge-grey">
+										<h:outputText value="#{taskView.total}" />
+									</span>
+								</a>
+								<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close" style="width: 200px">
+									<li class="dropdown-header">
+										<i class="ace-icon fa fa-check"></i>
+										<h:outputText value="Tasks" />
+									</li>
+									<li class="dropdown-content">
+										<ul class="dropdown-menu dropdown-navbar">
+											<li>
+												<h:outputLink value="userAppraisalList.xhtml">
+													<span class="clearfix">
+														<span class="pull-left">
+															<i class="ace-icon fa fa-check green  " style="font-size: 20px" />
+															&nbsp;&nbsp;
+															<h:outputText value=" To Submit " />
+														</span>
+														<span class="pull-right badge badge-green">
+															<h:outputText value="#{taskView.totalToSubmit}" />
+														</span>
+													</span>
+													<f:param name="pageIndex" value="1" />
+												</h:outputLink>
+											</li>
+											
+										</ul>
+									</li>
+									<li class="dropdown-content">
+										<ul class="dropdown-menu dropdown-navbar">
+											<li>
+												<h:outputLink value="userAppraisalList.xhtml" rendered="#{sessionView.isMyPmHr or sessionView.isMyPmLineManager}">
+													<span class="clearfix">
+														<span class="pull-left">
+															<i class="ace-icon fa fa-check green  " style="font-size: 20px" />
+															&nbsp;&nbsp;
+															<h:outputText value=" To Approve " />
+														</span>
+														<span class="pull-right badge badge-green">
+															<h:outputText value="#{taskView.totalToApprove}" />
+														</span>
+													</span>
+													<f:param name="pageIndex" value="1" />
+												</h:outputLink>
+											</li>
+											
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</f:subview>
+
 
 						<li
 							class="#{erpView.erp('light-blue','light-orange','light-green')}">

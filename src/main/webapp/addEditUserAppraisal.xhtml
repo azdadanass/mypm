@@ -609,7 +609,7 @@
 							&nbsp;
 
 							<f:subview
-								rendered="#{userAppraisalView.findSectionsByEligible(userAppraisalView.model).size() ne 0}">
+								rendered="#{userAppraisalView.countSections(userAppraisalView.model) >= 1}">
 								<div id="chartContainer1"
 									style="width: 45%; margin-left: 300px; height: 275px; display: inline-block;"></div>
 

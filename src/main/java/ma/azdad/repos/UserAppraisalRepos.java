@@ -13,6 +13,7 @@ import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
+import ma.azdad.model.UserAppraisalStatus;
 
 @Repository
 public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer> {
@@ -70,6 +71,18 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("from SupplementaryGoals s where  s.sections.userappraisal=?1")
 	List<SupplementaryGoals> findSuppByUser(UserAppraisal u);
 	
+	@Query("select count(*) from UserAppraisal u  where u.employ.username=?1 and u.userAppraisalStatus=?2 order by id desc    ")
+	Long countToSubmitted(String username, UserAppraisalStatus status);
+	
+	@Query("select count(*) from UserAppraisal u  where u.employ.affectation.lineManager=?1 and u.userAppraisalStatus=?2 order by id desc    ")
+	Long countToApprovedLM( User u,UserAppraisalStatus status);
+	
+	
+	@Query("select count(*) from UserAppraisal u  where u.employ.affectation.hrManager=?1 and u.userAppraisalStatus=?2 order by id desc    ")
+	Long countToApprovedHR( User u,UserAppraisalStatus status);
+	
+	@Query("select count(*) from Sections s  where s.userappraisal=?1   ")
+	Integer countSections(UserAppraisal u);
 	
 	/*
 	 * //not used

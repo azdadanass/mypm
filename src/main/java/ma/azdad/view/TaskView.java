@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import ma.azdad.service.ProjectService;
 import ma.azdad.service.RestrictionService;
+import ma.azdad.service.UserAppraisalService;
 
 @ManagedBean
 @Component
@@ -21,32 +22,37 @@ public class TaskView implements Serializable {
 	protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private ProjectService projectService;
-
+	private UserAppraisalService userAppraisalService;
 	@Autowired
-	private RestrictionService restrictionService;
+	private SessionView sessionView;
+	
 
-	private Long totalProject;
-	private Long totalActiveRestriction;
+	private Long totalToSubmit;
+	private Long totalToApprove;
+
+
+	
 	private Long total = 0l;
 
 	@PostConstruct
 	public void init() {
-		totalProject = projectService.countWithoutTasks();
-		totalActiveRestriction = restrictionService.countActive();
-		total = totalProject + totalActiveRestriction;
+		totalToSubmit = userAppraisalService.countToSubmitted(sessionView.getUser().getUsername());
+		totalToApprove = userAppraisalService.countToApproved(sessionView.getUser());
+
+		total = totalToSubmit+totalToApprove ;
 	}
 
-	public Long getTotalProject() {
-		return totalProject;
+	public Long getTotalToApprove() {
+		return totalToApprove;
+	}
+
+	public Long getTotalToSubmit() {
+		return totalToSubmit;
 	}
 
 	public Long getTotal() {
 		return total;
 	}
 
-	public Long getTotalActiveRestriction() {
-		return totalActiveRestriction;
-	}
-
+	
 }
