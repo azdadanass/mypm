@@ -15,7 +15,7 @@ public interface SectionsRepos extends JpaRepository<Sections, Integer>{
 	@Query("SELECT DISTINCT s.sectionsTitle FROM Sections s")
     List<String> findDistinctSectionTitles();
 	
-	@Query("from Sections  s where s.userappraisal=?1 ")
+	@Query("from Sections s where s.userappraisal=?1 ")
 	List<Sections> findByUserAppraisal(UserAppraisal uap);
 
 }

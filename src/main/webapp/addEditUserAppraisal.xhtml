@@ -10,14 +10,13 @@
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
 	<ui:define name="title">
-
 		<h:outputText value="#{staticView.applicationName}" />
 	</ui:define>
 	<ui:define name="header">
-		<script src="https://code.highcharts.com/highcharts.js"></script>
-		<script src="https://code.highcharts.com/modules/exporting.js"></script>
-		<script src="https://code.highcharts.com/modules/export-data.js"></script>
-		<ui:include src="template/header.xhtml" />
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <ui:include src="template/header.xhtml" />
 	</ui:define>
 	<ui:define name="sider">
 
@@ -92,14 +91,24 @@
 						</p:commandLink>
 						<h:outputLink value="viewUserAppraisal.xhtml"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
-							rendered="#{param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED'}">
+							rendered="#{(param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED' )and userAppraisalView.countSections(userAppraisalView.model) == 0}">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
-							<h:outputText value="Edit" />
+							<h:outputText value="Edit ajouter" />
+							<f:param name="id" value="#{userAppraisalView.model.id}" />
+							<f:param name="pageIndex" value="1" />		
+							<f:param name="isEdit" value="0" />
+											
+						</h:outputLink>
+						
+						<h:outputLink value="viewUserAppraisal.xhtml"
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
+							rendered="#{(param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED') and userAppraisalView.countSections(userAppraisalView.model) > 0}">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Edit " />
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
 							<f:param name="pageIndex" value="1" />
-						</h:outputLink>
-
-
+							<f:param name="isEdit" value="1" />
+						</h:outputLink> 
 
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
@@ -108,6 +117,7 @@
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submit" />
 						</p:commandLink>
+						
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.approvedLM()}" update=":main_form"
@@ -206,6 +216,7 @@
 							<i class="ace-icon fa fa-trash-o bigger-230"></i>
 							<h:outputText value="Delete" />
 						</p:commandLink> -->
+						
 					</div>
 				</div>
 			</div>

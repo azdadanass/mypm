@@ -149,6 +149,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				System.out.println(userAppraisal);
 				userAppraisalService.save(userAppraisal);
 
+				evictCache();
 				//evaluatedEmployees.add(usr);
 			//}
 	}

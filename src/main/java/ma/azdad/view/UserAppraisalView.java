@@ -394,6 +394,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public Boolean validateEligibleWeight1() {
+		
 		for (int i = 0; i < titleList.size(); i++) {
 			if ((eligibleList.get(i) == true) && (weightList.get(i) == 0)) {
 				return FacesContextMessages.ErrorMessages("you should enter the value");
@@ -472,9 +473,15 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public List<Sections> findSectionByUserAppraisal() {
+		System.out.println(model);
 		return sectionsService.findSectionsByUserAppraisal(model);
 	}
-
+	
+	public List<Sections> findSectionByUserAppraisal(int idedit) {
+		//System.out.println(model);
+		return sectionsService.findSectionsByUserAppraisal(userAppraisalService.findOne(idedit));
+	}
+	
 	public Sections findSection(int i) {
 
 		return sectionsService.findSectionsByUserAppraisal(model).get(i);
@@ -754,6 +761,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				sessionView.getUser()+" has submitted "+model.getEmploy().getFullName()+" Appraisal"));
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canEdited() {
@@ -772,6 +780,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canApprovedLM() {
@@ -791,6 +800,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canRejectedLM() {
@@ -810,6 +820,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canApproved() {
@@ -830,6 +841,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canRejected() {
@@ -850,6 +862,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	// ################################# MID YEAr
@@ -872,6 +885,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canSubmitedMidYear() {
@@ -890,6 +904,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				sessionView.getUser()+" has Submitted "+model.getEmploy().getFullName()+" Appraisal"));
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canApprovedLMMidYear() {
@@ -909,6 +924,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canRejectedLMMid() {
@@ -929,6 +945,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	// ################################# Final YEAr
@@ -951,6 +968,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canSubmitedFinalYear() {
@@ -970,6 +988,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canApprovedLMFinalYear() {
@@ -989,6 +1008,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canRejectedLMFinal() {
@@ -1009,6 +1029,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		service.save(model);
 		model = service.findOne(model.getId());
+		evictCache();
 	}
 
 	public Boolean canClosed() {
@@ -1311,18 +1332,24 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	@Transactional
 	public String nextStep() throws IOException {
-		if (!canSave())
+		if (!canSave()) {
+			System.out.println("cant save");
 			return addParameters(listPage, "faces-redirect=true");
-
+			
+		}
+		System.out.println("can save !");
+		
 		switch (step) {
 		case 1:
-
+			System.out.println(step);
 			if (!validateEligibleWeight())
 				return null;
 			if (!validateEligibleWeight1())
 				return null;
 			if (!validateSections())
 				return null;
+			
+			
 			saveSections();
 
 			fillSupp1();

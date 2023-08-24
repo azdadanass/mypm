@@ -74,11 +74,11 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("select count(*) from UserAppraisal u  where u.employ.username=?1 and u.userAppraisalStatus=?2 order by id desc    ")
 	Long countToSubmitted(String username, UserAppraisalStatus status);
 	
-	@Query("select count(*) from UserAppraisal u  where u.employ.affectation.lineManager=?1 and u.userAppraisalStatus=?2 order by id desc    ")
+	@Query("select count(*) from UserAppraisal u  where u.employ.affectation.lineManager=?1 and u.userAppraisalStatus=?2 order by id desc ")
 	Long countToApprovedLM( User u,UserAppraisalStatus status);
 	
 	
-	@Query("select count(*) from UserAppraisal u  where u.employ.affectation.hrManager=?1 and u.userAppraisalStatus=?2 order by id desc    ")
+	@Query("select count(*) from UserAppraisal u  where u.employ.affectation.hrManager=?1 and u.userAppraisalStatus=?2 order by id desc  ")
 	Long countToApprovedHR( User u,UserAppraisalStatus status);
 	
 	@Query("select count(*) from Sections s  where s.userappraisal=?1   ")
