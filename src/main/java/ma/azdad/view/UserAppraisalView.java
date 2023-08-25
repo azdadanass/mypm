@@ -316,7 +316,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void init() {
 		super.init();
 		// chart*****************************
-		editSupplementaryGoals();
 		businessGoalsListEdit = new ArrayList<>();
 		editBusinessGoals();
 		sectionEditList = new ArrayList<>();
@@ -453,13 +452,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public void editSupplementaryGoals() {
+		editsuppl1 = new ArrayList<>();
+		editsuppl2 = new ArrayList<>();
+		editsuppl3 = new ArrayList<>();
+		editsuppl4 = new ArrayList<>();
+		editsuppl5 = new ArrayList<>();
 		for (int i = 1; i < 6; i++) {
 
-			for (SupplementaryGoals supplementary : supplementaryGoalsRepos.findByUserAppraisal(model, i)) {
+			for (SupplementaryGoals supplementary : supplementaryGoalsService.findByUserAppraisal(model, i)) {
 				switch (i) {
 				case 1:
 					editsuppl1.add(supplementary);
-
 					break;
 				case 2:
 					editsuppl2.add(supplementary);
@@ -771,23 +774,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	}
 
-	/*
-	 * public List<SupplementaryGoals> findSuppGoalSection1() { return
-	 * userAppraisalService.findSupGoalsBySection1(model); }
-	 * 
-	 * public List<SupplementaryGoals> findSuppGoalSection2() { return
-	 * userAppraisalService.findSupGoalsBySection2(model); }
-	 * 
-	 * public List<SupplementaryGoals> findSuppGoalSection3() { return
-	 * userAppraisalService.findSupGoalsBySection3(model); }
-	 * 
-	 * public List<SupplementaryGoals> findSuppGoalSection4() { return
-	 * userAppraisalService.findSupGoalsBySection4(model); }
-	 * 
-	 * public List<SupplementaryGoals> findSuppGoalSection5() { return
-	 * userAppraisalService.findSupGoalsBySection5(model); }
-	 */
-
 	public Integer countSections(UserAppraisal u) {
 		return userAppraisalService.countSections(u);
 	}
@@ -831,12 +817,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 	}
 
-	public void removeBusinessGoal(BusinessGoals bg) {
+	public void removeBusinessGoal(BusinessGoals bg) throws DataIntegrityViolationException, Exception {
 
 		if (getIntegerParameter("isEdit") == 1) {
-			
 			if (!goalTitleList.contains(bg.getGoalTitle()))
 				goalTitleList.add(bg.getGoalTitle());
+
+			businessGoalsService.delete(bg);
 			businessGoalsListEdit.remove(bg);
 			goaltitlecount--;
 		}
@@ -845,10 +832,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				goalTitleList.add(bg.getGoalTitle());
 
 			businessGoalsList.remove(bg);
-			goaltitlecount--;	
+			goaltitlecount--;
 		}
 
-		
 	}
 
 	public Sections findSectionId() {
@@ -1593,7 +1579,27 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public String saveSupplementaryGoals() {
 		// if can etc validation
+		if (getIntegerParameter("isEdit") == 1) {
 
+			for (SupplementaryGoals sup : editsuppl1) {
+				supplementaryGoalsService.save(sup);
+			}
+			for (SupplementaryGoals sup : editsuppl2) {
+				supplementaryGoalsService.save(sup);
+			}
+			for (SupplementaryGoals sup : editsuppl3) {
+				supplementaryGoalsService.save(sup);
+			}
+			for (SupplementaryGoals sup : editsuppl4) {
+				supplementaryGoalsService.save(sup);
+			}
+			for (SupplementaryGoals sup : editsuppl5) {
+				supplementaryGoalsService.save(sup);
+			}
+			return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
+
+		}
+		
 		for (SupplementaryGoals sup : suppl1) {
 			supplementaryGoalsService.save(sup);
 		}
@@ -1631,11 +1637,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	@Transactional
 	public String nextStep() throws IOException {
 		if (!canSave()) {
-			System.out.println("cant save");
 			return addParameters(listPage, "faces-redirect=true");
 
 		}
-		System.out.println("can save !");
 		switch (step) {
 		case 1:
 
@@ -1654,7 +1658,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			fillSupp4();
 			fillSupp5();
 
-			// addSuppGoals();
 			initBg();
 			step++;
 			break;
@@ -1664,6 +1667,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				return null;
 			}
 			saveBusinessGoals();
+			editSupplementaryGoals();
 			step++;
 			break;
 		case 3:
