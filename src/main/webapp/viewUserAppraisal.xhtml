@@ -547,7 +547,7 @@
 											<h:outputText value="business Goals" />
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
-											<p:dataTable id="businessGoalsList"
+											<p:dataTable id="businessGoalsListEdit"
 												value="#{userAppraisalView.businessGoalsListEdit}" var="item"
 												rows="20"
 												styleClass="table table-striped table-hover center"
@@ -570,13 +570,6 @@
 													</p:selectOneMenu>
 												</p:column>
 
-												<!-- <p:column headerText="Goal Title">
-													    <p:selectOneMenu value="#{userAppraisalView.selectedGoalTitle}">
-													<f:selectItem itemLabel="****" noSelectionOption="true" />
-													    <f:selectItems value="#{userAppraisalView.goalTitleList}" />
-													</p:selectOneMenu>
-												</p:column> -->
-
 												<p:column headerText="Goal Details">
 													<p:inputText value="#{item.goalDetails}" />
 												</p:column>
@@ -586,26 +579,13 @@
 														style="width: 40px" />
 													<h:outputText value="%" styleClass="bolder blue" />
 												</p:column>
-												<!-- <p:column headerText="Section">
-													<h:outputText value="#{item.sections.sectionsTitle}" />
-												</p:column>
-												<p:column headerText="Mid Year Review">
-													<p:inputNumber value="#{item.midYearReview}"
-														disabled="#{ userAppraisalView.validateBusinessMidYear()}"
-														validator="#{userAppraisalView.validateRating}" />
-												</p:column>
-												<p:column headerText="Final Year Rate">
-													<p:inputNumber value="#{item.summaryRaiting}"
-														disabled="#{ userAppraisalView.validateBusinessFinalYear()}"
-														validator="#{userAppraisalView.validateRating}" />
-												</p:column>
- -->
+
 												<p:column headerText="Actions" width="150"
 													style="text-align : center;">
 													<div class="action-buttons center">
 														<p:commandLink
 															action="#{userAppraisalView.removeBusinessGoal(item)}"
-															update="businessGoalsList" process="businessGoalsList"
+															update="businessGoalsListEdit" process="businessGoalsListEdit"
 															title="delete" rendered="true" styleClass="aa-tooltip">
 															<i class="ace-icon fa fa-trash-o bigger-130 red" />
 															<f:param name="isEdit" value="1" />
@@ -618,7 +598,7 @@
 													<div class="action-buttons center">
 														<p:commandLink title="Add New Item"
 															action="#{userAppraisalView.addBusiness()}"
-															update="businessGoalsList" process="businessGoalsList"
+															update="businessGoalsListEdit" process="businessGoalsListEdit"
 															rendered="#{userAppraisalView.canAddBusiness()}">
 															<i class="fa fa-plus green" />
 															<f:param name="isEdit" value="1" />
