@@ -1103,6 +1103,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
         return addParameters(listPage, parameters);
 	}
+	
+	@Override
+	protected Integer getIntegerParameter(String name) {
+		// TODO Auto-generated method stub
+		return super.getIntegerParameter(name);
+	}
 
 	public List<UserAppraisal> findAll() {
 		return service.findAll();
@@ -1341,6 +1347,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		
 		switch (step) {
 		case 1:
+			System.out.println("Parametre "+getIntegerParameter("isEdit"));
 			System.out.println(step);
 			if (!validateEligibleWeight())
 				return null;
