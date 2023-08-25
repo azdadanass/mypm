@@ -503,7 +503,7 @@
 									<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
 										<p:dataTable
-											value="#{userAppraisalView.findSectionByUserAppraisal()}"
+											value="#{userAppraisalView.sectionEditList}"
 											var="item" rowKey="#{item}" id="sections"
 											widgetVar="sectionslist" rows="20"
 											styleClass="table table-striped table-hover center"
@@ -548,7 +548,7 @@
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
 											<p:dataTable id="businessGoalsList"
-												value="#{userAppraisalView.businessGoalsList}" var="item"
+												value="#{userAppraisalView.businessGoalsListEdit}" var="item"
 												rows="20"
 												styleClass="table table-striped table-hover center"
 												paginatorAlwaysVisible="false" paginator="true"
@@ -556,7 +556,7 @@
 												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
 												rowIndexVar="index">
 												<p:column headerText="ID">
-													<h:outputText value="#{index+1}" styleClass="bolder blue" />
+													<h:outputText value="#{item.id}" styleClass="bolder blue" />
 												</p:column>
 												<p:column headerText="Goal Title"
 													rendered="#{item.goalTitle != null}">
@@ -651,7 +651,7 @@
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="Jobexecution"
-													value="#{userAppraisalView.suppl1}" var="item" rows="20"
+													value="#{userAppraisalView.editsuppl1}" var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
 													paginatorPosition="bottom"
@@ -694,7 +694,7 @@
 												<h:outputText value="CODE OF CONDUCT" />
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="CODE" value="#{userAppraisalView.suppl2}"
+												<p:dataTable id="CODE" value="#{userAppraisalView.editsuppl2}"
 													var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
@@ -739,7 +739,7 @@
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="LEADERSHIP"
 													rendered="#{userAppraisalView.isElig(3)}"
-													value="#{userAppraisalView.suppl3}" var="item" rows="20"
+													value="#{userAppraisalView.editsuppl3}" var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
 													paginatorPosition="bottom"
@@ -783,7 +783,7 @@
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="PERSONALITY"
 													rendered="#{userAppraisalView.isElig(4)}"
-													value="#{userAppraisalView.suppl4}" var="item" rows="20"
+													value="#{userAppraisalView.editsuppl4}" var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
 													paginatorPosition="bottom"
@@ -827,7 +827,7 @@
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
 												<p:dataTable id="MANAGEMENT"
 													rendered="#{userAppraisalView.isElig(5)}"
-													value="#{userAppraisalView.suppl5}" var="item" rows="20"
+													value="#{userAppraisalView.editsuppl5}" var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
 													paginatorPosition="bottom"
