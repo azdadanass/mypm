@@ -150,15 +150,6 @@
 							</p:column>
 							<p:column headerText="Actions" width="150" exportable="false">
 								<div class="action-buttons center">
-									<h:outputLink value="#{userAppraisalView.viewPage}"
-										title="Edit UserAppraisal"
-										styleClass="aa-toolt ip tooltip-info"
-										rendered="#{param.pageIndex eq '1' and item.userAppraisalStatus eq 'CREATED' or item.userAppraisalStatus eq 'EDITED'}">
-										<i class="ace-icon fa fa-pencil-square-o bigger-130 green" />
-										<f:param name="id" value="#{item.id}" />
-										<f:param name="pageIndex" value="1" />
-
-									</h:outputLink>
 									<h:outputLink value="#{userAppraisalView.addEditPage}"
 										title="Show Details" styleClass="aa-tooltip tooltip-info">
 										<i class="ace-icon fa fa-list-alt bigger-130 blue" />
