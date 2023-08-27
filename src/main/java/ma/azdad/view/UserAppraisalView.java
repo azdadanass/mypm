@@ -1659,80 +1659,95 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		if (getIntegerParameter("isEdit") == 1) {
 			int l = 0;
-			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model, 1)) {
+			List<SupplementaryGoals> spl1 = supplementaryGoalsService.findByUserAppraisal(model, 1);
+			System.out.println("size spl1 " + spl1.size());
 
-				if (sup.getId() == null) {
-					for (SupplementaryGoals s : suppl1) {
-						supplementaryGoalsService.save(s);
-					}
-				} else {
-					
-					sup.setWeight(suppl1.get(l).getWeight());
+			if (spl1.size() > 0) {
+				for (SupplementaryGoals supplementaryGoals : spl1) {
+					supplementaryGoals.setWeight(suppl1.get(l).getWeight());
 					l++;
-					supplementaryGoalsService.save(sup);
+					supplementaryGoalsService.save(supplementaryGoals);
 				}
 
+			} else {
+				for (SupplementaryGoals s : suppl1) {
+					supplementaryGoalsService.save(s);
+				}
 			}
-			l=0;
-			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model, 2)) {
+			
+			
+			
+			l = 0;
+			List<SupplementaryGoals> spl2 = supplementaryGoalsService.findByUserAppraisal(model, 2);
+			System.out.println("size spl2" + spl2.size());
 
-				if (sup.getId() == null) {
-					for (SupplementaryGoals s : suppl2) {
-						supplementaryGoalsService.save(s);
-					}
-				} else {
-
-					sup.setWeight(suppl2.get(l).getWeight());
+			if (spl2.size() > 0) {
+				for (SupplementaryGoals supplementaryGoals : spl2) {
+					supplementaryGoals.setWeight(suppl2.get(l).getWeight());
 					l++;
-					supplementaryGoalsService.save(sup);
+					supplementaryGoalsService.save(supplementaryGoals);
 				}
 
+			} else {
+				for (SupplementaryGoals s : suppl2) {
+					supplementaryGoalsService.save(s);
+				}
 			}
-			l=0;
-			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model, 3)) {
+			
+			
+			l = 0;
+			List<SupplementaryGoals> spl3 = supplementaryGoalsService.findByUserAppraisal(model, 3);
+			System.out.println("size spl3" + spl3.size());
 
-				if (sup.getId() == null) {
-					for (SupplementaryGoals s : suppl3) {
-						supplementaryGoalsService.save(s);
-					}
-				} else {
-
-					sup.setWeight(suppl3.get(l).getWeight());
+			if (spl3.size() > 0) {
+				for (SupplementaryGoals supplementaryGoals : spl3) {
+					supplementaryGoals.setWeight(suppl3.get(l).getWeight());
 					l++;
-					supplementaryGoalsService.save(sup);
+					supplementaryGoalsService.save(supplementaryGoals);
 				}
 
+			} else {
+				for (SupplementaryGoals s : suppl3) {
+					supplementaryGoalsService.save(s);
+				}
 			}
-			l=0;
-			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model, 4)) {
+			
+			
+			l = 0;
+			List<SupplementaryGoals> spl4 = supplementaryGoalsService.findByUserAppraisal(model, 4);
+			System.out.println("size spl4" + spl4.size());
 
-				if (sup.getId() == null) {
-					for (SupplementaryGoals s : suppl4) {
-						supplementaryGoalsService.save(s);
-					}
-				} else {
-
-					sup.setWeight(suppl4.get(l).getWeight());
+			if (spl4.size() > 0) {
+				for (SupplementaryGoals supplementaryGoals : spl4) {
+					supplementaryGoals.setWeight(suppl4.get(l).getWeight());
 					l++;
-					supplementaryGoalsService.save(sup);
+					supplementaryGoalsService.save(supplementaryGoals);
 				}
 
+			} else {
+				for (SupplementaryGoals s : suppl4) {
+					supplementaryGoalsService.save(s);
+				}
 			}
-			l=0;
-			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model, 5)) {
+			
+			
+			l = 0;
+			List<SupplementaryGoals> spl5 = supplementaryGoalsService.findByUserAppraisal(model, 5);
+			System.out.println("size spl5" + spl5.size());
 
-				if (sup.getId() == null) {
-					for (SupplementaryGoals s : suppl5) {
-						supplementaryGoalsService.save(s);
-					}
-				} else {
-
-					sup.setWeight(suppl5.get(l).getWeight());
+			if (spl5.size() > 0) {
+				for (SupplementaryGoals supplementaryGoals : spl5) {
+					supplementaryGoals.setWeight(suppl5.get(l).getWeight());
 					l++;
-					supplementaryGoalsService.save(sup);
+					supplementaryGoalsService.save(supplementaryGoals);
 				}
 
+			} else {
+				for (SupplementaryGoals s : suppl5) {
+					supplementaryGoalsService.save(s);
+				}
 			}
+			
 
 		} else if (getIntegerParameter("isEdit") == 0) {
 
