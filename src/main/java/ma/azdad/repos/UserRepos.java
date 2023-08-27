@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import ma.azdad.model.Appraisals;
 import ma.azdad.model.User;
 
 @Repository
@@ -129,5 +130,7 @@ public interface UserRepos extends JpaRepository<User, String> {
 
 	@Query(c2 + "from User a where a.supplier.id = ?1")
 	List<User> findBySupplier(Integer supplierId);
+	
+
 
 }

@@ -209,14 +209,14 @@ public class Project extends GenericModel<Integer> {
 
 	@Transient
 	public Integer getContractId() {
-		return contract == null ? null : contract.getId();
+		return contract == null ? null : contract.getIdcontract();
 	}
 
 	@Transient
 	public void setContractId(Integer contractId) {
-		if (contract == null || (contractId != null && !contractId.equals(contract.getId())))
+		if (contract == null || (contractId != null && !contractId.equals(contract.getIdcontract())))
 			contract = new Contract();
-		contract.setId(contractId);
+		contract.setIdcontract(contractId);
 	}
 
 	@Transient

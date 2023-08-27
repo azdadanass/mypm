@@ -25,8 +25,9 @@ public class ContractService extends GenericService<Integer, Contract, ContractR
 		return contract;
 	}
 
-	public List<Contract> findByCustomerId(Integer customerId) {
-		return repos.findByCustomerId(customerId);
-	}
+	/*
+	 * public List<Contract> findByCustomerId(Integer customerId) { return
+	 * repos.findByCustomerId(customerId); }
+	 */
 
 }

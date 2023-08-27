@@ -26,9 +26,10 @@ public class ContractView extends GenericView<Integer, Contract, ContractRepos, 
 
 	// generic
 
-	public List<Contract> findByCustomerId(Integer customerId) {
-		return service.findByCustomerId(customerId);
-	}
+	/*
+	 * public List<Contract> findByCustomerId(Integer customerId) { return
+	 * service.findByCustomerId(customerId); }
+	 */
 
 	// getters & setters
 	public Contract getModel() {

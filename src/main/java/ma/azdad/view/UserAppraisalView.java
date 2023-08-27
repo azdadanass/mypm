@@ -1580,7 +1580,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void initSuppGoals() {
 
 		supplementaryGoalsListBg = new ArrayList<>();
+		if(getIntegerParameter("isEdit")==1) {
+			for(SupplementaryGoals sup:supplementaryGoalsList) {
+				if(!isElig(sup.getSectionsData().getGoaldId())) {
+					supplementaryGoalsList.remove(sup);
+				}
 
+			}
+
+		}
+			
+		
 	}
 
 	public void initBg() {
@@ -1593,9 +1603,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 			
 		if (businessGoalsListEdit.size() > 0) {
-			
-			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
-							goalTitleList.remove(businessGoalsListEdit.get(i).getGoalTitle());
+			for (BusinessGoals bg : businessGoalsListEdit) {
+				bg.setSections(findSectionId());
+
 			}
 		}
 
@@ -1672,23 +1682,25 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			}
 			
 			
-			
 			l = 0;
 			List<SupplementaryGoals> spl2 = supplementaryGoalsService.findByUserAppraisal(model, 2);
 			System.out.println("size spl2" + spl2.size());
+			
+			if(isElig(2)) {
+				if (spl2.size() > 0) {
+					for (SupplementaryGoals supplementaryGoals : spl2) {
+						supplementaryGoals.setWeight(suppl2.get(l).getWeight());
+						l++;
+						supplementaryGoalsService.save(supplementaryGoals);
+					}
 
-			if (spl2.size() > 0) {
-				for (SupplementaryGoals supplementaryGoals : spl2) {
-					supplementaryGoals.setWeight(suppl2.get(l).getWeight());
-					l++;
-					supplementaryGoalsService.save(supplementaryGoals);
-				}
-
-			} else {
-				for (SupplementaryGoals s : suppl2) {
-					supplementaryGoalsService.save(s);
+				} else {
+					for (SupplementaryGoals s : suppl2) {
+						supplementaryGoalsService.save(s);
+					}
 				}
 			}
+			
 			
 			
 			l = 0;
@@ -1803,8 +1815,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			fillSupp3();
 			fillSupp4();
 			fillSupp5();
-
-		    initBg();
+			initBg();
 			step++;
 			break;
 
@@ -1813,7 +1824,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				return null;
 			}
 			saveBusinessGoals();
+			//initSuppGoals();
+
 			editSupplementaryGoals();
+
 			step++;
 			break;
 		case 3:
