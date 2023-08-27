@@ -137,21 +137,20 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	}
 
 	public void saveUserAppraisalForNoUserAppraisal(User userNoAppraisal) {
-		
-		
-			//if (userNoAppraisal!=null) {
-				System.out.println(userNoAppraisal);
-				UserAppraisal userAppraisal = new UserAppraisal();
-				userAppraisal.setAppraisee(sessionView.getUser());
-				userAppraisal.setAppraisal(model);
-				userAppraisal.setEmploy(userNoAppraisal);
-				userAppraisal.setDateStatsCreated(new Date());
-				System.out.println(userAppraisal);
-				userAppraisalService.save(userAppraisal);
 
-				evictCache();
-				//evaluatedEmployees.add(usr);
-			//}
+		// if (userNoAppraisal!=null) {
+		System.out.println(userNoAppraisal);
+		UserAppraisal userAppraisal = new UserAppraisal();
+		userAppraisal.setAppraisee(sessionView.getUser());
+		userAppraisal.setAppraisal(model);
+		userAppraisal.setEmploy(userNoAppraisal);
+		userAppraisal.setDateStatsCreated(new Date());
+		System.out.println(userAppraisal);
+		userAppraisalService.save(userAppraisal);
+
+		evictCache();
+		// evaluatedEmployees.add(usr);
+		// }
 	}
 
 	// save
@@ -588,7 +587,8 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	public List<User> findUserNoAppraisal() {
 		userNoAppraisalList = new ArrayList<>();
-		List<User> userNoAppraisalList = service.findUserNoAppraisal(true, sessionView.getUser(), model,model.getDateStatsOpen());
+		List<User> userNoAppraisalList = service.findUserNoAppraisal(true, sessionView.getUser(), model,
+				model.getDateStatsOpen());
 
 		return userNoAppraisalList;
 	}

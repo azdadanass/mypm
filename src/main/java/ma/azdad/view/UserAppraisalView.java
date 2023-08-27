@@ -382,7 +382,15 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				break;
 			}
 		}
-
+		
+		/*
+		 * int task = getIntegerParameter("task"); if (task != null) { switch (task) {
+		 * case 1: initLists(service.findUserAppraisalByUser(sessionView.getUser()));
+		 * break; case 3: initLists(service.findUserAppraisalByHR(true, true,
+		 * sessionView.getUser())); break; case 4:
+		 * initLists(service.findUserAppraisalByLM(true, true, sessionView.getUser()));
+		 * break; default: break; } }
+		 */
 	}
 
 	@Override
@@ -1596,22 +1604,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				
 			}
 			
-			
-			
-			
-			
-			/*
-			 * for(SupplementaryGoals sup:supplementaryGoalsListEdit) {
-			 * if(!isElig(sup.getSectionsData().getGoaldId())) {
-			 * System.out.println("before remove from list "+ sup);
-			 * supplementaryGoalsListEdit.remove(sup); try {
-			 * System.out.println(" afted list remove need to delete : "+ sup);
-			 * supplementaryGoalsService.delete(sup); } catch
-			 * (DataIntegrityViolationException e) { e.printStackTrace(); } catch (Exception
-			 * e) { e.printStackTrace(); } }
-			 * 
-			 * }
-			 */
 
 		}
 			
@@ -1625,6 +1617,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				bg.setSections(findSectionId());
 			}
+			
 		}
 			
 		if (businessGoalsListEdit.size() > 0) {
@@ -1632,7 +1625,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				bg.setSections(findSectionId());
 
 			}
+			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
+				goalTitleList.remove(businessGoalsListEdit.get(i).getGoalTitle());
+			}
 		}
+		
+		
+		
+		
 
 	}
 

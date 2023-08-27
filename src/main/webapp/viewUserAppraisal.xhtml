@@ -152,13 +152,6 @@
 													</p:selectOneMenu>
 												</p:column>
 
-												<!-- <p:column headerText="Goal Title">
-													    <p:selectOneMenu value="#{userAppraisalView.selectedGoalTitle}">
-													<f:selectItem itemLabel="****" noSelectionOption="true" />
-													    <f:selectItems value="#{userAppraisalView.goalTitleList}" />
-													</p:selectOneMenu>
-												</p:column> -->
-
 												<p:column headerText="Goal Details">
 													<p:inputText value="#{item.goalDetails}" />
 												</p:column>
@@ -555,9 +548,6 @@
 												paginatorPosition="bottom"
 												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
 												rowIndexVar="index">
-												<p:column headerText="ID">
-													<h:outputText value="#{item.id}" styleClass="bolder blue" />
-												</p:column>
 												<p:column headerText="Goal Title"
 													rendered="#{item.goalTitle != null}">
 													<h:outputText value="#{item.goalTitle}"
