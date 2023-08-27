@@ -684,16 +684,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				if (getIntegerParameter("isEdit") == 1) {
 					if (editsuppl1.size() == 0) {
 						SupplementaryGoals newGoal = new SupplementaryGoals(
-								findSectionByNumberAndUserAppraisal(1, model), se, 0);
+								findSectionByNumberAndUserAppraisal(1, model), se);
 						supplementaryGoalsService.save(newGoal);
 						suppl1.add(newGoal);
 					} else {
 						suppl1.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(1, model), se,
 								editsuppl1.get(k).getWeight()));
+						System.out.println(editsuppl1.get(k));
 						k++;
 					}
 				} else if (getIntegerParameter("isEdit") == 0) {
-					suppl1.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(1, model), se, 0));
+					suppl1.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(1, model), se));
 				}
 			}
 		}
@@ -716,7 +717,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					if (editsuppl2.size() == 0) {
 
 						SupplementaryGoals newGoal = new SupplementaryGoals(
-								findSectionByNumberAndUserAppraisal(2, model), se, 0);
+								findSectionByNumberAndUserAppraisal(2, model), se);
 						supplementaryGoalsService.save(newGoal);
 						suppl2.add(newGoal);
 					} else {
@@ -727,7 +728,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					}
 
 				} else if (getIntegerParameter("isEdit") == 0) {
-					suppl2.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(2, model), se, 0));
+					suppl2.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(2, model), se));
 
 				}
 
@@ -755,7 +756,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					if (editsuppl3.size() == 0) {
 
 						SupplementaryGoals newGoal = new SupplementaryGoals(
-								findSectionByNumberAndUserAppraisal(3, model), se, 0);
+								findSectionByNumberAndUserAppraisal(3, model), se);
 						supplementaryGoalsService.save(newGoal);
 						suppl3.add(newGoal);
 					} else {
@@ -766,7 +767,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					}
 
 				} else if (getIntegerParameter("isEdit") == 0) {
-					suppl3.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(3, model), se, 0));
+					suppl3.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(3, model), se));
 
 				}
 
@@ -793,7 +794,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					if (editsuppl4.size() == 0) {
 
 						SupplementaryGoals newGoal = new SupplementaryGoals(
-								findSectionByNumberAndUserAppraisal(4, model), se, 0);
+								findSectionByNumberAndUserAppraisal(4, model), se);
 						supplementaryGoalsService.save(newGoal);
 						suppl4.add(newGoal);
 					} else {
@@ -804,7 +805,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					}
 
 				} else if (getIntegerParameter("isEdit") == 0) {
-					suppl4.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(4, model), se, 0));
+					suppl4.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(4, model), se));
 
 				}
 
@@ -831,7 +832,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					if (editsuppl5.size() == 0) {
 
 						SupplementaryGoals newGoal = new SupplementaryGoals(
-								findSectionByNumberAndUserAppraisal(5, model), se, 0);
+								findSectionByNumberAndUserAppraisal(5, model), se);
 						supplementaryGoalsService.save(newGoal);
 						suppl5.add(newGoal);
 					} else {
@@ -842,7 +843,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					}
 
 				} else if (getIntegerParameter("isEdit") == 0) {
-					suppl5.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(5, model), se, 0));
+					suppl5.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(5, model), se));
 
 				}
 
@@ -1665,8 +1666,68 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 						supplementaryGoalsService.save(s);
 					}
 				} else {
-
+					
 					sup.setWeight(suppl1.get(l).getWeight());
+					l++;
+					supplementaryGoalsService.save(sup);
+				}
+
+			}
+			l=0;
+			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model, 2)) {
+
+				if (sup.getId() == null) {
+					for (SupplementaryGoals s : suppl2) {
+						supplementaryGoalsService.save(s);
+					}
+				} else {
+
+					sup.setWeight(suppl2.get(l).getWeight());
+					l++;
+					supplementaryGoalsService.save(sup);
+				}
+
+			}
+			l=0;
+			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model, 3)) {
+
+				if (sup.getId() == null) {
+					for (SupplementaryGoals s : suppl3) {
+						supplementaryGoalsService.save(s);
+					}
+				} else {
+
+					sup.setWeight(suppl3.get(l).getWeight());
+					l++;
+					supplementaryGoalsService.save(sup);
+				}
+
+			}
+			l=0;
+			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model, 4)) {
+
+				if (sup.getId() == null) {
+					for (SupplementaryGoals s : suppl4) {
+						supplementaryGoalsService.save(s);
+					}
+				} else {
+
+					sup.setWeight(suppl4.get(l).getWeight());
+					l++;
+					supplementaryGoalsService.save(sup);
+				}
+
+			}
+			l=0;
+			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model, 5)) {
+
+				if (sup.getId() == null) {
+					for (SupplementaryGoals s : suppl5) {
+						supplementaryGoalsService.save(s);
+					}
+				} else {
+
+					sup.setWeight(suppl5.get(l).getWeight());
 					l++;
 					supplementaryGoalsService.save(sup);
 				}
@@ -1749,6 +1810,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				return null;
 			}
 			saveSupplementaryGoals();
+
+			fillSupp1();
+			fillSupp2();
+			fillSupp3();
+			fillSupp4();
+			fillSupp5();
 			edited();
 
 			// step++;
@@ -1774,13 +1841,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				initSuppGoals();
 
-				removeBgFromDB();
 				removeSections();
 
 			}
 			if (step == 3) {
 
-				removeBgFromDB();
 				removeSuppGoal();
 			}
 
