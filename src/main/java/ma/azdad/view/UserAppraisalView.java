@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -463,6 +462,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				switch (i) {
 				case 1:
 					editsuppl1.add(supplementary);
+
 					break;
 				case 2:
 					editsuppl2.add(supplementary);
@@ -672,6 +672,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public void fillSupp1() {
 
+		editSupplementaryGoals();
+
 		List<SectionsData> secdata = new ArrayList<>();
 		suppl1 = new ArrayList<>();
 
@@ -679,22 +681,33 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		if (isElig(1)) {
 
+			int k = 0;
 			for (SectionsData se : secdata) {
+				if (getIntegerParameter("isEdit") == 1) {
 
-				System.out.println("section :" + findSectionByNumberAndUserAppraisal(1, model));
-				System.out.println("section DAta : " + se);
-				// supplementaryGoalsListBg.add();
+					if (editsuppl1.size() == 0) {
+						
+						suppl1.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(1, model), se, 0));
+					} else {
+						
+						suppl1.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(1, model), se,
+								editsuppl1.get(k).getWeight()));
+						k++;
+					}
 
-				suppl1.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(1, model), se));
+				} else if (getIntegerParameter("isEdit") == 0) {
+					suppl1.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(1, model), se, 0));
+
+				}
+
 			}
-			System.out.println("list:");
-			System.out.println(suppl1);
 
 		}
 
 	}
 
 	public void fillSupp2() {
+		editSupplementaryGoals();
 
 		List<SectionsData> secdata = new ArrayList<>();
 		suppl2 = new ArrayList<>();
@@ -703,11 +716,25 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		if (isElig(2)) {
 
+			int k = 0;
 			for (SectionsData se : secdata) {
+				if (getIntegerParameter("isEdit") == 1) {
 
-				// supplementaryGoalsListBg.add();
+					if (editsuppl2.size() == 0) {
+						
+						suppl2.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(2, model), se, 0));
+					} else {
+						
+						suppl2.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(2, model), se,
+								editsuppl2.get(k).getWeight()));
+						k++;
+					}
 
-				suppl2.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(2, model), se));
+				} else if (getIntegerParameter("isEdit") == 0) {
+					suppl2.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(2, model), se, 0));
+
+				}
+
 			}
 
 		}
@@ -716,24 +743,42 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public void fillSupp3() {
 
+		editSupplementaryGoals();
+
 		List<SectionsData> secdata = new ArrayList<>();
 		suppl3 = new ArrayList<>();
+
 		secdata = userAppraisalService.findSectionDataByGoalId(3);
 
 		if (isElig(3)) {
 
+			int k = 0;
 			for (SectionsData se : secdata) {
+				if (getIntegerParameter("isEdit") == 1) {
 
-				// supplementaryGoalsListBg.add();
+					if (editsuppl3.size() == 0) {
+						
+						suppl3.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(3, model), se, 0));
+					} else {
+						
+						suppl3.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(3, model), se,
+								editsuppl3.get(k).getWeight()));
+						k++;
+					}
 
-				suppl3.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(3, model), se));
+				} else if (getIntegerParameter("isEdit") == 0) {
+					suppl3.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(3, model), se, 0));
+
+				}
+
 			}
 
 		}
-
 	}
 
 	public void fillSupp4() {
+
+		editSupplementaryGoals();
 
 		List<SectionsData> secdata = new ArrayList<>();
 		suppl4 = new ArrayList<>();
@@ -742,18 +787,33 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		if (isElig(4)) {
 
+			int k = 0;
 			for (SectionsData se : secdata) {
+				if (getIntegerParameter("isEdit") == 1) {
 
-				// supplementaryGoalsListBg.add();
+					if (editsuppl4.size() == 0) {
+						
+						suppl4.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(4, model), se, 0));
+					} else {
+						
+						suppl4.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(4, model), se,
+								editsuppl4.get(k).getWeight()));
+						k++;
+					}
 
-				suppl4.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(4, model), se));
+				} else if (getIntegerParameter("isEdit") == 0) {
+					suppl4.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(4, model), se, 0));
+
+				}
+
 			}
 
 		}
-
 	}
 
 	public void fillSupp5() {
+
+		editSupplementaryGoals();
 
 		List<SectionsData> secdata = new ArrayList<>();
 		suppl5 = new ArrayList<>();
@@ -762,13 +822,26 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		if (isElig(5)) {
 
+			int k = 0;
 			for (SectionsData se : secdata) {
+				if (getIntegerParameter("isEdit") == 1) {
 
-				suppl5.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(5, model), se));
+					if (editsuppl5.size() == 0) {
+						
+						suppl5.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(5, model), se, 0));
+					} else {
+						
+						suppl5.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(5, model), se,
+								editsuppl5.get(k).getWeight()));
+						k++;
+					}
+
+				} else if (getIntegerParameter("isEdit") == 0) {
+					suppl5.add(new SupplementaryGoals(findSectionByNumberAndUserAppraisal(5, model), se, 0));
+
+				}
 
 			}
-
-			System.out.println("list supp 5 :" + suppl5);
 
 		}
 
@@ -1550,7 +1623,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			try {
 				sectionsService.delete(section);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -1578,43 +1650,43 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public String saveSupplementaryGoals() {
-		// if can etc validation
-		if (getIntegerParameter("isEdit") == 1) {
-
-			for (SupplementaryGoals sup : editsuppl1) {
-				supplementaryGoalsService.save(sup);
-			}
-			for (SupplementaryGoals sup : editsuppl2) {
-				supplementaryGoalsService.save(sup);
-			}
-			for (SupplementaryGoals sup : editsuppl3) {
-				supplementaryGoalsService.save(sup);
-			}
-			for (SupplementaryGoals sup : editsuppl4) {
-				supplementaryGoalsService.save(sup);
-			}
-			for (SupplementaryGoals sup : editsuppl5) {
-				supplementaryGoalsService.save(sup);
-			}
-			return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
-
-		}
 		
-		for (SupplementaryGoals sup : suppl1) {
-			supplementaryGoalsService.save(sup);
-		}
-		for (SupplementaryGoals sup : suppl2) {
-			supplementaryGoalsService.save(sup);
-		}
-		for (SupplementaryGoals sup : suppl3) {
-			supplementaryGoalsService.save(sup);
-		}
-		for (SupplementaryGoals sup : suppl4) {
-			supplementaryGoalsService.save(sup);
-		}
-		for (SupplementaryGoals sup : suppl5) {
-			supplementaryGoalsService.save(sup);
-		}
+		if (getIntegerParameter("isEdit")==1) {
+			int l=0;
+			for (SupplementaryGoals sup : supplementaryGoalsService.findByUserAppraisal(model,1)) {
+
+				if (sup.getId()==null) {
+					for (SupplementaryGoals s : suppl1) {
+						supplementaryGoalsService.save(s);
+					}
+				}else {
+				
+						sup.setWeight(suppl1.get(l).getWeight());
+						l++;
+						supplementaryGoalsService.save(sup);
+				}
+					
+			}
+			
+		}else if (getIntegerParameter("isEdit")==0) {
+			
+			for (SupplementaryGoals sup : suppl1) {
+				supplementaryGoalsService.save(sup);
+			}
+			for (SupplementaryGoals sup : suppl2) {
+				supplementaryGoalsService.save(sup);
+			}
+			for (SupplementaryGoals sup : suppl3) {
+				supplementaryGoalsService.save(sup);
+			}
+			for (SupplementaryGoals sup : suppl4) {
+				supplementaryGoalsService.save(sup);
+			}
+			for (SupplementaryGoals sup : suppl5) {
+				supplementaryGoalsService.save(sup);
+			}
+		} 
+		
 
 		return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 	}
@@ -1630,7 +1702,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	@Override
 	protected Integer getIntegerParameter(String name) {
-		// TODO Auto-generated method stub
 		return super.getIntegerParameter(name);
 	}
 
@@ -1642,7 +1713,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 		switch (step) {
 		case 1:
-
 			if (!validateEligibleWeight())
 				return null;
 			if (!validateEligibleWeight1())
@@ -1680,11 +1750,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			// step++;
 			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 			externalContext.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
-			// step++;
 			break;
-		/*
-		 * case 4: // saveSupplementaryGoals(); step++; break;
-		 */
+
 		}
 		return null;
 	}
