@@ -1069,29 +1069,22 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
 
 				BusinessGoals businessGoals = businessGoalsListEdit.get(i);
-
-				if (businessGoals.getId() == null) {
-					BusinessGoals bg = new BusinessGoals(businessGoalsListEdit.get(i).getGoalDetails(),
-							businessGoalsListEdit.get(i).getGoalTitle(), businessGoalsListEdit.get(i).getGoalWeight(),
-							businessGoalsListEdit.get(i).getMidYearReview(),
-							businessGoalsListEdit.get(i).getSummaryRaiting(), businessGoalsListEdit.get(i).getSections()
+				
+				System.out.println("edited mode bg ="+businessGoals);
+				if (businessGoals.getId()==null) {
+					System.out.println("id not exist");
+					BusinessGoals bg = new BusinessGoals(businessGoals.getGoalDetails(),
+							businessGoals.getGoalTitle(), businessGoals.getGoalWeight(),
+							businessGoals.getMidYearReview(),
+							businessGoals.getSummaryRaiting(), businessGoals.getSections()
 
 					);
 					businessGoalsService.save(bg);
-				} else {
-					BusinessGoals existingBusinessGoals = businessGoalsService.findOne(businessGoals.getId());
-
-					if (existingBusinessGoals != null) {
-						existingBusinessGoals.setGoalDetails(businessGoals.getGoalDetails());
-						existingBusinessGoals.setGoalTitle(businessGoals.getGoalTitle());
-						existingBusinessGoals.setGoalWeight(businessGoals.getGoalWeight());
-						existingBusinessGoals.setMidYearReview(businessGoals.getMidYearReview());
-						existingBusinessGoals.setSummaryRaiting(businessGoals.getSummaryRaiting());
-						existingBusinessGoals.setSections(businessGoals.getSections());
-
-						businessGoalsService.save(existingBusinessGoals);
-					}
+				}else {
+					System.out.println("id exist in list");
+						businessGoalsService.save(businessGoals);
 				}
+	
 			}
 
 		}
@@ -1592,15 +1585,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public void initBg() {
 
-		if (businessGoalsList.size() > 0)
+		if (businessGoalsList.size() > 0) {
 			for (BusinessGoals bg : businessGoalsList) {
 
 				bg.setSections(findSectionId());
 			}
-
-		for (int i = 0; i < businessGoalsListEdit.size(); i++) {
-
-			goalTitleList.remove(businessGoalsListEdit.get(i).getGoalTitle());
+		}
+			
+		if (businessGoalsListEdit.size() > 0) {
+			
+			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
+							goalTitleList.remove(businessGoalsListEdit.get(i).getGoalTitle());
+			}
 		}
 
 	}
@@ -1808,7 +1804,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			fillSupp4();
 			fillSupp5();
 
-			initBg();
+		    initBg();
 			step++;
 			break;
 
@@ -1855,12 +1851,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (step == 2) {
 
 				initSuppGoals();
-
+				removeBgFromDB();
 				removeSections();
 
 			}
 			if (step == 3) {
-
+				removeBgFromDB();
 				removeSuppGoal();
 			}
 
