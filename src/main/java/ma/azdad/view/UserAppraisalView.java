@@ -1581,12 +1581,37 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		supplementaryGoalsListBg = new ArrayList<>();
 		if(getIntegerParameter("isEdit")==1) {
-			for(SupplementaryGoals sup:supplementaryGoalsList) {
-				if(!isElig(sup.getSectionsData().getGoaldId())) {
-					supplementaryGoalsList.remove(sup);
+			
+			for (Sections section : sectionEditList) {
+				if (section.getEligible()==false) {
+					for (SupplementaryGoals supp : userAppraisalService.findSupGoalsBySection(section.getSectionsNumber(), model)) {
+						
+						try {
+							supplementaryGoalsService.delete(supp);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 				}
-
+				
 			}
+			
+			
+			
+			
+			
+			/*
+			 * for(SupplementaryGoals sup:supplementaryGoalsListEdit) {
+			 * if(!isElig(sup.getSectionsData().getGoaldId())) {
+			 * System.out.println("before remove from list "+ sup);
+			 * supplementaryGoalsListEdit.remove(sup); try {
+			 * System.out.println(" afted list remove need to delete : "+ sup);
+			 * supplementaryGoalsService.delete(sup); } catch
+			 * (DataIntegrityViolationException e) { e.printStackTrace(); } catch (Exception
+			 * e) { e.printStackTrace(); } }
+			 * 
+			 * }
+			 */
 
 		}
 			
@@ -1816,6 +1841,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			fillSupp4();
 			fillSupp5();
 			initBg();
+			initSuppGoals();
 			step++;
 			break;
 

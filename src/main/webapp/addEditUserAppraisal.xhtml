@@ -429,17 +429,16 @@
 							<h:outputText value=" Final Year" styleClass="hidden-xs" />
 						</p:commandLink></li>
 
-					<li><a data-toggle="tab" href="#tab2"> <i
+					<li id="toggle2"><a data-toggle="tab" href="#tab2"> <i
 							class="blue ace-icon fa fa-file bigger-120"></i> <h:outputText
 								value=" Attachements" styleClass="hidden-xs" />
 					</a></li>
 
-
-					<li><a data-toggle="tab" href="#tab3"> <i
+					<li id="toggle3"><a data-toggle="tab" href="#tab3"> <i
 							class="red ace-icon fa fa-comment-o bigger-120"></i> <h:outputText
 								value=" Comments" styleClass="hidden-xs" />
 					</a></li>
-					<li><a data-toggle="tab" href="#tab4"> <i
+					<li id="toggle4"><a data-toggle="tab" href="#tab4"> <i
 							class="orange ace-icon fa fa-clock-o bigger-120"></i> <h:outputText
 								value=" History" styleClass="hidden-xs" />
 					</a></li>
@@ -447,7 +446,14 @@
 				<script>
 					function openTab(index) {
 						console.log('openTab called with index', index);
-						$('#tabs li.active').removeClass('active');
+						$('#tab li.active').removeClass('active');
+						$('#toggle' + 2).removeClass('active');
+						$('#toggle' + 3).removeClass('active');
+						$('#toggle' + 4).removeClass('active');
+						
+						$('#tab' + 2).removeClass('active');
+						$('#tab' + 3).removeClass('active');
+						$('#tab' + 4).removeClass('active');
 						$('#tab' + index).addClass('active');
 					}
 				</script>
