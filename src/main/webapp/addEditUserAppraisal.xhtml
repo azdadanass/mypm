@@ -501,7 +501,8 @@
 											<h:outputText value="Hire Date" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText styleClass="bolder green" />
+											<h:outputText value="#{userAppraisalView.findHireDate(userAppraisalView.model.employ.username)}"
+											styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>

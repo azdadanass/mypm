@@ -1,5 +1,6 @@
 package ma.azdad.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -31,6 +32,11 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		}
 		
 		return repos.findAll();
+	}
+	
+	@Cacheable("userappraisalService.findHireDate")
+	public Date findHireDate(String u) {
+		return repos.findHireDate(u);
 	}
 	
 	@Cacheable("userAppraisalService.findByEmployOrAppraisee")

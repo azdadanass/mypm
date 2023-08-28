@@ -1,5 +1,6 @@
 package ma.azdad.repos;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -87,5 +88,9 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 
 	@Query("select count(*) from Sections s  where s.userappraisal=?1   ")
 	Integer countSections(UserAppraisal u);
+	
+	
+	@Query("select max(c.hireDate) from Contract c where c.resource.username=?1")
+	Date findHireDate(String u1);
 	
 }

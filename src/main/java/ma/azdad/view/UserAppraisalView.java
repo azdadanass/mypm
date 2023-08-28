@@ -1025,9 +1025,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 			}
 			for (int i = 0; i < editsuppl5.size(); i++) {
-				System.out.println(i);
-				System.out.println(weightTotal5);
-				System.out.println(editsuppl5);
 				weightTotal5 = weightTotal5 + editsuppl5.get(i).getWeight();
 			}
 
@@ -1590,6 +1587,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return businessGoalsRepos.findSectionByNumberAndUserAppraisal(number, us);
 	}
 
+	
+	public Date findHireDate(String u) {
+	
+		return service.findHireDate(u);
+	}
+	
 	public void initSuppGoals() {
 
 		supplementaryGoalsListBg = new ArrayList<>();
@@ -1607,11 +1610,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 						}
 					}
 				}
-
 			}
-
 		}
-
 	}
 
 	public void initBg() {
@@ -1627,7 +1627,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		if (businessGoalsListEdit.size() > 0) {
 			for (BusinessGoals bg : businessGoalsListEdit) {
 				bg.setSections(findSectionId());
-
 			}
 			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
 				goalTitleList.remove(businessGoalsListEdit.get(i).getGoalTitle());
