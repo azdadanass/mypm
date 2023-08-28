@@ -74,21 +74,18 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("select count(*) from UserAppraisal u  where u.employ.username=?1 and u.userAppraisalStatus=?2 order by id desc    ")
 	Long countToSubmitted(String username, UserAppraisalStatus status);
 	
-	@Query("select count(*) from UserAppraisal u  where u.employ.affectation.lineManager=?1 and u.userAppraisalStatus=?2 order by id desc ")
-	Long countToApprovedLM( User u,UserAppraisalStatus status);
+	@Query("from UserAppraisal u  where u.employ.username=?1 and u.userAppraisalStatus=?2 order by id desc")
+	List<UserAppraisal> findUserappraisalbyStats(String username, UserAppraisalStatus status);
 	
 	
-	@Query("select count(*) from UserAppraisal u  where u.employ.affectation.hrManager=?1 and u.userAppraisalStatus=?2 order by id desc  ")
-	Long countToApprovedHR( User u,UserAppraisalStatus status);
+	@Query("from UserAppraisal u  where (u.userStatsApprovedLM.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApproved.username=?1 and u.userAppraisalStatus=?3) order by id desc")
+	List<UserAppraisal> findUserappraisalRolebyStats(String username, UserAppraisalStatus status1,UserAppraisalStatus status2);
+
 	
+	@Query("select count(*) from UserAppraisal u  where (u.userStatsApprovedLM.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApproved.username=?1 and u.userAppraisalStatus=?3) order by id desc")
+	Long countToApproved(String username, UserAppraisalStatus status1,UserAppraisalStatus status2);
+
 	@Query("select count(*) from Sections s  where s.userappraisal=?1   ")
 	Integer countSections(UserAppraisal u);
 	
-	/*
-	 * //not used
-	 * 
-	 * @Query("from SupplementaryGoals s where s.sectionsData.goaldId=?1")
-	 * List<SupplementaryGoals> findSupplementaryByGoaldId(Integer goaldid);
-	 */
-
 }

@@ -382,15 +382,21 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				break;
 			}
 		}
-		
-		/*
-		 * int task = getIntegerParameter("task"); if (task != null) { switch (task) {
-		 * case 1: initLists(service.findUserAppraisalByUser(sessionView.getUser()));
-		 * break; case 3: initLists(service.findUserAppraisalByHR(true, true,
-		 * sessionView.getUser())); break; case 4:
-		 * initLists(service.findUserAppraisalByLM(true, true, sessionView.getUser()));
-		 * break; default: break; } }
-		 */
+
+		Integer task = getIntegerParameter("task");
+		if (task != null) {
+			switch (task) {
+			case 1:
+				initLists(service.findUserappraisalbyStats(sessionView.getUsername(),UserAppraisalStatus.EDITED));
+				break;
+			case 2:
+				initLists(service.findUserappraisalRolebyStats(sessionView.getUsername(),UserAppraisalStatus.SUBMITED,UserAppraisalStatus.APPROVED_LM));
+				break;
+			default:
+				break;
+			}
+		}
+
 	}
 
 	@Override
@@ -1077,22 +1083,21 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
 
 				BusinessGoals businessGoals = businessGoalsListEdit.get(i);
-				
-				System.out.println("edited mode bg ="+businessGoals);
-				if (businessGoals.getId()==null) {
+
+				System.out.println("edited mode bg =" + businessGoals);
+				if (businessGoals.getId() == null) {
 					System.out.println("id not exist");
-					BusinessGoals bg = new BusinessGoals(businessGoals.getGoalDetails(),
-							businessGoals.getGoalTitle(), businessGoals.getGoalWeight(),
-							businessGoals.getMidYearReview(),
+					BusinessGoals bg = new BusinessGoals(businessGoals.getGoalDetails(), businessGoals.getGoalTitle(),
+							businessGoals.getGoalWeight(), businessGoals.getMidYearReview(),
 							businessGoals.getSummaryRaiting(), businessGoals.getSections()
 
 					);
 					businessGoalsService.save(bg);
-				}else {
+				} else {
 					System.out.println("id exist in list");
-						businessGoalsService.save(businessGoals);
+					businessGoalsService.save(businessGoals);
 				}
-	
+
 			}
 
 		}
@@ -1588,12 +1593,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void initSuppGoals() {
 
 		supplementaryGoalsListBg = new ArrayList<>();
-		if(getIntegerParameter("isEdit")==1) {
-			
+		if (getIntegerParameter("isEdit") == 1) {
+
 			for (Sections section : sectionEditList) {
-				if (section.getEligible()==false) {
-					for (SupplementaryGoals supp : userAppraisalService.findSupGoalsBySection(section.getSectionsNumber(), model)) {
-						
+				if (section.getEligible() == false) {
+					for (SupplementaryGoals supp : userAppraisalService
+							.findSupGoalsBySection(section.getSectionsNumber(), model)) {
+
 						try {
 							supplementaryGoalsService.delete(supp);
 						} catch (Exception e) {
@@ -1601,13 +1607,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 						}
 					}
 				}
-				
+
 			}
-			
 
 		}
-			
-		
+
 	}
 
 	public void initBg() {
@@ -1617,9 +1621,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				bg.setSections(findSectionId());
 			}
-			
+
 		}
-			
+
 		if (businessGoalsListEdit.size() > 0) {
 			for (BusinessGoals bg : businessGoalsListEdit) {
 				bg.setSections(findSectionId());
@@ -1629,10 +1633,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				goalTitleList.remove(businessGoalsListEdit.get(i).getGoalTitle());
 			}
 		}
-		
-		
-		
-		
 
 	}
 
@@ -1705,13 +1705,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					supplementaryGoalsService.save(s);
 				}
 			}
-			
-			
+
 			l = 0;
 			List<SupplementaryGoals> spl2 = supplementaryGoalsService.findByUserAppraisal(model, 2);
 			System.out.println("size spl2" + spl2.size());
-			
-			if(isElig(2)) {
+
+			if (isElig(2)) {
 				if (spl2.size() > 0) {
 					for (SupplementaryGoals supplementaryGoals : spl2) {
 						supplementaryGoals.setWeight(suppl2.get(l).getWeight());
@@ -1725,9 +1724,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					}
 				}
 			}
-			
-			
-			
+
 			l = 0;
 			List<SupplementaryGoals> spl3 = supplementaryGoalsService.findByUserAppraisal(model, 3);
 			System.out.println("size spl3" + spl3.size());
@@ -1744,8 +1741,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					supplementaryGoalsService.save(s);
 				}
 			}
-			
-			
+
 			l = 0;
 			List<SupplementaryGoals> spl4 = supplementaryGoalsService.findByUserAppraisal(model, 4);
 			System.out.println("size spl4" + spl4.size());
@@ -1762,8 +1758,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					supplementaryGoalsService.save(s);
 				}
 			}
-			
-			
+
 			l = 0;
 			List<SupplementaryGoals> spl5 = supplementaryGoalsService.findByUserAppraisal(model, 5);
 			System.out.println("size spl5" + spl5.size());
@@ -1780,7 +1775,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 					supplementaryGoalsService.save(s);
 				}
 			}
-			
 
 		} else if (getIntegerParameter("isEdit") == 0) {
 
@@ -1850,7 +1844,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				return null;
 			}
 			saveBusinessGoals();
-			//initSuppGoals();
+			// initSuppGoals();
 
 			editSupplementaryGoals();
 

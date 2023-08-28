@@ -214,15 +214,44 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return repos.countToSubmitted(username, UserAppraisalStatus.EDITED);
 	}
 	
+	@Cacheable("userAppraisalService.findUserappraisalbyStats")
+	public List<UserAppraisal> findUserappraisalbyStats(String username,UserAppraisalStatus stats1) {
+		
+		List<UserAppraisal> list = repos.findUserappraisalbyStats(username, stats1);
+		for (UserAppraisal userAppraisal : list) {
+			initialize(userAppraisal.getAppraisal());
+			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getAppraisee());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			
+		}
+
+		return list;
+	}
+	
+	@Cacheable("userAppraisalService.findUserappraisalRolebyStats")
+	public List<UserAppraisal> findUserappraisalRolebyStats(String username,UserAppraisalStatus stats1,UserAppraisalStatus stats2) {
+		
+		List<UserAppraisal> list = repos.findUserappraisalRolebyStats(username, stats1, stats2);
+		for (UserAppraisal userAppraisal : list) {
+			initialize(userAppraisal.getAppraisal());
+			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getAppraisee());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			
+		}
+
+		return list;
+	}
+	
+	
 	@Cacheable("userAppraisalService.countToApproved")
 	public Long countToApproved(User u) {
-		if(u.getIsMyPmLineManager()) {
-			return repos.countToApprovedLM(u, UserAppraisalStatus.SUBMITED);
-
-		}else {
-			return repos.countToApprovedHR(u, UserAppraisalStatus.APPROVED_LM);
-
-		}
+		return repos.countToApproved(u.getUsername(), UserAppraisalStatus.SUBMITED, UserAppraisalStatus.APPROVED_LM);
 	}
 	
 	@Cacheable("userAppraisalService.countSections")
