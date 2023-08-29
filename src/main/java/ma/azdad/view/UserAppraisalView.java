@@ -14,6 +14,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.chart.PieChartModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
+import ma.azdad.model.ToNotify;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.model.UserAppraisalComment;
@@ -41,6 +43,7 @@ import ma.azdad.service.SectionsDataService;
 import ma.azdad.service.SectionsService;
 import ma.azdad.service.SupplementaryGoalsService;
 import ma.azdad.service.UserAppraisalService;
+import ma.azdad.service.UserService;
 import ma.azdad.service.UtilsFunctions;
 import ma.azdad.utils.FacesContextMessages;
 
@@ -63,6 +66,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	@Autowired
 	BusinessGoalsService businessGoalsService;
+	
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	SupplementaryGoalsService supplementaryGoalsService;
@@ -88,6 +94,26 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<String> titleList;
 	private List<Boolean> eligibleList;
 	private List<Integer> weightList;
+	private String toNotifyUserUsername;
+	//private UserAppraisal userAppraisal = new UserAppraisal();
+
+
+	public String getToNotifyUserUsername() {
+		return toNotifyUserUsername;
+	}
+
+	public void setToNotifyUserUsername(String toNotifyUserUsername) {
+		this.toNotifyUserUsername = toNotifyUserUsername;
+	}
+	
+	
+	public void addToNotifyItem() {
+		User toNotifyUser = userService.findOne(toNotifyUserUsername);
+		if (model.getToNotifyList().stream().filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
+			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
+		model=service.saveAndRefresh(model);
+		
+	}
 
 	private List<SupplementaryGoals> suppl1 = new ArrayList<>();
 	private List<SupplementaryGoals> suppl2 = new ArrayList<>();
@@ -314,6 +340,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	@PostConstruct
 	public void init() {
 		super.init();
+		System.out.println("current Page"+currentPath);
 		// chart*****************************
 		businessGoalsListEdit = new ArrayList<>();
 		editBusinessGoals();
@@ -1521,6 +1548,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	// comments
 	private UserAppraisalComment comment = new UserAppraisalComment();
+	
+	private UserAppraisalComment userAppraisalComment =new UserAppraisalComment();
+
+	public UserAppraisalComment getUserAppraisalComment() {
+		return userAppraisalComment;
+	}
+
+	public void setUserAppraisalComment(UserAppraisalComment userAppraisalComment) {
+		this.userAppraisalComment = userAppraisalComment;
+	}
 
 	public Boolean canAddComment() {
 		return sessionView.getIsInternalAdmin();
@@ -1810,7 +1847,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	protected Integer getIntegerParameter(String name) {
 		return super.getIntegerParameter(name);
 	}
+	
+	public void removeToNotifyItem(int index) {
+		model.getToNotifyList().get(index).setUserAppraisal(null);
+		model.getToNotifyList().remove(index);
+		System.out.println("appeeelllll dellltee");
+	}
 
+	
+	public void TestremoveToNotifyItem() {
+		System.out.println("appeeelllll dellltee");
+	}
 	@Transactional
 	public String nextStep() throws IOException {
 		if (!canSave()) {
@@ -1862,7 +1909,24 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			fillSupp5();
 			edited();
 
-			// step++;
+		 step++;
+			
+			break;
+		case 4:
+			step++;
+			break;
+		case 5:
+			System.err.println("step7");
+			if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
+				userAppraisalComment.setDate(new Date());
+				userAppraisalComment.setTitle(isAddPage ? "User Appraisal Creation" : "User Appraisal Edition");
+				userAppraisalComment.setParent(model);
+				userAppraisalComment.setUser(sessionView.getUser());
+				model.addComment(userAppraisalComment);
+				model = service.saveAndRefresh(model);
+
+			}
+			step++;
 			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 			externalContext.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
 			break;

@@ -181,6 +181,10 @@ public class UserService {
 	public Long countByUsername(String username) {
 		return repos.countByUsername(username);
 	}
+	
+	public List<User> findLightByStatu(Boolean active) {
+		return repos.findLightByStatu(active);
+	}
 
 	public Long countByLogin(String login) {
 		return repos.countByLogin(login);

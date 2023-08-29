@@ -78,6 +78,9 @@ public class UserView {
 
 	@Autowired
 	protected CurrencyService currencyService;
+	
+	@Autowired
+	protected UserService userService;
 
 	protected List<User> list1 = new ArrayList<>();
 	protected List<User> list2 = new ArrayList<>();
@@ -907,6 +910,10 @@ public class UserView {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+	
+	public List<User> findLightAndActive() {
+		return userService.findLightByStatu(true);
 	}
 
 }

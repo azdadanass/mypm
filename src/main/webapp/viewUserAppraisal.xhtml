@@ -59,6 +59,12 @@
 								<li class="#{userAppraisalView.step==3?'active':''}"><a
 									href="#"> <h:outputText value="Supplementary Goals" />
 								</a></li>
+								<li class="#{userAppraisalView.step==4?'active':''}"><a
+									href="#"> <h:outputText value="Key Worker" />
+								</a></li>
+								<li class="#{userAppraisalView.step==5?'active':''}"><a
+									href="#"> <h:outputText value="Comment" />
+								</a></li>
 							</ul>
 						</h:panelGroup>
 						<hr />
@@ -408,6 +414,104 @@
 
 								<div class="space-16" />
 							</f:subview>
+							<f:subview id="step4" rendered="#{userAppraisalView.step==4}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-envelope" />
+									<h:outputText value=" Key Worker Partner" />
+								</h3>
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10 text-primary">
+										<i class="ace-icon fa fa-bell-o bigger-110 " />
+										<h:outputText
+											value=" You can notify only resource that are allowed to receive system notification in Iadmin " />
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10">
+										<div class="table-header col-sm-12 col-xs-12">
+											<i class="fa fa-list" />
+											<h:outputText value="Key Worker Partner" />
+										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+											<p:dataTable id="notification_tab"
+												value="#{userAppraisalView.model.toNotifyList}"
+												var="item"
+												styleClass="table table-striped table-hover center"
+												paginatorAlwaysVisible="false" paginator="true"
+												paginatorPosition="bottom"
+												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+												rowIndexVar="rowIndexVar">
+												<p:column headerText="Photo" width="5%"
+													styleClass="hidden-xs" exportable="false">
+													<p:graphicImage value="#{fileUploadView.stream}"
+														styleClass="img-circle aa-datatable-photo">
+														<f:param name="fileName" value="#{item.photo}" />
+													</p:graphicImage>
+												</p:column>
+												<p:column headerText="Full Name">
+													<h:outputText value="#{item.fullName}"
+														styleClass="green bolder" />
+												</p:column>
+												<p:column headerText="Type" width="100">
+													<h:outputText
+														value="#{item.internalResource.internal?'Internal':'External'}"
+														styleClass="badge #{item.internalResource.internal?'badge-success':'badge-warning'}" />
+												</p:column>
+												<p:column headerText="Email">
+													<h:outputText value="#{item.email}" styleClass="light-blue" />
+												</p:column>
+												<p:column headerText="Phone">
+													<h:outputText value="#{item.phone}"
+														styleClass="orange bolder" />
+												</p:column>
+												
+												<p:column headerText="Actions" styleClass="center"
+													width="100">
+													<div class="action-buttons center">
+														<p:commandLink title="Remove row"
+															 action="#{userAppraisalView.removeToNotifyItem(itemIndexVar)}">
+															<i class="ace-icon fa fa-remove bigger-130 red" />
+															<f:ajax render="notification_tab" />
+															
+														</p:commandLink>
+														
+														
+													</div>
+												</p:column>
+												<f:facet name="footer">
+													<div class="action-buttons center">
+														<p:commandLink styleClass="aa-tooltip tooltip-success"
+															title="Add New Item" update=":addToNotifyItemForm"
+															oncomplete="PF('addToNotifyItemDlg').show()"
+															partialSubmit="true" process="notification_tab">
+															<i class="fa fa-plus green" />
+														</p:commandLink>
+													</div>
+												</f:facet>
+											</p:dataTable>
+										</div>
+									</div>
+								</div>
+							</f:subview>
+							<f:subview id="step5" rendered="#{userAppraisalView.step==5}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-comment-o" />
+									<h:outputText value=" Add Comment" />
+								</h3>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Comment " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}" styleClass="col-xs-12 col-sm-6" />
+										</div>
+									</div>
+								</div>
+							</f:subview>
 						</h:panelGroup>
 						<hr />
 						<div class="wizard-actions">
@@ -423,7 +527,7 @@
 								styleClass="btn btn-success btn-next">
 								<f:param name="isEdit" value="0" />
 								<h:outputText
-									value="#{userAppraisalView.step==3?'Finish':'Next'}" />
+									value="#{userAppraisalView.step==5?'Finish':'Next'}" />
 								<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 							</p:commandLink>
 
@@ -433,13 +537,6 @@
 				</div>
 			</div>
 		</h:form>
-
-
-
-
-
-
-
 
 
 
@@ -469,6 +566,12 @@
 								<li class="#{userAppraisalView.step==3?'active':''}"><a
 									href="#"> <h:outputText value="Supplementary Goals" />
 								</a></li>
+								<li class="#{userAppraisalView.step==4?'active':''}"><a
+									href="#"> <h:outputText value="Key Worker" />
+								</a></li>
+								<li class="#{userAppraisalView.step==5?'active':''}"><a
+									href="#"> <h:outputText value="Comment" />
+								</a></li>
 							</ul>
 						</h:panelGroup>
 						<hr />
@@ -495,8 +598,7 @@
 									</div>
 									<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
-										<p:dataTable
-											value="#{userAppraisalView.sectionEditList}"
+										<p:dataTable value="#{userAppraisalView.sectionEditList}"
 											var="item" rowKey="#{item}" id="sections"
 											widgetVar="sectionslist" rows="20"
 											styleClass="table table-striped table-hover center"
@@ -505,7 +607,7 @@
 											paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
 											rowSelectMode="checkbox" rowIndexVar="index">
 
-										
+
 											<p:column headerText="Title">
 												<h:outputText value="#{item.sectionsTitle}"
 													styleClass="bolder blue" />
@@ -539,8 +641,8 @@
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
 											<p:dataTable id="businessGoalsListEdit"
-												value="#{userAppraisalView.businessGoalsListEdit}" var="item"
-												rows="20"
+												value="#{userAppraisalView.businessGoalsListEdit}"
+												var="item" rows="20"
 												styleClass="table table-striped table-hover center"
 												paginatorAlwaysVisible="false" paginator="true"
 												paginatorPosition="bottom"
@@ -573,8 +675,9 @@
 													<div class="action-buttons center">
 														<p:commandLink
 															action="#{userAppraisalView.removeBusinessGoal(item)}"
-															update="businessGoalsListEdit" process="businessGoalsListEdit"
-															title="delete" rendered="true" styleClass="aa-tooltip">
+															update="businessGoalsListEdit"
+															process="businessGoalsListEdit" title="delete"
+															rendered="true" styleClass="aa-tooltip">
 															<i class="ace-icon fa fa-trash-o bigger-130 red" />
 															<f:param name="isEdit" value="1" />
 
@@ -586,7 +689,8 @@
 													<div class="action-buttons center">
 														<p:commandLink title="Add New Item"
 															action="#{userAppraisalView.addBusiness()}"
-															update="businessGoalsListEdit" process="businessGoalsListEdit"
+															update="businessGoalsListEdit"
+															process="businessGoalsListEdit"
 															rendered="#{userAppraisalView.canAddBusiness()}">
 															<i class="fa fa-plus green" />
 															<f:param name="isEdit" value="1" />
@@ -795,6 +899,102 @@
 
 								<div class="space-16" />
 							</f:subview>
+							<f:subview id="step4" rendered="#{userAppraisalView.step==4}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-envelope" />
+									<h:outputText value=" Key Worker Partner" />
+								</h3>
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10 text-primary">
+										<i class="ace-icon fa fa-bell-o bigger-110 " />
+										<h:outputText
+											value=" You can notify only resource that are allowed to receive system notification in Iadmin " />
+									</div>
+								</div>
+								<div class="space-8" />
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10">
+										<div class="table-header col-sm-12 col-xs-12">
+											<i class="fa fa-list" />
+											<h:outputText value="Key Worker Partner" />
+										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+											<p:dataTable id="notification_tab1"
+												value="#{userAppraisalView.model.toNotifyList}"
+												var="item"
+												styleClass="table table-striped table-hover center"
+												paginatorAlwaysVisible="false" paginator="true"
+												paginatorPosition="bottom"
+												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+												rowIndexVar="rowIndexVar">
+												<p:column headerText="Photo" width="5%"
+													styleClass="hidden-xs" exportable="false">
+													<p:graphicImage value="#{fileUploadView.stream}"
+														styleClass="img-circle aa-datatable-photo">
+														<f:param name="fileName" value="#{item.photo}" />
+													</p:graphicImage>
+												</p:column>
+												<p:column headerText="Full Name">
+													<h:outputText value="#{item.fullName}"
+														styleClass="green bolder" />
+												</p:column>
+												<p:column headerText="Type" width="100">
+													<h:outputText
+														value="#{item.internalResource.internal?'Internal':'External'}"
+														styleClass="badge #{item.internalResource.internal?'badge-success':'badge-warning'}" />
+												</p:column>
+												<p:column headerText="Email">
+													<h:outputText value="#{item.email}" styleClass="light-blue" />
+												</p:column>
+												<p:column headerText="Phone">
+													<h:outputText value="#{item.phone}"
+														styleClass="orange bolder" />
+												</p:column>
+												
+												<p:column headerText="Actions" styleClass="center"
+													width="100">
+													<div class="action-buttons center">
+														<p:commandLink title="Remove row" action="#{userAppraisalView.removeToNotifyItem(rowIndexVar)}" 
+														>
+															<i class="ace-icon fa fa-remove bigger-130 red" />
+															<f:ajax render="notification_tab1" />
+															
+														</p:commandLink>
+													</div>
+												</p:column>	
+												<f:facet name="footer">
+													<div class="action-buttons center">
+														<p:commandLink styleClass="aa-tooltip tooltip-success"
+															title="Add New Item" update=":addToNotifyItemForm"
+															oncomplete="PF('addToNotifyItemDlg').show()"
+															partialSubmit="true" process="notification_tab1">
+															<i class="fa fa-plus green" />
+														</p:commandLink>
+													</div>
+												</f:facet>
+											</p:dataTable>
+										</div>
+									</div>
+								</div>
+							</f:subview>
+							<f:subview id="step5" rendered="#{userAppraisalView.step==5}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-comment-o" />
+									<h:outputText value=" Add Comment" />
+								</h3>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right">
+											<h:outputText value="Comment " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}" styleClass="col-xs-12 col-sm-6" />
+										</div>
+									</div>
+								</div>
+							</f:subview>
 						</h:panelGroup>
 						<hr />
 						<div class="wizard-actions">
@@ -810,7 +1010,7 @@
 								styleClass="btn btn-success btn-next">
 								<f:param name="isEdit" value="1" />
 								<h:outputText
-									value="#{userAppraisalView.step==3?'Finish':'Next'}" />
+									value="#{userAppraisalView.step==5?'Finish':'Next'}" />
 								<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 							</p:commandLink>
 
@@ -821,6 +1021,8 @@
 			</div>
 		</h:form>
 		<ui:include src="fileFooter.xhtml" />
+		<ui:include src="userAppraisalFooter.xhtml" />
+		
 	</ui:define>
 
 

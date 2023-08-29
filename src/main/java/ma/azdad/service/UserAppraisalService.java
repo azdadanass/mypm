@@ -65,6 +65,8 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		initialize(userAppraisal.getCommentList());
 		initialize(userAppraisal.getFileList());
 		initialize(userAppraisal.getHistoryList());
+		initialize(userAppraisal.getToNotifyList());
+
 
 		return userAppraisal;
 	}

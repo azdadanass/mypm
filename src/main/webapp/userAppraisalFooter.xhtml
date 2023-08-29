@@ -34,7 +34,47 @@
 		</p:dialog>
 	</h:form>
 	
-	<h:form id="addCommentForm">
+		<h:form id="addToNotifyItemForm" >
+		<p:dialog widgetVar="addToNotifyItemDlg" modal="true" closable="false" resizable="false" showHeader="false">
+			<button type="button" class="bootbox-close-button close" onclick="PF('addToNotifyItemDlg').hide()" >
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-plus green" />
+					<h:outputText value=" Add" />
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-3">
+						<label class="control-label pull-right">
+							<h:outputText value="To Notify Resource " />
+						</label>
+					</div>
+					<div class="col-xs-12 col-sm-9">
+						<div class="clearfix">
+							<p:selectOneMenu value="#{userAppraisalView.toNotifyUserUsername}" style="width:200px" filter="true" filterMatchMode="contains" required="true"
+								requiredMessage="To notify item should not be null" converter="#{genericSecuredConverter}">
+								<f:selectItem itemLabel="---" noSelectionOption="true" />
+								<f:selectItems value="#{userView.findLightAndActive()}" var="item" itemLabel="#{item.fullName}" itemValue="#{item.username}" />
+							</p:selectOneMenu>
+							<br />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('addToNotifyItemDlg').hide()" value="Hide" styleClass="btn btn-warning" />
+				<p:commandButton action="#{userAppraisalView.addToNotifyItem()}" value="Add" styleClass="btn btn-success" oncomplete="PF('addToNotifyItemDlg').hide()"
+					 rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml'}"/>
+				
+			</div>
+		</p:dialog>
+	</h:form>
+	
+	
+	<h:form id="addCommentForm" >
 		<p:dialog widgetVar="addCommentDlg" modal="true" closable="false"
 			resizable="false" showHeader="false" position="center center"
 			onShow="PF('addCommentDlg').initPosition()">
@@ -67,7 +107,7 @@
 					styleClass="btn btn-warning" />
 				<p:commandButton action="#{userAppraisalView.addComment()}" value="Add"
 					styleClass="btn btn-info" oncomplete="PF('addCommentDlg').hide()"
-					update=":main_form:commentPanel" />
+					update=":main_form:commentPanel"   rendered="#{(userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml')}"/>
 			</div>
 		</p:dialog>
 	</h:form>
@@ -104,7 +144,7 @@
 									<f:selectItems
 										value="#{docTypeView.findByType(userAppraisalView.className2)}"
 										var="item" itemLabel="#{item}" itemValue="#{item}" />
-									<p:ajax update="fileUploadPanel" />
+									<p:ajax update="fileUploadPanel"   rendered="#{userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml'}"/>
 								</h:selectOneMenu>
 							</div>
 						</div>
@@ -120,7 +160,7 @@
 							sizeLimit="20000000" fileLimit="5"
 							allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|xlsx?|docx?|eml|mp4|txt|conf)$/"
 							styleClass="#{userAppraisalView.fileType==null?'hide':''}"
-							style="margin: auto;width: 80%" />
+							style="margin: auto;width: 80%"   rendered="#{userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml'}" />
 						<p:growl id="messages" showDetail="true" />
 					</h:panelGroup>
 				</div>

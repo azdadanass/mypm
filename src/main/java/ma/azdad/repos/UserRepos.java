@@ -131,6 +131,9 @@ public interface UserRepos extends JpaRepository<User, String> {
 	@Query(c2 + "from User a where a.supplier.id = ?1")
 	List<User> findBySupplier(Integer supplierId);
 	
-
+	
+	@Query("select new User(a.username,a.fullName) from User a where a.active = ?1")
+	List<User> findLightByStatu(Boolean active);
+	
 
 }

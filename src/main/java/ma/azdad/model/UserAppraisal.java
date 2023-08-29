@@ -40,6 +40,17 @@ public class UserAppraisal extends GenericModel<Integer>{
 	private List<UserAppraisalFile> fileList = new ArrayList<>();
 	private List<UserAppraisalHistory> historyList = new ArrayList<>();
 	private List<UserAppraisalComment> commentList = new ArrayList<>();
+	private List<ToNotify> toNotifyList = new ArrayList<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userAppraisal", cascade = CascadeType.ALL, orphanRemoval = true)
+	public List<ToNotify> getToNotifyList() {
+		return toNotifyList;
+	}
+
+	public void setToNotifyList(List<ToNotify> toNotifyList) {
+		this.toNotifyList = toNotifyList;
+	}
+
 	private List<CommentGroup<UserAppraisalComment>> commentGroupList;
 
 	// Created
