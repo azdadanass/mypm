@@ -21,11 +21,11 @@
 	</ui:define>
 	<ui:define name="navigator">
 		<ul class="breadcrumb">
-			<li><i class="ace-icon fa fa-home" /> <a href="#"> <h:outputText
-						value="Main Menu" />
+			<li><i class="ace-icon fa fa-home" /> <a href="#"> 
+			<h:outputText value="Main Menu" />
 			</a></li>
 			<li class="active"><h:outputText
-					value="#{userAppraisalView.isAddPage?'Add New':'Edit'} User Appraisal" />
+					value="User Appraisal Mid Year Review" />
 			</li>
 		</ul>
 	</ui:define>
@@ -37,10 +37,9 @@
 			<div class="widget-box">
 				<div class="widget-header widget-header-blue widget-header-flat">
 					<h4 class="widget-title lighter">
-						<i
-							class="ace-icon fa #{userAppraisalView.isAddPage?'fa-plus green':'fa-edit orange'} bigger-110"></i>
+						<i class="ace-icon fa fa-edit orange bigger-110"></i>
 						<h:outputText
-							value=" #{userAppraisalView.isAddPage?'Add New':'Edit'}  User Appraisal" />
+							value="User Appraisal Mid Year Review" />
 					</h4>
 				</div>
 				<div class="row">
@@ -50,19 +49,17 @@
 					<div class="widget-main">
 						<h:panelGroup id="nav-wizard">
 							<ul class="nav nav-wizard">
-								<li class="#{userAppraisalView.step==1?'active':''}"><a
-									href="#"> <h:outputText value="Sections" />
-								</a></li>
-								<li class="#{userAppraisalView.step==2?'active':''}"><a
+								
+								<li class="#{userAppraisalView.stepMid==1?'active':''}"><a
 									href="#"> <h:outputText value="Business Goals" />
 								</a></li>
-								<li class="#{userAppraisalView.step==3?'active':''}"><a
+								<li class="#{userAppraisalView.stepMid==2?'active':''}"><a
 									href="#"> <h:outputText value="Supplementary Goals" />
 								</a></li>
-								<li class="#{userAppraisalView.step==4?'active':''}"><a
+								<li class="#{userAppraisalView.stepMid==3?'active':''}"><a
 									href="#"> <h:outputText value="Key Worker" />
 								</a></li>
-								<li class="#{userAppraisalView.step==5?'active':''}"><a
+								<li class="#{userAppraisalView.stepMid==4?'active':''}"><a
 									href="#"> <h:outputText value="Comment" />
 								</a></li>
 							</ul>
@@ -71,60 +68,7 @@
 						<p:messages id="messages" closable="true" />
 						<h:panelGroup id="steps">
 
-							<f:subview id="step1" rendered="#{userAppraisalView.step==1}">
-								<div class="space-8" />
-								<div class="row">
-									<div class="table-header col-sm-12 col-xs-12">
-										<div class="col-sm-8 col-xs-8">
-											<i class="fa fa-list" />
-											<h:outputText value=" Section List" />
-										</div>
-										<div class="col-sm-2 hidden-xs">
-											<div class="action-buttons center">
-												<h:commandLink styleClass="aa-tooltip tooltip-success"
-													title="Export to excel">
-
-												</h:commandLink>
-											</div>
-										</div>
-
-									</div>
-									<div class="col-sm-12 col-xs-12 aa-datatable-container">
-
-										<p:dataTable value="#{userAppraisalView.titleList}"
-											var="title" rowKey="#{title}" id="appraisalsList"
-											widgetVar="sectionslist" rows="20"
-											styleClass="table table-striped table-hover center"
-											paginator="true" paginatorAlwaysVisible="false"
-											paginatorPosition="bottom"
-											paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
-											rowSelectMode="checkbox" rowIndexVar="index">
-
-											<p:column headerText="ID">
-												<h:outputText value="#{index+1}" styleClass="bolder blue" />
-											</p:column>
-											<p:column headerText="Title">
-												<h:outputText value="#{title}" styleClass="bolder blue" />
-											</p:column>
-											<p:column headerText="Eligible">
-												<p:selectBooleanCheckbox
-													value="#{userAppraisalView.eligibleList[index]}"
-													disabled="#{index==0}" />
-											</p:column>
-											<p:column headerText="Weight">
-												<h:inputText value="#{userAppraisalView.weightList[index]}"
-													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px" />
-												<h:outputText value="%" styleClass="bolder blue" />
-											</p:column>
-
-										</p:dataTable>
-									</div>
-								</div>
-								<div class="space-8" />
-							</f:subview>
-
-							<f:subview id="step2" rendered="#{userAppraisalView.step==2}">
+							<f:subview id="step1" rendered="#{userAppraisalView.stepMid==2}">
 								<h4 class="header blue bolder smaller">
 									<h:outputText value="Business Goals List" />
 								</h4>
@@ -135,17 +79,14 @@
 											<h:outputText value="business Goals" />
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
-											<p:dataTable id="businessGoalsList"
-												value="#{userAppraisalView.businessGoalsList}" var="item"
-												rows="20"
+											<p:dataTable id="businessGoalsListEdit"
+												value="#{userAppraisalView.businessGoalsListEdit}"
+												var="item" rows="20"
 												styleClass="table table-striped table-hover center"
 												paginatorAlwaysVisible="false" paginator="true"
 												paginatorPosition="bottom"
 												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
 												rowIndexVar="index">
-												<p:column headerText="ID">
-													<h:outputText value="#{index+1}" styleClass="bolder blue" />
-												</p:column>
 												<p:column headerText="Goal Title"
 													rendered="#{item.goalTitle != null}">
 													<h:outputText value="#{item.goalTitle}"
@@ -173,10 +114,11 @@
 													<div class="action-buttons center">
 														<p:commandLink
 															action="#{userAppraisalView.removeBusinessGoal(item)}"
-															update="businessGoalsList" process="businessGoalsList"
-															title="delete" rendered="true" styleClass="aa-tooltip">
+															update="businessGoalsListEdit"
+															process="businessGoalsListEdit" title="delete"
+															rendered="true" styleClass="aa-tooltip">
 															<i class="ace-icon fa fa-trash-o bigger-130 red" />
-															<f:param name="isEdit" value="0" />
+															<f:param name="isEdit" value="1" />
 
 														</p:commandLink>
 
@@ -186,11 +128,11 @@
 													<div class="action-buttons center">
 														<p:commandLink title="Add New Item"
 															action="#{userAppraisalView.addBusiness()}"
-															update="businessGoalsList" process="businessGoalsList"
+															update="businessGoalsListEdit"
+															process="businessGoalsListEdit"
 															rendered="#{userAppraisalView.canAddBusiness()}">
-															<f:param name="isEdit" value="0" />
-
 															<i class="fa fa-plus green" />
+															<f:param name="isEdit" value="1" />
 														</p:commandLink>
 													</div>
 												</f:facet>
@@ -201,9 +143,7 @@
 								<div class="space-16" />
 							</f:subview>
 
-
-
-							<f:subview id="step3" rendered="#{userAppraisalView.step==3}">
+							<f:subview id="step2" rendered="#{userAppraisalView.stepMid==1}">
 								<h4 class="header blue bolder smaller">
 									<h:outputText value="Supplementary Goals List" />
 								</h4>
@@ -414,7 +354,7 @@
 
 								<div class="space-16" />
 							</f:subview>
-							<f:subview id="step4" rendered="#{userAppraisalView.step==4}">
+							<f:subview id="step3" rendered="#{userAppraisalView.stepMid==3}">
 								<h3 class="lighter block green">
 									<i class="ace-icon fa fa-envelope" />
 									<h:outputText value=" Key Worker Partner" />
@@ -493,7 +433,7 @@
 									</div>
 								</div>
 							</f:subview>
-							<f:subview id="step5" rendered="#{userAppraisalView.step==5}">
+							<f:subview id="step4" rendered="#{userAppraisalView.stepMid==4}">
 								<h3 class="lighter block green">
 									<i class="ace-icon fa fa-comment-o" />
 									<h:outputText value=" Add Comment" />
@@ -516,22 +456,21 @@
 						</h:panelGroup>
 						<hr />
 						<div class="wizard-actions">
-							<p:commandLink action="#{userAppraisalView.previousStep()}"
+							<p:commandLink action="#{userAppraisalView.previousStepMid()}"
 								immediate="true" update="next,messages,nav-wizard,steps"
 								styleClass="btn btn-prev">
 								<f:param name="isEdit" value="0" />
 								<i class="ace-icon fa fa-arrow-left icon-on-right"></i>
 								<h:outputText value="Back" />
 							</p:commandLink>
-							<p:commandLink id="next" action="#{userAppraisalView.nextStep()}"
+							<p:commandLink id="next" action="#{userAppraisalView.nextStepMid()}"
 								update="messages,nav-wizard,next,steps"
 								styleClass="btn btn-success btn-next">
 								<f:param name="isEdit" value="0" />
 								<h:outputText
-									value="#{userAppraisalView.step==5?'Finish':'Next'}" />
+									value="#{userAppraisalView.stepMid==4?'Finish':'Next'}" />
 								<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 							</p:commandLink>
-
 						</div>
 						<div class="space-16" />
 					</div>

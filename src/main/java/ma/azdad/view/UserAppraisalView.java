@@ -66,7 +66,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	@Autowired
 	BusinessGoalsService businessGoalsService;
-	
+
 	@Autowired
 	UserService userService;
 
@@ -96,7 +96,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Integer> weightList;
 	private String toNotifyUserUsername;
 
-
 	private List<SupplementaryGoals> suppl1 = new ArrayList<>();
 	private List<SupplementaryGoals> suppl2 = new ArrayList<>();
 	private List<SupplementaryGoals> suppl3 = new ArrayList<>();
@@ -123,15 +122,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Sections> sectionEditList;
 	private List<BusinessGoals> businessGoalsListEdit;
 	private List<SupplementaryGoals> supplementaryGoalsListEdit;
-	//private List<ToNotify> keyWorkerList;
-
-
+	// private List<ToNotify> keyWorkerList;
 
 	@Override
 	@PostConstruct
 	public void init() {
 		super.init();
-		System.out.println("current Page"+currentPath);
+		System.out.println("current Page" + currentPath);
 		// chart*****************************
 		businessGoalsListEdit = new ArrayList<>();
 		editBusinessGoals();
@@ -299,8 +296,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void setIsMid(Integer isMid) {
 		this.isMid = isMid;
 	}
-	
-	// 3 stats Mid and Final And debut Status 
+
+	// 3 stats Mid and Final And debut Status
 
 	public void onDebut() {
 		isMid = 1;
@@ -320,7 +317,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		System.out.println(isMid);
 
 	}
-	
 
 	public String getSelectedGoalTitle() {
 		return selectedGoalTitle;
@@ -376,6 +372,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void setPieChartModel(PieChartModel pieChartModel) {
 		this.pieChartModel = pieChartModel;
 	}
+
 	private int step = 1;
 
 	@Override
@@ -401,10 +398,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		if (task != null) {
 			switch (task) {
 			case 1:
-				initLists(service.findUserappraisalbyStats(sessionView.getUsername(),UserAppraisalStatus.EDITED));
+				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.EDITED));
 				break;
 			case 2:
-				initLists(service.findUserappraisalRolebyStats(sessionView.getUsername(),UserAppraisalStatus.SUBMITED,UserAppraisalStatus.APPROVED_LM));
+				initLists(service.findUserappraisalRolebyStats(sessionView.getUsername(), UserAppraisalStatus.SUBMITED,
+						UserAppraisalStatus.APPROVED_LM));
 				break;
 			default:
 				break;
@@ -1479,7 +1477,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public List<UserAppraisal> findAll() {
 		return service.findAll();
 	}
-	
+
 	public String findComment() {
 		return userAppraisalRepos.findComment(model);
 	}
@@ -1539,8 +1537,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	// comments
 	private UserAppraisalComment comment = new UserAppraisalComment();
-	
-	private UserAppraisalComment userAppraisalComment =new UserAppraisalComment();
+
+	private UserAppraisalComment userAppraisalComment = new UserAppraisalComment();
 
 	public UserAppraisalComment getUserAppraisalComment() {
 		return userAppraisalComment;
@@ -1615,12 +1613,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return businessGoalsRepos.findSectionByNumberAndUserAppraisal(number, us);
 	}
 
-	
 	public Date findHireDate(String u) {
-	
+
 		return service.findHireDate(u);
 	}
-	
+
 	public void initSuppGoals() {
 
 		supplementaryGoalsListBg = new ArrayList<>();
@@ -1839,9 +1836,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return super.getIntegerParameter(name);
 	}
 
-
-	// ============== Keyworker Code 
-	
+	// ============== Keyworker Code
 
 	public String getToNotifyUserUsername() {
 		return toNotifyUserUsername;
@@ -1850,31 +1845,36 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void setToNotifyUserUsername(String toNotifyUserUsername) {
 		this.toNotifyUserUsername = toNotifyUserUsername;
 	}
-	
-	
-	public void addToNotifyItem() {
-		User toNotifyUser = userService.findOne(toNotifyUserUsername);
-		if (model.getToNotifyList().stream().filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
-			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
-			model=service.saveAndRefresh(model);
-			//keyWorkerList=new ArrayList<>();
-			//keyWorkerList.add(new ToNotify(toNotifyUser, model));
 
-		
+	public void addToNotifyItem() {
+
+
+		User toNotifyUser = userService.findOne(toNotifyUserUsername);
+		if (model.getToNotifyList().stream()
+				.filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
+			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
+		model = service.saveAndRefresh(model);
+
+		// keyWorkerList=new ArrayList<>();
+		// keyWorkerList.add(new ToNotify(toNotifyUser, model));
+
 	}
 
-	
 	public void removeToNotifyItem(int index) {
-		
-		if (getIntegerParameter("isEdit")==1) {
+
+		if (getIntegerParameter("isEdit") == 1) {
 			model.getToNotifyList().get(index).setUserAppraisal(null);
 			model.getToNotifyList().remove(index);
-			
-		}else if (getIntegerParameter("isEdit")==0) {
+			model = service.saveAndRefresh(model);
+
+
+		} else if (getIntegerParameter("isEdit") == 0) {
 			model.getToNotifyList().get(index).setUserAppraisal(null);
 			model.getToNotifyList().remove(index);
+			model = service.saveAndRefresh(model);
+
 		}
-		
+
 	}
 
 	@Transactional
@@ -1928,8 +1928,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			fillSupp5();
 			edited();
 
-		 step++;
-			
+			step++;
+
 			break;
 		case 4:
 			step++;
@@ -1979,5 +1979,62 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			step--;
 		}
 	}
+	
+	
+	//StepMid Review
+	
+	private int stepMid=1;
+	
+	public int getStepMid() {
+		return stepMid;
+	}
+
+	public void setStepMid(int stepMid) {
+		this.stepMid = stepMid;
+	}
+
+	@Transactional
+	public String nextStepMid() throws IOException {
+	
+		switch (stepMid) {
+		case 1:
+			System.out.println("dsds");
+			initBg();
+			stepMid++;
+			break;
+
+		case 2:
+			
+			stepMid++;
+			break;
+		case 3:
+			
+			stepMid++;
+			break;
+		case 4:
+			stepMid++;
+			break;
+	
+
+		}
+		return null;
+	}
+
+	
+
+	public void previousStepMid() {
+		if (stepMid != 1) {
+			if (stepMid == 2) {
+
+		
+			}
+			if (stepMid == 3) {
+				
+			}
+
+			stepMid--;
+		}
+	}
+
 
 }
