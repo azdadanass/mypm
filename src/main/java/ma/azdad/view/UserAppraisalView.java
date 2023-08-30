@@ -1851,7 +1851,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void removeToNotifyItem(int index) {
 		model.getToNotifyList().get(index).setUserAppraisal(null);
 		model.getToNotifyList().remove(index);
-		System.out.println("appeeelllll dellltee");
+		
 	}
 
 	

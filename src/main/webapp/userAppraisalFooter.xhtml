@@ -67,7 +67,8 @@
 			<div class="modal-footer">
 				<p:commandButton onclick="PF('addToNotifyItemDlg').hide()" value="Hide" styleClass="btn btn-warning" />
 				<p:commandButton action="#{userAppraisalView.addToNotifyItem()}" value="Add" styleClass="btn btn-success" oncomplete="PF('addToNotifyItemDlg').hide()"
-					 rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml'}"/>
+					update=":main_form:step4:notification_tab,:main_form_edit:step4:notification_tab1" rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml'}"/>
+					 
 				
 			</div>
 		</p:dialog>

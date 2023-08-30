@@ -434,9 +434,9 @@
 											<h:outputText value="Key Worker Partner" />
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+									
 											<p:dataTable id="notification_tab"
-												value="#{userAppraisalView.model.toNotifyList}"
-												var="item"
+												value="#{userAppraisalView.model.toNotifyList}" var="item"
 												styleClass="table table-striped table-hover center"
 												paginatorAlwaysVisible="false" paginator="true"
 												paginatorPosition="bottom"
@@ -465,18 +465,15 @@
 													<h:outputText value="#{item.phone}"
 														styleClass="orange bolder" />
 												</p:column>
-												
+
 												<p:column headerText="Actions" styleClass="center"
 													width="100">
 													<div class="action-buttons center">
-														<p:commandLink title="Remove row"
-															 action="#{userAppraisalView.removeToNotifyItem(itemIndexVar)}">
+														<p:commandLink title="Remove row" partialSubmit="true" process="@this :main_form:step4:notification_tab"
+															action="#{userAppraisalView.removeToNotifyItem(itemIndexVar)}"
+															update=":main_form:step4:notification_tab">
 															<i class="ace-icon fa fa-remove bigger-130 red" />
-															<f:ajax render="notification_tab" />
-															
 														</p:commandLink>
-														
-														
 													</div>
 												</p:column>
 												<f:facet name="footer">
@@ -501,13 +498,15 @@
 								</h3>
 								<div class="row">
 									<div class="col-xs-12 col-sm-3">
-										<label class="control-label pull-right">
-											<h:outputText value="Comment " />
+										<label class="control-label pull-right"> <h:outputText
+												value="Comment " />
 										</label>
 									</div>
 									<div class="col-xs-12 col-sm-9">
 										<div class="clearfix">
-											<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}" styleClass="col-xs-12 col-sm-6" />
+											<p:inputTextarea
+												value="#{userAppraisalView.userAppraisalComment.content}"
+												styleClass="col-xs-12 col-sm-6" />
 										</div>
 									</div>
 								</div>
@@ -920,8 +919,7 @@
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
 											<p:dataTable id="notification_tab1"
-												value="#{userAppraisalView.model.toNotifyList}"
-												var="item"
+												value="#{userAppraisalView.model.toNotifyList}" var="item"
 												styleClass="table table-striped table-hover center"
 												paginatorAlwaysVisible="false" paginator="true"
 												paginatorPosition="bottom"
@@ -950,18 +948,18 @@
 													<h:outputText value="#{item.phone}"
 														styleClass="orange bolder" />
 												</p:column>
-												
+
 												<p:column headerText="Actions" styleClass="center"
 													width="100">
 													<div class="action-buttons center">
-														<p:commandLink title="Remove row" action="#{userAppraisalView.removeToNotifyItem(rowIndexVar)}" 
-														>
+														<p:commandLink title="Remove row"
+															action="#{userAppraisalView.removeToNotifyItem(rowIndexVar)}"
+															update=":main_form_edit:step4:notification_tab1">
 															<i class="ace-icon fa fa-remove bigger-130 red" />
-															<f:ajax render="notification_tab1" />
-															
+
 														</p:commandLink>
 													</div>
-												</p:column>	
+												</p:column>
 												<f:facet name="footer">
 													<div class="action-buttons center">
 														<p:commandLink styleClass="aa-tooltip tooltip-success"
@@ -984,13 +982,15 @@
 								</h3>
 								<div class="row">
 									<div class="col-xs-12 col-sm-3">
-										<label class="control-label pull-right">
-											<h:outputText value="Comment " />
+										<label class="control-label pull-right"> <h:outputText
+												value="Comment " />
 										</label>
 									</div>
 									<div class="col-xs-12 col-sm-9">
 										<div class="clearfix">
-											<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}" styleClass="col-xs-12 col-sm-6" />
+											<p:inputTextarea
+												value="#{userAppraisalView.userAppraisalComment.content}"
+												styleClass="col-xs-12 col-sm-6" />
 										</div>
 									</div>
 								</div>
@@ -1022,7 +1022,7 @@
 		</h:form>
 		<ui:include src="fileFooter.xhtml" />
 		<ui:include src="userAppraisalFooter.xhtml" />
-		
+
 	</ui:define>
 
 
