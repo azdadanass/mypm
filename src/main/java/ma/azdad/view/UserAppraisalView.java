@@ -95,28 +95,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Boolean> eligibleList;
 	private List<Integer> weightList;
 	private String toNotifyUserUsername;
-	//private UserAppraisal userAppraisal = new UserAppraisal();
 
-
-	public String getToNotifyUserUsername() {
-		return toNotifyUserUsername;
-	}
-
-	public void setToNotifyUserUsername(String toNotifyUserUsername) {
-		this.toNotifyUserUsername = toNotifyUserUsername;
-	}
-	
-	
-	public void addToNotifyItem() {
-		User toNotifyUser = userService.findOne(toNotifyUserUsername);
-		if (model.getToNotifyList().stream().filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
-			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
-			model=service.saveAndRefresh(model);
-			keyWorkerList=new ArrayList<>();
-			keyWorkerList.add(new ToNotify(toNotifyUser, model));
-
-		
-	}
 
 	private List<SupplementaryGoals> suppl1 = new ArrayList<>();
 	private List<SupplementaryGoals> suppl2 = new ArrayList<>();
@@ -144,14 +123,61 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Sections> sectionEditList;
 	private List<BusinessGoals> businessGoalsListEdit;
 	private List<SupplementaryGoals> supplementaryGoalsListEdit;
-	private List<ToNotify> keyWorkerList;
+	//private List<ToNotify> keyWorkerList;
 
-	public List<ToNotify> getKeyWorkerList() {
-		return keyWorkerList;
-	}
 
-	public void setKeyWorkerList(List<ToNotify> keyWorkerList) {
-		this.keyWorkerList = keyWorkerList;
+
+	@Override
+	@PostConstruct
+	public void init() {
+		super.init();
+		System.out.println("current Page"+currentPath);
+		// chart*****************************
+		businessGoalsListEdit = new ArrayList<>();
+		editBusinessGoals();
+		sectionEditList = new ArrayList<>();
+		editSection();
+		pieChartModel = new PieChartModel();
+
+		// Iterate through the data and add to the pie chart model
+		for (Sections item : findSectionByUserAppraisal()) {
+			pieChartModel.set(item.getSectionsTitle(), item.getWeight());
+		}
+
+		pieChartModel.setTitle("Appraisal Weighting Details");
+		pieChartModel.setLegendPosition("e");
+		pieChartModel.setShowDataLabels(true);
+
+		// Sections Title
+		titleList = new ArrayList<>();
+		goalTitleList = new ArrayList<>();
+		businessGoalsList = new ArrayList<>();
+		supplementaryGoalsList = new ArrayList<>();
+		supplementaryGoalsListBg = new ArrayList<>();
+		titleList.add("BUSINESS Goals");
+		titleList.add("JOB EXECUTION");
+		titleList.add("CODE OF CONDUCT");
+		titleList.add("LEADERSHIP & DEPENDABILTY");
+		titleList.add("PERSONALITY ATTRIBUTES");
+		titleList.add("MANAGEMENT RESPONSIBILITIES");
+		eligibleList = new ArrayList<>();
+		weightList = new ArrayList<>();
+
+		// business Goal title
+		goalTitleList.add("Financial Excellence");
+		goalTitleList.add("Technical Excellence");
+		goalTitleList.add("Business Development");
+		goalTitleList.add("Governance ");
+		goalTitleList.add("Customer satisfaction");
+
+		for (int i = 0; i < titleList.size(); i++) {
+			if (i == 0) {
+				eligibleList.add(true);
+			}
+			eligibleList.add(false);
+			weightList.add(0);
+		}
+		time();
 	}
 
 	public List<SupplementaryGoals> getSupplementaryGoalsListEdit() {
@@ -273,6 +299,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void setIsMid(Integer isMid) {
 		this.isMid = isMid;
 	}
+	
+	// 3 stats Mid and Final And debut Status 
 
 	public void onDebut() {
 		isMid = 1;
@@ -292,6 +320,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		System.out.println(isMid);
 
 	}
+	
 
 	public String getSelectedGoalTitle() {
 		return selectedGoalTitle;
@@ -347,60 +376,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void setPieChartModel(PieChartModel pieChartModel) {
 		this.pieChartModel = pieChartModel;
 	}
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-		System.out.println("current Page"+currentPath);
-		// chart*****************************
-		businessGoalsListEdit = new ArrayList<>();
-		editBusinessGoals();
-		sectionEditList = new ArrayList<>();
-		editSection();
-		pieChartModel = new PieChartModel();
-
-		// Iterate through the data and add to the pie chart model
-		for (Sections item : findSectionByUserAppraisal()) {
-			pieChartModel.set(item.getSectionsTitle(), item.getWeight());
-		}
-
-		pieChartModel.setTitle("Appraisal Weighting Details");
-		pieChartModel.setLegendPosition("e");
-		pieChartModel.setShowDataLabels(true);
-
-		// Sections Title
-		titleList = new ArrayList<>();
-		goalTitleList = new ArrayList<>();
-		businessGoalsList = new ArrayList<>();
-		supplementaryGoalsList = new ArrayList<>();
-		supplementaryGoalsListBg = new ArrayList<>();
-		titleList.add("BUSINESS Goals");
-		titleList.add("JOB EXECUTION");
-		titleList.add("CODE OF CONDUCT");
-		titleList.add("LEADERSHIP & DEPENDABILTY");
-		titleList.add("PERSONALITY ATTRIBUTES");
-		titleList.add("MANAGEMENT RESPONSIBILITIES");
-		eligibleList = new ArrayList<>();
-		weightList = new ArrayList<>();
-
-		// business Goal title
-		goalTitleList.add("Financial Excellence");
-		goalTitleList.add("Technical Excellence");
-		goalTitleList.add("Business Development");
-		goalTitleList.add("Governance ");
-		goalTitleList.add("Customer satisfaction");
-
-		for (int i = 0; i < titleList.size(); i++) {
-			if (i == 0) {
-				eligibleList.add(true);
-			}
-			eligibleList.add(false);
-			weightList.add(0);
-		}
-		time();
-	}
-
 	private int step = 1;
 
 	@Override
@@ -1860,18 +1835,44 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return super.getIntegerParameter(name);
 	}
 
-	public void removeToNotifyItem(int index) {
+
+	// ============== Keyworker Code 
+	
+
+	public String getToNotifyUserUsername() {
+		return toNotifyUserUsername;
+	}
+
+	public void setToNotifyUserUsername(String toNotifyUserUsername) {
+		this.toNotifyUserUsername = toNotifyUserUsername;
+	}
+	
+	
+	public void addToNotifyItem() {
+		User toNotifyUser = userService.findOne(toNotifyUserUsername);
+		if (model.getToNotifyList().stream().filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
+			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
+			model=service.saveAndRefresh(model);
+			//keyWorkerList=new ArrayList<>();
+			//keyWorkerList.add(new ToNotify(toNotifyUser, model));
+
 		
-		model.getToNotifyList().get(index).setUserAppraisal(null);
-		model.getToNotifyList().remove(index);
-		keyWorkerList.remove(index);
-		System.out.println("appeeelllll dellltee");
 	}
 
 	
-	public void TestremoveToNotifyItem() {
-		System.out.println("appeeelllll dellltee");
+	public void removeToNotifyItem(int index) {
+		
+		if (getIntegerParameter("isEdit")==1) {
+			model.getToNotifyList().get(index).setUserAppraisal(null);
+			model.getToNotifyList().remove(index);
+			
+		}else if (getIntegerParameter("isEdit")==0) {
+			model.getToNotifyList().get(index).setUserAppraisal(null);
+			model.getToNotifyList().remove(index);
+		}
+		
 	}
+
 	@Transactional
 	public String nextStep() throws IOException {
 		if (!canSave()) {
