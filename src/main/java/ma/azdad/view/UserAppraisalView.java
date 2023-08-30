@@ -1504,6 +1504,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public List<UserAppraisal> findAll() {
 		return service.findAll();
 	}
+	
+	public String findComment() {
+		return userAppraisalRepos.findComment(model);
+	}
 
 	public List<UserAppraisal> findByEmployOrAppraisee() {
 

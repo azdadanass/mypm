@@ -93,4 +93,7 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("select max(c.hireDate) from Contract c where c.resource.username=?1")
 	Date findHireDate(String u1);
 	
+	@Query("select c.content from UserAppraisalComment c where c.parent=?1")
+	String findComment(UserAppraisal u1);
+	
 }
