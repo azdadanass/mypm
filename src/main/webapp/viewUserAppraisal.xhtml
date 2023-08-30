@@ -434,7 +434,6 @@
 											<h:outputText value="Key Worker Partner" />
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
-									
 											<p:dataTable id="notification_tab"
 												value="#{userAppraisalView.model.toNotifyList}" var="item"
 												styleClass="table table-striped table-hover center"
@@ -469,11 +468,14 @@
 												<p:column headerText="Actions" styleClass="center"
 													width="100">
 													<div class="action-buttons center">
-														<p:commandLink title="Remove row" partialSubmit="true" process="@this :main_form:step4:notification_tab"
-															action="#{userAppraisalView.removeToNotifyItem(itemIndexVar)}"
-															update=":main_form:step4:notification_tab">
+														<p:commandLink title="Remove row"
+															action="#{userAppraisalView.removeToNotifyItem(itemIndexVar)}">
 															<i class="ace-icon fa fa-remove bigger-130 red" />
+															<f:ajax render="notification_tab" />
+
 														</p:commandLink>
+
+
 													</div>
 												</p:column>
 												<f:facet name="footer">
@@ -919,7 +921,7 @@
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
 											<p:dataTable id="notification_tab1"
-												value="#{userAppraisalView.model.toNotifyList}" var="item"
+												value="#{userAppraisalView.keyWorkerList}" var="item"
 												styleClass="table table-striped table-hover center"
 												paginatorAlwaysVisible="false" paginator="true"
 												paginatorPosition="bottom"
@@ -954,7 +956,7 @@
 													<div class="action-buttons center">
 														<p:commandLink title="Remove row"
 															action="#{userAppraisalView.removeToNotifyItem(rowIndexVar)}"
-															update=":main_form_edit:step4:notification_tab1">
+															update="notification_tab1">
 															<i class="ace-icon fa fa-remove bigger-130 red" />
 
 														</p:commandLink>
