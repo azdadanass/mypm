@@ -145,7 +145,7 @@
 								</h:outputText>
 							</p:column>
 							<p:column headerText="Status" style="width:125px;">
-								<h:outputText value="#{item.userAppraisalStatus}"
+								<h:outputText value="#{item.userAppraisalStatus.getValue()}"
 									styleClass="#{item.userAppraisalStatus.color.badge}" />
 							</p:column>
 							<p:column headerText="Actions" width="150" exportable="false">

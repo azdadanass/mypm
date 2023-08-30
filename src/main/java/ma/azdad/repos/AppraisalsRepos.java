@@ -21,7 +21,7 @@ public interface AppraisalsRepos extends JpaRepository<Appraisals, Integer> {
 	List<User> findByLineManager(Boolean act, Boolean inter, User u3);
 
 	@Query("from User u where u.active=?1 and u.affectation.hrManager=?2 "
-			+ " and u.username in (select c.resource.username from  Contract c where c.hireDate >=  ?4 and c.contractStatus = 'active' )"
+			+ " and u.username in (select c.resource.username from  Contract c where c.hireDate<=?4  and c.contractStatus = 'Ongoing' )"
 			+ " and u.username in (select r.user.username from UserRole r where r.user.username=u.username and r.role='ROLE_MYPM')"
 			+ " and u.username not in (select up.employ.username from UserAppraisal up where up.appraisal=?3)")
 	List<User> findUserNoAppraisal(Boolean act, User u3, Appraisals appraisals,Date appraisalEndDate);

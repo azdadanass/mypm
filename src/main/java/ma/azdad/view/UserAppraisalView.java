@@ -111,7 +111,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		User toNotifyUser = userService.findOne(toNotifyUserUsername);
 		if (model.getToNotifyList().stream().filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
 			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
-		model=service.saveAndRefresh(model);
+			model=service.saveAndRefresh(model);
+			keyWorkerList=new ArrayList<>();
+			keyWorkerList.add(new ToNotify(toNotifyUser, model));
+
 		
 	}
 
@@ -141,6 +144,15 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Sections> sectionEditList;
 	private List<BusinessGoals> businessGoalsListEdit;
 	private List<SupplementaryGoals> supplementaryGoalsListEdit;
+	private List<ToNotify> keyWorkerList;
+
+	public List<ToNotify> getKeyWorkerList() {
+		return keyWorkerList;
+	}
+
+	public void setKeyWorkerList(List<ToNotify> keyWorkerList) {
+		this.keyWorkerList = keyWorkerList;
+	}
 
 	public List<SupplementaryGoals> getSupplementaryGoalsListEdit() {
 		return supplementaryGoalsListEdit;
@@ -1847,10 +1859,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	protected Integer getIntegerParameter(String name) {
 		return super.getIntegerParameter(name);
 	}
-	
+
 	public void removeToNotifyItem(int index) {
+		
 		model.getToNotifyList().get(index).setUserAppraisal(null);
 		model.getToNotifyList().remove(index);
+		keyWorkerList.remove(index);
 		System.out.println("appeeelllll dellltee");
 	}
 

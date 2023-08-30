@@ -588,8 +588,8 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	public List<User> findUserNoAppraisal() {
 		userNoAppraisalList = new ArrayList<>();
 		List<User> userNoAppraisalList = service.findUserNoAppraisal(true, sessionView.getUser(), model,
-				model.getDateStatsOpen());
-
+				model.getEndDate());
+		
 		return userNoAppraisalList;
 	}
 
