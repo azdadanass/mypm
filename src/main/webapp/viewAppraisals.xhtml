@@ -646,7 +646,7 @@
 												styleClass="bolder blue" />
 										</p:column>
 										<p:column headerText="Status">
-											<h:outputText value="#{item.userAppraisalStatus}"
+											<h:outputText value="#{item.userAppraisalStatus.getValue()}"
 												styleClass="#{item.userAppraisalStatus.color.badge}" />
 										</p:column>
 										<p:column headerText="Actions" width="150" exportable="false">

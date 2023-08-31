@@ -67,7 +67,8 @@
 						<p:messages id="messages" closable="true" />
 						<h:panelGroup id="steps">
 
-							<f:subview id="step1" rendered="#{userAppraisalView.stepFinal==1}">
+							<f:subview id="step1"
+								rendered="#{userAppraisalView.stepFinal==1}">
 								<h4 class="header blue bolder smaller">
 									<h:outputText value="Business Goals List" />
 								</h4>
@@ -97,21 +98,18 @@
 														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
 													</p:selectOneMenu>
 												</p:column>
-
 												<p:column headerText="Goal weight">
 													<h:outputText value="#{item.goalWeight}"
 														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
+														style="width: 40px" styleClass="bolder " />
+													<h:outputText value="%" styleClass="bolder " />
 												</p:column>
 												<p:column headerText="Final Year Review">
 													<h:inputText value="#{item.summaryRaiting}"
 														converter="javax.faces.Integer" min="0" max="100"
-														styleClass="green" style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder green" />
+														 style="width: 40px" styleClass="bolder"/>
+													<h:outputText value="%" styleClass="bolder" />
 												</p:column>
-
-
 											</p:dataTable>
 										</div>
 									</div>
@@ -119,7 +117,8 @@
 								<div class="space-16" />
 							</f:subview>
 
-							<f:subview id="step2" rendered="#{userAppraisalView.stepFinal==2}">
+							<f:subview id="step2"
+								rendered="#{userAppraisalView.stepFinal==2}">
 								<h4 class="header blue bolder smaller">
 									<h:outputText value="Supplementary Goals List" />
 								</h4>
@@ -144,16 +143,16 @@
 													</p:column>
 
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}"
+														<h:outputText value="#{item.weight}" styleClass="bolder" 
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
+														<h:outputText value="%" styleClass="bolder" />
 													</p:column>
 													<p:column headerText="Final Year Review">
 														<h:inputText value="#{item.summaryRaiting}"
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder green" />
+														<h:outputText value="%" styleClass="bolder" />
 													</p:column>
 												</p:dataTable>
 											</div>
@@ -170,8 +169,8 @@
 												<h:outputText value="CODE OF CONDUCT" />
 											</div>
 											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="CODE" value="#{userAppraisalView.finalsup2}"
-													var="item" rows="20"
+												<p:dataTable id="CODE"
+													value="#{userAppraisalView.finalsup2}" var="item" rows="20"
 													styleClass="table table-striped table-hover center"
 													paginatorAlwaysVisible="false" paginator="true"
 													paginatorPosition="bottom"
@@ -182,16 +181,16 @@
 														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}"
+														<h:outputText value="#{item.weight}" styleClass="bolder" 
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
+														<h:outputText value="%" styleClass="bolder" />
 													</p:column>
 													<p:column headerText="Final Year Review">
-														<h:inputText value="#{item.summaryRaiting}"
+														<h:inputText value="#{item.summaryRaiting}" styleClass="bolder" 
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder green" />
+														<h:outputText value="%" styleClass="bolder" />
 													</p:column>
 												</p:dataTable>
 											</div>
@@ -221,13 +220,13 @@
 														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}"
+														<h:outputText value="#{item.weight}" styleClass="bolder" 
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Final Year Review">
-														<h:inputText value="#{item.summaryRaiting}"
+														<h:inputText value="#{item.summaryRaiting}" styleClass="bolder" 
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder green" />
@@ -261,13 +260,13 @@
 													</p:column>
 
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}"
+														<h:outputText value="#{item.weight}" styleClass="bolder" 
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Final Year Review">
-														<h:inputText value="#{item.summaryRaiting}"
+														<h:inputText value="#{item.summaryRaiting}" styleClass="bolder" 
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder green" />
@@ -300,13 +299,13 @@
 														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}"
+														<h:outputText value="#{item.weight}" styleClass="bolder" 
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Final Year Review">
-														<h:inputText value="#{item.summaryRaiting}"
+														<h:inputText value="#{item.summaryRaiting}" styleClass="bolder" 
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder green" />
@@ -320,7 +319,8 @@
 								<div class="space-16" />
 							</f:subview>
 
-							<f:subview id="step3" rendered="#{userAppraisalView.stepFinal==3}">
+							<f:subview id="step3"
+								rendered="#{userAppraisalView.stepFinal==3}">
 								<h3 class="lighter block green">
 									<i class="ace-icon fa fa-comment-o" />
 									<h:outputText value=" Add Comment" />
@@ -333,9 +333,9 @@
 									</div>
 									<div class="col-xs-12 col-sm-9">
 										<div class="clearfix">
-											<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}"
+											<p:inputTextarea
+												value="#{userAppraisalView.userAppraisalComment.content}"
 												styleClass="col-xs-12 col-sm-6" />
-											
 										</div>
 									</div>
 								</div>

@@ -1542,11 +1542,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		if (existComment()) {
 			return getCommentByTitle();
 		}
-		
 		return userAppraisalComment;
 	}
 
 	public void setUserAppraisalComment(UserAppraisalComment userAppraisalComment) {
+		
 		this.userAppraisalComment = userAppraisalComment;
 	}
 
@@ -2559,7 +2559,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			case 3:
 				String newContent = userAppraisalComment.getContent();
 			    
-			    if (!StringUtils.isBlank(newContent)) {
+			    if (newContent.equals(newContent)) {
 			        UserAppraisalComment existingComment = userAppraisalService.findCommentByTitle(model);
 		        	System.out.println("existing Comenty"+existingComment);
 
