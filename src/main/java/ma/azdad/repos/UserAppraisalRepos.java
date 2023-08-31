@@ -14,6 +14,7 @@ import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
+import ma.azdad.model.UserAppraisalComment;
 import ma.azdad.model.UserAppraisalStatus;
 
 @Repository
@@ -79,7 +80,7 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	List<UserAppraisal> findUserappraisalbyStats(String username, UserAppraisalStatus status);
 	
 	
-	@Query("from UserAppraisal u  where (u.userStatsApprovedLM.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApproved.username=?1 and u.userAppraisalStatus=?3) order by id desc")
+	@Query("from UserAppraisal u where (u.userStatsApprovedLM.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApproved.username=?1 and u.userAppraisalStatus=?3) order by id desc")
 	List<UserAppraisal> findUserappraisalRolebyStats(String username, UserAppraisalStatus status1,UserAppraisalStatus status2);
 
 	
@@ -88,6 +89,9 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 
 	@Query("select count(*) from Sections s  where s.userappraisal=?1   ")
 	Integer countSections(UserAppraisal u);
+	
+	@Query(" from UserAppraisalComment u where u.parent=?1 and u.title='Mid Year Review Comment'")
+	UserAppraisalComment findCommentByTitle(UserAppraisal u);
 	
 	
 	@Query("select max(c.hireDate) from Contract c where c.resource.username=?1")

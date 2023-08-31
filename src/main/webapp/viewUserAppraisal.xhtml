@@ -434,6 +434,7 @@
 											<h:outputText value="Key Worker Partner" />
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
 											<p:dataTable id="notification_tab"
 												value="#{userAppraisalView.model.toNotifyList}" var="item"
 												styleClass="table table-striped table-hover center"
@@ -468,14 +469,12 @@
 												<p:column headerText="Actions" styleClass="center"
 													width="100">
 													<div class="action-buttons center">
-														<p:commandLink title="Remove row"
-															action="#{userAppraisalView.removeToNotifyItem(itemIndexVar)}">
+														<p:commandLink title="Remove row" partialSubmit="true"
+															action="#{userAppraisalView.removeToNotifyItem(itemIndexVar)}"
+															update=":main_form:step4:notification_tab">
+															<f:param name="isEdit" value="0" />
 															<i class="ace-icon fa fa-remove bigger-130 red" />
-															<f:ajax render="notification_tab" />
-
 														</p:commandLink>
-
-
 													</div>
 												</p:column>
 												<f:facet name="footer">
@@ -484,6 +483,7 @@
 															title="Add New Item" update=":addToNotifyItemForm"
 															oncomplete="PF('addToNotifyItemDlg').show()"
 															partialSubmit="true" process="notification_tab">
+															<f:param name="isEdit" value="0" />
 															<i class="fa fa-plus green" />
 														</p:commandLink>
 													</div>
@@ -921,7 +921,7 @@
 										</div>
 										<div class="col-sm-12 col-xs-12 aa-datatable-container">
 											<p:dataTable id="notification_tab1"
-												value="#{userAppraisalView.keyWorkerList}" var="item"
+												value="#{userAppraisalView.model.toNotifyList}" var="item"
 												styleClass="table table-striped table-hover center"
 												paginatorAlwaysVisible="false" paginator="true"
 												paginatorPosition="bottom"
@@ -956,9 +956,9 @@
 													<div class="action-buttons center">
 														<p:commandLink title="Remove row"
 															action="#{userAppraisalView.removeToNotifyItem(rowIndexVar)}"
-															update="notification_tab1">
+															update=":main_form_edit:step4:notification_tab1">
 															<i class="ace-icon fa fa-remove bigger-130 red" />
-
+															<f:param name="isEdit" value="1" />
 														</p:commandLink>
 													</div>
 												</p:column>
@@ -968,6 +968,7 @@
 															title="Add New Item" update=":addToNotifyItemForm"
 															oncomplete="PF('addToNotifyItemDlg').show()"
 															partialSubmit="true" process="notification_tab1">
+															<f:param name="isEdit" value="1" />
 															<i class="fa fa-plus green" />
 														</p:commandLink>
 													</div>
@@ -990,8 +991,7 @@
 									</div>
 									<div class="col-xs-12 col-sm-9">
 										<div class="clearfix">
-											<p:inputTextarea
-												value="#{userAppraisalView.userAppraisalComment.content}"
+											<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}"
 												styleClass="col-xs-12 col-sm-6" />
 										</div>
 									</div>

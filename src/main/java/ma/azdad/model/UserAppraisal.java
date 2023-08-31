@@ -41,6 +41,7 @@ public class UserAppraisal extends GenericModel<Integer>{
 	private List<UserAppraisalHistory> historyList = new ArrayList<>();
 	private List<UserAppraisalComment> commentList = new ArrayList<>();
 	private List<ToNotify> toNotifyList = new ArrayList<>();
+	private List<CommentGroup<UserAppraisalComment>> commentGroupList;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userAppraisal", cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<ToNotify> getToNotifyList() {
@@ -51,7 +52,6 @@ public class UserAppraisal extends GenericModel<Integer>{
 		this.toNotifyList = toNotifyList;
 	}
 
-	private List<CommentGroup<UserAppraisalComment>> commentGroupList;
 
 	// Created
 	private Date dateStatsCreated;

@@ -66,7 +66,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	@Autowired
 	BusinessGoalsService businessGoalsService;
-	
+
 	@Autowired
 	UserService userService;
 
@@ -95,28 +95,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Boolean> eligibleList;
 	private List<Integer> weightList;
 	private String toNotifyUserUsername;
-	//private UserAppraisal userAppraisal = new UserAppraisal();
-
-
-	public String getToNotifyUserUsername() {
-		return toNotifyUserUsername;
-	}
-
-	public void setToNotifyUserUsername(String toNotifyUserUsername) {
-		this.toNotifyUserUsername = toNotifyUserUsername;
-	}
-	
-	
-	public void addToNotifyItem() {
-		User toNotifyUser = userService.findOne(toNotifyUserUsername);
-		if (model.getToNotifyList().stream().filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
-			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
-			model=service.saveAndRefresh(model);
-			keyWorkerList=new ArrayList<>();
-			keyWorkerList.add(new ToNotify(toNotifyUser, model));
-
-		
-	}
 
 	private List<SupplementaryGoals> suppl1 = new ArrayList<>();
 	private List<SupplementaryGoals> suppl2 = new ArrayList<>();
@@ -144,14 +122,59 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Sections> sectionEditList;
 	private List<BusinessGoals> businessGoalsListEdit;
 	private List<SupplementaryGoals> supplementaryGoalsListEdit;
-	private List<ToNotify> keyWorkerList;
+	// private List<ToNotify> keyWorkerList;
 
-	public List<ToNotify> getKeyWorkerList() {
-		return keyWorkerList;
-	}
+	@Override
+	@PostConstruct
+	public void init() {
+		super.init();
+		System.out.println("current Page" + currentPath);
+		// chart*****************************
+		businessGoalsListEdit = new ArrayList<>();
+		editBusinessGoals();
+		sectionEditList = new ArrayList<>();
+		editSection();
+		pieChartModel = new PieChartModel();
 
-	public void setKeyWorkerList(List<ToNotify> keyWorkerList) {
-		this.keyWorkerList = keyWorkerList;
+		// Iterate through the data and add to the pie chart model
+		for (Sections item : findSectionByUserAppraisal()) {
+			pieChartModel.set(item.getSectionsTitle(), item.getWeight());
+		}
+
+		pieChartModel.setTitle("Appraisal Weighting Details");
+		pieChartModel.setLegendPosition("e");
+		pieChartModel.setShowDataLabels(true);
+
+		// Sections Title
+		titleList = new ArrayList<>();
+		goalTitleList = new ArrayList<>();
+		businessGoalsList = new ArrayList<>();
+		supplementaryGoalsList = new ArrayList<>();
+		supplementaryGoalsListBg = new ArrayList<>();
+		titleList.add("BUSINESS Goals");
+		titleList.add("JOB EXECUTION");
+		titleList.add("CODE OF CONDUCT");
+		titleList.add("LEADERSHIP & DEPENDABILTY");
+		titleList.add("PERSONALITY ATTRIBUTES");
+		titleList.add("MANAGEMENT RESPONSIBILITIES");
+		eligibleList = new ArrayList<>();
+		weightList = new ArrayList<>();
+
+		// business Goal title
+		goalTitleList.add("Financial Excellence");
+		goalTitleList.add("Technical Excellence");
+		goalTitleList.add("Business Development");
+		goalTitleList.add("Governance ");
+		goalTitleList.add("Customer satisfaction");
+
+		for (int i = 0; i < titleList.size(); i++) {
+			if (i == 0) {
+				eligibleList.add(true);
+			}
+			eligibleList.add(false);
+			weightList.add(0);
+		}
+		time();
 	}
 
 	public List<SupplementaryGoals> getSupplementaryGoalsListEdit() {
@@ -274,6 +297,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		this.isMid = isMid;
 	}
 
+	// 3 stats Mid and Final And debut Status
+
 	public void onDebut() {
 		isMid = 1;
 
@@ -348,59 +373,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		this.pieChartModel = pieChartModel;
 	}
 
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-		System.out.println("current Page"+currentPath);
-		// chart*****************************
-		businessGoalsListEdit = new ArrayList<>();
-		editBusinessGoals();
-		sectionEditList = new ArrayList<>();
-		editSection();
-		pieChartModel = new PieChartModel();
-
-		// Iterate through the data and add to the pie chart model
-		for (Sections item : findSectionByUserAppraisal()) {
-			pieChartModel.set(item.getSectionsTitle(), item.getWeight());
-		}
-
-		pieChartModel.setTitle("Appraisal Weighting Details");
-		pieChartModel.setLegendPosition("e");
-		pieChartModel.setShowDataLabels(true);
-
-		// Sections Title
-		titleList = new ArrayList<>();
-		goalTitleList = new ArrayList<>();
-		businessGoalsList = new ArrayList<>();
-		supplementaryGoalsList = new ArrayList<>();
-		supplementaryGoalsListBg = new ArrayList<>();
-		titleList.add("BUSINESS Goals");
-		titleList.add("JOB EXECUTION");
-		titleList.add("CODE OF CONDUCT");
-		titleList.add("LEADERSHIP & DEPENDABILTY");
-		titleList.add("PERSONALITY ATTRIBUTES");
-		titleList.add("MANAGEMENT RESPONSIBILITIES");
-		eligibleList = new ArrayList<>();
-		weightList = new ArrayList<>();
-
-		// business Goal title
-		goalTitleList.add("Financial Excellence");
-		goalTitleList.add("Technical Excellence");
-		goalTitleList.add("Business Development");
-		goalTitleList.add("Governance ");
-		goalTitleList.add("Customer satisfaction");
-
-		for (int i = 0; i < titleList.size(); i++) {
-			if (i == 0) {
-				eligibleList.add(true);
-			}
-			eligibleList.add(false);
-			weightList.add(0);
-		}
-		time();
-	}
-
 	private int step = 1;
 
 	@Override
@@ -426,10 +398,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		if (task != null) {
 			switch (task) {
 			case 1:
-				initLists(service.findUserappraisalbyStats(sessionView.getUsername(),UserAppraisalStatus.EDITED));
+				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.EDITED));
 				break;
 			case 2:
-				initLists(service.findUserappraisalRolebyStats(sessionView.getUsername(),UserAppraisalStatus.SUBMITED,UserAppraisalStatus.APPROVED_LM));
+				initLists(service.findUserappraisalRolebyStats(sessionView.getUsername(), UserAppraisalStatus.SUBMITED,
+						UserAppraisalStatus.APPROVED_LM));
 				break;
 			default:
 				break;
@@ -1504,10 +1477,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public List<UserAppraisal> findAll() {
 		return service.findAll();
 	}
-	
-	public String findComment() {
-		return userAppraisalRepos.findComment(model);
-	}
+
 
 	public List<UserAppraisal> findByEmployOrAppraisee() {
 
@@ -1564,10 +1534,15 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	// comments
 	private UserAppraisalComment comment = new UserAppraisalComment();
-	
-	private UserAppraisalComment userAppraisalComment =new UserAppraisalComment();
+
+	private UserAppraisalComment userAppraisalComment = new UserAppraisalComment();
 
 	public UserAppraisalComment getUserAppraisalComment() {
+		
+		if (existComment()) {
+			return getCommentByTitle();
+		}
+		
 		return userAppraisalComment;
 	}
 
@@ -1640,12 +1615,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return businessGoalsRepos.findSectionByNumberAndUserAppraisal(number, us);
 	}
 
-	
 	public Date findHireDate(String u) {
-	
+
 		return service.findHireDate(u);
 	}
-	
+
 	public void initSuppGoals() {
 
 		supplementaryGoalsListBg = new ArrayList<>();
@@ -1668,18 +1642,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public void initBg() {
-
 		if (businessGoalsList.size() > 0) {
 			for (BusinessGoals bg : businessGoalsList) {
 
 				bg.setSections(findSectionId());
 			}
-
 		}
 
 		if (businessGoalsListEdit.size() > 0) {
 			for (BusinessGoals bg : businessGoalsListEdit) {
 				bg.setSections(findSectionId());
+
 			}
 			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
 				goalTitleList.remove(businessGoalsListEdit.get(i).getGoalTitle());
@@ -1864,18 +1837,45 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return super.getIntegerParameter(name);
 	}
 
-	public void removeToNotifyItem(int index) {
-		
-		model.getToNotifyList().get(index).setUserAppraisal(null);
-		model.getToNotifyList().remove(index);
-		keyWorkerList.remove(index);
-		System.out.println("appeeelllll dellltee");
+	// ============== Keyworker Code
+
+	public String getToNotifyUserUsername() {
+		return toNotifyUserUsername;
 	}
 
-	
-	public void TestremoveToNotifyItem() {
-		System.out.println("appeeelllll dellltee");
+	public void setToNotifyUserUsername(String toNotifyUserUsername) {
+		this.toNotifyUserUsername = toNotifyUserUsername;
 	}
+
+	public void addToNotifyItem() {
+
+		User toNotifyUser = userService.findOne(toNotifyUserUsername);
+		if (model.getToNotifyList().stream()
+				.filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
+			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
+		model = service.saveAndRefresh(model);
+
+		// keyWorkerList=new ArrayList<>();
+		// keyWorkerList.add(new ToNotify(toNotifyUser, model));
+
+	}
+
+	public void removeToNotifyItem(int index) {
+
+		if (getIntegerParameter("isEdit") == 1) {
+			model.getToNotifyList().get(index).setUserAppraisal(null);
+			model.getToNotifyList().remove(index);
+			model = service.saveAndRefresh(model);
+
+		} else if (getIntegerParameter("isEdit") == 0) {
+			model.getToNotifyList().get(index).setUserAppraisal(null);
+			model.getToNotifyList().remove(index);
+			model = service.saveAndRefresh(model);
+
+		}
+
+	}
+
 	@Transactional
 	public String nextStep() throws IOException {
 		if (!canSave()) {
@@ -1927,15 +1927,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			fillSupp5();
 			edited();
 
-		 step++;
-			
+			step++;
+
 			break;
 		case 4:
 			step++;
 			break;
 		case 5:
-			System.err.println("step7");
 			if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
+				
+				
 				userAppraisalComment.setDate(new Date());
 				userAppraisalComment.setTitle(isAddPage ? "User Appraisal Creation" : "User Appraisal Edition");
 				userAppraisalComment.setParent(model);
@@ -1976,6 +1977,295 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			}
 
 			step--;
+		}
+	}
+
+	// StepMid Review
+
+	private List<BusinessGoals> midBusinessGoal;
+	private List<SupplementaryGoals> midSupplementaryGoal;
+	private List<SupplementaryGoals> midsup1;
+	private List<SupplementaryGoals> midsup2;
+	private List<SupplementaryGoals> midsup3;
+	private List<SupplementaryGoals> midsup4;
+	private List<SupplementaryGoals> midsup5;
+
+	public List<SupplementaryGoals> getMidsup1() {
+		return midsup1;
+	}
+
+	public void setMidsup1(List<SupplementaryGoals> midsup1) {
+		this.midsup1 = midsup1;
+	}
+
+	public List<SupplementaryGoals> getMidsup2() {
+		return midsup2;
+	}
+
+	public List<SupplementaryGoals> getMidsup3() {
+		return midsup3;
+	}
+
+	public void setMidsup3(List<SupplementaryGoals> midsup3) {
+		this.midsup3 = midsup3;
+	}
+
+	public List<SupplementaryGoals> getMidsup4() {
+		return midsup4;
+	}
+
+	public void setMidsup4(List<SupplementaryGoals> midsup4) {
+		this.midsup4 = midsup4;
+	}
+
+	public List<SupplementaryGoals> getMidsup5() {
+		return midsup5;
+	}
+
+	public void setMidsup5(List<SupplementaryGoals> midsup5) {
+		this.midsup5 = midsup5;
+	}
+
+	public void setMidsup2(List<SupplementaryGoals> midsup2) {
+		this.midsup2 = midsup2;
+	}
+
+	public List<SupplementaryGoals> getMidSupplementaryGoal() {
+		return midSupplementaryGoal;
+	}
+
+	public void setMidSupplementaryGoal(List<SupplementaryGoals> midSupplementaryGoal) {
+		this.midSupplementaryGoal = midSupplementaryGoal;
+	}
+
+	public List<BusinessGoals> getMidBusinessGoal() {
+		return midBusinessGoal;
+	}
+
+	public void setMidBusinessGoal(List<BusinessGoals> midBusinessGoal) {
+		this.midBusinessGoal = midBusinessGoal;
+	}
+
+	public void initMidBusinessGoal() {
+		model = service.findOne(id);
+		System.out.println("init bg mid");
+
+		midBusinessGoal = new ArrayList<>();
+		for (BusinessGoals business : businessGoalsRepos.findBySectionsUserAppraisal(model)) {
+			midBusinessGoal.add(business);
+		}
+
+	}
+
+	public void initMidSupplementaryGoal() {
+		model = service.findOne(id);
+		System.out.println("init supp mid");
+		midSupplementaryGoal = new ArrayList<>();
+
+		midsup1 = new ArrayList<>();
+		midsup2 = new ArrayList<>();
+		midsup3 = new ArrayList<>();
+		midsup4 = new ArrayList<>();
+		midsup5 = new ArrayList<>();
+
+		for (SupplementaryGoals supplementaryGoals : userAppraisalService.findSuppBySection(1, model)) {
+
+			midsup1.add(supplementaryGoals);
+
+		}
+		for (SupplementaryGoals supplementaryGoals : userAppraisalService.findSuppBySection(2, model)) {
+
+			midsup2.add(supplementaryGoals);
+
+		}
+		for (SupplementaryGoals supplementaryGoals : userAppraisalService.findSuppBySection(3, model)) {
+
+			midsup3.add(supplementaryGoals);
+
+		}
+		for (SupplementaryGoals supplementaryGoals : userAppraisalService.findSuppBySection(4, model)) {
+
+			midsup4.add(supplementaryGoals);
+
+		}
+		for (SupplementaryGoals supplementaryGoals : userAppraisalService.findSuppBySection(5, model)) {
+
+			midsup5.add(supplementaryGoals);
+
+		}
+
+	}
+
+	public Boolean validateWeightMidBusinessGoals() {
+		for (int i = 0; i < midBusinessGoal.size(); i++) {
+			if (midBusinessGoal.get(i).getMidYearReview() < 0 || midBusinessGoal.get(i).getMidYearReview() > 100) {
+				return FacesContextMessages.ErrorMessages("Rate of mid year should be between 0 and 100");
+			}
+		}
+
+		return true;
+	}
+
+	public Boolean validateWeightMidSupplementaryGoals() {
+		for (int i = 0; i < midsup1.size(); i++) {
+			if (midsup1.get(i).getMidYearReview() < 0 || midsup1.get(i).getMidYearReview() > 100) {
+				return FacesContextMessages.ErrorMessages("Rate of mid year should be between 0 and 100");
+			}
+		}
+
+		for (int i = 0; i < midsup2.size(); i++) {
+			if (midsup2.get(i).getMidYearReview() < 0 || midsup2.get(i).getMidYearReview() > 100) {
+				return FacesContextMessages.ErrorMessages("Rate of mid year should be between 0 and 100");
+			}
+		}
+		for (int i = 0; i < midsup3.size(); i++) {
+			if (midsup3.get(i).getMidYearReview() < 0 || midsup3.get(i).getMidYearReview() > 100) {
+				return FacesContextMessages.ErrorMessages("Rate of mid year should be between 0 and 100");
+			}
+		}
+		for (int i = 0; i < midsup4.size(); i++) {
+			if (midsup4.get(i).getMidYearReview() < 0 || midsup4.get(i).getMidYearReview() > 100) {
+				return FacesContextMessages.ErrorMessages("Rate of mid year should be between 0 and 100");
+			}
+		}
+		for (int i = 0; i < midsup5.size(); i++) {
+			if (midsup5.get(i).getMidYearReview() < 0 || midsup5.get(i).getMidYearReview() > 100) {
+				return FacesContextMessages.ErrorMessages("Rate of mid year should be between 0 and 100");
+			}
+		}
+
+		return true;
+	}
+
+	public Boolean canSaveMidBusinessGoals() {
+		return sessionView.getIsMyPm();
+	}
+
+	public void saveMidBusinessGoals() {
+
+		for (int i = 0; i < midBusinessGoal.size(); i++) {
+
+			BusinessGoals bg = businessGoalsService.findOne(midBusinessGoal.get(i).getId());
+			bg.setMidYearReview(midBusinessGoal.get(i).getMidYearReview());
+			businessGoalsService.save(bg);
+		}
+	}
+
+	public void saveMidSupplementaryGoals() {
+
+		int l = 0;
+		if (midsup1.size() > 0) {
+			for (SupplementaryGoals supplementaryGoals : midsup1) {
+				supplementaryGoals.setMidYearReview(midsup1.get(l).getMidYearReview());
+				l++;
+				supplementaryGoalsService.save(supplementaryGoals);
+			}
+		}
+		l = 0;
+		if (midsup2.size() > 0) {
+			for (SupplementaryGoals supplementaryGoals : midsup2) {
+				supplementaryGoals.setMidYearReview(midsup2.get(l).getMidYearReview());
+				l++;
+				supplementaryGoalsService.save(supplementaryGoals);
+			}
+		}
+
+		l = 0;
+		if (midsup3.size() > 0) {
+			for (SupplementaryGoals supplementaryGoals : midsup3) {
+				supplementaryGoals.setMidYearReview(midsup3.get(l).getMidYearReview());
+				l++;
+				supplementaryGoalsService.save(supplementaryGoals);
+			}
+		}
+		l = 0;
+		if (midsup4.size() > 0) {
+			for (SupplementaryGoals supplementaryGoals : midsup4) {
+				supplementaryGoals.setMidYearReview(midsup4.get(l).getMidYearReview());
+				l++;
+				supplementaryGoalsService.save(supplementaryGoals);
+			}
+		}
+		l = 0;
+		if (midsup5.size() > 0) {
+			for (SupplementaryGoals supplementaryGoals : midsup5) {
+				supplementaryGoals.setMidYearReview(midsup5.get(l).getMidYearReview());
+				l++;
+				supplementaryGoalsService.save(supplementaryGoals);
+			}
+		}
+
+	}
+
+	public UserAppraisalComment getCommentByTitle() {
+		model = service.findOne(id);
+
+		return userAppraisalRepos.findCommentByTitle(model);
+	}
+
+	public Boolean existComment() {
+		if (getCommentByTitle() == null) {
+			return false;
+		}
+		return true;
+	}
+
+	private int stepMid = 1;
+
+	public int getStepMid() {
+		return stepMid;
+	}
+
+	public void setStepMid(int stepMid) {
+		this.stepMid = stepMid;
+	}
+
+	@Transactional
+	public String nextStepMid() throws IOException {
+		switch (stepMid) {
+
+		case 1:
+			initMidSupplementaryGoal();
+			if (!validateWeightMidBusinessGoals())
+				return null;
+			stepMid++;
+			saveMidBusinessGoals();
+			break;
+
+		case 2:
+			if (!validateWeightMidSupplementaryGoals())
+				return null;
+			saveMidSupplementaryGoals();
+			stepMid++;
+			break;
+		case 3:
+			if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
+				userAppraisalComment.setDate(new Date());
+				userAppraisalComment.setTitle("Mid Year Review Comment");
+				userAppraisalComment.setParent(model);
+				userAppraisalComment.setUser(sessionView.getUser());
+				model.addComment(userAppraisalComment);
+				model = service.saveAndRefresh(model);
+			}
+			
+			step++;
+			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+			externalContext.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
+			break;
+		}
+		return null;
+	}
+
+	public void previousStepMid() {
+		if (stepMid != 1) {
+			if (stepMid == 2) {
+
+			}
+			if (stepMid == 3) {
+
+			}
+
+			stepMid--;
 		}
 	}
 
