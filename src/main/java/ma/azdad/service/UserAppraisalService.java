@@ -13,6 +13,7 @@ import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
+import ma.azdad.model.UserAppraisalComment;
 import ma.azdad.model.UserAppraisalStatus;
 import ma.azdad.repos.UserAppraisalRepos;
 
@@ -105,6 +106,12 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		}
 		
 		return list;
+	}
+	
+	
+	@Cacheable("userAppraisalService.findCommentByTitle")
+	public UserAppraisalComment findCommentByTitle(UserAppraisal userAppraisal) {		
+		return repos.findCommentByTitle(userAppraisal);
 	}
 	
 	@Cacheable("userAppraisalService.findSupGoalsBySection")

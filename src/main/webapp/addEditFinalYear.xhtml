@@ -1,0 +1,372 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+		<link href="resources/css/bootstrap-nav/bootstrap-nav-wizard.css"
+			rel="stylesheet" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li><i class="ace-icon fa fa-home" /> <a href="#"> <h:outputText
+						value="Main Menu" />
+			</a></li>
+			<li class="active"><h:outputText
+					value="User Appraisal Final Year Review" /></li>
+		</ul>
+	</ui:define>
+
+
+	<ui:define name="body">
+		<f:event listener="#{userAppraisalView.initFinalBusinessGoal}"
+			type="preRenderView" />
+		<h:form id="main_form" rendered="#{param['isEdit'] eq '0'}">
+
+			<p:importEnum type="ma.azdad.model.UserAppraisalStatus"
+				var="userappraisalStatus" allSuffix="ALL_ENUM_VALUES" />
+			<div class="widget-box">
+				<div class="widget-header widget-header-blue widget-header-flat">
+					<h4 class="widget-title lighter">
+						<i class="ace-icon fa fa-edit orange bigger-110"></i>
+						<h:outputText value="User Appraisal Final Year Review" />
+					</h4>
+				</div>
+				<div class="row">
+					<div class="col-sm-12"></div>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main">
+						<h:panelGroup id="nav-wizard">
+							<ul class="nav nav-wizard">
+
+								<li class="#{userAppraisalView.stepFinal==1?'active':''}"><a
+									href="#"> <h:outputText value="Business Goals" />
+								</a></li>
+								<li class="#{userAppraisalView.stepFinal==2?'active':''}"><a
+									href="#"> <h:outputText value="Supplementary Goals" />
+								</a></li>
+								<li class="#{userAppraisalView.stepFinal==3?'active':''}"><a
+									href="#"> <h:outputText value="Comment" />
+								</a></li>
+							</ul>
+						</h:panelGroup>
+						<hr />
+						<p:messages id="messages" closable="true" />
+						<h:panelGroup id="steps">
+
+							<f:subview id="step1" rendered="#{userAppraisalView.stepFinal==1}">
+								<h4 class="header blue bolder smaller">
+									<h:outputText value="Business Goals List" />
+								</h4>
+								<div class="row">
+									<div class="col-sm-offset-1 col-sm-10">
+										<div class="table-header col-sm-12 col-xs-12">
+											<i class="fa fa-list" />
+											<h:outputText value="business Goals" />
+										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+											<p:dataTable id="finalBusinessGoal"
+												value="#{userAppraisalView.finalBusinessGoal}" var="item"
+												rows="20"
+												styleClass="table table-striped table-hover center"
+												paginatorAlwaysVisible="false" paginator="true"
+												paginatorPosition="bottom"
+												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+												rowIndexVar="index">
+												<p:column headerText="Goal Title"
+													rendered="#{item.goalTitle != null}">
+													<h:outputText value="#{item.goalTitle}"
+														styleClass="bolder blue" />
+												</p:column>
+												<p:column headerText="Goal Title"
+													rendered="#{item.goalTitle == null}">
+													<p:selectOneMenu value="#{item.goalTitle}">
+														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
+													</p:selectOneMenu>
+												</p:column>
+
+												<p:column headerText="Goal weight">
+													<h:outputText value="#{item.goalWeight}"
+														converter="javax.faces.Integer" min="0" max="100"
+														style="width: 40px" />
+													<h:outputText value="%" styleClass="bolder blue" />
+												</p:column>
+												<p:column headerText="Final Year Review">
+													<h:inputText value="#{item.summaryRaiting}"
+														converter="javax.faces.Integer" min="0" max="100"
+														styleClass="green" style="width: 40px" />
+													<h:outputText value="%" styleClass="bolder green" />
+												</p:column>
+
+
+											</p:dataTable>
+										</div>
+									</div>
+								</div>
+								<div class="space-16" />
+							</f:subview>
+
+							<f:subview id="step2" rendered="#{userAppraisalView.stepFinal==2}">
+								<h4 class="header blue bolder smaller">
+									<h:outputText value="Supplementary Goals List" />
+								</h4>
+								<ui:fragment rendered="#{userAppraisalView.isElig(1)}">
+									<div class="row">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<i class="fa fa-list" />
+												<h:outputText value="JOB EXECUTION" />
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="Jobexecution"
+													value="#{userAppraisalView.finalsup1}" var="item" rows="20"
+													styleClass="table table-striped table-hover center"
+													paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom"
+													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+													rowIndexVar="index">
+
+													<p:column headerText="Goal Title">
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
+													</p:column>
+
+													<p:column headerText="Goal weight">
+														<h:outputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
+													<p:column headerText="Final Year Review">
+														<h:inputText value="#{item.summaryRaiting}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder green" />
+													</p:column>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+								</ui:fragment>
+
+								<div class="space-16" />
+								<ui:fragment rendered="#{userAppraisalView.isElig(2)}">
+									<div class="row">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<i class="fa fa-list" />
+												<h:outputText value="CODE OF CONDUCT" />
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="CODE" value="#{userAppraisalView.finalsup2}"
+													var="item" rows="20"
+													styleClass="table table-striped table-hover center"
+													paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom"
+													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+													rowIndexVar="index">
+
+													<p:column headerText="Goal Title">
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
+													</p:column>
+													<p:column headerText="Goal weight">
+														<h:outputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
+													<p:column headerText="Final Year Review">
+														<h:inputText value="#{item.summaryRaiting}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder green" />
+													</p:column>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+								</ui:fragment>
+
+								<div class="space-16" />
+								<ui:fragment rendered="#{userAppraisalView.isElig(3)}">
+									<div class="row">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<i class="fa fa-list" />
+												<h:outputText value="LEADERSHIP DEPENDABILTY" />
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="LEADERSHIP"
+													rendered="#{userAppraisalView.isElig(3)}"
+													value="#{userAppraisalView.finalsup3}" var="item" rows="20"
+													styleClass="table table-striped table-hover center"
+													paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom"
+													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+													rowIndexVar="index">
+
+													<p:column headerText="Goal Title">
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
+													</p:column>
+													<p:column headerText="Goal weight">
+														<h:outputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
+													<p:column headerText="Final Year Review">
+														<h:inputText value="#{item.summaryRaiting}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder green" />
+													</p:column>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+								</ui:fragment>
+
+								<div class="space-16" />
+								<ui:fragment rendered="#{userAppraisalView.isElig(4)}">
+									<div class="row">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<i class="fa fa-list" />
+												<h:outputText value="PERSONALITY ATTRIBUTES" />
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="PERSONALITY"
+													rendered="#{userAppraisalView.isElig(4)}"
+													value="#{userAppraisalView.finalsup4}" var="item" rows="20"
+													styleClass="table table-striped table-hover center"
+													paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom"
+													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+													rowIndexVar="index">
+
+													<p:column headerText="Goal Title">
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
+													</p:column>
+
+													<p:column headerText="Goal weight">
+														<h:outputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
+													<p:column headerText="Final Year Review">
+														<h:inputText value="#{item.summaryRaiting}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder green" />
+													</p:column>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+								</ui:fragment>
+
+								<div class="space-16" />
+								<ui:fragment rendered="#{userAppraisalView.isElig(5)}">
+									<div class="row">
+										<div class="col-sm-offset-1 col-sm-10">
+											<div class="table-header col-sm-12 col-xs-12">
+												<i class="fa fa-list" />
+												<h:outputText value="MANAGEMENT RESPONSIBILITIES" />
+											</div>
+											<div class="col-sm-12 col-xs-12 aa-datatable-container">
+												<p:dataTable id="MANAGEMENT"
+													rendered="#{userAppraisalView.isElig(5)}"
+													value="#{userAppraisalView.finalsup5}" var="item" rows="20"
+													styleClass="table table-striped table-hover center"
+													paginatorAlwaysVisible="false" paginator="true"
+													paginatorPosition="bottom"
+													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+													rowIndexVar="index">
+
+													<p:column headerText="Goal Title">
+														<h:outputText value="#{item.sectionsData.goalTitle}" />
+													</p:column>
+													<p:column headerText="Goal weight">
+														<h:outputText value="#{item.weight}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder blue" />
+													</p:column>
+													<p:column headerText="Final Year Review">
+														<h:inputText value="#{item.summaryRaiting}"
+															converter="javax.faces.Integer" min="0" max="100"
+															style="width: 40px" />
+														<h:outputText value="%" styleClass="bolder green" />
+													</p:column>
+												</p:dataTable>
+											</div>
+										</div>
+									</div>
+								</ui:fragment>
+
+								<div class="space-16" />
+							</f:subview>
+
+							<f:subview id="step3" rendered="#{userAppraisalView.stepFinal==3}">
+								<h3 class="lighter block green">
+									<i class="ace-icon fa fa-comment-o" />
+									<h:outputText value=" Add Comment" />
+								</h3>
+								<div class="row">
+									<div class="col-xs-12 col-sm-3">
+										<label class="control-label pull-right"> <h:outputText
+												value="Comment " />
+										</label>
+									</div>
+									<div class="col-xs-12 col-sm-9">
+										<div class="clearfix">
+											<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}"
+												styleClass="col-xs-12 col-sm-6" />
+											
+										</div>
+									</div>
+								</div>
+							</f:subview>
+						</h:panelGroup>
+						<hr />
+						<div class="wizard-actions">
+							<p:commandLink action="#{userAppraisalView.previousStepFinal()}"
+								immediate="true" update="next,messages,nav-wizard,steps"
+								styleClass="btn btn-prev">
+								<f:param name="isEdit" value="0" />
+								<i class="ace-icon fa fa-arrow-left icon-on-right"></i>
+								<h:outputText value="Back" />
+							</p:commandLink>
+							<p:commandLink id="next"
+								action="#{userAppraisalView.nextStepFinal()}"
+								update="messages,nav-wizard,next,steps"
+								styleClass="btn btn-success btn-next">
+								<f:param name="isEdit" value="0" />
+								<h:outputText
+									value="#{userAppraisalView.stepFinal==3?'Finish':'Next'}" />
+								<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+							</p:commandLink>
+						</div>
+						<div class="space-16" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+
+	<ui:include src="fileFooter.xhtml" />
+	<ui:include src="userAppraisalFooter.xhtml" />
+</ui:composition>

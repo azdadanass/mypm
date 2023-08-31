@@ -130,6 +130,15 @@
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
 							<f:param name="isEdit" value="0" />
 						</h:outputLink>
+						<h:outputLink 
+							value="addEditFinalYear.xhtml"
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
+														<h:outputText value="Edit Final" />
+							
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<f:param name="id" value="#{userAppraisalView.model.id}" />
+							<f:param name="isEdit" value="0" />
+						</h:outputLink>
 
 						<h:outputLink value="addEditMidyear.xhtml"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
