@@ -2248,7 +2248,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		            newComment.setTitle("Final Year Review Comment");
 		            newComment.setParent(model);
 		            newComment.setUser(sessionView.getUser());
-		            
+		              
 		            model.addComment(newComment);
 		        }  else{
 
