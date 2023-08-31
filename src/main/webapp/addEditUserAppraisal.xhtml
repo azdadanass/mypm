@@ -117,7 +117,20 @@
 							<h:outputText value="Edit Mid 0" />
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
 							<f:param name="isEdit" value="0" />
+							<f:ajax execute="@this"
+								listener="#{userAppraisalView.initMidBusinessGoal()}" />
+
 						</h:outputLink>
+						<h:outputLink 
+							value="addEditMidyear.xhtml"
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
+														<h:outputText value="Edit000000" />
+							
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<f:param name="id" value="#{userAppraisalView.model.id}" />
+							<f:param name="isEdit" value="0" />
+						</h:outputLink>
+
 						<h:outputLink value="addEditMidyear.xhtml"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
 							rendered="true">
