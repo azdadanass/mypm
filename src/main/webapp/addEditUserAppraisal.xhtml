@@ -89,6 +89,7 @@
 							<i class="ace-icon fa fa-file bigger-230"></i>
 							<h:outputText value="Files" />
 						</p:commandLink>
+						
 						<h:outputLink value="viewUserAppraisal.xhtml"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
 							rendered="#{(param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED' )and userAppraisalView.countSections(userAppraisalView.model) == 0}">
@@ -110,7 +111,7 @@
 						</h:outputLink>
 						
 						<h:outputLink 
-							value="addEditMidyear.xhtml"
+							value="addEditMidyear.xhtml" rendered="#{userAppraisalView.canMidSelfAssessment()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Mid Review" />
@@ -118,8 +119,8 @@
 							<f:param name="isEdit" value="0" />
 						</h:outputLink>
 						
-						<h:outputLink 
-							value="addEditFinalYear.xhtml"
+						<h:outputLink
+							value="addEditFinalYear.xhtml" rendered="#{userAppraisalView.canFinalSelfAssessment()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Final Review" />
@@ -130,7 +131,7 @@
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submited()}" update=":main_form"
-							title="Submit" rendered="#{userAppraisalView.canSubmited()}">
+							title="Submit 1" rendered="#{userAppraisalView.canSubmited()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submit" />
 						</p:commandLink>
@@ -172,7 +173,7 @@
 							update=":main_form" title="Submit"
 							rendered="#{userAppraisalView.canSubmitedMidYear()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Submit" />
+							<h:outputText value="Submit md" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
@@ -198,7 +199,7 @@
 							update=":main_form" title="Submit"
 							rendered="#{userAppraisalView.canSubmitedFinalYear()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Submit" />
+							<h:outputText value="Submit fn" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"

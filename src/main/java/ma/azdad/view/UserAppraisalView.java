@@ -20,6 +20,7 @@ import org.primefaces.model.chart.PieChartModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -1235,14 +1236,15 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		evictCache();
 	}
 
-	// ################################# MID YEAr
-	// ################################################
+	// ############### MID YEAr
+	// ########################
 
 	public Boolean canMidSelfAssessment() {
-		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+		return (UserAppraisalStatus.APPROVED.equals(model.getUserAppraisalStatus()) || UserAppraisalStatus.MYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus())) && sessionView.getIsMyPm()
 				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW);
 	}
-
+	
+	@Scheduled(fixedRate = 30000)
 	public void midSelfAssessment() {
 		if (!canMidSelfAssessment())
 			return;
@@ -1326,6 +1328,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
 	}
 
+	@Scheduled(fixedRate = 30000)
 	public void finalSelfAssessment() {
 		if (!canFinalSelfAssessment())
 			return;
@@ -1539,9 +1542,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public UserAppraisalComment getUserAppraisalComment() {
 		
-		if (existComment()) {
-			return getCommentByTitle();
-		}
 		return userAppraisalComment;
 	}
 

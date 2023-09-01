@@ -453,18 +453,19 @@
 													<h:outputText value="#{item.fullName}"
 														styleClass="green bolder" />
 												</p:column>
-												<p:column headerText="Type" width="100">
-													<h:outputText
-														value="#{item.internalResource.internal?'Internal':'External'}"
-														styleClass="badge #{item.internalResource.internal?'badge-success':'badge-warning'}" />
-												</p:column>
 												<p:column headerText="Email">
 													<h:outputText value="#{item.email}" styleClass="light-blue" />
 												</p:column>
+												<p:column headerText="Status">
+													<h:outputText value="#{item.internalResource.status}"
+														styleClass="pink bolder" />
+												</p:column>
 												<p:column headerText="Phone">
 													<h:outputText value="#{item.phone}"
-														styleClass="orange bolder" />
+														styleClass="black bolder" />
 												</p:column>
+
+
 
 												<p:column headerText="Actions" styleClass="center"
 													width="100">
@@ -938,18 +939,19 @@
 													<h:outputText value="#{item.fullName}"
 														styleClass="green bolder" />
 												</p:column>
-												<p:column headerText="Type" width="100">
-													<h:outputText
-														value="#{item.internalResource.internal?'Internal':'External'}"
-														styleClass="badge #{item.internalResource.internal?'badge-success':'badge-warning'}" />
-												</p:column>
+
 												<p:column headerText="Email">
 													<h:outputText value="#{item.email}" styleClass="light-blue" />
 												</p:column>
-											
+
+												<p:column headerText="Status">
+													<h:outputText value="#{item.internalResource.status}"
+														styleClass="pink bolder" />
+												</p:column>
+
 												<p:column headerText="Phone">
 													<h:outputText value="#{item.phone}"
-														styleClass="orange bolder" />
+														styleClass="black bolder" />
 												</p:column>
 
 												<p:column headerText="Actions" styleClass="center"
@@ -992,7 +994,8 @@
 									</div>
 									<div class="col-xs-12 col-sm-9">
 										<div class="clearfix">
-											<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}"
+											<p:inputTextarea
+												value="#{userAppraisalView.userAppraisalComment.content}"
 												styleClass="col-xs-12 col-sm-6" />
 										</div>
 									</div>

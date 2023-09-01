@@ -79,7 +79,7 @@
 					value="Hide" styleClass="btn btn-warning" />
 
 				<p:commandButton action="#{userAppraisalView.addToNotifyItem()}"
-					value="Add 1" styleClass="btn btn-success"
+					value="Add" styleClass="btn btn-success"
 					oncomplete="PF('addToNotifyItemDlg').hide()"
 					update=":main_form_edit:step4:notification_tab1"
 					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '1'}">
@@ -87,7 +87,7 @@
 				</p:commandButton>
 
 				<p:commandButton action="#{userAppraisalView.addToNotifyItem()}"
-					value="Add 0" styleClass="btn btn-success"
+					value="Add" styleClass="btn btn-success"
 					oncomplete="PF('addToNotifyItemDlg').hide()"
 					update=":main_form:step4:notification_tab"
 					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '0'}">
