@@ -199,10 +199,10 @@
 									</div>
 								</div>
 								<div class="space-16" />
-								
-								
-								
-											<h:panelGroup id="panel1">
+
+
+
+								<h:panelGroup id="panel1">
 									<ui:repeat var="item"
 										value="#{userAppraisalView.businessGoalsList}"
 										varStatus="varStatus">
@@ -299,8 +299,8 @@
 										</p:commandLink>
 									</span>
 								</h4>
-								
-								
+
+
 							</f:subview>
 
 
@@ -812,7 +812,7 @@
 
 
 								<h:panelGroup id="panel1">
-									<ui:repeat var="item"
+									<ui:repeat var="businessgoal"
 										value="#{userAppraisalView.businessGoalsListEdit}"
 										varStatus="varStatus">
 										<div class="row">
@@ -821,40 +821,26 @@
 													<div class="widget-header widget-header-large">
 														<table width="100%" style="margin: 10px">
 															<tr>
-																<td width="15%"><p:commandLink
-																		disabled="#{!companyView.canUploadBankAccountPhoto()}"
-																		styleClass="pull-left">
-																		<p:graphicImage value="#{fileUploadView.stream}"
-																			styleClass="editable editable-click editable-empty"
-																			height="50" width="200"
-																			onclick="PF('uploadBankAccountPhotoDlg').show()">
-																			<f:param name="fileName" value="#{bankAccount.logo}" />
-																		</p:graphicImage>
-																		<f:setPropertyActionListener value="#{bankAccount}"
-																			target="#{companyView.bankAccount}" />
-																	</p:commandLink></td>
 																<td width="75%">
 																	<h4>
 																		<h:outputText
-																			value="BankAccount N° #{varStatus.index}"
+																			value="BusinessGoal N° #{varStatus.index}"
 																			styleClass="bolder blue" />
 																	</h4>
 																</td>
 																<td><span class="action-buttons center"
 																	style="margin-left: 20px"> <p:commandLink
-																			title="Edit BankAccount"
-																			oncomplete="PF('addBankAccountDlg').show()"
-																			update="addBankAccountForm">
+																			title="Edit BusinessGoal"
+																			oncomplete="PF('addBusinessGoalDlg').show()"
+																			update="addBusinessGoalForm">
 																			<i class="ace-icon fa fa-edit green" />
 																			<f:setPropertyActionListener
-																				target="#{companyView.bankAccount}"
-																				value="#{bankAccount}" />
-																		</p:commandLink> <p:commandLink title="Delete BankAccount"
-																			oncomplete="PF('deleteBankAccountDlg').show()">
+																				target="#{userAppraisalView.bs}" value="#{bs}" />
+																		</p:commandLink> <p:commandLink title="Delete BusinessGoal"
+																			oncomplete="PF('deleteBusinessGoalForm').show()">
 																			<i class="ace-icon fa fa-trash-o red" />
 																			<f:setPropertyActionListener
-																				target="#{companyView.bankAccount}"
-																				value="#{bankAccount}" />
+																				target="#{userAppraisalView.bs}" value="#{bs}" />
 																		</p:commandLink>
 																</span></td>
 															</tr>
@@ -870,28 +856,38 @@
 												<div class="profile-user-info profile-user-info-striped">
 													<div class="profile-info-row">
 														<div class="profile-info-name">
-															<h:outputText value="Bank Name" />
+															<h:outputText value="Goal Title" />
 														</div>
 														<div class="profile-info-value">
-															<h:outputText value="#{bankAccount.name}"
+															<h:outputText value="#{item.goalTitle}"
 																styleClass="orange" />
 															&nbsp;
 														</div>
 													</div>
 													<div class="profile-info-row">
 														<div class="profile-info-name">
-															<h:outputText value="RIB" />
+															<h:outputText value="Goal Weight" />
 														</div>
 														<div class="profile-info-value">
-															<h:outputText value="#{bankAccount.rib}"
-																styleClass="light-blue" />
+															<h:outputText value="#{item.goalWeight}"
+																styleClass="orange" />
 															&nbsp;
 														</div>
 													</div>
-
 												</div>
 											</div>
-
+											<div class="col-xs-12 col-sm-6">
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Description" />
+													</div>
+													<div class="profile-info-value">
+														<h:outputText value="#{item.goalDetails}"
+															styleClass="light-blue" />
+														&nbsp;
+													</div>
+												</div>
+											</div>
 										</div>
 										<hr />
 										<div class="space-8" />
