@@ -211,4 +211,85 @@
 
 
 
+
+
+
+	<h:form id="addBusinessGoalForm">
+		<p:dialog widgetVar="addBusinessGoalDlg" modal="true" closable="false"
+			resizable="false" showHeader="false">
+			<button type="button" class="bootbox-close-button close"
+				onclick="PF('addBusinessGoalDlg').hide()">
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-key purple" />
+					<h:outputText value=" Add BusinessGoal" />
+				</h4>
+			</div>
+			<div class="modal-body">
+				<p:messages id="messages" closable="true" />
+				<div class="row">
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right"
+								for="form-field-username"> <h:outputText value="Name" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<p:selectOneMenu value="#{userAppraisalView.bs != null ? userAppraisalView.bs.goalTitle : ''}">
+									<f:selectItems value="#{userAppraisalView.goalTitleList}" />
+								</p:selectOneMenu>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right"
+								for="form-field-username"> <h:outputText
+									value="Goal Weight" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<p:inputText value="#{userAppraisalView.bs.goalWeight}" />
+							</div>
+						</div>
+					</div>
+				</div><div class="space-4" /><div class="space-4" />
+				<div class="row">
+
+					<div class="col-xs-12 col-sm-12">
+						<div class="form-group">
+							<label class="col-xs-3 col-sm-3 control-label no-padding-right"
+								for="form-field-username"> <h:outputText
+									value="Goal Desription" />
+							</label>
+							<div class="col-xs-9 col-sm-9">
+								<textarea rows="4" cols="50">
+								 sd
+								</textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="space-4" />
+				<div class="space-4" />
+			</div>
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('addBusinessGoalDlg').hide()"
+					value="Hide" styleClass="btn btn-warning" partialSubmit="true"
+					process="@this" />
+				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
+					value="Save" styleClass="btn btn-success"
+					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' }" />
+			</div>
+		</p:dialog>
+	</h:form>
+
+
+
+
+
+
+
+
 </ui:composition>

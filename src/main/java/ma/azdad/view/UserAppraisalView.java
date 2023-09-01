@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import ma.azdad.model.AppraisalsStatus;
+import ma.azdad.model.BankAccount;
 import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
@@ -2601,6 +2602,36 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				stepMid--;
 			}
 		}
+		// New form BusinessGoal add   ################################"
+		
+		private BusinessGoals bs;
+
+		public BusinessGoals getBs() {
+			return bs;
+		}
+
+		public void setBs(BusinessGoals bs) {
+			this.bs = bs;
+		}
+
+		public void initBankAccount() {
+			bs = new BusinessGoals();
+		}
+	
+
+		public String saveBusinessGoals1() {
+			
+			if (getIntegerParameter("isEdit") == 0) {
+							
+				businessGoalsService.save(bs); 
+				
+			}
+			if (getIntegerParameter("isEdit") == 1) {
 
 
+			}
+
+			return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
+
+		}
 }
