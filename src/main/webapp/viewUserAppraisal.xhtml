@@ -125,83 +125,6 @@
 							</f:subview>
 
 							<f:subview id="step2" rendered="#{userAppraisalView.step==2}">
-								<h4 class="header blue bolder smaller">
-									<h:outputText value="Business Goals List" />
-								</h4>
-								<div class="row">
-									<div class="col-sm-offset-1 col-sm-10">
-										<div class="table-header col-sm-12 col-xs-12">
-											<i class="fa fa-list" />
-											<h:outputText value="business Goals" />
-										</div>
-										<div class="col-sm-12 col-xs-12 aa-datatable-container">
-											<p:dataTable id="businessGoalsList"
-												value="#{userAppraisalView.businessGoalsList}" var="item"
-												rows="20"
-												styleClass="table table-striped table-hover center"
-												paginatorAlwaysVisible="false" paginator="true"
-												paginatorPosition="bottom"
-												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-												rowIndexVar="index">
-												<p:column headerText="ID">
-													<h:outputText value="#{index+1}" styleClass="bolder blue" />
-												</p:column>
-												<p:column headerText="Goal Title"
-													rendered="#{item.goalTitle != null}">
-													<h:outputText value="#{item.goalTitle}"
-														styleClass="bolder blue" />
-												</p:column>
-												<p:column headerText="Goal Title"
-													rendered="#{item.goalTitle == null}">
-													<p:selectOneMenu value="#{item.goalTitle}">
-														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
-													</p:selectOneMenu>
-												</p:column>
-
-												<p:column headerText="Goal Details">
-													<p:inputText value="#{item.goalDetails}" />
-												</p:column>
-												<p:column headerText="Goal weight">
-													<h:inputText value="#{item.goalWeight}"
-														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
-
-												<p:column headerText="Actions" width="150"
-													style="text-align : center;">
-													<div class="action-buttons center">
-														<p:commandLink
-															action="#{userAppraisalView.removeBusinessGoal(item)}"
-															update="businessGoalsList" process="businessGoalsList"
-															title="delete" rendered="true" styleClass="aa-tooltip">
-															<i class="ace-icon fa fa-trash-o bigger-130 red" />
-															<f:param name="isEdit" value="0" />
-
-														</p:commandLink>
-
-													</div>
-												</p:column>
-												<f:facet name="footer">
-													<div class="action-buttons center">
-														<p:commandLink title="Add New Item"
-															action="#{userAppraisalView.addBusiness()}"
-															update="businessGoalsList" process="businessGoalsList"
-															rendered="#{userAppraisalView.canAddBusiness()}">
-															<f:param name="isEdit" value="0" />
-
-															<i class="fa fa-plus green" />
-														</p:commandLink>
-													</div>
-												</f:facet>
-											</p:dataTable>
-										</div>
-									</div>
-								</div>
-								<div class="space-16" />
-
-
-
 								<h:panelGroup id="panel0">
 									<ui:repeat var="item"
 										value="#{userAppraisalView.businessGoalsList}"
@@ -293,7 +216,8 @@
 										<p:commandLink title="Add Business Goal"
 											action="#{userAppraisalView.initBankAccount()}"
 											oncomplete="PF('addBusinessGoalDlg').show()"
-											update=":addBusinessGoalForm" process="panel0" partialSubmit="true">
+											update=":addBusinessGoalForm" process="panel0"
+											partialSubmit="true">
 											<h:outputText value="Add New Business Goal" />
 											<i class="fa fa-plus green" />
 											<f:param name="isEdit" value="0" />
@@ -737,83 +661,8 @@
 							</f:subview>
 
 							<f:subview id="step2" rendered="#{userAppraisalView.step==2}">
-								<h4 class="header blue bolder smaller">
-									<h:outputText value="Business Goals List" />
-								</h4>
-								<div class="row">
-									<div class="col-sm-offset-1 col-sm-10">
-										<div class="table-header col-sm-12 col-xs-12">
-											<i class="fa fa-list" />
-											<h:outputText value="business Goals" />
-										</div>
-										<div class="col-sm-12 col-xs-12 aa-datatable-container">
-											<p:dataTable id="businessGoalsListEdit"
-												value="#{userAppraisalView.businessGoalsListEdit}"
-												var="item" rows="20"
-												styleClass="table table-striped table-hover center"
-												paginatorAlwaysVisible="false" paginator="true"
-												paginatorPosition="bottom"
-												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-												rowIndexVar="index">
-												<p:column headerText="Goal Title"
-													rendered="#{item.goalTitle != null}">
-													<h:outputText value="#{item.goalTitle}"
-														styleClass="bolder blue" />
-												</p:column>
-												<p:column headerText="Goal Title"
-													rendered="#{item.goalTitle == null}">
-													<p:selectOneMenu value="#{item.goalTitle}">
-														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
-													</p:selectOneMenu>
-												</p:column>
 
-												<p:column headerText="Goal Details">
-													<p:inputText value="#{item.goalDetails}" />
-												</p:column>
-												<p:column headerText="Goal weight">
-													<h:inputText value="#{item.goalWeight}"
-														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
-
-												<p:column headerText="Actions" width="150"
-													style="text-align : center;">
-													<div class="action-buttons center">
-														<p:commandLink
-															action="#{userAppraisalView.removeBusinessGoal(item)}"
-															update="businessGoalsListEdit"
-															process="businessGoalsListEdit" title="delete"
-															rendered="true" styleClass="aa-tooltip">
-															<i class="ace-icon fa fa-trash-o bigger-130 red" />
-															<f:param name="isEdit" value="1" />
-
-														</p:commandLink>
-
-													</div>
-												</p:column>
-												<f:facet name="footer">
-													<div class="action-buttons center">
-														<p:commandLink title="Add New Item"
-															action="#{userAppraisalView.addBusiness()}"
-															update="businessGoalsListEdit"
-															process="businessGoalsListEdit"
-															rendered="#{userAppraisalView.canAddBusiness()}">
-															<i class="fa fa-plus green" />
-															<f:param name="isEdit" value="1" />
-														</p:commandLink>
-													</div>
-												</f:facet>
-											</p:dataTable>
-										</div>
-									</div>
-								</div>
 								<div class="space-16" />
-
-
-
-
-
 								<h:panelGroup id="panel1">
 									<ui:repeat var="businessgoal"
 										value="#{userAppraisalView.businessGoalsListEdit}"
@@ -833,12 +682,16 @@
 																</td>
 																<td><span class="action-buttons center"
 																	style="margin-left: 20px"> <p:commandLink
+																			action="#{userAppraisalView.resetBusiness(businessgoal)}"
 																			title="Edit BusinessGoal"
 																			oncomplete="PF('addBusinessGoalDlg').show()"
 																			update="addBusinessGoalForm">
 																			<i class="ace-icon fa fa-edit green" />
 																			<f:setPropertyActionListener
-																				target="#{businessgoal}" value="#{businessgoal}" />
+																				target="#{userAppraisalView.bs}"
+																				value="#{businessgoal}" />
+																			<f:param name="isEdit" value="1" />
+
 																		</p:commandLink> <p:commandLink title="Delete BusinessGoal"
 																			action="#{userAppraisalView.removeBusinessGoal(businessgoal)}"
 																			update=":main_form_edit:step2:panel1">

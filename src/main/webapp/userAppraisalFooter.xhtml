@@ -217,10 +217,12 @@
 	<h:form id="addBusinessGoalForm">
 		<p:dialog widgetVar="addBusinessGoalDlg" modal="true" closable="false"
 			resizable="false" showHeader="false">
-			<button type="button" class="bootbox-close-button close"
-				onclick="PF('addBusinessGoalDlg').hide()">
-				<h:outputText value="x" />
-			</button>
+			<p:commandButton type="button"
+				styleClass="bootbox-close-button close" value="x" process="@this"
+				onclick="PF('addBusinessGoalDlg').hide();">
+				<p:ajax
+					listener="#{userAppraisalView.resetRemoveBusiness(userAppraisalView.bs)}" />
+			</p:commandButton>
 			<div class="modal-header">
 				<h4 class="modal-title">
 					<i class="ace-icon fa fa-key purple" />
@@ -277,7 +279,10 @@
 			<div class="modal-footer">
 				<p:commandButton onclick="PF('addBusinessGoalDlg').hide()"
 					value="Hide" styleClass="btn btn-warning" partialSubmit="true"
-					process="@this" />
+					process="@this" >
+					<p:ajax
+					listener="#{userAppraisalView.resetRemoveBusiness(userAppraisalView.bs)}" />
+					</p:commandButton>
 				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
 					value="Save" styleClass="btn btn-success"
 					oncomplete="PF('addBusinessGoalDlg').hide()"
