@@ -29,6 +29,7 @@ import ma.azdad.model.Sections;
 import ma.azdad.model.SupplementaryGoals;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
+import ma.azdad.model.UserAppraisalHistory;
 import ma.azdad.repos.AffectationRepos;
 import ma.azdad.repos.AppraisalsRepos;
 import ma.azdad.repos.UserAppraisalRepos;
@@ -164,8 +165,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (!validate())
 			return null;
 
-		model.addHistory(new AppraisalsHistory(getIsAddPage() ? "Created" : "Edited", sessionView.getUser(),
-				getIsAddPage() ? null : UtilsFunctions.getChanges(model, old)));
+		model.addHistory(new AppraisalsHistory(getIsAddPage() ? "Created" : "Edited", sessionView.getUser(), sessionView.getUser() + " has Created Master Appraisal"));
 		model.setUserStatsOpen(sessionView.getUser());
 		model.setDateStatsOpen(new Date());
 
@@ -185,16 +185,23 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				userAppraisal.setUserStatsSubmited(usr);
 				userAppraisal.setUserStatsApprovedLM(usr.getAffectation().getLineManager());
 				userAppraisal.setUserStatsApproved(usr.getAffectation().getHrManager());
+				
+				
 				userAppraisal.setUserStatsSelfAssessmentMidYear(usr.getAffectation().getHrManager());
 				userAppraisal.setUserStatsMidEdited(usr);
-				userAppraisal.setUserStatsApprovedLMMidYear(usr.getAffectation().getLineManager());
 				userAppraisal.setUserStatsSubmitedMidYear(usr);
+				userAppraisal.setUserStatsApprovedLMMidYear(usr.getAffectation().getLineManager());
+				
+				
 				userAppraisal.setUserStatsSelfAssessmentFinalYear(usr.getAffectation().getHrManager());
 				userAppraisal.setUserStatsFinalEdited(usr);
 				userAppraisal.setUserStatsSubmitedFinalYear(usr);
 				userAppraisal.setUserStatsApprovedLMFinalYear(usr.getAffectation().getLineManager());
 				userAppraisal.setUserStatsClosed(usr);
 
+				userAppraisal.addHistory(new UserAppraisalHistory(getIsAddPage() ? "Created" : "Edited",
+						usr.getAffectation().getHrManager(), usr.getAffectation().getLineManager()+ " has Created "
+								+ userAppraisal.getEmploy().getFullName() + " Appraisal"));
 				userAppraisalService.save(userAppraisal);
 
 			}
@@ -591,7 +598,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		userNoAppraisalList = new ArrayList<>();
 		List<User> userNoAppraisalList = service.findUserNoAppraisal(true, sessionView.getUser(), model,
 				model.getEndDate());
-		
+
 		return userNoAppraisalList;
 	}
 
