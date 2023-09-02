@@ -1255,7 +1255,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	@Scheduled(fixedRate = 30000)
-	public void midSelfAssessment() {
+	public synchronized void midSelfAssessment() {
 		if (!canMidSelfAssessment())
 			return;
 
@@ -1412,7 +1412,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public Boolean canApprovedLMFinalYear() {
-		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmLineManager()
 				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
 	}
 

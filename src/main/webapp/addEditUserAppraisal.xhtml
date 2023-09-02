@@ -89,7 +89,7 @@
 							<i class="ace-icon fa fa-file bigger-230"></i>
 							<h:outputText value="Files" />
 						</p:commandLink>
-						
+
 						<h:outputLink value="viewUserAppraisal.xhtml"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
 							rendered="#{(param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED' )and userAppraisalView.countSections(userAppraisalView.model) == 0}">
@@ -102,22 +102,22 @@
 
 						<h:outputLink value="viewUserAppraisal.xhtml"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
-							rendered="#{(param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED') and userAppraisalView.countSections(userAppraisalView.model) > 0}">
+							rendered="#{(param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED') and userAppraisalView.countSections(userAppraisalView.model) > 0 and userAppraisalView.model.employ eq sessionView.getUser()}">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Edit " />
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
 							<f:param name="pageIndex" value="1" />
 							<f:param name="isEdit" value="1" />
 						</h:outputLink>
-						
-						
-						
-						
-					
+
+
+
+
+
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submited()}" update=":main_form"
-							title="Submit 1" rendered="#{userAppraisalView.canSubmited()}">
+							title="Submit 1" rendered="#{userAppraisalView.canSubmited() and userAppraisalView.model.employ eq sessionView.getUser()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submit" />
 						</p:commandLink>
@@ -152,22 +152,22 @@
 						</p:commandLink>
 
 						<!-- 	################# MID year ################## -->
-						<h:outputLink 
-							value="addEditMidyear.xhtml" rendered="#{userAppraisalView.model.userAppraisalStatus eq 'MYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'MYR_EDITED'}"
+						<h:outputLink value="addEditMidyear.xhtml"
+							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'MYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'MYR_EDITED' and userAppraisalView.model.employ eq sessionView.getUser()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Mid Review" />
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
 							<f:param name="isEdit" value="0" />
 						</h:outputLink>
-						
-						
+
+
 
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submitedMidYear()}"
 							update=":main_form" title="Submit"
-							rendered="#{userAppraisalView.canSubmitedMidYear()}">
+							rendered="#{userAppraisalView.canSubmitedMidYear() and userAppraisalView.model.employ eq sessionView.getUser()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submit md" />
 						</p:commandLink>
@@ -188,9 +188,9 @@
 						</p:commandLink>
 
 						<!-- 	##################  Final Year  ################# -->
-						
-						<h:outputLink
-							value="addEditFinalYear.xhtml" rendered="#{userAppraisalView.model.userAppraisalStatus eq 'FYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'FYR_EDITED'}"
+
+						<h:outputLink value="addEditFinalYear.xhtml"
+							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'FYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'FYR_EDITED' and userAppraisalView.model.employ eq sessionView.getUser()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Final Review" />
@@ -202,7 +202,7 @@
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submitedFinalYear()}"
 							update=":main_form" title="Submit"
-							rendered="#{userAppraisalView.canSubmitedFinalYear()}">
+							rendered="#{userAppraisalView.canSubmitedFinalYear() and userAppraisalView.model.employ eq sessionView.getUser()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Submit fn" />
 						</p:commandLink>
@@ -225,13 +225,13 @@
 
 						<!-- 	################################### -->
 
-						<p:commandLink
+					<!-- 	<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.closed()}" update=":main_form"
 							title="Close" rendered="#{userAppraisalView.canClosed()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
 							<h:outputText value="Close" />
-						</p:commandLink>
+						</p:commandLink> -->
 						<!-- <p:commandLink title="Delete"
 							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error"
 							onclick="PF('deleteDlg').show()"
@@ -352,8 +352,7 @@
 											class="step"> <i
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step6"
-													value="#{userAppraisalStatus.MYR_EDITED.value}" />
-												<br />
+													value="#{userAppraisalStatus.MYR_EDITED.value}" /> <br />
 										</span> <p:overlayPanel for="step6"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
@@ -361,7 +360,7 @@
 													value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsMidEdited,userAppraisalView.model.userStatsMidEdited.username)}" />
 											</p:overlayPanel></li>
 									</h:panelGroup>
-									
+
 									<h:panelGroup rendered="#{userAppraisalView.isMid==2}">
 										<li
 											class="#{userAppraisalView.model.dateStatsSubmitedMidYear!=null?'complete':''}"><span
@@ -415,8 +414,7 @@
 											class="step"> <i
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step10"
-													value="#{userAppraisalStatus.FYR_EDITED.value}" />
-												<br />
+													value="#{userAppraisalStatus.FYR_EDITED.value}" /> <br />
 										</span> <p:overlayPanel for="step10"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
