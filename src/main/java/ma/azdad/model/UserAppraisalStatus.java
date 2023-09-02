@@ -25,7 +25,7 @@ public enum UserAppraisalStatus {
 	
 	//Final year
 	FYR_SELF_ASSESSMENT("FY Self Assessment", Color.GREEN),
-	FYR_EDITED("FYR Edited", Color.ORANGE),
+	FYR_EDITED("FYA Edited", Color.ORANGE),
 	SUBMITED_FINAL_YEAR("FYA Submitted", Color.L_BLUE),
 	FYR_APPROVED_LM("FYA Approved", Color.PURPLE),
 	FYR_REJECTED("FYA Rejected", Color.RED),
