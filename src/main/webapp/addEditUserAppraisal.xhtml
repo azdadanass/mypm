@@ -92,7 +92,7 @@
 						
 						<h:outputLink value="viewUserAppraisal.xhtml"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
-							rendered="#{(param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED' )and userAppraisalView.countSections(userAppraisalView.model) == 0}">
+							rendered="#{(param.pageIndex eq '1' and userAppraisalView.model.userAppraisalStatus eq 'CREATED' or userAppraisalView.model.userAppraisalStatus eq 'EDITED' )and userAppraisalView.countSections(userAppraisalView.model) == 0 and userAppraisal.employ eq sessionView.getUser()}">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Edit" />
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
