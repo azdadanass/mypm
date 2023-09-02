@@ -407,13 +407,15 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.MYR_EDITED));
 				break;
 			case 4:
-				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_MID_YEAR));
+				initLists(service.findUserappraisalbyStats(sessionView.getUsername(),
+						UserAppraisalStatus.SUBMITED_MID_YEAR));
 				break;
 			case 5:
 				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.FYR_EDITED));
 				break;
 			case 6:
-				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_FINAL_YEAR));
+				initLists(service.findUserappraisalbyStats(sessionView.getUsername(),
+						UserAppraisalStatus.SUBMITED_FINAL_YEAR));
 				break;
 			default:
 				break;
@@ -1308,7 +1310,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public Boolean canApprovedLMMidYear() {
-		return UserAppraisalStatus.SUBMITED_MID_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmLineManager()
+		return UserAppraisalStatus.SUBMITED_MID_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& sessionView.getIsMyPmLineManager()
 				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW);
 	}
 
@@ -1412,7 +1415,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public Boolean canApprovedLMFinalYear() {
-		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm() && sessionView.getIsMyPmLineManager()
+		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
+				&& sessionView.getIsMyPmLineManager()
 				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
 	}
 
@@ -1430,6 +1434,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model = service.findOne(model.getId());
 		evictCache();
 	}
+
 	public Boolean canRejectedLMFinal() {
 		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
 				&& sessionView.getIsMyPmLineManager()
@@ -1970,7 +1975,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			fillSupp3();
 			fillSupp4();
 			fillSupp5();
-			edited();
 
 			step++;
 
@@ -1982,13 +1986,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
 
 				userAppraisalComment.setDate(new Date());
-				userAppraisalComment.setTitle(isAddPage ? "User Appraisal Creation" : "User Appraisal Edition");
+				userAppraisalComment.setTitle(
+						(model.getUserAppraisalStatus().getValue().equals(UserAppraisalStatus.CREATED.getValue()))
+								? "User Appraisal Creation"
+								: "User Appraisal Edition");
 				userAppraisalComment.setParent(model);
 				userAppraisalComment.setUser(sessionView.getUser());
 				model.addComment(userAppraisalComment);
 				model = service.saveAndRefresh(model);
 
 			}
+			edited();
+
 			step++;
 			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 			externalContext.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
@@ -2282,31 +2291,20 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			stepFinal++;
 			break;
 		case 3:
-			String newContent = userAppraisalComment.getContent();
+			if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
 
-			if (!StringUtils.isBlank(newContent)) {
-				UserAppraisalComment existingComment = userAppraisalRepos.findCommentByTitle1(model);
-				System.out.println("existing Comenty" + existingComment);
-
-				if (existingComment == null) {
-					UserAppraisalComment newComment = new UserAppraisalComment();
-					newComment.setContent(newContent);
-					newComment.setDate(new Date());
-					newComment.setTitle("Final Year Review Comment");
-					newComment.setParent(model);
-					newComment.setUser(sessionView.getUser());
-
-					model.addComment(newComment);
-				} else {
-
-					existingComment.setContent(newContent);
-					existingComment.setDate(new Date());
-
-				}
+				userAppraisalComment.setDate(new Date());
+				userAppraisalComment.setTitle(
+						(model.getUserAppraisalStatus().getValue().equals(UserAppraisalStatus.FYR_SELF_ASSESSMENT.getValue()))
+								? "User Appraisal FYR Creation"
+								: "User Appraisal FYR Edition");
+				userAppraisalComment.setParent(model);
+				userAppraisalComment.setUser(sessionView.getUser());
+				model.addComment(userAppraisalComment);
 				model = service.saveAndRefresh(model);
 
 			}
-			step++;
+			stepFinal++;
 			FYRedited();
 			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 			externalContext.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
@@ -2588,30 +2586,23 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			stepMid++;
 			break;
 		case 3:
-			String newContent = userAppraisalComment.getContent();
+			if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
 
-			if (newContent.equals(newContent)) {
-				UserAppraisalComment existingComment = userAppraisalService.findCommentByTitle(model);
-				System.out.println("existing Comenty" + existingComment);
-
-				if (existingComment == null) {
-					UserAppraisalComment newComment = new UserAppraisalComment();
-					newComment.setContent(newContent);
-					newComment.setDate(new Date());
-					newComment.setTitle("Mid Year Review Comment");
-					newComment.setParent(model);
-					newComment.setUser(sessionView.getUser());
-
-					model.addComment(newComment);
-				} 
+				userAppraisalComment.setDate(new Date());
+				userAppraisalComment.setTitle(
+						(model.getUserAppraisalStatus().getValue().equals(UserAppraisalStatus.MYR_SELF_ASSESSMENT.getValue()))
+								? "User Appraisal MYR Creation"
+								: "User Appraisal MYR Edition");
+				userAppraisalComment.setParent(model);
+				userAppraisalComment.setUser(sessionView.getUser());
+				model.addComment(userAppraisalComment);
 				model = service.saveAndRefresh(model);
-				System.out.println("Status"+ model.getUserAppraisalStatus());
+
 			}
 			MYRedited();
 
-			
 			stepMid++;
-			
+
 			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 			externalContext.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
 			break;
