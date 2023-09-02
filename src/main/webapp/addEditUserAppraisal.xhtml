@@ -980,6 +980,7 @@
 											<p:column headerText="ID">
 												<h:outputText value="#{index+1}" styleClass="bolder blue" />
 											</p:column>
+
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
@@ -1379,10 +1380,6 @@
 											<h:outputText value="#{item.goalTitle}"
 												styleClass="bolder green" />
 										</p:column>
-										<p:column headerText="Goal Description">
-											<h:outputText value="#{item.goalDetails}"
-												styleClass="bolder orange" />
-										</p:column>
 										<p:column headerText="Goal Weight">
 											<h:outputText value="#{item.goalWeight}"
 												converter="javax.faces.Integer" min="0" max="100"
@@ -1432,10 +1429,6 @@
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
-											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1489,10 +1482,6 @@
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
-											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1548,10 +1537,6 @@
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
 											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
-											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
@@ -1606,10 +1591,6 @@
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
 											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
-											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
@@ -1660,10 +1641,6 @@
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
-											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1836,10 +1813,6 @@
 											<h:outputText value="#{item.goalTitle}"
 												styleClass="bolder green" />
 										</p:column>
-										<p:column headerText="Goal Description">
-											<h:outputText value="#{item.goalDetails}"
-												styleClass="bolder orange" />
-										</p:column>
 										<p:column headerText="Goal Weight">
 											<h:outputText value="#{item.goalWeight}"
 												converter="javax.faces.Integer" min="0" max="100"
@@ -1890,10 +1863,6 @@
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
 											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
-											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
@@ -1901,9 +1870,9 @@
 												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Fianl Year Review">
-											<h:outputText value="#{item.summaryRaiting}"
-												styleClass="bolder Red" />
-										</p:column>
+												<h:outputText value="#{item.summaryRaiting}"
+													styleClass="bolder Red" />
+											</p:column>
 
 										</p:dataTable>
 									</div>
@@ -1947,10 +1916,6 @@
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
 											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
-											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
@@ -1959,9 +1924,9 @@
 											</p:column>
 
 											<p:column headerText="Fianl Year Review">
-											<h:outputText value="#{item.summaryRaiting}"
-												styleClass="bolder Red" />
-										</p:column>
+												<h:outputText value="#{item.summaryRaiting}"
+													styleClass="bolder Red" />
+											</p:column>
 										</p:dataTable>
 									</div>
 
@@ -2005,10 +1970,6 @@
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
 											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
-											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
@@ -2016,9 +1977,9 @@
 												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Fianl Year Review">
-											<h:outputText value="#{item.summaryRaiting}"
-												styleClass="bolder Red" />
-										</p:column>
+												<h:outputText value="#{item.summaryRaiting}"
+													styleClass="bolder Red" />
+											</p:column>
 
 										</p:dataTable>
 									</div>
@@ -2063,10 +2024,6 @@
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
 											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
-											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
@@ -2074,9 +2031,9 @@
 												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Fianl Year Review">
-											<h:outputText value="#{item.summaryRaiting}"
-												styleClass="bolder Red" />
-										</p:column>
+												<h:outputText value="#{item.summaryRaiting}"
+													styleClass="bolder Red" />
+											</p:column>
 										</p:dataTable>
 									</div>
 								</div>
@@ -2118,10 +2075,6 @@
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" />
 											</p:column>
-											<p:column headerText="Goal Description">
-												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" />
-											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
@@ -2129,9 +2082,9 @@
 												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Fianl Year Review">
-											<h:outputText value="#{item.summaryRaiting}"
-												styleClass="bolder Red" />
-										</p:column>
+												<h:outputText value="#{item.summaryRaiting}"
+													styleClass="bolder Red" />
+											</p:column>
 										</p:dataTable>
 									</div>
 								</div>
