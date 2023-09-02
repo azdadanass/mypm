@@ -73,19 +73,14 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("from SupplementaryGoals s where  s.sections.userappraisal=?1")
 	List<SupplementaryGoals> findSuppByUser(UserAppraisal u);
 	
-	@Query("select count(*) from UserAppraisal u  where u.employ.username=?1 and u.userAppraisalStatus=?2 order by id desc    ")
-	Long countToSubmitted(String username, UserAppraisalStatus status);
-	
+
 	@Query("from UserAppraisal u  where u.employ.username=?1 and u.userAppraisalStatus=?2 order by id desc")
 	List<UserAppraisal> findUserappraisalbyStats(String username, UserAppraisalStatus status);
 	
 	
 	@Query("from UserAppraisal u where (u.userStatsApprovedLM.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApproved.username=?1 and u.userAppraisalStatus=?3) order by id desc")
 	List<UserAppraisal> findUserappraisalRolebyStats(String username, UserAppraisalStatus status1,UserAppraisalStatus status2);
-
 	
-	@Query("select count(*) from UserAppraisal u  where (u.userStatsApprovedLM.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApproved.username=?1 and u.userAppraisalStatus=?3) order by id desc")
-	Long countToApproved(String username, UserAppraisalStatus status1,UserAppraisalStatus status2);
 
 	@Query("select count(*) from Sections s  where s.userappraisal=?1   ")
 	Integer countSections(UserAppraisal u);
@@ -103,4 +98,17 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("select c.content from UserAppraisalComment c where c.parent=?1")
 	String findComment(UserAppraisal u1);
 	
+	@Query("select count(*) from UserAppraisal u  where (u.userStatsApprovedLM.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApproved.username=?1 and u.userAppraisalStatus=?3) order by id desc")
+	Long countToApproved(String username, UserAppraisalStatus status1,UserAppraisalStatus status2);
+	
+	@Query("select count(*) from UserAppraisal u  where u.employ.username=?1 and u.userAppraisalStatus=?2 order by id desc    ")
+	Long countToSubmitted(String username, UserAppraisalStatus status);
+	
+	
+	
+	@Query("select count(*) from UserAppraisal u  where (u.userStatsApprovedLMMidYear.username=?1 and u.userAppraisalStatus=?2) order by id desc")
+	Long countToApprovedMid(String username, UserAppraisalStatus status1);
+
+	@Query("select count(*) from UserAppraisal u  where (u.userStatsApprovedLMFinalYear.username=?1 and u.userAppraisalStatus=?2) order by id desc")
+	Long countToApprovedFinal(String username, UserAppraisalStatus status1);
 }

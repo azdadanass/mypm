@@ -110,23 +110,9 @@
 							<f:param name="isEdit" value="1" />
 						</h:outputLink>
 						
-						<h:outputLink 
-							value="addEditMidyear.xhtml" rendered="#{userAppraisalView.canMidSelfAssessment()}"
-							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
-							<i class="ace-icon fa fa-edit bigger-230"></i>
-							<h:outputText value="Mid Review" />
-							<f:param name="id" value="#{userAppraisalView.model.id}" />
-							<f:param name="isEdit" value="0" />
-						</h:outputLink>
 						
-						<h:outputLink
-							value="addEditFinalYear.xhtml" rendered="#{userAppraisalView.canFinalSelfAssessment()}"
-							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
-							<i class="ace-icon fa fa-edit bigger-230"></i>
-							<h:outputText value="Final Review" />
-							<f:param name="id" value="#{userAppraisalView.model.id}" />
-							<f:param name="isEdit" value="0" />
-						</h:outputLink>
+						
+						
 					
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
@@ -166,6 +152,16 @@
 						</p:commandLink>
 
 						<!-- 	################# MID year ################## -->
+						<h:outputLink 
+							value="addEditMidyear.xhtml" rendered="#{userAppraisalView.model.userAppraisalStatus eq 'MYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'MYR_EDITED'}"
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Mid Review" />
+							<f:param name="id" value="#{userAppraisalView.model.id}" />
+							<f:param name="isEdit" value="0" />
+						</h:outputLink>
+						
+						
 
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
@@ -192,10 +188,19 @@
 						</p:commandLink>
 
 						<!-- 	##################  Final Year  ################# -->
+						
+						<h:outputLink
+							value="addEditFinalYear.xhtml" rendered="#{userAppraisalView.model.userAppraisalStatus eq 'FYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'FYR_EDITED'}"
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Final Review" />
+							<f:param name="id" value="#{userAppraisalView.model.id}" />
+							<f:param name="isEdit" value="0" />
+						</h:outputLink>
 
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.SubmitedFinalYear()}"
+							action="#{userAppraisalView.submitedFinalYear()}"
 							update=":main_form" title="Submit"
 							rendered="#{userAppraisalView.canSubmitedFinalYear()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
@@ -343,13 +348,29 @@
 									</h:panelGroup>
 									<h:panelGroup rendered="#{userAppraisalView.isMid==2}">
 										<li
-											class="#{userAppraisalView.model.dateStatsSubmitedMidYear!=null?'complete':''}"><span
+											class="#{userAppraisalView.model.dateStatsMidEdited!=null?'complete':''}"><span
 											class="step"> <i
 												class="ace-icon fa fa-spinner fa-spin grey" />
 										</span> <span class="title"> <h:outputText id="step6"
-													value="#{userAppraisalStatus.SUBMITED_MID_YEAR.value}" />
+													value="#{userAppraisalStatus.MYR_EDITED.value}" />
 												<br />
 										</span> <p:overlayPanel for="step6"
+												style="text-align: left;width:350px" showEvent="mouseover"
+												hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsMidEdited,userAppraisalView.model.userStatsMidEdited.username)}" />
+											</p:overlayPanel></li>
+									</h:panelGroup>
+									
+									<h:panelGroup rendered="#{userAppraisalView.isMid==2}">
+										<li
+											class="#{userAppraisalView.model.dateStatsSubmitedMidYear!=null?'complete':''}"><span
+											class="step"> <i
+												class="ace-icon fa fa-spinner fa-spin grey" />
+										</span> <span class="title"> <h:outputText id="step7"
+													value="#{userAppraisalStatus.SUBMITED_MID_YEAR.value}" />
+												<br />
+										</span> <p:overlayPanel for="step7"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -361,9 +382,9 @@
 											class="#{userAppraisalView.model.dateStatsApprovedLMMidYear!=null?'complete':''}"><span
 											class="step"> <i
 												class="ace-icon fa fa-spinner fa-spin grey" />
-										</span> <span class="title"> <h:outputText id="step7"
+										</span> <span class="title"> <h:outputText id="step8"
 													value="#{userAppraisalStatus.MYR_APPROVED_LM.value}" /> <br />
-										</span> <p:overlayPanel for="step7"
+										</span> <p:overlayPanel for="step8"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -378,10 +399,10 @@
 											class="#{userAppraisalView.model.dateStatsSelfAssessmentFinalYear!=null?'complete':''}"><span
 											class="step"> <i
 												class="ace-icon fa fa-spinner fa-spin grey" />
-										</span> <span class="title"> <h:outputText id="step8"
+										</span> <span class="title"> <h:outputText id="step9"
 													value="#{userAppraisalStatus.FYR_SELF_ASSESSMENT.value}" />
 												<br />
-										</span> <p:overlayPanel for="step8"
+										</span> <p:overlayPanel for="step9"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -390,13 +411,28 @@
 									</h:panelGroup>
 									<h:panelGroup rendered="#{userAppraisalView.isMid==3}">
 										<li
+											class="#{userAppraisalView.model.dateStatsFinalEdited!=null?'complete':''}"><span
+											class="step"> <i
+												class="ace-icon fa fa-spinner fa-spin grey" />
+										</span> <span class="title"> <h:outputText id="step10"
+													value="#{userAppraisalStatus.FYR_EDITED.value}" />
+												<br />
+										</span> <p:overlayPanel for="step10"
+												style="text-align: left;width:350px" showEvent="mouseover"
+												hideEvent="mouseout">
+												<h:outputText escape="false"
+													value="#{htmlView.generateOverlayPanelContent(userAppraisalView.model.dateStatsFinalEdited,userAppraisalView.model.userStatsFinalEdited.username)}" />
+											</p:overlayPanel></li>
+									</h:panelGroup>
+									<h:panelGroup rendered="#{userAppraisalView.isMid==3}">
+										<li
 											class="#{userAppraisalView.model.dateStatsSubmitedFinalYear!=null?'complete':''}"><span
 											class="step"> <i
 												class="ace-icon fa fa-spinner fa-spin grey" />
-										</span> <span class="title"> <h:outputText id="step9"
+										</span> <span class="title"> <h:outputText id="step11"
 													value="#{userAppraisalStatus.SUBMITED_FINAL_YEAR.value}" />
 												<br />
-										</span> <p:overlayPanel for="step9"
+										</span> <p:overlayPanel for="step11"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"
@@ -408,9 +444,9 @@
 											class="#{userAppraisalView.model.dateStatsApprovedLMFinalYear!=null?'complete':''}"><span
 											class="step"> <i
 												class="ace-icon fa fa-spinner fa-spin grey" />
-										</span> <span class="title"> <h:outputText id="step10"
+										</span> <span class="title"> <h:outputText id="step12"
 													value="#{userAppraisalStatus.FYR_APPROVED_LM.value}" /> <br />
-										</span> <p:overlayPanel for="step10"
+										</span> <p:overlayPanel for="step12"
 												style="text-align: left;width:350px" showEvent="mouseover"
 												hideEvent="mouseout">
 												<h:outputText escape="false"

@@ -202,7 +202,7 @@
 
 
 
-								<h:panelGroup id="panel1">
+								<h:panelGroup id="panel0">
 									<ui:repeat var="item"
 										value="#{userAppraisalView.businessGoalsList}"
 										varStatus="varStatus">
@@ -293,9 +293,12 @@
 										<p:commandLink title="Add Business Goal"
 											action="#{userAppraisalView.initBankAccount()}"
 											oncomplete="PF('addBusinessGoalDlg').show()"
-											update=":addBusinessGoalForm">
-											<h:outputText value="Add New BankAccount" />
+											update=":addBusinessGoalForm" process="panel0" partialSubmit="true">
+											<h:outputText value="Add New Business Goal" />
 											<i class="fa fa-plus green" />
+											<f:param name="isEdit" value="0" />
+
+
 										</p:commandLink>
 									</span>
 								</h4>
@@ -835,13 +838,18 @@
 																			update="addBusinessGoalForm">
 																			<i class="ace-icon fa fa-edit green" />
 																			<f:setPropertyActionListener
-																				target="#{userAppraisalView.bs}" value="#{bs}" />
+																				target="#{businessgoal}" value="#{businessgoal}" />
 																		</p:commandLink> <p:commandLink title="Delete BusinessGoal"
-																			oncomplete="PF('deleteBusinessGoalForm').show()">
+																			action="#{userAppraisalView.removeBusinessGoal(businessgoal)}"
+																			update=":main_form_edit:step2:panel1">
 																			<i class="ace-icon fa fa-trash-o red" />
 																			<f:setPropertyActionListener
 																				target="#{userAppraisalView.bs}" value="#{bs}" />
+																			<f:param name="isEdit" value="1" />
+
 																		</p:commandLink>
+
+
 																</span></td>
 															</tr>
 														</table>
@@ -898,8 +906,11 @@
 										<p:commandLink title="Add Business Goal"
 											action="#{userAppraisalView.initBankAccount()}"
 											oncomplete="PF('addBusinessGoalDlg').show()"
-											update=":addBusinessGoalForm">
-											<h:outputText value="Add New BankAccount" />
+											update=":addBusinessGoalForm" process="panel1"
+											partialSubmit="true">
+											<h:outputText value="Add New Business Goal" />
+											<f:param name="isEdit" value="1" />
+
 											<i class="fa fa-plus green" />
 										</p:commandLink>
 									</span>

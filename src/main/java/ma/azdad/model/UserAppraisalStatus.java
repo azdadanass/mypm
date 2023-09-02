@@ -10,20 +10,22 @@ import ma.azdad.utils.Color;
 public enum UserAppraisalStatus {
 	CREATED("Created", Color.GREEN),
 	EDITED("Edited", Color.ORANGE),
-	SUBMITED("Submitted", Color.BLUE),
-	REJECTED("Rejected", Color.L_GREEN),
-	APPROVED_LM("Approved L1", Color.GREY),
+	SUBMITED("Submitted", Color.L_BLUE),
+	REJECTED("Rejected", Color.RED),
+	APPROVED_LM("Approved L1", Color.PURPLE),
 	APPROVED("Approved", Color.PINK),
 	
 	//Mid Year 
-	MYR_SELF_ASSESSMENT("MYR Self Assessment", Color.ORANGE),
+	MYR_SELF_ASSESSMENT("MYR Self Assessment", Color.GREEN),
+	MYR_EDITED("MYR Edited", Color.ORANGE),
 	SUBMITED_MID_YEAR("MYR Submitted", Color.L_BLUE),
 	MYR_APPROVED_LM("MYR Approved", Color.PURPLE),
 	MYR_REJECTED("MYR Rejected", Color.RED),
 
 	
 	//Final year
-	FYR_SELF_ASSESSMENT("FY Self Assessment", Color.ORANGE),
+	FYR_SELF_ASSESSMENT("FY Self Assessment", Color.GREEN),
+	FYR_EDITED("FYR Edited", Color.ORANGE),
 	SUBMITED_FINAL_YEAR("FYA Submitted", Color.L_BLUE),
 	FYR_APPROVED_LM("FYA Approved", Color.PURPLE),
 	FYR_REJECTED("FYA Rejected", Color.RED),

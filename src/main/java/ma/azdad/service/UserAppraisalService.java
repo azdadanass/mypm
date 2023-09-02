@@ -243,9 +243,24 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 	}
 	
 	@Cacheable("userAppraisalService.countToSubmitted")
-	public Long countToSubmitted(String username) {
-		return repos.countToSubmitted(username, UserAppraisalStatus.EDITED);
+	public Long countToSubmitted(String username ,UserAppraisalStatus u) {
+		return repos.countToSubmitted(username,u);
 	}
+	
+	@Cacheable("userAppraisalService.countToApprovedMid")
+	public Long countToApprovedMid(User u) {
+		return repos.countToApprovedMid(u.getUsername(), UserAppraisalStatus.SUBMITED_MID_YEAR);
+	}
+	@Cacheable("userAppraisalService.countToApprovedFinal")
+	public Long countToApprovedFinal(User u) {
+		return repos.countToApprovedFinal(u.getUsername(), UserAppraisalStatus.SUBMITED_FINAL_YEAR);
+	}
+	@Cacheable("userAppraisalService.countToApproved")
+	public Long countToApproved(User u) {
+		return repos.countToApproved(u.getUsername(), UserAppraisalStatus.SUBMITED, UserAppraisalStatus.APPROVED_LM);
+	}
+	
+	
 	
 	@Cacheable("userAppraisalService.findUserappraisalbyStats")
 	public List<UserAppraisal> findUserappraisalbyStats(String username,UserAppraisalStatus stats1) {
@@ -282,10 +297,7 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 	}
 	
 	
-	@Cacheable("userAppraisalService.countToApproved")
-	public Long countToApproved(User u) {
-		return repos.countToApproved(u.getUsername(), UserAppraisalStatus.SUBMITED, UserAppraisalStatus.APPROVED_LM);
-	}
+	
 	
 	@Cacheable("userAppraisalService.countSections")
 	public Integer countSections(UserAppraisal u) {

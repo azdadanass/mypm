@@ -253,7 +253,9 @@
 							</div>
 						</div>
 					</div>
-				</div><div class="space-4" /><div class="space-4" />
+				</div>
+				<div class="space-4" />
+				<div class="space-4" />
 				<div class="row">
 					<div class="col-xs-12 col-sm-12">
 						<div class="form-group">
@@ -262,7 +264,8 @@
 									value="Goal Desription" />
 							</label>
 							<div class="col-xs-9 col-sm-9">
-							<h:inputTextarea rows="7" cols="80" value="#{userAppraisalView.bs.goalDetails}" />
+								<h:inputTextarea rows="7" cols="80"
+									value="#{userAppraisalView.bs.goalDetails}" />
 
 							</div>
 						</div>
@@ -277,35 +280,27 @@
 					process="@this" />
 				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
 					value="Save" styleClass="btn btn-success"
-					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' }" >
+					oncomplete="PF('addBusinessGoalDlg').hide()"
+					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '1'}"
+					update=":main_form_edit:step2:panel1">
+					<f:param name="isEdit" value="1" />
+				</p:commandButton>
+				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
+					value="Save" styleClass="btn btn-success"
+					oncomplete="PF('addBusinessGoalDlg').hide()"
+					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '0'}"
+					update=":main_form:step2:panel0">
 					<f:param name="isEdit" value="0" />
-					</p:commandButton>
+				</p:commandButton>
+
+
+
 			</div>
 		</p:dialog>
 	</h:form>
-	
-	
-	
-		<h:form id="deleteBusinessGoalForm">
-		<p:dialog widgetVar="deleteBusinessGoalDlg" modal="true" closable="false" resizable="false" showHeader="false">
-			<button type="button" class="bootbox-close-button close" onclick="PF('deleteBusinessGoalForm').hide()">
-				<h:outputText value="x" />
-			</button>
-			<div class="modal-header">
-				<h4 class="modal-title">
-					<i class="ace-icon fa fa-trash-o red" />
-					<h:outputText value=" Delete BusinessGoal" />
-				</h4>
-			</div>
-			<div class="modal-body">
-				<h:outputText value="Are you sure you want to delete this item ?" style="margin-left: 20px" />
-			</div>
-			<div class="modal-footer">
-				<p:commandButton onclick="PF('deleteBusinessGoalForm').hide()" value="Hide" styleClass="btn btn-warning" />
-				<p:commandButton action="#{userAppraisalView.deleteBankAccount()}" value="Delete" styleClass="btn btn-danger" oncomplete="PF('delete	Dlg').hide()" />
-			</div>
-		</p:dialog>
-	</h:form>
+
+
+
 
 
 

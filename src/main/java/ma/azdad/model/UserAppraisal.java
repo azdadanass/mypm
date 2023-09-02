@@ -24,18 +24,18 @@ import javax.persistence.Transient;
 import ma.azdad.service.UtilsFunctions;
 
 @Entity
-@Table(name="mypm_user_appraisal_new")
-public class UserAppraisal extends GenericModel<Integer>{
+@Table(name = "mypm_user_appraisal_new")
+public class UserAppraisal extends GenericModel<Integer> {
 
 	private Appraisals appraisal;
 	private User employ;
 	private User appraisee;
-	private Integer  raiting;
+	private Integer raiting;
 	private String comment;
 	private String commentApp;
-	
+
 	private Integer countFiles = 0;
-	private UserAppraisalStatus userAppraisalStatus=UserAppraisalStatus.CREATED;
+	private UserAppraisalStatus userAppraisalStatus = UserAppraisalStatus.CREATED;
 
 	private List<UserAppraisalFile> fileList = new ArrayList<>();
 	private List<UserAppraisalHistory> historyList = new ArrayList<>();
@@ -52,6 +52,39 @@ public class UserAppraisal extends GenericModel<Integer>{
 		this.toNotifyList = toNotifyList;
 	}
 
+	public Date getDateStatsMidEdited() {
+		return dateStatsMidEdited;
+	}
+
+	public void setDateStatsMidEdited(Date dateStatsMidEdited) {
+		this.dateStatsMidEdited = dateStatsMidEdited;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsMidEdited() {
+		return userStatsMidEdited;
+	}
+
+	public void setUserStatsMidEdited(User userStatsMidEdited) {
+		this.userStatsMidEdited = userStatsMidEdited;
+	}
+
+	public Date getDateStatsFinalEdited() {
+		return dateStatsFinalEdited;
+	}
+
+	public void setDateStatsFinalEdited(Date dateStatsFinalEdited) {
+		this.dateStatsFinalEdited = dateStatsFinalEdited;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsFinalEdited() {
+		return userStatsFinalEdited;
+	}
+
+	public void setUserStatsFinalEdited(User userStatsFinalEdited) {
+		this.userStatsFinalEdited = userStatsFinalEdited;
+	}
 
 	// Created
 	private Date dateStatsCreated;
@@ -60,7 +93,7 @@ public class UserAppraisal extends GenericModel<Integer>{
 	// Edited
 	private Date dateStatsEdited;
 	private User userStatsEdited;
-	
+
 	// Submited
 	private Date dateStatsSubmited;
 	private User userStatsSubmited;
@@ -72,7 +105,7 @@ public class UserAppraisal extends GenericModel<Integer>{
 	// Approved
 	private Date dateStatsApproved;
 	private User userStatsApproved;
-	
+
 	// Rejected
 	private Date dateStatsRejected;
 	private User userStatsRejected;
@@ -80,7 +113,11 @@ public class UserAppraisal extends GenericModel<Integer>{
 	// Assessment Mid
 	private Date dateStatsSelfAssessmentMidYear;
 	private User userStatsSelfAssessmentMidYear;
-	
+
+	// MID Edited
+	private Date dateStatsMidEdited;
+	private User userStatsMidEdited;
+
 	// Submited Mid
 	private Date dateStatsSubmitedMidYear;
 	private User userStatsSubmitedMidYear;
@@ -92,12 +129,15 @@ public class UserAppraisal extends GenericModel<Integer>{
 	// Rejected Mid
 	private Date dateStatsRejectedMidYear;
 	private User userStatsRejectedMidYear;
-	
+
 	// Assessment Final
 	private Date dateStatsSelfAssessmentFinalYear;
 	private User userStatsSelfAssessmentFinalYear;
-	
-	
+
+	// FINAL Edited
+	private Date dateStatsFinalEdited;
+	private User userStatsFinalEdited;
+
 	// Submited Final
 	private Date dateStatsSubmitedFinalYear;
 	private User userStatsSubmitedFinalYear;
@@ -106,12 +146,10 @@ public class UserAppraisal extends GenericModel<Integer>{
 	private Date dateStatsApprovedLMFinalYear;
 	private User userStatsApprovedLMFinalYear;
 
-
-
 	// Rejected Final
 	private Date dateStatsRejectedFinalYear;
 	private User userStatsRejectedFinalYear;
-	
+
 	// Closed
 	private Date dateStatsClosed;
 	private User userStatsClosed;
@@ -126,7 +164,7 @@ public class UserAppraisal extends GenericModel<Integer>{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	public User getAppraisee() {
 		return appraisee;
@@ -144,7 +182,7 @@ public class UserAppraisal extends GenericModel<Integer>{
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
+
 	@Column(name = "raiting")
 	public Integer getRaiting() {
 		return raiting;
@@ -154,7 +192,6 @@ public class UserAppraisal extends GenericModel<Integer>{
 		this.raiting = raiting;
 	}
 
-
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	public Appraisals getAppraisal() {
 		return appraisal;
@@ -163,7 +200,7 @@ public class UserAppraisal extends GenericModel<Integer>{
 	public void setAppraisal(Appraisals appraisal) {
 		this.appraisal = appraisal;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	public User getEmploy() {
 		return employ;
@@ -172,6 +209,7 @@ public class UserAppraisal extends GenericModel<Integer>{
 	public void setEmploy(User employ_idemploy) {
 		this.employ = employ_idemploy;
 	}
+
 	@Column(name = "commentApp")
 	public String getCommentApp() {
 		return commentApp;
@@ -181,7 +219,6 @@ public class UserAppraisal extends GenericModel<Integer>{
 		this.commentApp = commentApp;
 	}
 
-	
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	public UserAppraisalStatus getUserAppraisalStatus() {
@@ -191,24 +228,23 @@ public class UserAppraisal extends GenericModel<Integer>{
 	public void setUserAppraisalStatus(UserAppraisalStatus userAppraisalStatus) {
 		this.userAppraisalStatus = userAppraisalStatus;
 	}
-	
-	
+
 	@Transient
 	public String getAppraisalName() {
 		return appraisal == null ? null : appraisal.getAppraisalName();
 	}
-	
+
 	@Transient
 	public String getEmployName() {
 		return employ == null ? null : employ.getFullName();
 	}
 
-	//File 
+	// File
 
 	public void calculateCountFiles() {
 		countFiles = fileList.size();
 	}
-	
+
 	@Transient
 	public Boolean getHasFiles() {
 		return countFiles > 0;
@@ -225,7 +261,7 @@ public class UserAppraisal extends GenericModel<Integer>{
 		fileList.remove(file);
 		calculateCountFiles();
 	}
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<UserAppraisalFile> getFileList() {
 		return fileList;
@@ -242,325 +278,324 @@ public class UserAppraisal extends GenericModel<Integer>{
 	public void setCountFiles(Integer countFiles) {
 		this.countFiles = countFiles;
 	}
-	
-	//History
-			public void addHistory(UserAppraisalHistory history) {
-				history.setParent(this);
-				historyList.add(history);
-			}
 
-			public void removeHistory(UserAppraisalHistory history) {
-				history.setParent(null);
-				historyList.remove(history);
-			}
-			
-			@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-			public List<UserAppraisalHistory> getHistoryList() {
-				return historyList;
-			}
+	// History
+	public void addHistory(UserAppraisalHistory history) {
+		history.setParent(this);
+		historyList.add(history);
+	}
 
-			public void setHistoryList(List<UserAppraisalHistory> historyList) {
-				this.historyList = historyList;
-			}
-			
-			//Comment
-			public void addComment(UserAppraisalComment comment) {
-				comment.setParent(this);
-				commentList.add(comment);
-			}
+	public void removeHistory(UserAppraisalHistory history) {
+		history.setParent(null);
+		historyList.remove(history);
+	}
 
-			public void removeComment(UserAppraisalComment comment) {
-				comment.setParent(null);
-				commentList.remove(comment);
-			}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+	public List<UserAppraisalHistory> getHistoryList() {
+		return historyList;
+	}
 
-			private void generateCommentGroupList() {
-				Map<String, List<UserAppraisalComment>> map = new HashMap<>();
-				for (UserAppraisalComment comment : commentList) {
-					String dateStr = UtilsFunctions.getFormattedDate(comment.getDate());
-					map.putIfAbsent(dateStr, new ArrayList<UserAppraisalComment>());
-					map.get(dateStr).add(comment);
-				}
-				commentGroupList = new ArrayList<>();
-				for (String dateStr : map.keySet())
-					commentGroupList.add(new CommentGroup<>(UtilsFunctions.getDate(dateStr), map.get(dateStr)));
-				Collections.sort(commentGroupList);
-			}
+	public void setHistoryList(List<UserAppraisalHistory> historyList) {
+		this.historyList = historyList;
+	}
 
-			@Transient
-			public List<CommentGroup<UserAppraisalComment>> getCommentGroupList() {
-				if (commentGroupList == null)
-					generateCommentGroupList();
-				return commentGroupList;
-			}
+	// Comment
+	public void addComment(UserAppraisalComment comment) {
+		comment.setParent(this);
+		commentList.add(comment);
+	}
 
-			@Transient
-			public void setCommentGroupList(List<CommentGroup<UserAppraisalComment>> commentGroupList) {
-				this.commentGroupList = commentGroupList;
-			}
+	public void removeComment(UserAppraisalComment comment) {
+		comment.setParent(null);
+		commentList.remove(comment);
+	}
 
-			@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-			public List<UserAppraisalComment> getCommentList() {
-				return commentList;
-			}
+	private void generateCommentGroupList() {
+		Map<String, List<UserAppraisalComment>> map = new HashMap<>();
+		for (UserAppraisalComment comment : commentList) {
+			String dateStr = UtilsFunctions.getFormattedDate(comment.getDate());
+			map.putIfAbsent(dateStr, new ArrayList<UserAppraisalComment>());
+			map.get(dateStr).add(comment);
+		}
+		commentGroupList = new ArrayList<>();
+		for (String dateStr : map.keySet())
+			commentGroupList.add(new CommentGroup<>(UtilsFunctions.getDate(dateStr), map.get(dateStr)));
+		Collections.sort(commentGroupList);
+	}
 
-			public void setCommentList(List<UserAppraisalComment> commentList) {
-				this.commentList = commentList;
-			}
+	@Transient
+	public List<CommentGroup<UserAppraisalComment>> getCommentGroupList() {
+		if (commentGroupList == null)
+			generateCommentGroupList();
+		return commentGroupList;
+	}
 
-			public Date getDateStatsCreated() {
-				return dateStatsCreated;
-			}
+	@Transient
+	public void setCommentGroupList(List<CommentGroup<UserAppraisalComment>> commentGroupList) {
+		this.commentGroupList = commentGroupList;
+	}
 
-			public void setDateStatsCreated(Date dateStatsCreated) {
-				this.dateStatsCreated = dateStatsCreated;
-			}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+	public List<UserAppraisalComment> getCommentList() {
+		return commentList;
+	}
 
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsCreated() {
-				return userStatsCreated;
-			}
+	public void setCommentList(List<UserAppraisalComment> commentList) {
+		this.commentList = commentList;
+	}
 
-			public void setUserStatsCreated(User userStatsCreated) {
-				this.userStatsCreated = userStatsCreated;
-			}
+	public Date getDateStatsCreated() {
+		return dateStatsCreated;
+	}
 
-			public Date getDateStatsSubmited() {
-				return dateStatsSubmited;
-			}
+	public void setDateStatsCreated(Date dateStatsCreated) {
+		this.dateStatsCreated = dateStatsCreated;
+	}
 
-			public void setDateStatsSubmited(Date dateStatsSubmited) {
-				this.dateStatsSubmited = dateStatsSubmited;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsCreated() {
+		return userStatsCreated;
+	}
 
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsSubmited() {
-				return userStatsSubmited;
-			}
+	public void setUserStatsCreated(User userStatsCreated) {
+		this.userStatsCreated = userStatsCreated;
+	}
 
-			public void setUserStatsSubmited(User userStatsSubmited) {
-				this.userStatsSubmited = userStatsSubmited;
-			}
+	public Date getDateStatsSubmited() {
+		return dateStatsSubmited;
+	}
 
-			public Date getDateStatsApprovedLM() {
-				return dateStatsApprovedLM;
-			}
+	public void setDateStatsSubmited(Date dateStatsSubmited) {
+		this.dateStatsSubmited = dateStatsSubmited;
+	}
 
-			public void setDateStatsApprovedLM(Date dateStatsApprovedLM) {
-				this.dateStatsApprovedLM = dateStatsApprovedLM;
-			}
-			
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsApprovedLM() {
-				return userStatsApprovedLM;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsSubmited() {
+		return userStatsSubmited;
+	}
 
-			public void setUserStatsApprovedLM(User userStatsApprovedLM) {
-				this.userStatsApprovedLM = userStatsApprovedLM;
-			}
+	public void setUserStatsSubmited(User userStatsSubmited) {
+		this.userStatsSubmited = userStatsSubmited;
+	}
 
-			public Date getDateStatsApproved() {
-				return dateStatsApproved;
-			}
+	public Date getDateStatsApprovedLM() {
+		return dateStatsApprovedLM;
+	}
 
-			public void setDateStatsApproved(Date dateStatsApproved) {
-				this.dateStatsApproved = dateStatsApproved;
-			}
+	public void setDateStatsApprovedLM(Date dateStatsApprovedLM) {
+		this.dateStatsApprovedLM = dateStatsApprovedLM;
+	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsApprovedLM() {
+		return userStatsApprovedLM;
+	}
 
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsApproved() {
-				return userStatsApproved;
-			}
+	public void setUserStatsApprovedLM(User userStatsApprovedLM) {
+		this.userStatsApprovedLM = userStatsApprovedLM;
+	}
 
-			public void setUserStatsApproved(User userStatsApproved) {
-				this.userStatsApproved = userStatsApproved;
-			}
+	public Date getDateStatsApproved() {
+		return dateStatsApproved;
+	}
 
-			public Date getDateStatsSubmitedMidYear() {
-				return dateStatsSubmitedMidYear;
-			}
+	public void setDateStatsApproved(Date dateStatsApproved) {
+		this.dateStatsApproved = dateStatsApproved;
+	}
 
-			public void setDateStatsSubmitedMidYear(Date dateStatsSubmitedMidYear) {
-				this.dateStatsSubmitedMidYear = dateStatsSubmitedMidYear;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsApproved() {
+		return userStatsApproved;
+	}
 
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsSubmitedMidYear() {
-				return userStatsSubmitedMidYear;
-			}
+	public void setUserStatsApproved(User userStatsApproved) {
+		this.userStatsApproved = userStatsApproved;
+	}
 
-			public void setUserStatsSubmitedMidYear(User userStatsSubmitedMidYear) {
-				this.userStatsSubmitedMidYear = userStatsSubmitedMidYear;
-			}
+	public Date getDateStatsSubmitedMidYear() {
+		return dateStatsSubmitedMidYear;
+	}
 
-			public Date getDateStatsApprovedLMMidYear() {
-				return dateStatsApprovedLMMidYear;
-			}
+	public void setDateStatsSubmitedMidYear(Date dateStatsSubmitedMidYear) {
+		this.dateStatsSubmitedMidYear = dateStatsSubmitedMidYear;
+	}
 
-			public void setDateStatsApprovedLMMidYear(Date dateStatsApprovedLMMidYear) {
-				this.dateStatsApprovedLMMidYear = dateStatsApprovedLMMidYear;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsSubmitedMidYear() {
+		return userStatsSubmitedMidYear;
+	}
 
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsApprovedLMMidYear() {
-				return userStatsApprovedLMMidYear;
-			}
+	public void setUserStatsSubmitedMidYear(User userStatsSubmitedMidYear) {
+		this.userStatsSubmitedMidYear = userStatsSubmitedMidYear;
+	}
 
-			public void setUserStatsApprovedLMMidYear(User userStatsApprovedLMMidYear) {
-				this.userStatsApprovedLMMidYear = userStatsApprovedLMMidYear;
-			}
+	public Date getDateStatsApprovedLMMidYear() {
+		return dateStatsApprovedLMMidYear;
+	}
 
-			public Date getDateStatsSubmitedFinalYear() {
-				return dateStatsSubmitedFinalYear;
-			}
+	public void setDateStatsApprovedLMMidYear(Date dateStatsApprovedLMMidYear) {
+		this.dateStatsApprovedLMMidYear = dateStatsApprovedLMMidYear;
+	}
 
-			public void setDateStatsSubmitedFinalYear(Date dateStatsSubmitedFinalYear) {
-				this.dateStatsSubmitedFinalYear = dateStatsSubmitedFinalYear;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsApprovedLMMidYear() {
+		return userStatsApprovedLMMidYear;
+	}
 
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsSubmitedFinalYear() {
-				return userStatsSubmitedFinalYear;
-			}
+	public void setUserStatsApprovedLMMidYear(User userStatsApprovedLMMidYear) {
+		this.userStatsApprovedLMMidYear = userStatsApprovedLMMidYear;
+	}
 
-			public void setUserStatsSubmitedFinalYear(User userStatsSubmitedFinalYear) {
-				this.userStatsSubmitedFinalYear = userStatsSubmitedFinalYear;
-			}
+	public Date getDateStatsSubmitedFinalYear() {
+		return dateStatsSubmitedFinalYear;
+	}
 
-			public Date getDateStatsApprovedLMFinalYear() {
-				return dateStatsApprovedLMFinalYear;
-			}
+	public void setDateStatsSubmitedFinalYear(Date dateStatsSubmitedFinalYear) {
+		this.dateStatsSubmitedFinalYear = dateStatsSubmitedFinalYear;
+	}
 
-			public void setDateStatsApprovedLMFinalYear(Date dateStatsApprovedLMFinalYear) {
-				this.dateStatsApprovedLMFinalYear = dateStatsApprovedLMFinalYear;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsSubmitedFinalYear() {
+		return userStatsSubmitedFinalYear;
+	}
 
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsApprovedLMFinalYear() {
-				return userStatsApprovedLMFinalYear;
-			}
+	public void setUserStatsSubmitedFinalYear(User userStatsSubmitedFinalYear) {
+		this.userStatsSubmitedFinalYear = userStatsSubmitedFinalYear;
+	}
 
-			public void setUserStatsApprovedLMFinalYear(User userStatsApprovedLMFinalYear) {
-				this.userStatsApprovedLMFinalYear = userStatsApprovedLMFinalYear;
-			}
+	public Date getDateStatsApprovedLMFinalYear() {
+		return dateStatsApprovedLMFinalYear;
+	}
 
-			public Date getDateStatsClosed() {
-				return dateStatsClosed;
-			}
+	public void setDateStatsApprovedLMFinalYear(Date dateStatsApprovedLMFinalYear) {
+		this.dateStatsApprovedLMFinalYear = dateStatsApprovedLMFinalYear;
+	}
 
-			public void setDateStatsClosed(Date dateStatsClosed) {
-				this.dateStatsClosed = dateStatsClosed;
-			}
-			
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsClosed() {
-				return userStatsClosed;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsApprovedLMFinalYear() {
+		return userStatsApprovedLMFinalYear;
+	}
 
-			public void setUserStatsClosed(User userStatsClosed) {
-				this.userStatsClosed = userStatsClosed;
-			}
+	public void setUserStatsApprovedLMFinalYear(User userStatsApprovedLMFinalYear) {
+		this.userStatsApprovedLMFinalYear = userStatsApprovedLMFinalYear;
+	}
 
-			public Date getDateStatsEdited() {
-				return dateStatsEdited;
-			}
+	public Date getDateStatsClosed() {
+		return dateStatsClosed;
+	}
 
-			public void setDateStatsEdited(Date dateStatsEdited) {
-				this.dateStatsEdited = dateStatsEdited;
-			}
+	public void setDateStatsClosed(Date dateStatsClosed) {
+		this.dateStatsClosed = dateStatsClosed;
+	}
 
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsEdited() {
-				return userStatsEdited;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsClosed() {
+		return userStatsClosed;
+	}
 
-			public void setUserStatsEdited(User userStatsEdited) {
-				this.userStatsEdited = userStatsEdited;
-			}
+	public void setUserStatsClosed(User userStatsClosed) {
+		this.userStatsClosed = userStatsClosed;
+	}
 
-			public Date getDateStatsRejected() {
-				return dateStatsRejected;
-			}
+	public Date getDateStatsEdited() {
+		return dateStatsEdited;
+	}
 
-			public void setDateStatsRejected(Date dateStatsRejected) {
-				this.dateStatsRejected = dateStatsRejected;
-			}
-			
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsRejected() {
-				return userStatsRejected;
-			}
+	public void setDateStatsEdited(Date dateStatsEdited) {
+		this.dateStatsEdited = dateStatsEdited;
+	}
 
-			public void setUserStatsRejected(User userStatsRejected) {
-				this.userStatsRejected = userStatsRejected;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsEdited() {
+		return userStatsEdited;
+	}
 
-			public Date getDateStatsSelfAssessmentMidYear() {
-				return dateStatsSelfAssessmentMidYear;
-			}
+	public void setUserStatsEdited(User userStatsEdited) {
+		this.userStatsEdited = userStatsEdited;
+	}
 
-			public void setDateStatsSelfAssessmentMidYear(Date dateStatsSelfAssessmentMidYear) {
-				this.dateStatsSelfAssessmentMidYear = dateStatsSelfAssessmentMidYear;
-			}
-			
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsSelfAssessmentMidYear() {
-				return userStatsSelfAssessmentMidYear;
-			}
+	public Date getDateStatsRejected() {
+		return dateStatsRejected;
+	}
 
-			public void setUserStatsSelfAssessmentMidYear(User userStatsSelfAssessmentMidYear) {
-				this.userStatsSelfAssessmentMidYear = userStatsSelfAssessmentMidYear;
-			}
+	public void setDateStatsRejected(Date dateStatsRejected) {
+		this.dateStatsRejected = dateStatsRejected;
+	}
 
-			public Date getDateStatsRejectedMidYear() {
-				return dateStatsRejectedMidYear;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsRejected() {
+		return userStatsRejected;
+	}
 
-			public void setDateStatsRejectedMidYear(Date dateStatsRejectedMidYear) {
-				this.dateStatsRejectedMidYear = dateStatsRejectedMidYear;
-			}
+	public void setUserStatsRejected(User userStatsRejected) {
+		this.userStatsRejected = userStatsRejected;
+	}
 
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsRejectedMidYear() {
-				return userStatsRejectedMidYear;
-			}
+	public Date getDateStatsSelfAssessmentMidYear() {
+		return dateStatsSelfAssessmentMidYear;
+	}
 
-			public void setUserStatsRejectedMidYear(User userStatsRejectedMidYear) {
-				this.userStatsRejectedMidYear = userStatsRejectedMidYear;
-			}
+	public void setDateStatsSelfAssessmentMidYear(Date dateStatsSelfAssessmentMidYear) {
+		this.dateStatsSelfAssessmentMidYear = dateStatsSelfAssessmentMidYear;
+	}
 
-			public Date getDateStatsSelfAssessmentFinalYear() {
-				return dateStatsSelfAssessmentFinalYear;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsSelfAssessmentMidYear() {
+		return userStatsSelfAssessmentMidYear;
+	}
 
-			public void setDateStatsSelfAssessmentFinalYear(Date dateStatsSelfAssessmentFinalYear) {
-				this.dateStatsSelfAssessmentFinalYear = dateStatsSelfAssessmentFinalYear;
-			}
-			
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsSelfAssessmentFinalYear() {
-				return userStatsSelfAssessmentFinalYear;
-			}
+	public void setUserStatsSelfAssessmentMidYear(User userStatsSelfAssessmentMidYear) {
+		this.userStatsSelfAssessmentMidYear = userStatsSelfAssessmentMidYear;
+	}
 
-			public void setUserStatsSelfAssessmentFinalYear(User userStatsSelfAssessmentFinalYear) {
-				this.userStatsSelfAssessmentFinalYear = userStatsSelfAssessmentFinalYear;
-			}
+	public Date getDateStatsRejectedMidYear() {
+		return dateStatsRejectedMidYear;
+	}
 
-			public Date getDateStatsRejectedFinalYear() {
-				return dateStatsRejectedFinalYear;
-			}
+	public void setDateStatsRejectedMidYear(Date dateStatsRejectedMidYear) {
+		this.dateStatsRejectedMidYear = dateStatsRejectedMidYear;
+	}
 
-			public void setDateStatsRejectedFinalYear(Date dateStatsRejectedFinalYear) {
-				this.dateStatsRejectedFinalYear = dateStatsRejectedFinalYear;
-			}
-			
-			@ManyToOne(fetch = FetchType.LAZY)
-			public User getUserStatsRejectedFinalYear() {
-				return userStatsRejectedFinalYear;
-			}
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsRejectedMidYear() {
+		return userStatsRejectedMidYear;
+	}
 
-			public void setUserStatsRejectedFinalYear(User userStatsRejectedFinalYear) {
-				this.userStatsRejectedFinalYear = userStatsRejectedFinalYear;
-			}
+	public void setUserStatsRejectedMidYear(User userStatsRejectedMidYear) {
+		this.userStatsRejectedMidYear = userStatsRejectedMidYear;
+	}
+
+	public Date getDateStatsSelfAssessmentFinalYear() {
+		return dateStatsSelfAssessmentFinalYear;
+	}
+
+	public void setDateStatsSelfAssessmentFinalYear(Date dateStatsSelfAssessmentFinalYear) {
+		this.dateStatsSelfAssessmentFinalYear = dateStatsSelfAssessmentFinalYear;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsSelfAssessmentFinalYear() {
+		return userStatsSelfAssessmentFinalYear;
+	}
+
+	public void setUserStatsSelfAssessmentFinalYear(User userStatsSelfAssessmentFinalYear) {
+		this.userStatsSelfAssessmentFinalYear = userStatsSelfAssessmentFinalYear;
+	}
+
+	public Date getDateStatsRejectedFinalYear() {
+		return dateStatsRejectedFinalYear;
+	}
+
+	public void setDateStatsRejectedFinalYear(Date dateStatsRejectedFinalYear) {
+		this.dateStatsRejectedFinalYear = dateStatsRejectedFinalYear;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	public User getUserStatsRejectedFinalYear() {
+		return userStatsRejectedFinalYear;
+	}
+
+	public void setUserStatsRejectedFinalYear(User userStatsRejectedFinalYear) {
+		this.userStatsRejectedFinalYear = userStatsRejectedFinalYear;
+	}
 }
