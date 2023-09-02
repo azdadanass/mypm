@@ -962,8 +962,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean validateWeightBusinessGoals() {
 		if (getIntegerParameter("isEdit") == 0) {
 			double weightTotal = 0;
-			for (int i = 0; i < businessGoalsList.size(); i++) {
-				weightTotal = weightTotal + businessGoalsList.get(i).getGoalWeight();
+			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
+				weightTotal = weightTotal + businessGoalsListEdit.get(i).getGoalWeight();
 			}
 			if (weightTotal != 100) {
 				return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
@@ -2651,6 +2651,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				goalTitleList.remove(businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle());
 			}
+			initBankAccount();
 
 		}
 		if (getIntegerParameter("isEdit") == 1) {
@@ -2664,9 +2665,22 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				goalTitleList.remove(businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle());
 			}
+			initBankAccount();
+
 		}
 
 		// return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
+
+	}
+	
+	public void resetBusiness(BusinessGoals bg) {
+		goalTitleList.add(bg.getGoalTitle());
+
+	}
+	public void resetRemoveBusiness(BusinessGoals bg) {
+		goalTitleList.remove(bg.getGoalTitle());
+		System.out.println("Removed Title");
+		initBankAccount();
 
 	}
 }
