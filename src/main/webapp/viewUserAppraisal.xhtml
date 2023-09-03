@@ -125,7 +125,7 @@
 							</f:subview>
 
 							<f:subview id="step2" rendered="#{userAppraisalView.step==2}">
-									<h:panelGroup id="panel0">
+								<h:panelGroup id="panel0">
 									<ui:repeat var="businessgoal"
 										value="#{userAppraisalView.businessGoalsListEdit}"
 										varStatus="varStatus">
@@ -161,7 +161,6 @@
 																			<f:setPropertyActionListener
 																				target="#{userAppraisalView.bs}" value="#{bs}" />
 																			<f:param name="isEdit" value="0" />
-
 																		</p:commandLink>
 
 
@@ -215,22 +214,21 @@
 										<hr />
 										<div class="space-8" />
 									</ui:repeat>
+									<h4 class="header blue bolder smaller">
+										<span class="action-buttons center" style="margin-left: 20px">
+											<p:commandLink title="Add Business Goal"
+												action="#{userAppraisalView.initBankAccount()}"
+												oncomplete="PF('addBusinessGoalDlg').show()"
+												update=":addBusinessGoalForm" process="panel0"
+												partialSubmit="true">
+												<h:outputText value="Add New Business Goal" />
+												<i class="fa fa-plus green" />
+												<f:param name="isEdit" value="0" />
+											</p:commandLink>
+										</span>
+									</h4>
 								</h:panelGroup>
-								<h4 class="header blue bolder smaller">
-									<span class="action-buttons center" style="margin-left: 20px">
-										<p:commandLink title="Add Business Goal"
-											action="#{userAppraisalView.initBankAccount()}"
-											oncomplete="PF('addBusinessGoalDlg').show()"
-											update=":addBusinessGoalForm" process="panel0"
-											partialSubmit="true">
-											<h:outputText value="Add New Business Goal" />
-											<i class="fa fa-plus green" />
-											<f:param name="isEdit" value="0" />
 
-
-										</p:commandLink>
-									</span>
-								</h4>
 
 
 							</f:subview>
@@ -669,7 +667,7 @@
 
 								<div class="space-16" />
 								<h:panelGroup id="panel1">
-									<ui:repeat var="businessgoal"
+									<ui:repeat var="businessgoal" id="goal1"
 										value="#{userAppraisalView.businessGoalsListEdit}"
 										varStatus="varStatus">
 										<div class="row">
@@ -699,7 +697,7 @@
 
 																		</p:commandLink> <p:commandLink title="Delete BusinessGoal"
 																			action="#{userAppraisalView.removeBusinessGoal(businessgoal)}"
-																			update=":main_form_edit:step2:panel1">
+																			update=":main_form_edit:step2:panel1goal1">
 																			<i class="ace-icon fa fa-trash-o red" />
 																			<f:setPropertyActionListener
 																				target="#{userAppraisalView.bs}" value="#{bs}" />
@@ -758,13 +756,12 @@
 										<hr />
 										<div class="space-8" />
 									</ui:repeat>
-								</h:panelGroup>
-								<h4 class="header blue bolder smaller">
+									<h4 class="header blue bolder smaller">
 									<span class="action-buttons center" style="margin-left: 20px">
 										<p:commandLink title="Add Business Goal"
 											action="#{userAppraisalView.initBankAccount()}"
 											oncomplete="PF('addBusinessGoalDlg').show()"
-											update=":addBusinessGoalForm" process="panel1"
+											update=":addBusinessGoalForm" 
 											partialSubmit="true">
 											<h:outputText value="Add New Business Goal" />
 											<f:param name="isEdit" value="1" />
@@ -773,7 +770,9 @@
 										</p:commandLink>
 									</span>
 								</h4>
-
+									
+								</h:panelGroup>
+								
 							</f:subview>
 
 							<f:subview id="step3" rendered="#{userAppraisalView.step==3}">
