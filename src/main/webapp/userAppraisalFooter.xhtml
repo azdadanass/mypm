@@ -220,10 +220,6 @@
 
 
 
-
-
-
-
 	<h:form id="addBusinessGoalForm">
 		<p:dialog widgetVar="addBusinessGoalDlg" modal="true" closable="false"
 			resizable="false" showHeader="false">
@@ -240,7 +236,7 @@
 				</h4>
 			</div>
 			<div class="modal-body">
-				<p:messages id="messages" closable="true" />
+				<p:messages id="messagess" closable="true" />
 				<div class="row">
 					<div class="col-xs-12 col-sm-6">
 						<div class="form-group">
@@ -296,16 +292,16 @@
 				</p:commandButton>
 				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
 					value="Save" styleClass="btn btn-success"
-					oncomplete="PF('addBusinessGoalDlg').hide()"
+				
 					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '1'}"
-					update=":main_form_edit:step2:panel1" process="addBusinessGoalForm">
+					update="messagess,:main_form_edit:step2:panel1" process="addBusinessGoalForm">
 					<f:param name="isEdit" value="1" />
 				</p:commandButton>
 				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
 					value="Save" styleClass="btn btn-success"
-					oncomplete="PF('addBusinessGoalDlg').hide()"
+					
 					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '0'}"
-					update=":main_form:step2:panel0" process="addBusinessGoalForm">
+					update="messagess,:main_form:step2:panel0" process="addBusinessGoalForm">
 					<f:param name="isEdit" value="0" />
 				</p:commandButton>
 
