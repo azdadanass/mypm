@@ -209,7 +209,7 @@
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							action="#{userAppraisalView.approvedLMFinalYear()}"
+							onclick="PF('addCommentDlg').show()"
 							update=":main_form" title="Approve"
 							rendered="#{userAppraisalView.canApprovedLMFinalYear()}">
 							<i class="ace-icon fa fa-check bigger-230"></i>

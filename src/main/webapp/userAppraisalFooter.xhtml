@@ -137,7 +137,17 @@
 					value="Add" styleClass="btn btn-info"
 					oncomplete="PF('addCommentDlg').hide()"
 					update=":main_form:commentPanel"
-					rendered="#{(userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml')}" />
+					rendered="#{(userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml') and userAppraisalView.model.userAppraisalStatus ne 'SUBMITED_FINAL_YEAR'}" />
+				<p:commandButton
+					value="Add Approved" styleClass="btn btn-info"
+					oncomplete="PF('addCommentDlg').hide()"
+					update=":main_form:commentPanel"
+					
+					rendered="#{(userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml') and userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_FINAL_YEAR'}">
+					 <p:ajax process="@this" listener="#{userAppraisalView.addComment()}" />
+    <p:ajax process="@this" update=":main_form" listener="#{userAppraisalView.approvedLMFinalYear()}" />
+</p:commandButton>
+					
 			</div>
 		</p:dialog>
 	</h:form>
@@ -279,10 +289,10 @@
 			<div class="modal-footer">
 				<p:commandButton onclick="PF('addBusinessGoalDlg').hide()"
 					value="Hide" styleClass="btn btn-warning" partialSubmit="true"
-					process="@this" >
+					process="@this">
 					<p:ajax
-					listener="#{userAppraisalView.resetRemoveBusiness(userAppraisalView.bs)}" />
-					</p:commandButton> 
+						listener="#{userAppraisalView.resetRemoveBusiness(userAppraisalView.bs)}" />
+				</p:commandButton>
 				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
 					value="Save" styleClass="btn btn-success"
 					oncomplete="PF('addBusinessGoalDlg').hide()"

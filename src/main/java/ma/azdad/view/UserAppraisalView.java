@@ -938,8 +938,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void removeBusinessGoal(BusinessGoals bg) throws DataIntegrityViolationException, Exception {
 
 		if (getIntegerParameter("isEdit") == 1) {
-			
-			System.out.println("lsit goal title before :"+goalTitleList);
+
+			System.out.println("lsit goal title before :" + goalTitleList);
 			if (!goalTitleList.contains(bg.getGoalTitle()))
 				goalTitleList.add(bg.getGoalTitle());
 
@@ -951,10 +951,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (!goalTitleList.contains(bg.getGoalTitle()))
 				goalTitleList.add(bg.getGoalTitle());
 
-			businessGoalsList.remove(bg);
+			businessGoalsService.delete(bg);
+			businessGoalsListEdit.remove(bg);
 			goaltitlecount--;
 		}
-		System.out.println("lsit goal title after :"+goalTitleList);
+		System.out.println("lsit goal title after :" + goalTitleList);
 
 	}
 
@@ -2297,9 +2298,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
 
 				userAppraisalComment.setDate(new Date());
-				userAppraisalComment.setTitle(
-						(model.getUserAppraisalStatus().getValue().equals(UserAppraisalStatus.FYR_SELF_ASSESSMENT.getValue()))
-								? "User Appraisal FYR Creation"
+				userAppraisalComment.setTitle((model.getUserAppraisalStatus().getValue()
+						.equals(UserAppraisalStatus.FYR_SELF_ASSESSMENT.getValue())) ? "User Appraisal FYR Creation"
 								: "User Appraisal FYR Edition");
 				userAppraisalComment.setParent(model);
 				userAppraisalComment.setUser(sessionView.getUser());
@@ -2592,9 +2592,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
 
 				userAppraisalComment.setDate(new Date());
-				userAppraisalComment.setTitle(
-						(model.getUserAppraisalStatus().getValue().equals(UserAppraisalStatus.MYR_SELF_ASSESSMENT.getValue()))
-								? "User Appraisal MYR Creation"
+				userAppraisalComment.setTitle((model.getUserAppraisalStatus().getValue()
+						.equals(UserAppraisalStatus.MYR_SELF_ASSESSMENT.getValue())) ? "User Appraisal MYR Creation"
 								: "User Appraisal MYR Edition");
 				userAppraisalComment.setParent(model);
 				userAppraisalComment.setUser(sessionView.getUser());
@@ -2641,33 +2640,35 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		bs = new BusinessGoals();
 	}
 
-	List<BusinessGoals> b1=new ArrayList<>();
+	List<BusinessGoals> b1 = new ArrayList<>();
+
 	public void saveBusinessGoals1() {
 
 		if (getIntegerParameter("isEdit") == 0) {
-		    bs.setSections(findSectionId());
-		    System.out.println("title : " + bs.getGoalTitle());
-		    System.out.println("desc : " + bs.getGoalDetails());
-		    System.out.println("weight : " + bs.getGoalWeight());
-		    System.out.println("section : " + bs.getSections());
-		    businessGoalsService.save(bs);
-		    if (goaltitlecount >= 1) {
+			bs.setSections(findSectionId());
+			System.out.println("title : " + bs.getGoalTitle());
+			System.out.println("desc : " + bs.getGoalDetails());
+			System.out.println("weight : " + bs.getGoalWeight());
+			System.out.println("section : " + bs.getSections());
+			businessGoalsService.save(bs);
+			if (goaltitlecount >= 1) {
 				goalTitleList.remove(businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle());
 
-	        }
+			}
 
-		    int count = 0;
-		    for (BusinessGoals b : b1) {
-		        if (b.equals(bs))
-		            count++;
-		    }
-		    
-		    if (count == 0) {
-		        b1.add(bs);
-		       
-		    }
-		    
-		    initBankAccount();
+			int count = 0;
+			for (BusinessGoals b : businessGoalsListEdit) {
+				if (b.equals(bs))
+					count++;
+			}
+
+			if (count == 0) {
+				businessGoalsListEdit.add(bs);
+
+			}
+			resetRemoveBusiness(bs);
+
+			initBankAccount();
 		}
 
 		if (getIntegerParameter("isEdit") == 1) {
@@ -2681,19 +2682,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				goalTitleList.remove(businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle());
 			}
-			 int count = 0;
-			    for (BusinessGoals b : businessGoalsListEdit) {
-			        if (b.equals(bs))
-			            count++;
-			    }
-			    
-			    if (count == 0) {
-			    	businessGoalsListEdit.add(bs);
-			       
-			    }
-				resetRemoveBusiness(bs);
+			int count = 0;
+			for (BusinessGoals b : businessGoalsListEdit) {
+				if (b.equals(bs))
+					count++;
+			}
 
-			
+			if (count == 0) {
+				businessGoalsListEdit.add(bs);
+
+			}
+			resetRemoveBusiness(bs);
+
 			initBankAccount();
 
 		}
@@ -2701,13 +2701,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		// return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 
 	}
-	
+
 	public void resetBusiness(BusinessGoals bg) {
 		goalTitleList.add(bg.getGoalTitle());
 
 	}
+
 	public void resetRemoveBusiness(BusinessGoals bg) {
-		if(bg!=null) {
+		if (bg != null) {
 			goalTitleList.remove(bg.getGoalTitle());
 		}
 		System.out.println("Removed Title");
