@@ -667,7 +667,7 @@
 
 								<div class="space-16" />
 								<h:panelGroup id="panel1">
-									<ui:repeat var="businessgoal" id="goal1"
+									<ui:repeat var="businessgoal"
 										value="#{userAppraisalView.businessGoalsListEdit}"
 										varStatus="varStatus">
 										<div class="row">
@@ -697,7 +697,7 @@
 
 																		</p:commandLink> <p:commandLink title="Delete BusinessGoal"
 																			action="#{userAppraisalView.removeBusinessGoal(businessgoal)}"
-																			update=":main_form_edit:step2:panel1goal1">
+																			update=":main_form_edit:step2:panel1">
 																			<i class="ace-icon fa fa-trash-o red" />
 																			<f:setPropertyActionListener
 																				target="#{userAppraisalView.bs}" value="#{bs}" />
