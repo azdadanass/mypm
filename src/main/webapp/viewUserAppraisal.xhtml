@@ -264,7 +264,7 @@
 															<h:outputText value="Bank Name" />
 														</div>
 														<div class="profile-info-value">
-															<h:outputText value="#{bankAccount.name}"
+															<h:outputText value="#{bankYe}"
 																styleClass="orange" />
 															&nbsp;
 														</div>
@@ -735,83 +735,8 @@
 							</f:subview>
 
 							<f:subview id="step2" rendered="#{userAppraisalView.step==2}">
-								<h4 class="header blue bolder smaller">
-									<h:outputText value="Business Goals List" />
-								</h4>
-								<div class="row">
-									<div class="col-sm-offset-1 col-sm-10">
-										<div class="table-header col-sm-12 col-xs-12">
-											<i class="fa fa-list" />
-											<h:outputText value="business Goals" />
-										</div>
-										<div class="col-sm-12 col-xs-12 aa-datatable-container">
-											<p:dataTable id="businessGoalsListEdit"
-												value="#{userAppraisalView.businessGoalsListEdit}"
-												var="item" rows="20"
-												styleClass="table table-striped table-hover center"
-												paginatorAlwaysVisible="false" paginator="true"
-												paginatorPosition="bottom"
-												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-												rowIndexVar="index">
-												<p:column headerText="Goal Title"
-													rendered="#{item.goalTitle != null}">
-													<h:outputText value="#{item.goalTitle}"
-														styleClass="bolder blue" />
-												</p:column>
-												<p:column headerText="Goal Title"
-													rendered="#{item.goalTitle == null}">
-													<p:selectOneMenu value="#{item.goalTitle}">
-														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
-													</p:selectOneMenu>
-												</p:column>
-
-												<p:column headerText="Goal Details">
-													<p:inputText value="#{item.goalDetails}" />
-												</p:column>
-												<p:column headerText="Goal weight">
-													<h:inputText value="#{item.goalWeight}"
-														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
-
-												<p:column headerText="Actions" width="150"
-													style="text-align : center;">
-													<div class="action-buttons center">
-														<p:commandLink
-															action="#{userAppraisalView.removeBusinessGoal(item)}"
-															update="businessGoalsListEdit"
-															process="businessGoalsListEdit" title="delete"
-															rendered="true" styleClass="aa-tooltip">
-															<i class="ace-icon fa fa-trash-o bigger-130 red" />
-															<f:param name="isEdit" value="1" />
-
-														</p:commandLink>
-
-													</div>
-												</p:column>
-												<f:facet name="footer">
-													<div class="action-buttons center">
-														<p:commandLink title="Add New Item"
-															action="#{userAppraisalView.addBusiness()}"
-															update="businessGoalsListEdit"
-															process="businessGoalsListEdit"
-															rendered="#{userAppraisalView.canAddBusiness()}">
-															<i class="fa fa-plus green" />
-															<f:param name="isEdit" value="1" />
-														</p:commandLink>
-													</div>
-												</f:facet>
-											</p:dataTable>
-										</div>
-									</div>
-								</div>
+							
 								<div class="space-16" />
-
-
-
-
-
 								<h:panelGroup id="panel1">
 									<ui:repeat var="businessgoal"
 										value="#{userAppraisalView.businessGoalsListEdit}"
