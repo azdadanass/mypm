@@ -938,6 +938,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void removeBusinessGoal(BusinessGoals bg) throws DataIntegrityViolationException, Exception {
 
 		if (getIntegerParameter("isEdit") == 1) {
+			
+			System.out.println("lsit goal title before :"+goalTitleList);
 			if (!goalTitleList.contains(bg.getGoalTitle()))
 				goalTitleList.add(bg.getGoalTitle());
 
@@ -952,6 +954,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			businessGoalsList.remove(bg);
 			goaltitlecount--;
 		}
+		System.out.println("lsit goal title after :"+goalTitleList);
 
 	}
 
