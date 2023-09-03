@@ -407,16 +407,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.MYR_EDITED));
 				break;
 			case 4:
-				initLists(service.findUserappraisalbyStats(sessionView.getUsername(),
-						UserAppraisalStatus.SUBMITED_MID_YEAR));
+				initLists(service.findUserappraisalbyStatsApproved(sessionView.getUsername(),
+						UserAppraisalStatus.SUBMITED_MID_YEAR,UserAppraisalStatus.SUBMITED_FINAL_YEAR));
 				break;
 			case 5:
 				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.FYR_EDITED));
 				break;
-			case 6:
-				initLists(service.findUserappraisalbyStats(sessionView.getUsername(),
-						UserAppraisalStatus.SUBMITED_FINAL_YEAR));
-				break;
+			
 			default:
 				break;
 			}
@@ -1172,7 +1169,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public Boolean canApprovedLM() {
 		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
-				&& sessionView.getIsMyPmLineManager();
+				&& sessionView.getIsMyPmLineManager() && (model.getUserStatsApprovedLM().equals(sessionView.getUser()));
 	}
 
 	public void approvedLM() {
@@ -1192,7 +1189,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public Boolean canRejectedLM() {
 		return UserAppraisalStatus.SUBMITED.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
-				&& sessionView.getIsMyPmLineManager();
+				&& sessionView.getIsMyPmLineManager() && (model.getUserStatsApprovedLM().equals(sessionView.getUser()));
 	}
 
 	public void rejectedLM() {
@@ -1213,7 +1210,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean canApproved() {
 		System.out.println(sessionView.getIsMyPmHr());
 		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
-				&& sessionView.getIsMyPmHr();
+				&& sessionView.getIsMyPmHr() && (model.getUserStatsApproved().equals(sessionView.getUser()));
 	}
 
 	public void approved() {
@@ -1233,7 +1230,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public Boolean canRejected() {
 		return UserAppraisalStatus.APPROVED_LM.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
-				&& sessionView.getIsMyPmHr();
+				&& sessionView.getIsMyPmHr() && (model.getUserStatsApproved().equals(sessionView.getUser()));
 	}
 
 	public void rejected() {
@@ -1268,7 +1265,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setDateStatsSelfAssessmentMidYear(new Date());
 		model.setUserAppraisalStatus(UserAppraisalStatus.MYR_SELF_ASSESSMENT);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				sessionView.getUser() + " has Edited " + model.getEmploy().getFullName() + " Appraisal"));
+				sessionView.getUser() + " has Change " + model.getEmploy().getFullName() + " to MID YEAR Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -1316,7 +1313,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean canApprovedLMMidYear() {
 		return UserAppraisalStatus.SUBMITED_MID_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
 				&& sessionView.getIsMyPmLineManager()
-				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW);
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW)
+				&& (model.getUserStatsApprovedLMMidYear().equals(sessionView.getUser()));
 	}
 
 	public void approvedLMMidYear() {
@@ -1327,7 +1325,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsApprovedLMMidYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.MYR_APPROVED_LM);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				sessionView.getUser() + " has Approved " + model.getEmploy().getFullName() + " Appraisal"));
+				sessionView.getUser() + " has Approved " + model.getEmploy().getFullName() + " MID YEAR Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -1337,7 +1335,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean canRejectedLMMid() {
 		return UserAppraisalStatus.SUBMITED_MID_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
 				&& sessionView.getIsMyPmLineManager()
-				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW);
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW)
+				&& (model.getUserStatsApprovedLMMidYear().equals(sessionView.getUser()));
 	}
 
 	public void rejectedLMMid() {
@@ -1371,7 +1370,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setDateStatsSelfAssessmentFinalYear(new Date());
 		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_SELF_ASSESSMENT);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				sessionView.getUser() + " has Edited " + model.getEmploy().getFullName() + " Appraisal"));
+				sessionView.getUser() + " has change " + model.getEmploy().getFullName() + " to FINAL YEAR Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -1421,7 +1420,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean canApprovedLMFinalYear() {
 		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
 				&& sessionView.getIsMyPmLineManager()
-				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW)
+				&& (model.getUserStatsApprovedLMFinalYear().equals(sessionView.getUser()));
 	}
 
 	public void approvedLMFinalYear() {
@@ -1432,7 +1432,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		model.setUserStatsApprovedLMFinalYear(sessionView.getUser());
 		model.setUserAppraisalStatus(UserAppraisalStatus.FYR_APPROVED_LM);
 		model.addHistory(new UserAppraisalHistory(model.getUserAppraisalStatus().getValue(), sessionView.getUser(),
-				sessionView.getUser() + " has Approved " + model.getEmploy().getFullName() + " Appraisal"));
+				sessionView.getUser() + " has Approved " + model.getEmploy().getFullName() + " FINAL YEAR Appraisal"));
 
 		service.save(model);
 		model = service.findOne(model.getId());
@@ -1442,7 +1442,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean canRejectedLMFinal() {
 		return UserAppraisalStatus.SUBMITED_FINAL_YEAR.equals(model.getUserAppraisalStatus()) && sessionView.getIsMyPm()
 				&& sessionView.getIsMyPmLineManager()
-				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
+				&& model.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW)
+				&& (model.getUserStatsApprovedLMFinalYear().equals(sessionView.getUser()));
 	}
 
 	public void rejectedLMFinal() {
@@ -1961,7 +1962,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (!validateWeightBusinessGoals()) {
 				return null;
 			}
-			saveBusinessGoals();
+			for (BusinessGoals b1 : businessGoalsListEdit) {
+				businessGoalsService.save(b1);
+
+			}
+			// saveBusinessGoals();
 			// initSuppGoals();
 
 			editSupplementaryGoals();
@@ -2024,12 +2029,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (step == 2) {
 
 				initSuppGoals();
-				// removeBgFromDB();
-				// removeSections();
+				removeBgFromDB();
+				removeSections();
 
 			}
 			if (step == 3) {
-				// removeBgFromDB();
+				removeBgFromDB();
 				removeSuppGoal();
 			}
 
@@ -2577,6 +2582,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			initMidSupplementaryGoal();
 			if (!validateWeightMidBusinessGoals())
 				return null;
+
 			stepMid++;
 			saveMidBusinessGoals();
 
@@ -2642,7 +2648,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	List<BusinessGoals> b1 = new ArrayList<>();
 
-	public void saveBusinessGoals1() {
+	public String saveBusinessGoals1() {
 
 		if (getIntegerParameter("isEdit") == 0) {
 			bs.setSections(findSectionId());
@@ -2650,11 +2656,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			System.out.println("desc : " + bs.getGoalDetails());
 			System.out.println("weight : " + bs.getGoalWeight());
 			System.out.println("section : " + bs.getSections());
-			businessGoalsService.save(bs);
+			// businessGoalsService.save(bs);
+		
 			if (goaltitlecount >= 1) {
 				goalTitleList.remove(businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle());
 
 			}
+			
+
 
 			int count = 0;
 			for (BusinessGoals b : businessGoalsListEdit) {
@@ -2667,7 +2676,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 			}
 			resetRemoveBusiness(bs);
-
 			initBankAccount();
 		}
 
@@ -2697,6 +2705,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			initBankAccount();
 
 		}
+		return null;
 
 		// return addParameters(viewPage, "faces-redirect=true", "id=" + model.getId());
 
@@ -2715,4 +2724,21 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		initBankAccount();
 
 	}
-}
+	
+	
+	public Boolean validateWeightBusinessGoals1(BusinessGoals b2) {
+		if (getIntegerParameter("isEdit") == 0) {
+			if(b2.getGoalWeight()<0 || b2.getGoalWeight()>100) {
+				return FacesContextMessages.ErrorMessages("Weight should be between 0 and 100");
+
+			}
+		}
+		if (getIntegerParameter("isEdit") == 1) {
+			if(b2.getGoalWeight()<0 || b2.getGoalWeight()>100) {
+				return FacesContextMessages.ErrorMessages("Weight should be between 0 and 100");
+
+			}
+		}
+
+		return true;
+	}}

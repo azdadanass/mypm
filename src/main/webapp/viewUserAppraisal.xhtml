@@ -174,19 +174,18 @@
 
 										<div class="space-4" />
 										<div class="row">
-											<div class="col-xs-12 col-sm-6">
+											<div class="col-xs-12 col-sm-12">
 												<div class="profile-user-info profile-user-info-striped">
-													<div class="profile-info-row">
+													<div class="profile-info-row ">
 														<div class="profile-info-name">
 															<h:outputText value="Goal Title" />
-														</div>
+																												</div>
+														
 														<div class="profile-info-value">
 															<h:outputText value="#{businessgoal.goalTitle}"
 																styleClass="orange" />
 															&nbsp;
 														</div>
-													</div>
-													<div class="profile-info-row">
 														<div class="profile-info-name">
 															<h:outputText value="Goal Weight" />
 														</div>
@@ -198,19 +197,28 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-xs-12 col-sm-6">
-												<div class="profile-info-row">
-													<div class="profile-info-name">
-														<h:outputText value="Description" />
-													</div>
-													<div class="profile-info-value">
-														<h:outputText value="#{businessgoal.goalDetails}"
-															styleClass="light-blue" />
-														&nbsp;
+
+										</div>
+										<div class="row">
+
+											<div class="col-xs-12 col-sm-12">
+												<div class="profile-user-info profile-user-info-striped">
+
+													<div class="profile-info-row">
+														<div class="profile-info-name">
+															<h:outputText value="Description" />
+														</div>
+														<div class="profile-info-value">
+															      <h:inputTextarea value="#{businessgoal.goalDetails}" styleClass="light-blue" rows="5" cols="143"  readonly="true" />
+															&nbsp;
+														</div>
 													</div>
 												</div>
 											</div>
+
 										</div>
+
+
 										<hr />
 										<div class="space-8" />
 									</ui:repeat>
@@ -757,22 +765,21 @@
 										<div class="space-8" />
 									</ui:repeat>
 									<h4 class="header blue bolder smaller">
-									<span class="action-buttons center" style="margin-left: 20px">
-										<p:commandLink title="Add Business Goal"
-											action="#{userAppraisalView.initBankAccount()}"
-											oncomplete="PF('addBusinessGoalDlg').show()"
-											update=":addBusinessGoalForm" 
-											partialSubmit="true">
-											<h:outputText value="Add New Business Goal" />
-											<f:param name="isEdit" value="1" />
+										<span class="action-buttons center" style="margin-left: 20px">
+											<p:commandLink title="Add Business Goal"
+												action="#{userAppraisalView.initBankAccount()}"
+												oncomplete="PF('addBusinessGoalDlg').show()"
+												update=":addBusinessGoalForm" partialSubmit="true">
+												<h:outputText value="Add New Business Goal" />
+												<f:param name="isEdit" value="1" />
 
-											<i class="fa fa-plus green" />
-										</p:commandLink>
-									</span>
-								</h4>
-									
+												<i class="fa fa-plus green" />
+											</p:commandLink>
+										</span>
+									</h4>
+
 								</h:panelGroup>
-								
+
 							</f:subview>
 
 							<f:subview id="step3" rendered="#{userAppraisalView.step==3}">
