@@ -2641,19 +2641,30 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void saveBusinessGoals1() {
 
 		if (getIntegerParameter("isEdit") == 0) {
-			bs.setSections(findSectionId());
-			System.out.println("title : " + bs.getGoalTitle());
-			System.out.println("desc : " + bs.getGoalDetails());
-			System.out.println("weight : " + bs.getGoalWeight());
-			System.out.println("section : " + bs.getSections());
-			businessGoalsService.save(bs);
-			if (goaltitlecount >= 1) {
-
-				goalTitleList.remove(businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle());
-			}
-			initBankAccount();
-
+		    bs.setSections(findSectionId());
+		    System.out.println("title : " + bs.getGoalTitle());
+		    System.out.println("desc : " + bs.getGoalDetails());
+		    System.out.println("weight : " + bs.getGoalWeight());
+		    System.out.println("section : " + bs.getSections());
+		    businessGoalsService.save(bs);
+		    if (goaltitlecount >= 1) {
+	            String lastAddedTitle = businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle();
+	            goalTitleList.remove(lastAddedTitle);
+	        }
+		    int count = 0;
+		    for (BusinessGoals b : businessGoalsListEdit) {
+		        if (b.equals(bs))
+		            count++;
+		    }
+		    
+		    if (count == 0) {
+		        businessGoalsListEdit.add(bs);
+		       
+		    }
+		    
+		    initBankAccount();
 		}
+
 		if (getIntegerParameter("isEdit") == 1) {
 			bs.setSections(findSectionId());
 			System.out.println("title : " + bs.getGoalTitle());
@@ -2665,6 +2676,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				goalTitleList.remove(businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle());
 			}
+			int count=0;
+			for (BusinessGoals b : businessGoalsListEdit) {
+				if(b.equals(bs))
+					count++;
+			}
+			
+			if(count==0) {
+				businessGoalsListEdit.add(bs);
+				
+
+			}
+			
 			initBankAccount();
 
 		}
@@ -2678,7 +2701,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	}
 	public void resetRemoveBusiness(BusinessGoals bg) {
-		goalTitleList.remove(bg.getGoalTitle());
+		if(bg!=null) {
+			goalTitleList.remove(bg.getGoalTitle());
+
+		}
 		System.out.println("Removed Title");
 		initBankAccount();
 

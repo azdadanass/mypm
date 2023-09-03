@@ -287,14 +287,14 @@
 					value="Save" styleClass="btn btn-success"
 					oncomplete="PF('addBusinessGoalDlg').hide()"
 					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '1'}"
-					update=":main_form_edit:step2:panel1">
+					update=":main_form_edit:step2:panel1" process="addBusinessGoalForm">
 					<f:param name="isEdit" value="1" />
 				</p:commandButton>
 				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
 					value="Save" styleClass="btn btn-success"
 					oncomplete="PF('addBusinessGoalDlg').hide()"
 					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '0'}"
-					update=":main_form:step2:panel0">
+					update=":main_form:step2:panel0" process="addBusinessGoalForm">
 					<f:param name="isEdit" value="0" />
 				</p:commandButton>
 
