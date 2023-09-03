@@ -125,86 +125,9 @@
 							</f:subview>
 
 							<f:subview id="step2" rendered="#{userAppraisalView.step==2}">
-								<h4 class="header blue bolder smaller">
-									<h:outputText value="Business Goals List" />
-								</h4>
-								<div class="row">
-									<div class="col-sm-offset-1 col-sm-10">
-										<div class="table-header col-sm-12 col-xs-12">
-											<i class="fa fa-list" />
-											<h:outputText value="business Goals" />
-										</div>
-										<div class="col-sm-12 col-xs-12 aa-datatable-container">
-											<p:dataTable id="businessGoalsList"
-												value="#{userAppraisalView.businessGoalsList}" var="item"
-												rows="20"
-												styleClass="table table-striped table-hover center"
-												paginatorAlwaysVisible="false" paginator="true"
-												paginatorPosition="bottom"
-												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-												rowIndexVar="index">
-												<p:column headerText="ID">
-													<h:outputText value="#{index+1}" styleClass="bolder blue" />
-												</p:column>
-												<p:column headerText="Goal Title"
-													rendered="#{item.goalTitle != null}">
-													<h:outputText value="#{item.goalTitle}"
-														styleClass="bolder blue" />
-												</p:column>
-												<p:column headerText="Goal Title"
-													rendered="#{item.goalTitle == null}">
-													<p:selectOneMenu value="#{item.goalTitle}">
-														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
-													</p:selectOneMenu>
-												</p:column>
-
-												<p:column headerText="Goal Details">
-													<p:inputText value="#{item.goalDetails}" />
-												</p:column>
-												<p:column headerText="Goal weight">
-													<h:inputText value="#{item.goalWeight}"
-														converter="javax.faces.Integer" min="0" max="100"
-														style="width: 40px" />
-													<h:outputText value="%" styleClass="bolder blue" />
-												</p:column>
-
-												<p:column headerText="Actions" width="150"
-													style="text-align : center;">
-													<div class="action-buttons center">
-														<p:commandLink
-															action="#{userAppraisalView.removeBusinessGoal(item)}"
-															update="businessGoalsList" process="businessGoalsList"
-															title="delete" rendered="true" styleClass="aa-tooltip">
-															<i class="ace-icon fa fa-trash-o bigger-130 red" />
-															<f:param name="isEdit" value="0" />
-
-														</p:commandLink>
-
-													</div>
-												</p:column>
-												<f:facet name="footer">
-													<div class="action-buttons center">
-														<p:commandLink title="Add New Item"
-															action="#{userAppraisalView.addBusiness()}"
-															update="businessGoalsList" process="businessGoalsList"
-															rendered="#{userAppraisalView.canAddBusiness()}">
-															<f:param name="isEdit" value="0" />
-
-															<i class="fa fa-plus green" />
-														</p:commandLink>
-													</div>
-												</f:facet>
-											</p:dataTable>
-										</div>
-									</div>
-								</div>
-								<div class="space-16" />
-
-
-
-								<h:panelGroup id="panel0">
-									<ui:repeat var="item"
-										value="#{userAppraisalView.businessGoalsList}"
+									<h:panelGroup id="panel0">
+									<ui:repeat var="businessgoal"
+										value="#{userAppraisalView.businessGoalsListEdit}"
 										varStatus="varStatus">
 										<div class="row">
 											<div class="col-sm-12">
@@ -212,41 +135,36 @@
 													<div class="widget-header widget-header-large">
 														<table width="100%" style="margin: 10px">
 															<tr>
-																<td width="15%"><p:commandLink
-																		disabled="#{!companyView.canUploadBankAccountPhoto()}"
-																		styleClass="pull-left">
-																		<p:graphicImage value="#{fileUploadView.stream}"
-																			styleClass="editable editable-click editable-empty"
-																			height="50" width="200"
-																			onclick="PF('uploadBankAccountPhotoDlg').show()">
-																			<f:param name="fileName" value="#{bankAccount.logo}" />
-																		</p:graphicImage>
-																		<f:setPropertyActionListener value="#{bankAccount}"
-																			target="#{companyView.bankAccount}" />
-																	</p:commandLink></td>
 																<td width="75%">
 																	<h4>
 																		<h:outputText
-																			value="BankAccount N° #{varStatus.index}"
+																			value="BusinessGoal N° #{varStatus.index}"
 																			styleClass="bolder blue" />
 																	</h4>
 																</td>
 																<td><span class="action-buttons center"
 																	style="margin-left: 20px"> <p:commandLink
-																			title="Edit BankAccount"
-																			oncomplete="PF('addBankAccountDlg').show()"
-																			update="addBankAccountForm">
+																			action="#{userAppraisalView.resetBusiness(businessgoal)}"
+																			title="Edit BusinessGoal"
+																			oncomplete="PF('addBusinessGoalDlg').show()"
+																			update="addBusinessGoalForm">
 																			<i class="ace-icon fa fa-edit green" />
 																			<f:setPropertyActionListener
-																				target="#{companyView.bankAccount}"
-																				value="#{bankAccount}" />
-																		</p:commandLink> <p:commandLink title="Delete BankAccount"
-																			oncomplete="PF('deleteBankAccountDlg').show()">
+																				target="#{userAppraisalView.bs}"
+																				value="#{businessgoal}" />
+																			<f:param name="isEdit" value="0" />
+
+																		</p:commandLink> <p:commandLink title="Delete BusinessGoal"
+																			action="#{userAppraisalView.removeBusinessGoal(businessgoal)}"
+																			update=":main_form:step2:panel0">
 																			<i class="ace-icon fa fa-trash-o red" />
 																			<f:setPropertyActionListener
-																				target="#{companyView.bankAccount}"
-																				value="#{bankAccount}" />
+																				target="#{userAppraisalView.bs}" value="#{bs}" />
+																			<f:param name="isEdit" value="0" />
+
 																		</p:commandLink>
+
+
 																</span></td>
 															</tr>
 														</table>
@@ -261,28 +179,38 @@
 												<div class="profile-user-info profile-user-info-striped">
 													<div class="profile-info-row">
 														<div class="profile-info-name">
-															<h:outputText value="Bank Name" />
+															<h:outputText value="Goal Title" />
 														</div>
 														<div class="profile-info-value">
-															<h:outputText value="#{bankYe}"
+															<h:outputText value="#{businessgoal.goalTitle}"
 																styleClass="orange" />
 															&nbsp;
 														</div>
 													</div>
 													<div class="profile-info-row">
 														<div class="profile-info-name">
-															<h:outputText value="RIB" />
+															<h:outputText value="Goal Weight" />
 														</div>
 														<div class="profile-info-value">
-															<h:outputText value="#{bankAccount.rib}"
-																styleClass="light-blue" />
+															<h:outputText value="#{businessgoal.goalWeight}"
+																styleClass="orange" />
 															&nbsp;
 														</div>
 													</div>
-
 												</div>
 											</div>
-
+											<div class="col-xs-12 col-sm-6">
+												<div class="profile-info-row">
+													<div class="profile-info-name">
+														<h:outputText value="Description" />
+													</div>
+													<div class="profile-info-value">
+														<h:outputText value="#{businessgoal.goalDetails}"
+															styleClass="light-blue" />
+														&nbsp;
+													</div>
+												</div>
+											</div>
 										</div>
 										<hr />
 										<div class="space-8" />
@@ -293,10 +221,13 @@
 										<p:commandLink title="Add Business Goal"
 											action="#{userAppraisalView.initBankAccount()}"
 											oncomplete="PF('addBusinessGoalDlg').show()"
-											update=":addBusinessGoalForm" process="panel0" partialSubmit="true">
+											update=":addBusinessGoalForm" process="panel0"
+											partialSubmit="true">
 											<h:outputText value="Add New Business Goal" />
 											<i class="fa fa-plus green" />
 											<f:param name="isEdit" value="0" />
+
+
 										</p:commandLink>
 									</span>
 								</h4>
@@ -735,7 +666,7 @@
 							</f:subview>
 
 							<f:subview id="step2" rendered="#{userAppraisalView.step==2}">
-							
+
 								<div class="space-16" />
 								<h:panelGroup id="panel1">
 									<ui:repeat var="businessgoal"
@@ -756,12 +687,16 @@
 																</td>
 																<td><span class="action-buttons center"
 																	style="margin-left: 20px"> <p:commandLink
+																			action="#{userAppraisalView.resetBusiness(businessgoal)}"
 																			title="Edit BusinessGoal"
 																			oncomplete="PF('addBusinessGoalDlg').show()"
 																			update="addBusinessGoalForm">
 																			<i class="ace-icon fa fa-edit green" />
 																			<f:setPropertyActionListener
-																				target="#{businessgoal}" value="#{businessgoal}" />
+																				target="#{userAppraisalView.bs}"
+																				value="#{businessgoal}" />
+																			<f:param name="isEdit" value="1" />
+
 																		</p:commandLink> <p:commandLink title="Delete BusinessGoal"
 																			action="#{userAppraisalView.removeBusinessGoal(businessgoal)}"
 																			update=":main_form_edit:step2:panel1">
