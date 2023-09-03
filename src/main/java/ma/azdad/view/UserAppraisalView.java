@@ -2638,6 +2638,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		bs = new BusinessGoals();
 	}
 
+	List<BusinessGoals> b1=new ArrayList<>();
 	public void saveBusinessGoals1() {
 
 		if (getIntegerParameter("isEdit") == 0) {
@@ -2648,17 +2649,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		    System.out.println("section : " + bs.getSections());
 		    businessGoalsService.save(bs);
 		    if (goaltitlecount >= 1) {
-	            String lastAddedTitle = businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle();
-	            goalTitleList.remove(lastAddedTitle);
+				goalTitleList.remove(businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle());
+
 	        }
+
 		    int count = 0;
-		    for (BusinessGoals b : businessGoalsListEdit) {
+		    for (BusinessGoals b : b1) {
 		        if (b.equals(bs))
 		            count++;
 		    }
 		    
 		    if (count == 0) {
-		        businessGoalsListEdit.add(bs);
+		        b1.add(bs);
 		       
 		    }
 		    
@@ -2676,17 +2678,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 				goalTitleList.remove(businessGoalsListEdit.get(businessGoalsListEdit.size() - 1).getGoalTitle());
 			}
-			int count=0;
-			for (BusinessGoals b : businessGoalsListEdit) {
-				if(b.equals(bs))
-					count++;
-			}
-			
-			if(count==0) {
-				businessGoalsListEdit.add(bs);
-				
+			 int count = 0;
+			    for (BusinessGoals b : businessGoalsListEdit) {
+			        if (b.equals(bs))
+			            count++;
+			    }
+			    
+			    if (count == 0) {
+			    	businessGoalsListEdit.add(bs);
+			       
+			    }
+				resetRemoveBusiness(bs);
 
-			}
 			
 			initBankAccount();
 
@@ -2703,7 +2706,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void resetRemoveBusiness(BusinessGoals bg) {
 		if(bg!=null) {
 			goalTitleList.remove(bg.getGoalTitle());
-
 		}
 		System.out.println("Removed Title");
 		initBankAccount();
