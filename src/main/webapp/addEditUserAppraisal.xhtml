@@ -110,10 +110,6 @@
 							<f:param name="isEdit" value="1" />
 						</h:outputLink>
 
-
-
-
-
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
 							action="#{userAppraisalView.submited()}" update=":main_form"
@@ -205,11 +201,11 @@
 							update=":main_form" title="Submit"
 							rendered="#{userAppraisalView.canSubmitedFinalYear() and userAppraisalView.model.employ eq sessionView.getUser()}">
 							<i class="ace-icon fa fa-save bigger-230"></i>
-							<h:outputText value="Submit fn" />
+							<h:outputText value="Submit" />
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							onclick="PF('addCommentDlg').show()"
+							onclick="PF('addCommentApprovedDlg').show()"
 							update=":main_form" title="Approve"
 							rendered="#{userAppraisalView.canApprovedLMFinalYear()}">
 							<i class="ace-icon fa fa-check bigger-230"></i>

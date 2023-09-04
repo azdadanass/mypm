@@ -930,17 +930,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return true;
 	}
 
-	public Boolean validateWeightSuppGoalsNotNull() {
-		if (getIntegerParameter("isEdit") == 0) {
-
-		}
-		if (getIntegerParameter("isEdit") == 1) {
-
-			return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
-
-		}
-		return true;
-	}
 
 	public Boolean validateWeightSuppGoals() {
 		if (getIntegerParameter("isEdit") == 0) {
@@ -961,7 +950,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			}
 			for (int i = 0; i < suppl4.size(); i++) {
 				weightTotal4 = weightTotal4 + suppl4.get(i).getWeight();
-
 			}
 			for (int i = 0; i < suppl5.size(); i++) {
 				weightTotal5 = weightTotal5 + suppl5.get(i).getWeight();
@@ -1893,6 +1881,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				model.addComment(userAppraisalComment);
 				model = service.saveAndRefresh(model);
 
+				
 			}
 			edited();
 			step++;
@@ -1922,6 +1911,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			}
 			if (step == 3) {
 				removeBgFromDB();
+				removeSuppGoal();
+			}
+			if (step == 4) {
 				removeSuppGoal();
 			}
 			step--;
@@ -2397,7 +2389,36 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			}
 		}
 	}
-
+	
+	
+	
+	/*
+	 * public void addApprovedComment () {
+	 * 
+	 * System.out.println("inside approved comment" );
+	 * 
+	 * System.out.println("inside get content" + userAppraisalComment.getContent());
+	 * userAppraisalComment.setDate(new Date());
+	 * userAppraisalComment.setTitle(userAppraisalComment.getTitle());
+	 * userAppraisalComment.setParent(model);
+	 * userAppraisalComment.setUser(sessionView.getUser());
+	 * model.addComment(userAppraisalComment); model =
+	 * service.saveAndRefresh(model);
+	 * 
+	 * }
+	 */
+	
+	public void addCommentApproved() {
+		
+		//userAppraisalComment.setContent(userAppraisalComment.getContent());
+		System.out.println("content  "+userAppraisalComment.getContent());
+		userAppraisalComment.setDate(new Date());
+		userAppraisalComment.setUser(sessionView.getUser());
+		model.addComment(userAppraisalComment);
+		model = service.saveAndRefresh(model);
+	}
+	
+	
 	public UserAppraisalComment getCommentByTitle() {
 		model = service.findOne(id);
 		return userAppraisalRepos.findCommentByTitle(model);
@@ -2495,12 +2516,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		if (getIntegerParameter("isEdit") == 0) {
 
 			bs.setSections(findSectionId());
-			if (!validateBusinessGoalsMinOne()) {
-				return null;
-			}
-			if (!validateBusinessGoalsNotNull(bs)) {
-				return null;
-			}
 			if (!validateWeightBusinessGoals1(bs)) {
 				return null;
 			}
@@ -2525,13 +2540,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		if (getIntegerParameter("isEdit") == 1) {
 			bs.setSections(findSectionId());
-
-			if (!validateBusinessGoalsMinOne()) {
-				return null;
-			}
-			if (!validateBusinessGoalsNotNull(bs)) {
-				return null;
-			}
 			if (!validateWeightBusinessGoals1(bs)) {
 				return null;
 			}
@@ -2573,43 +2581,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 	public Boolean validateWeightBusinessGoals1(BusinessGoals b2) {
 		if (getIntegerParameter("isEdit") == 0) {
-			if (b2.getGoalWeight() < 0 || b2.getGoalWeight() > 100) {
-				return FacesContextMessages.ErrorMessages("Weight should be between 0 and 100");
+			if (b2.getGoalWeight() <= 0 || b2.getGoalWeight() > 100) {
+				return FacesContextMessages.ErrorMessages("Weight should be between 1 and 100");
 			}
+			
 		}
 		if (getIntegerParameter("isEdit") == 1) {
-			if (b2.getGoalWeight() < 0 || b2.getGoalWeight() > 100) {
-				return FacesContextMessages.ErrorMessages("Weight should be between 0 and 100");
+			if (b2.getGoalWeight() <= 0 || b2.getGoalWeight() > 100) {
+				return FacesContextMessages.ErrorMessages("Weight should be between 1 and 100");
 			}
 		}
 		return true;
 	}
 
-	public Boolean validateBusinessGoalsMinOne() {
-		if (getIntegerParameter("isEdit") == 0) {
-			if (businessGoalsListEdit.size() == 0) {
-				return FacesContextMessages.ErrorMessages("The minimum is One business Goal ");
-			}
-		}
-		if (getIntegerParameter("isEdit") == 1) {
-			if (businessGoalsListEdit.size() == 0) {
-				return FacesContextMessages.ErrorMessages("The minimum is One business Goal");
-			}
-		}
-		return true;
-	}
-
-	public Boolean validateBusinessGoalsNotNull(BusinessGoals bs) {
-		if (getIntegerParameter("isEdit") == 0) {
-			if (bs.getGoalWeight() == 0) {
-				return FacesContextMessages.ErrorMessages("The business Goal weight shourld be 0");
-			}
-		}
-		if (getIntegerParameter("isEdit") == 1) {
-			if (bs.getGoalWeight() == 0) {
-				return FacesContextMessages.ErrorMessages("The business Goal weight shourld be 0");
-			}
-		}
-		return true;
-	}
 }

@@ -137,20 +137,64 @@
 					value="Add" styleClass="btn btn-info"
 					oncomplete="PF('addCommentDlg').hide()"
 					update=":main_form:commentPanel"
-					rendered="#{(userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml') and userAppraisalView.model.userAppraisalStatus ne 'SUBMITED_FINAL_YEAR'}" />
-				<p:commandButton
-					value="Add Approved" styleClass="btn btn-info"
-					oncomplete="PF('addCommentDlg').hide()"
-					update=":main_form:commentPanel"
-					
-					rendered="#{(userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml') and userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_FINAL_YEAR'}">
-					 <p:ajax process="@this" listener="#{userAppraisalView.addComment()}" />
-    <p:ajax process="@this" update=":main_form" listener="#{userAppraisalView.approvedLMFinalYear()}" />
-</p:commandButton>
-					
+					rendered="#{(userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml')}" />
+
 			</div>
 		</p:dialog>
 	</h:form>
+
+
+
+
+
+
+	<h:form id="addCommentFormApproved">
+		<p:dialog widgetVar="addCommentApprovedDlg" modal="true"
+			closable="false" resizable="false" showHeader="false"
+			position="center center"
+			onShow="PF('addCommentApprovedDlg').initPosition()">
+			<button type="button" class="bootbox-close-button close"
+				onclick="PF('addCommentApprovedDlg').hide()">
+				<h:outputText value="x" />
+			</button>
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<i class="ace-icon fa fa-plus light-blue" />
+					<h:outputText value=" Add Comment" />
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="center">
+					<h:outputText value="Final comment Line manager"
+						style="width:90%;margin:auto" />
+				</div>
+				<br />
+				<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}"
+					placeholder="Comment" required="true"
+					requiredMessage="Comment should not be null"
+					style="width:90%;margin:auto" />
+			</div>
+
+			<div class="modal-footer">
+				<p:commandButton onclick="PF('addCommentApprovedDlg').hide()"
+					value="Hide" styleClass="btn btn-warning" />
+				<p:commandButton 
+					value="Add" styleClass="btn btn-info"
+					oncomplete="PF('addCommentApprovedDlg').hide()"
+					update=":main_form:commentPanel"
+					rendered="#{(userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml')}">
+					<p:ajax process="@this"
+						listener="#{userAppraisalView.addCommentApproved()}" />
+					<p:ajax process="@this" update=":main_form"
+						listener="#{userAppraisalView.approvedLMFinalYear()}" />
+				</p:commandButton>
+			</div>
+		</p:dialog>
+	</h:form>
+
+
+
+
 
 
 
@@ -258,7 +302,7 @@
 							</label>
 							<div class="col-xs-9 col-sm-9">
 								<p:inputText value="#{userAppraisalView.bs.goalWeight}" />
-								
+
 							</div>
 						</div>
 					</div>
@@ -292,16 +336,16 @@
 				</p:commandButton>
 				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
 					value="Save" styleClass="btn btn-success"
-				
 					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '1'}"
-					update="messagess,:main_form_edit:step2:panel1" process="addBusinessGoalForm">
+					update="messagess,:main_form_edit:step2:panel1"
+					process="addBusinessGoalForm">
 					<f:param name="isEdit" value="1" />
 				</p:commandButton>
 				<p:commandButton action="#{userAppraisalView.saveBusinessGoals1()}"
 					value="Save" styleClass="btn btn-success"
-					
 					rendered="#{userAppraisalView.currentPath eq '/viewUserAppraisal.xhtml' and param.isEdit eq '0'}"
-					update="messagess,:main_form:step2:panel0" process="addBusinessGoalForm">
+					update="messagess,:main_form:step2:panel0"
+					process="addBusinessGoalForm">
 					<f:param name="isEdit" value="0" />
 				</p:commandButton>
 
@@ -309,8 +353,8 @@
 
 			</div>
 		</p:dialog>
-		
-		
+
+
 	</h:form>
 
 

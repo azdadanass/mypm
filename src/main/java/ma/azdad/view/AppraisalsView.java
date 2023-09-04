@@ -55,9 +55,6 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	@Autowired
 	AffectationRepos af;
 
-	// @Autowired
-	// User user;
-
 	@Autowired
 	UserView userview;
 
@@ -529,7 +526,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	}
 
-	@Scheduled(fixedRate = 600000)
+	@Scheduled(fixedRate = 30000)
 	public void autoMidFinalYear() {
 		for (Appraisals ap : findAll()) {
 
