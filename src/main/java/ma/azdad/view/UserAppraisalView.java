@@ -931,6 +931,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 
 	public Boolean validateWeightSuppGoals() {
+	
 		if (getIntegerParameter("isEdit") == 0) {
 			int weightTotal1 = 0;
 			int weightTotal2 = 0;
@@ -972,6 +973,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		}
 		if (getIntegerParameter("isEdit") == 1) {
+			
 			int weightTotal1 = 0;
 			int weightTotal2 = 0;
 			int weightTotal3 = 0;
@@ -1665,7 +1667,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
 		}
+		
 	}
 
 	public Boolean canAddSupplementaryGoals() {
