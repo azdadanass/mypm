@@ -2706,6 +2706,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		double sommeFinal=0;
 		double somme1=0;
 
+
 		for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 4)) {
 			if(model.getUserAppraisalStatus().equals(UserAppraisalStatus.MYR_EDITED)) {
 				somme+=supp.getWeight()*supp.getMidYearReview();

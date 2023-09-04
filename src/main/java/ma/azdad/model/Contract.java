@@ -51,7 +51,7 @@ public class Contract extends GenericModel<Integer> {
 	private String resignReason;
 	private String fireReason;
 
-	private EGeneralData resource;
+	//private EGeneralData resource;
 	private Company company;
 
 	private Boolean stc = false;
@@ -81,15 +81,14 @@ public class Contract extends GenericModel<Integer> {
 		this.idcontract = idcontract;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RESURCE_ID", nullable = false)
-	public EGeneralData getResource() {
-		return resource;
-	}
-
-	public void setResource(EGeneralData resource) {
-		this.resource = resource;
-	}
+	/*
+	 * @ManyToOne(fetch = FetchType.LAZY)
+	 * 
+	 * @JoinColumn(name = "RESURCE_ID", nullable = false) public EGeneralData
+	 * getResource() { return resource; }
+	 * 
+	 * public void setResource(EGeneralData resource) { this.resource = resource; }
+	 */
 
 	@Column(name = "CONTRACT_TYPE", length = 100)
 	public String getContractType() {
@@ -432,10 +431,12 @@ public class Contract extends GenericModel<Integer> {
 		this.stcPaidDaysOvertime = stcPaidDaysOvertime;
 	}
 
-	@Override
-	public String toString() {
-		return "Contract [idcontract=" + idcontract + ", contractType=" + contractType + ", hireDate=" + hireDate + ", contractStartDate=" + contractStartDate + ", contractEndDate=" + contractEndDate + "," + resource.getUsername() + "]\n";
-	}
+	/*
+	 * @Override public String toString() { return "Contract [idcontract=" +
+	 * idcontract + ", contractType=" + contractType + ", hireDate=" + hireDate +
+	 * ", contractStartDate=" + contractStartDate + ", contractEndDate=" +
+	 * contractEndDate + "," + resource.getUsername() + "]\n"; }
+	 */
 
 	private Integer countFiles = 0;
 

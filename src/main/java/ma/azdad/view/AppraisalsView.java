@@ -440,26 +440,25 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 	public List<User> getUsersByManager() {
 
-		users = appraisalsService.findByHr(true, true, sessionView.getUser());
+		users = appraisalsService.findByHr(true, false, sessionView.getUser());
 		return users;
 	}
 
 	public void deleteUser(User user) {
-		// Stockez le backup de la liste users avant de supprimer l'utilisateur
 		if (users != null && user != null) {
 			usersBackup = new ArrayList<>(users);
 			users.remove(user);
-			undoMode = true; // Activez le mode annulation de suppression
+			undoMode = true; 
 
 		}
 	}
 
 	public void undoDelete() {
-		// Restaurez la liste users à partir du backup pour annuler la suppression
+		
 		if (usersBackup != null) {
 			users = new ArrayList<>(usersBackup);
-			usersBackup = null; // Réinitialisez le backup après restauration
-			undoMode = false; // Désactivez le mode annulation de suppression
+			usersBackup = null; 
+			undoMode = false;
 
 		}
 	}
