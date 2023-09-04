@@ -28,8 +28,8 @@ public class Sections extends GenericModel<Integer> {
 	private String sectionsTitle;
 	private Integer weight;
 	private UserAppraisal userappraisal;
-	private Integer summaryRaiting;
-	private Integer midYearReview;
+	private Double summaryRaiting;
+	private Double midYearReview;
 	private Boolean eligible;
 
 	private Integer countFiles = 0;
@@ -90,20 +90,20 @@ public class Sections extends GenericModel<Integer> {
 	}
 
 	@Column(name = "summaryRaiting")
-	public Integer getSummaryRaiting() {
+	public Double getSummaryRaiting() {
 		return summaryRaiting;
 	}
 
-	public void setSummaryRaiting(Integer summaryRaiting) {
+	public void setSummaryRaiting(Double summaryRaiting) {
 		this.summaryRaiting = summaryRaiting;
 	}
 
 	@Column(name = "midYearReview")
-	public Integer getMidYearReview() {
+	public Double getMidYearReview() {
 		return midYearReview;
 	}
 
-	public void setMidYearReview(Integer midYearReview) {
+	public void setMidYearReview(Double midYearReview) {
 		this.midYearReview = midYearReview;
 	}
 	
