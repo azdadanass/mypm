@@ -169,7 +169,7 @@
 						style="width:90%;margin:auto" />
 				</div>
 				<br />
-				<p:inputTextarea value="#{userAppraisalView.userAppraisalComment.content}"
+				<p:inputTextarea value="#{userAppraisalView.comment.content}"
 					placeholder="Comment" required="true"
 					requiredMessage="Comment should not be null"
 					style="width:90%;margin:auto" />
@@ -181,12 +181,10 @@
 				<p:commandButton 
 					value="Add" styleClass="btn btn-info"
 					oncomplete="PF('addCommentApprovedDlg').hide()"
-					update=":main_form:commentPanel"
+					update=":main_form:commentPanel" 
+					action="#{userAppraisalView.addCommentApproved()}"
 					rendered="#{(userAppraisalView.currentPath eq '/addEditUserAppraisal.xhtml')}">
-					<p:ajax process="@this"
-						listener="#{userAppraisalView.addCommentApproved()}" />
-					<p:ajax process="@this" update=":main_form"
-						listener="#{userAppraisalView.approvedLMFinalYear()}" />
+					<p:ajax update=":main_form"	listener="#{userAppraisalView.approvedLMFinalYear()}" />
 				</p:commandButton>
 			</div>
 		</p:dialog>

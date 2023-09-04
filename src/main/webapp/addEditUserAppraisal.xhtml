@@ -205,8 +205,8 @@
 						</p:commandLink>
 						<p:commandLink
 							styleClass="btn btn-app btn-sm btn-success hover aa-tooltip tooltip-success"
-							onclick="PF('addCommentApprovedDlg').show()"
-							update=":main_form" title="Approve"
+							onclick="PF('addCommentApprovedDlg').show()" update=":main_form"
+							title="Approve"
 							rendered="#{userAppraisalView.canApprovedLMFinalYear()}">
 							<i class="ace-icon fa fa-check bigger-230"></i>
 							<h:outputText value="Approve" />
@@ -685,6 +685,14 @@
 											style="width: 40px" />
 										<h:outputText value="%" styleClass="bolder blue" />
 									</p:column>
+									<p:column headerText="Mid">
+										<h:outputText value="#{item.midYearReview}"
+											styleClass="bolder" />
+									</p:column>
+									<p:column headerText="Final">
+										<h:outputText value="#{item.summaryRaiting}"
+											styleClass="bolder" />
+									</p:column>
 
 								</p:dataTable>
 							</div>
@@ -930,7 +938,7 @@
 										</p:column>
 										<p:column headerText="Goal Description">
 											<h:outputText value="#{item.goalDetails}"
-												styleClass="bolder orange" escape="false"/>
+												styleClass="bolder orange" escape="false" />
 										</p:column>
 										<p:column headerText="Goal Weight">
 											<h:outputText value="#{item.goalWeight}"
@@ -941,6 +949,7 @@
 
 									</p:dataTable>
 								</div>
+
 							</div>
 
 							&nbsp;
@@ -985,7 +994,7 @@
 											</p:column>
 											<p:column headerText="Goal Description">
 												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" escape="false"/>
+													styleClass="bolder orange" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1036,11 +1045,11 @@
 											</p:column>
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Description">
 												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" escape="false"/>
+													styleClass="bolder orange" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1092,11 +1101,11 @@
 											</p:column>
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Description">
 												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" escape="false"/>
+													styleClass="bolder orange" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1148,11 +1157,11 @@
 											</p:column>
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Description">
 												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" escape="false"/>
+													styleClass="bolder orange" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1202,11 +1211,11 @@
 											</p:column>
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Description">
 												<h:outputText value="#{item.sectionsData.goalDescription}"
-													styleClass="bolder orange" escape="false"/>
+													styleClass="bolder orange" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1426,7 +1435,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1479,7 +1488,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1533,7 +1542,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1587,7 +1596,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1638,7 +1647,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1859,7 +1868,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1912,7 +1921,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -1966,7 +1975,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -2020,7 +2029,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
@@ -2071,7 +2080,7 @@
 
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
-													styleClass="bolder green" escape="false"/>
+													styleClass="bolder green" escape="false" />
 											</p:column>
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
