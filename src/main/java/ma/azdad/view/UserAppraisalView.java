@@ -980,36 +980,36 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			int weightTotal4 = 0;
 			int weightTotal5 = 0;
 
-			for (int i = 0; i < editsuppl1.size(); i++) {
-				//System.out.println("edisp"+editsuppl1);
-				weightTotal1 = weightTotal1 + editsuppl1.get(i).getWeight();
+			for (int i = 0; i < suppl1.size(); i++) {
+				
+				weightTotal1 = weightTotal1 + suppl1.get(i).getWeight();
 			}
-			for (int i = 0; i < editsuppl2.size(); i++) {
-				weightTotal2 = weightTotal2 + editsuppl2.get(i).getWeight();
+			for (int i = 0; i < suppl2.size(); i++) {
+				weightTotal2 = weightTotal2 + suppl2.get(i).getWeight();
 			}
-			for (int i = 0; i < editsuppl3.size(); i++) {
-				weightTotal3 = weightTotal3 + editsuppl3.get(i).getWeight();
+			for (int i = 0; i < suppl3.size(); i++) {
+				weightTotal3 = weightTotal3 + suppl3.get(i).getWeight();
 			}
-			for (int i = 0; i < editsuppl4.size(); i++) {
-				weightTotal4 = weightTotal4 + editsuppl4.get(i).getWeight();
+			for (int i = 0; i < suppl4.size(); i++) {
+				weightTotal4 = weightTotal4 + suppl4.get(i).getWeight();
 			}
-			for (int i = 0; i < editsuppl5.size(); i++) {
-				weightTotal5 = weightTotal5 + editsuppl5.get(i).getWeight();
+			for (int i = 0; i < suppl5.size(); i++) {
+				weightTotal5 = weightTotal5 + suppl5.get(i).getWeight();
 			}
 
-			if (editsuppl1.size() > 0 && weightTotal1 != 100) {
+			if (suppl1.size() > 0 && weightTotal1 != 100) {
 				return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
 			}
-			if (editsuppl2.size() > 0 && weightTotal2 != 100) {
+			if (suppl2.size() > 0 && weightTotal2 != 100) {
 				return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
 			}
-			if (editsuppl3.size() > 0 && weightTotal3 != 100) {
+			if (suppl3.size() > 0 && weightTotal3 != 100) {
 				return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
 			}
-			if (editsuppl4.size() > 0 && weightTotal4 != 100) {
+			if (suppl4.size() > 0 && weightTotal4 != 100) {
 				return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
 			}
-			if (editsuppl5.size() > 0 && weightTotal5 != 100) {
+			if (suppl5.size() > 0 && weightTotal5 != 100) {
 				return FacesContextMessages.ErrorMessages("Total of Weight should be equal 100");
 			}
 		}
