@@ -34,9 +34,23 @@ public class TaskView implements Serializable {
 	private Long totalToApproveMid;
 	private Long totalToSubmitFinal;
 	private Long totalToApproveFinal;
+	
+	
+	private Long totalToCommentMid;
+	private Long totalToCommentFinal;
+	
+	
+	public Long getTotalToCommentFinal() {
+		return totalToCommentFinal;
+	}
 
-	
-	
+
+	public void setTotalToCommentFinal(Long totalToCommentFinal) {
+		this.totalToCommentFinal = totalToCommentFinal;
+	}
+
+	private Long totalToComment = 0l;
+
 	private Long total = 0l;
 
 	@PostConstruct
@@ -47,11 +61,34 @@ public class TaskView implements Serializable {
 		totalToSubmitFinal = userAppraisalService.countToSubmitted(sessionView.getUser().getUsername(),UserAppraisalStatus.FYR_EDITED);
 		totalToApproveMid = userAppraisalService.countToApprovedMid(sessionView.getUser());
 		totalToApproveFinal = userAppraisalService.countToApprovedFinal(sessionView.getUser());
+		
+		totalToCommentMid = userAppraisalService.countTocommentMid(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_MID_YEAR);
+		totalToCommentFinal = userAppraisalService.countTocommentMid(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_FINAL_YEAR);
 
-
+		
+		totalToComment = totalToCommentMid + totalToCommentFinal;
 		total = totalToSubmit+totalToApprove+totalToSubmitMid+totalToSubmitFinal+totalToApproveMid+totalToApproveFinal;
 	}
+	
+	
+	public Long getTotalToCommentMid() {
+		return totalToCommentMid;
+	}
 
+	public void setTotalToCommentMid(Long totalToCommentMid) {
+		this.totalToCommentMid = totalToCommentMid;
+	}
+
+
+	public Long getTotalToComment() {
+		return totalToComment;
+	}
+
+
+	public void setTotalToComment(Long totalToComment) {
+		this.totalToComment = totalToComment;
+	}
+	
 	public Long getTotalToApprove() {
 		return totalToApprove;
 	}

@@ -11,6 +11,7 @@ import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
+import ma.azdad.model.ToNotify;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.model.UserAppraisalComment;
@@ -38,6 +39,12 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 	@Cacheable("userappraisalService.findHireDate")
 	public Date findHireDate(String u) {
 		return repos.findHireDate(u);
+	}
+	
+	
+	@Cacheable("userappraisalService.findToNotify")
+	public ToNotify findToNotify(String u,UserAppraisal uap) {
+		return repos.findToNotify(u,uap);
 	}
 	
 	@Cacheable("userAppraisalService.findByEmployOrAppraisee")
@@ -277,6 +284,30 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		}
 
 		return list;
+	}
+	
+	@Cacheable("userAppraisalService.findUserappraisalbykeyworker")
+	public List<UserAppraisal> findUserappraisalbykeyworker(String username,UserAppraisalStatus stats1) {
+		
+		List<UserAppraisal> list = repos.findUserappraisalbykeyworker(username, stats1);
+		for (UserAppraisal userAppraisal : list) {
+			initialize(userAppraisal.getAppraisal());
+			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getAppraisee());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			
+		}
+
+		return list;
+	}
+	
+	@Cacheable("userAppraisalService.countTocommentMid")
+	public Long countTocommentMid(String username,UserAppraisalStatus stats) {
+		
+		return repos.countTocommentMid(username,stats);
+	
 	}
 	
 	

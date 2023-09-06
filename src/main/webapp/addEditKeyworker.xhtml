@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	template="template/template.xhtml"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<ui:define name="title">
+		<h:outputText value="#{staticView.applicationName}" />
+	</ui:define>
+	<ui:define name="header">
+		<ui:include src="template/header.xhtml" />
+		<link href="resources/css/bootstrap-nav/bootstrap-nav-wizard.css"
+			rel="stylesheet" />
+	</ui:define>
+	<ui:define name="sider">
+		<ui:include src="template/sider.xhtml" />
+	</ui:define>
+	<ui:define name="navigator">
+		<ul class="breadcrumb">
+			<li><i class="ace-icon fa fa-home" /> <a href="#"> <h:outputText
+						value="Main Menu" />
+			</a></li>
+			<li class="active"><h:outputText
+					value="Key worker  Mid Year Review" /></li>
+		</ul>
+	</ui:define>
+
+
+	<ui:define name="body">
+
+
+		<div class="page-header hidden-xs">
+			<h1>
+				<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+				<h:outputText value="Rating scale" />
+			</h1>
+		</div>
+		<style>
+.tbl {
+	margin: 0 auto;
+	text-align: center;
+	width: 800px; /* Largeur de la table */
+}
+
+.tg {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%; /* Largeur de la table en pourcentage */
+	text-align: center;
+}
+
+.tg td {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
+
+.tg th {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
+
+.tg .tg-lboi {
+	border-color: inherit;
+	text-align: left;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.tg .tg-9wq8 {
+	border-color: inherit;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+}
+</style>
+		<div class="tbl">
+			<table class="tg">
+				<thead>
+					<tr>
+
+						<th class="tg-lboi"
+							style="background-color: #17375d; color: white;">Rate</th>
+						<th class="tg-lboi"
+							style="background-color: #17375d; color: white;">Note</th>
+						<th class="tg-lboi"
+							style="background-color: #17375d; color: white;">Rating
+							Description</th>
+					</tr>
+
+				</thead>
+				<tbody>
+					<tr>
+						<th class="tg-lboi">E (5)</th>
+						<th class="tg-lboi">100</th>
+						<th class="tg-lboi">*E (5) Exceptional Consistently exceeds
+							job requirements of the position</th>
+					</tr>
+					<tr>
+						<td class="tg-lboi">H (4)</td>
+						<td class="tg-lboi">80</td>
+						<td class="tg-lboi">H (4) Highly satisfactory Occasionally
+							exceeds job requirements of the position</td>
+					</tr>
+
+					<tr>
+						<td class="tg-lboi">S (3)</td>
+						<td class="tg-lboi">50</td>
+						<td class="tg-lboi">S (3) Satisfactory Consistently meets job
+							requirements; performance is fully acceptable</td>
+					</tr>
+					<tr>
+						<td class="tg-lboi">N (2)</td>
+						<td class="tg-lboi">30</td>
+						<td class="tg-lboi">N (2) Needs improvement Performs at
+							minimum level; significant improvement necessary</td>
+					</tr>
+					<tr>
+						<td class="tg-lboi">U (1)</td>
+						<td class="tg-lboi">10</td>
+						<td class="tg-lboi">U (1) Unsatisfactory Employee does not
+							perform at an acceptable level</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-xs-4 col-sm-4">
+			<div class="profile-user-info profile-user-info-striped">
+				<div class="profile-info-row ">
+
+					<div class="profile-info-name">
+						<h:outputText value="Mid Rate" />
+					</div>
+					<div class="profile-info-value">
+						<h:inputText value="#{userAppraisalView.tnt.rateMid}"
+							styleClass="orange" />
+						&nbsp;
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="space-16" />
+		<div class="space-16" />
+		<div class="space-16" />
+
+
+		<!-- Comment  -->
+
+		<h3 class="lighter block green">
+			<i class="ace-icon fa fa-comment-o" />
+			<h:outputText value=" Add Comment" />
+		</h3>
+		<div class="row">
+			<div class="col-xs-12 col-sm-3">
+				<label class="control-label pull-right"> <h:outputText
+						value="Comment " />
+				</label>
+			</div>
+			<div class="col-xs-12 col-sm-9">
+				<div class="clearfix">
+					<p:inputTextarea
+						value="#{userAppraisalView.userAppraisalComment.content}"
+						styleClass="col-xs-12 col-sm-6" required="true"
+						requiredMessage="This field is required. Please fill it out." />
+				</div>
+			</div>
+		</div>
+
+		<p:commandLink id="sub" action="#{userAppraisalView.keyworkerSave()}"
+			styleClass="btn btn-success btn-next">
+		
+			<h:outputText value="subbmit" />
+			<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+		</p:commandLink>
+
+
+	</ui:define>
+
+	<ui:include src="fileFooter.xhtml" />
+	<ui:include src="userAppraisalFooter.xhtml" />
+</ui:composition>

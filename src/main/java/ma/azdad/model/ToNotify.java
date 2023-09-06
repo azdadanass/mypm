@@ -17,6 +17,9 @@ public class ToNotify extends GenericModel<Integer> implements Serializable {
 	private User internalResource;
 	private Boolean notifyByEmail = true;
 	private Boolean notifyBySms = true;
+	
+	private Integer rateMid;
+	private Integer rateFinal;
 
 	private User user;
 	private UserAppraisal userAppraisal;
@@ -140,4 +143,22 @@ public class ToNotify extends GenericModel<Integer> implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+	public Integer getRateMid() {
+		return rateMid;
+	}
+
+	public void setRateMid(Integer rateMid) {
+		this.rateMid = rateMid;
+	}
+
+	public Integer getRateFinal() {
+		return rateFinal;
+	}
+
+	public void setRateFinal(Integer rateFinal) {
+		this.rateFinal = rateFinal;
+	}
+	
+	
 }

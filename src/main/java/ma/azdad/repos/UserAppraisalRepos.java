@@ -12,6 +12,7 @@ import ma.azdad.model.BusinessGoals;
 import ma.azdad.model.Sections;
 import ma.azdad.model.SectionsData;
 import ma.azdad.model.SupplementaryGoals;
+import ma.azdad.model.ToNotify;
 import ma.azdad.model.User;
 import ma.azdad.model.UserAppraisal;
 import ma.azdad.model.UserAppraisalComment;
@@ -73,9 +74,11 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("from SupplementaryGoals s where  s.sections.userappraisal=?1")
 	List<SupplementaryGoals> findSuppByUser(UserAppraisal u);
 	
-
 	@Query("from UserAppraisal u  where u.employ.username=?1 and u.userAppraisalStatus=?2 order by id desc")
 	List<UserAppraisal> findUserappraisalbyStats(String username, UserAppraisalStatus status);
+	
+	@Query("select t.userAppraisal from ToNotify t  where t.internalResource.username=?1 and t.userAppraisal.userAppraisalStatus=?2 order by t.userAppraisal.id desc")
+	List<UserAppraisal> findUserappraisalbykeyworker(String username, UserAppraisalStatus status);
 	
 	@Query("from UserAppraisal u  where (u.userStatsApprovedLMMidYear.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApprovedLMFinalYear.username=?1 and u.userAppraisalStatus=?3)  order by id desc")
 	List<UserAppraisal> findUserappraisalbyStatsApproved(String username, UserAppraisalStatus status1, UserAppraisalStatus status2);
@@ -104,13 +107,20 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	Long countToApproved(String username, UserAppraisalStatus status1,UserAppraisalStatus status2);
 	
 	@Query("select count(*) from UserAppraisal u  where u.employ.username=?1 and u.userAppraisalStatus=?2 order by id desc    ")
-	Long countToSubmitted(String username, UserAppraisalStatus status);
-	
-	
+	Long countToSubmitted(String username, UserAppraisalStatus status);	
 	
 	@Query("select count(*) from UserAppraisal u  where (u.userStatsApprovedLMMidYear.username=?1 and u.userAppraisalStatus=?2) order by id desc")
 	Long countToApprovedMid(String username, UserAppraisalStatus status1);
 
 	@Query("select count(*) from UserAppraisal u  where (u.userStatsApprovedLMFinalYear.username=?1 and u.userAppraisalStatus=?2) order by id desc")
 	Long countToApprovedFinal(String username, UserAppraisalStatus status1);
+	
+	@Query("select count(*) from ToNotify t  where (t.internalResource.username=?1 and t.userAppraisal.userAppraisalStatus=?2) order by id desc")
+	Long countTocommentMid(String username, UserAppraisalStatus status);
+	
+	@Query("from ToNotify t where t.internalResource.username=?1 and t.userAppraisal=?2")
+	ToNotify findToNotify(String username, UserAppraisal userappraisal);
+	
+	
+	
 }

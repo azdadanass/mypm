@@ -105,6 +105,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SupplementaryGoals> editsuppl3 = new ArrayList<>();
 	private List<SupplementaryGoals> editsuppl4 = new ArrayList<>();
 	private List<SupplementaryGoals> editsuppl5 = new ArrayList<>();
+	
+	private ToNotify tnt = new ToNotify();
 
 	private List<String> goalTitleList;
 
@@ -126,6 +128,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	@PostConstruct
 	public void init() {
 		super.init();
+		
 		// chart*****************************
 		businessGoalsListEdit = new ArrayList<>();
 		editBusinessGoals();
@@ -404,7 +407,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			case 5:
 				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.FYR_EDITED));
 				break;
-
+			case 6:
+				initLists(service.findUserappraisalbykeyworker(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_MID_YEAR));
+				break;
+			case 7:
+				initLists(service.findUserappraisalbykeyworker(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_FINAL_YEAR));
+				break;
 			default:
 				break;
 			}
@@ -1813,10 +1821,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void addToNotifyItem() {
 
 		User toNotifyUser = userService.findOne(toNotifyUserUsername);
-		if (model.getToNotifyList().stream()
-				.filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
+		if (model.getToNotifyList().stream().filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
 			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
-		model = service.saveAndRefresh(model);
+		  model = service.saveAndRefresh(model);
 
 	}
 
@@ -2849,9 +2856,38 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 			externalContext.redirect("viewAppraisals.xhtml?id=" + id + "&pageIndex=9");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	
+	public ToNotify getTnt() {
+		return tnt;
+	}
+
+	public void setTnt(ToNotify tnt) {
+		this.tnt = tnt;
+	}
+
+	public void keyworkerSave() {
+			
+		//tnt = new ToNotify();
+		model = service.findOne(id);
+		
+		ToNotify toNotify =	service.findToNotify(sessionView.getUsername(),model);
+		tnt.setInternalResource(toNotify.getInternalResource());
+		tnt.setUserAppraisal(toNotify.getUserAppraisal());
+		System.out.println("tonotify :"+toNotify);
+		System.out.println("tnt: " + tnt);
+		System.out.println("tnt.rateMid: " + tnt.getRateMid()); 
+		
+		/*
+		 * toNotify.setRateMid(tnt.getRateMid()); model.getToNotifyList().add(toNotify);
+		 * model = service.saveAndRefresh(model);
+		 */
+		
+
 	}
 
 }

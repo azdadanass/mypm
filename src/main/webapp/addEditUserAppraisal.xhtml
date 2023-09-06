@@ -235,11 +235,16 @@
 							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'CREATED' and sessionView.getIsMyPmHr()}"
 							update=":main_form">
 							<i class="ace-icon fa fa-trash-o bigger-230"></i>
-														<h:outputText value="Delete" />
-							
+							<h:outputText value="Delete" />
 						</p:commandLink>
-
-
+						
+						<h:outputLink value="addEditKeyworker.xhtml"
+							rendered="true"
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Keyworker Mid" />
+							<f:param name="id" value="#{userAppraisalView.model.id}" />
+						</h:outputLink>
 					</div>
 				</div>
 			</div>
@@ -775,62 +780,62 @@
 
 							<!-- 							***********************************Appraisal Time Line*******************************-->
 							<div class="page-header hidden-xs">
-    <h1>
-        <i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
-        <h:outputText value=" Appraisal Time Line" />
-    </h1>
-</div>
-<style>
-    .tbl {
-        margin: 0 auto;
-        text-align: center;
-    }
+								<h1>
+									<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+									<h:outputText value=" Appraisal Time Line" />
+								</h1>
+							</div>
+							<style>
+.tbl {
+	margin: 0 auto;
+	text-align: center;
+}
 
-    .tg {
-        border-collapse: collapse;
-        border-spacing: 0;
-        width: 800px; /* Largeur de la table */
-        text-align: center;
-    }
+.tg {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 800px; /* Largeur de la table */
+	text-align: center;
+}
 
-    .tg td {
-        border-color: black;
-        border-style: solid;
-        border-width: 1px;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        overflow: hidden;
-        padding: 10px 5px;
-        word-break: normal;
-        text-align: center;
-    }
+.tg td {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
 
-    .tg th {
-        border-color: black;
-        border-style: solid;
-        border-width: 1px;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        font-weight: normal;
-        overflow: hidden;
-        padding: 10px 5px;
-        word-break: normal;
-        text-align: center;
-    }
+.tg th {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
 
-    .tg .tg-lboi {
-        border-color: inherit;
-        text-align: left;
-        vertical-align: middle;
-        text-align: center;
-    }
+.tg .tg-lboi {
+	border-color: inherit;
+	text-align: left;
+	vertical-align: middle;
+	text-align: center;
+}
 
-    .tg .tg-9wq8 {
-        border-color: inherit;
-        text-align: center;
-        vertical-align: middle;
-        font-weight: bold;
-    }
+.tg .tg-9wq8 {
+	border-color: inherit;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+}
 </style>
 							<div class="tbl">
 								<table class="tg">
