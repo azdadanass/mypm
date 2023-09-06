@@ -1024,6 +1024,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean canSaveBusinessGoals() {
 		return sessionView.getIsMyPm();
 	}
+	
+
 
 	public String saveBusinessGoals() {
 		if (!canSaveBusinessGoals())
@@ -1041,6 +1043,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				);
 				businessGoalsService.save(businessGoals);
 			}
+			
 		}
 		if (getIntegerParameter("isEdit") == 1) {
 			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
