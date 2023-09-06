@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +90,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 	@PostConstruct
 	public void init() {
 		super.init();
+		evictCache();
 
 		yearRange = new ArrayList<>();
 		for (int i = 2020; i <= 2050; i++) {
@@ -162,7 +165,8 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (!validate())
 			return null;
 
-		model.addHistory(new AppraisalsHistory(getIsAddPage() ? "Created" : "Edited", sessionView.getUser(), sessionView.getUser() + " has Created Master Appraisal"));
+		model.addHistory(new AppraisalsHistory(getIsAddPage() ? "Created" : "Edited", sessionView.getUser(),
+				sessionView.getUser() + " has Created Master Appraisal"));
 		model.setUserStatsOpen(sessionView.getUser());
 		model.setDateStatsOpen(new Date());
 
@@ -182,14 +186,12 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				userAppraisal.setUserStatsSubmited(usr);
 				userAppraisal.setUserStatsApprovedLM(usr.getAffectation().getLineManager());
 				userAppraisal.setUserStatsApproved(usr.getAffectation().getHrManager());
-				
-				
+
 				userAppraisal.setUserStatsSelfAssessmentMidYear(usr.getAffectation().getHrManager());
 				userAppraisal.setUserStatsMidEdited(usr);
 				userAppraisal.setUserStatsSubmitedMidYear(usr);
 				userAppraisal.setUserStatsApprovedLMMidYear(usr.getAffectation().getLineManager());
-				
-				
+
 				userAppraisal.setUserStatsSelfAssessmentFinalYear(usr.getAffectation().getHrManager());
 				userAppraisal.setUserStatsFinalEdited(usr);
 				userAppraisal.setUserStatsSubmitedFinalYear(usr);
@@ -197,7 +199,7 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 				userAppraisal.setUserStatsClosed(usr);
 
 				userAppraisal.addHistory(new UserAppraisalHistory(getIsAddPage() ? "Created" : "Edited",
-						usr.getAffectation().getHrManager(), usr.getAffectation().getLineManager()+ " has Created "
+						usr.getAffectation().getHrManager(), usr.getAffectation().getLineManager() + " has Created "
 								+ userAppraisal.getEmploy().getFullName() + " Appraisal"));
 				userAppraisalService.save(userAppraisal);
 
@@ -448,16 +450,16 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		if (users != null && user != null) {
 			usersBackup = new ArrayList<>(users);
 			users.remove(user);
-			undoMode = true; 
+			undoMode = true;
 
 		}
 	}
 
 	public void undoDelete() {
-		
+
 		if (usersBackup != null) {
 			users = new ArrayList<>(usersBackup);
-			usersBackup = null; 
+			usersBackup = null;
 			undoMode = false;
 
 		}
@@ -597,5 +599,27 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 
 		return userNoAppraisalList;
 	}
+
+	public void deleteUserAppraisal(UserAppraisal u) {
+
+		try {
+			userAppraisalService.delete(u);
+			evictCache();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public Boolean listenerEdit() {
+		for (UserAppraisal ua : userAppraisalService.findUserAppraisalByAppraisal(model)) {
+			if(ua.getUserAppraisalStatus().getValue()!="Created") {
+				return false;
+			}
+			
+		}
+		return true;
+}
+	
 
 }

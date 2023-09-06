@@ -186,6 +186,14 @@
 																styleClass="orange" />
 															&nbsp;
 														</div>
+														
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-12 col-sm-12">
+												<div class="profile-user-info profile-user-info-striped">
+													<div class="profile-info-row ">
+														
 														<div class="profile-info-name">
 															<h:outputText value="Goal Weight" />
 														</div>
@@ -486,6 +494,10 @@
 													<h:outputText value="#{item.phone}"
 														styleClass="black bolder" />
 												</p:column>
+												<p:column headerText="LOB">
+													<h:outputText value="#{item.internalResource.lobName}"
+														styleClass="orange bolder" />
+												</p:column>
 
 
 
@@ -531,7 +543,7 @@
 										<div class="clearfix">
 											<p:inputTextarea
 												value="#{userAppraisalView.userAppraisalComment.content}"
-												styleClass="col-xs-12 col-sm-6" />
+												styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="This field is required. Please fill it out."/>
 										</div>
 									</div>
 								</div>
@@ -706,7 +718,7 @@
 
 										<div class="space-4" />
 										<div class="row">
-											<div class="col-xs-12 col-sm-6">
+											<div class="col-xs-12 col-sm-12">
 												<div class="profile-user-info profile-user-info-striped">
 													<div class="profile-info-row">
 														<div class="profile-info-name">
@@ -730,7 +742,9 @@
 													</div>
 												</div>
 											</div>
-											<div class="col-xs-12 col-sm-6">
+											<div class="col-xs-12 col-sm-12">
+																							<div class="profile-user-info profile-user-info-striped">
+											
 												<div class="profile-info-row">
 													<div class="profile-info-name">
 														<h:outputText value="Description" />
@@ -742,6 +756,8 @@
 													</div>
 												</div>
 											</div>
+																					</div>
+											
 										</div>
 										<hr />
 										<div class="space-8" />
@@ -1009,6 +1025,10 @@
 													<h:outputText value="#{item.phone}"
 														styleClass="black bolder" />
 												</p:column>
+												<p:column headerText="LOB">
+													<h:outputText value="#{item.internalResource.lobName}"
+														styleClass="orange bolder" />
+												</p:column>
 
 												<p:column headerText="Actions" styleClass="center"
 													width="100">
@@ -1052,7 +1072,7 @@
 										<div class="clearfix">
 											<p:inputTextarea
 												value="#{userAppraisalView.userAppraisalComment.content}"
-												styleClass="col-xs-12 col-sm-6" />
+												styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="This field is required. Please fill it out."/>
 										</div>
 									</div>
 								</div>

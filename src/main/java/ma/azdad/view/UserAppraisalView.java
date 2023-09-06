@@ -2838,4 +2838,17 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		
 		return userAppraisalRepos.findSectionByUserAppraisalAndNumber(model,s);
 	}
+	public void deleteUserAppraisal1() {
+			int id=model.getAppraisal().getId();
+		try {
+			service.delete(model);
+			evictCache();
+			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+			externalContext.redirect("viewAppraisals.xhtml?id=" + id + "&pageIndex=9");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

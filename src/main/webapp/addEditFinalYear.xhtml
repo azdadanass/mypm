@@ -69,6 +69,115 @@
 
 							<f:subview id="step1"
 								rendered="#{userAppraisalView.stepFinal==1}">
+								<div class="page-header hidden-xs">
+									<h1>
+										<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+										<h:outputText value="Rating scale" />
+									</h1>
+								</div>
+								<style>
+.tbl {
+	margin: 0 auto;
+	text-align: center;
+	width: 800px; /* Largeur de la table */
+}
+
+.tg {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%; /* Largeur de la table en pourcentage */
+	text-align: center;
+}
+
+.tg td {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
+
+.tg th {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
+
+.tg .tg-lboi {
+	border-color: inherit;
+	text-align: left;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.tg .tg-9wq8 {
+	border-color: inherit;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+}
+</style>
+								<div class="tbl">
+									<table class="tg">
+										<thead>
+											<tr>
+
+												<th class="tg-lboi"
+													style="background-color: #17375d; color: white;">Rate</th>
+												<th class="tg-lboi"
+													style="background-color: #17375d; color: white;">Note</th>
+												<th class="tg-lboi"
+													style="background-color: #17375d; color: white;">Rating
+													Description</th>
+											</tr>
+
+										</thead>
+										<tbody>
+											<tr>
+												<th class="tg-lboi">E (5)</th>
+												<th class="tg-lboi">100</th>
+												<th class="tg-lboi">*E (5) Exceptional Consistently
+													exceeds job requirements of the position</th>
+											</tr>
+											<tr>
+												<td class="tg-lboi">H (4)</td>
+												<td class="tg-lboi">80</td>
+												<td class="tg-lboi">H (4) Highly satisfactory
+													Occasionally exceeds job requirements of the position</td>
+											</tr>
+
+											<tr>
+												<td class="tg-lboi">S (3)</td>
+												<td class="tg-lboi">50</td>
+												<td class="tg-lboi">S (3) Satisfactory Consistently
+													meets job requirements; performance is fully acceptable</td>
+											</tr>
+											<tr>
+												<td class="tg-lboi">N (2)</td>
+												<td class="tg-lboi">30</td>
+												<td class="tg-lboi">N (2) Needs improvement Performs at
+													minimum level; significant improvement necessary</td>
+											</tr>
+											<tr>
+												<td class="tg-lboi">U (1)</td>
+												<td class="tg-lboi">10</td>
+												<td class="tg-lboi">U (1) Unsatisfactory Employee does
+													not perform at an acceptable level</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 								<h4 class="header blue bolder smaller">
 									<h:outputText value="Business Goals List" />
 								</h4>
@@ -98,6 +207,10 @@
 														<f:selectItems value="#{userAppraisalView.goalTitleList}" />
 													</p:selectOneMenu>
 												</p:column>
+												<p:column headerText="Goal Details">
+													<h:outputText value="#{item.goalDetails}"
+														styleClass="bolder" escape="false" />
+												</p:column>
 												<p:column headerText="Goal weight">
 													<h:outputText value="#{item.goalWeight}"
 														converter="javax.faces.Integer" min="0" max="100"
@@ -106,8 +219,8 @@
 												</p:column>
 												<p:column headerText="Final Year Review">
 													<h:inputText value="#{item.summaryRaiting}"
-														converter="javax.faces.Integer" min="0" max="100" required="true"
-														 style="width: 40px" styleClass="bolder"/>
+														converter="javax.faces.Integer" min="0" max="100"
+														required="true" style="width: 40px" styleClass="bolder" />
 													<h:outputText value="%" styleClass="bolder" />
 												</p:column>
 											</p:dataTable>
@@ -119,6 +232,115 @@
 
 							<f:subview id="step2"
 								rendered="#{userAppraisalView.stepFinal==2}">
+								<div class="page-header hidden-xs">
+									<h1>
+										<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+										<h:outputText value="Rating scale" />
+									</h1>
+								</div>
+								<style>
+.tbl {
+	margin: 0 auto;
+	text-align: center;
+	width: 800px; /* Largeur de la table */
+}
+
+.tg {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%; /* Largeur de la table en pourcentage */
+	text-align: center;
+}
+
+.tg td {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
+
+.tg th {
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	text-align: center;
+}
+
+.tg .tg-lboi {
+	border-color: inherit;
+	text-align: left;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.tg .tg-9wq8 {
+	border-color: inherit;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+}
+</style>
+								<div class="tbl">
+									<table class="tg">
+										<thead>
+											<tr>
+
+												<th class="tg-lboi"
+													style="background-color: #17375d; color: white;">Rate</th>
+												<th class="tg-lboi"
+													style="background-color: #17375d; color: white;">Note</th>
+												<th class="tg-lboi"
+													style="background-color: #17375d; color: white;">Rating
+													Description</th>
+											</tr>
+
+										</thead>
+										<tbody>
+											<tr>
+												<th class="tg-lboi">E (5)</th>
+												<th class="tg-lboi">100</th>
+												<th class="tg-lboi">*E (5) Exceptional Consistently
+													exceeds job requirements of the position</th>
+											</tr>
+											<tr>
+												<td class="tg-lboi">H (4)</td>
+												<td class="tg-lboi">80</td>
+												<td class="tg-lboi">H (4) Highly satisfactory
+													Occasionally exceeds job requirements of the position</td>
+											</tr>
+
+											<tr>
+												<td class="tg-lboi">S (3)</td>
+												<td class="tg-lboi">50</td>
+												<td class="tg-lboi">S (3) Satisfactory Consistently
+													meets job requirements; performance is fully acceptable</td>
+											</tr>
+											<tr>
+												<td class="tg-lboi">N (2)</td>
+												<td class="tg-lboi">30</td>
+												<td class="tg-lboi">N (2) Needs improvement Performs at
+													minimum level; significant improvement necessary</td>
+											</tr>
+											<tr>
+												<td class="tg-lboi">U (1)</td>
+												<td class="tg-lboi">10</td>
+												<td class="tg-lboi">U (1) Unsatisfactory Employee does
+													not perform at an acceptable level</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 								<h4 class="header blue bolder smaller">
 									<h:outputText value="Supplementary Goals List" />
 								</h4>
@@ -141,17 +363,20 @@
 													<p:column headerText="Goal Title">
 														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
-
+													<p:column headerText="Goal Description">
+														<h:outputText value="#{item.sectionsData.goalDescription}"
+															styleClass="bolder" escape="false" />
+													</p:column>
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}" styleClass="bolder" 
+														<h:outputText value="#{item.weight}" styleClass="bolder"
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder" />
 													</p:column>
 													<p:column headerText="Final Year Review">
 														<h:inputText value="#{item.summaryRaiting}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
+															converter="javax.faces.Integer" min="0" max="100"
+															required="true" style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder" />
 													</p:column>
 												</p:dataTable>
@@ -180,16 +405,20 @@
 													<p:column headerText="Goal Title">
 														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
+													<p:column headerText="Goal Description">
+														<h:outputText value="#{item.sectionsData.goalDescription}"
+															styleClass="bolder" escape="false" />
+													</p:column>
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}" styleClass="bolder" 
+														<h:outputText value="#{item.weight}" styleClass="bolder"
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder" />
 													</p:column>
 													<p:column headerText="Final Year Review">
-														<h:inputText value="#{item.summaryRaiting}" styleClass="bolder" 
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
+														<h:inputText value="#{item.summaryRaiting}"
+															styleClass="bolder" converter="javax.faces.Integer"
+															min="0" max="100" required="true" style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder" />
 													</p:column>
 												</p:dataTable>
@@ -219,16 +448,20 @@
 													<p:column headerText="Goal Title">
 														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
+													<p:column headerText="Goal Description">
+														<h:outputText value="#{item.sectionsData.goalDescription}"
+															styleClass="bolder" escape="false" />
+													</p:column>
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}" styleClass="bolder" 
+														<h:outputText value="#{item.weight}" styleClass="bolder"
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Final Year Review">
-														<h:inputText value="#{item.summaryRaiting}" styleClass="bolder" 
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
+														<h:inputText value="#{item.summaryRaiting}"
+															styleClass="bolder" converter="javax.faces.Integer"
+															min="0" max="100" required="true" style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder green" />
 													</p:column>
 												</p:dataTable>
@@ -258,17 +491,20 @@
 													<p:column headerText="Goal Title">
 														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
-
+													<p:column headerText="Goal Description">
+														<h:outputText value="#{item.sectionsData.goalDescription}"
+															styleClass="bolder" escape="false" />
+													</p:column>
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}" styleClass="bolder" 
+														<h:outputText value="#{item.weight}" styleClass="bolder"
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Final Year Review">
-														<h:inputText value="#{item.summaryRaiting}" styleClass="bolder" 
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
+														<h:inputText value="#{item.summaryRaiting}"
+															styleClass="bolder" converter="javax.faces.Integer"
+															min="0" max="100" required="true" style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder green" />
 													</p:column>
 												</p:dataTable>
@@ -298,16 +534,20 @@
 													<p:column headerText="Goal Title">
 														<h:outputText value="#{item.sectionsData.goalTitle}" />
 													</p:column>
+													<p:column headerText="Goal Description">
+														<h:outputText value="#{item.sectionsData.goalDescription}"
+															styleClass="bolder" escape="false" />
+													</p:column>
 													<p:column headerText="Goal weight">
-														<h:outputText value="#{item.weight}" styleClass="bolder" 
+														<h:outputText value="#{item.weight}" styleClass="bolder"
 															converter="javax.faces.Integer" min="0" max="100"
 															style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder blue" />
 													</p:column>
 													<p:column headerText="Final Year Review">
-														<h:inputText value="#{item.summaryRaiting}" styleClass="bolder" 
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
+														<h:inputText value="#{item.summaryRaiting}"
+															styleClass="bolder" converter="javax.faces.Integer"
+															min="0" max="100" required="true" style="width: 40px" />
 														<h:outputText value="%" styleClass="bolder green" />
 													</p:column>
 												</p:dataTable>
@@ -335,7 +575,7 @@
 										<div class="clearfix">
 											<p:inputTextarea
 												value="#{userAppraisalView.userAppraisalComment.content}"
-												styleClass="col-xs-12 col-sm-6" />
+												styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="This field is required. Please fill it out." />
 										</div>
 									</div>
 								</div>

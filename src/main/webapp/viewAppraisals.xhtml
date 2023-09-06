@@ -82,7 +82,7 @@
 						<h:outputLink
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning"
 							title="Edit" value="addEditAppraisals.xhtml"
-							rendered="#{appraisalsView.model.appraisalsStatus ne 'CLOSED'}">
+							rendered="#{appraisalsView.model.appraisalsStatus ne 'CLOSED' and appraisalsView.listenerEdit()}">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Edit" />
 							<f:param name="id" value="#{appraisalsView.id}" />
@@ -656,6 +656,15 @@
 													<i class="ace-icon fa fa-list-alt bigger-130 blue" />
 													<f:param name="id" value="#{item.id}" />
 												</h:outputLink>
+
+												<p:commandLink title="Delete"
+													action="#{appraisalsView.deleteUserAppraisal(item)}"
+													rendered="#{item.userAppraisalStatus eq 'CREATED' and sessionView.getIsMyPmHr()}"
+													update=":main_form:myTeamAppraisal,:main_form:myTeamNoAppraisal" process="@this"
+													style="margin-left:10px">
+													<i class="ace-icon fa fa-trash-o red" />
+
+												</p:commandLink>
 											</div>
 										</p:column>
 									</p:dataTable>
