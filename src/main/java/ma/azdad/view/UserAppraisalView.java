@@ -2991,4 +2991,24 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 		return true;
 	}
+	
+	
+	//BG img url
+	
+		public String bgImgUrl(String goalTitle) {
+			if(goalTitle.equals("Financial Excellence"))
+			return "resources/img/FE.png";
+			if(goalTitle.equals("Technical Excellence"))
+				return "resources/img/TE.png";
+			if(goalTitle.equals("Business Development"))
+				return "resources/img/BD.png";
+			if(goalTitle.equals("Governance "))
+				return "resources/img/G.png";
+			if(goalTitle.equals("Customer satisfaction"))
+				return "resources/img/CS.png";
+			
+			else return "resources/img/logo.png"; 
+		}
+		
+		
 }

@@ -135,10 +135,12 @@
 													<div class="widget-header widget-header-large">
 														<table width="100%" style="margin: 10px">
 															<tr>
+																														<td width="5%" ><img height="60px" width="100px" src="#{userAppraisalView.bgImgUrl(businessgoal.goalTitle)}" alt="Image" /></td>
+															
 																<td width="75%">
 																	<h4>
 																		<h:outputText
-																			value="BusinessGoal N° #{varStatus.index}"
+																			value="BusinessGoal N° #{varStatus.index+1}"
 																			styleClass="bolder blue" />
 																	</h4>
 																</td>
@@ -678,10 +680,11 @@
 													<div class="widget-header widget-header-large">
 														<table width="100%" style="margin: 10px">
 															<tr>
+															<td width="5%" ><img height="60px" width="100px" src="#{userAppraisalView.bgImgUrl(businessgoal.goalTitle)}" alt="Image" /></td>
 																<td width="75%">
 																	<h4>
 																		<h:outputText
-																			value="BusinessGoal N° #{varStatus.index}"
+																			value="BusinessGoal N° #{varStatus.index+1}"
 																			styleClass="bolder blue" />
 																	</h4>
 																</td>
