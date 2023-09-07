@@ -407,11 +407,11 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.FYR_EDITED));
 				break;
 			case 6:
-				initLists(service.findUserappraisalbykeyworker(sessionView.getUsername(),
+				initLists(service.findUserappraisalbykeyworkerMid(sessionView.getUsername(),
 						UserAppraisalStatus.SUBMITED_MID_YEAR));
 				break;
 			case 7:
-				initLists(service.findUserappraisalbykeyworker(sessionView.getUsername(),
+				initLists(service.findUserappraisalbykeyworkerFinal(sessionView.getUsername(),
 						UserAppraisalStatus.SUBMITED_FINAL_YEAR));
 				break;
 			default:
@@ -2904,7 +2904,48 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		try {
 			externalContext1.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String keyworkerSaveFinal() {
+		if(!validateFinalKeyWorker())
+			return null;
+		model = service.findOne(id);
+		ToNotify toNotify = service.findToNotify(sessionView.getUsername(), model);
+		toNotify.setRateFinal(tnt.getRateFinal());
+
+		List<ToNotify> toNotifyList = model.getToNotifyList();
+		boolean found = false;
+
+		for (int i = 0; i < toNotifyList.size(); i++) {
+			ToNotify toNotify2 = toNotifyList.get(i);
+			if (toNotify2.equals(toNotify)) {
+				toNotifyList.set(i, toNotify);
+				found = true;
+				break;
+			}
+		}
+
+		if (!found) {
+			toNotifyList.add(toNotify);
+		}
+		model = service.saveAndRefresh(model);
+		if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
+
+			userAppraisalComment.setDate(new Date());
+			userAppraisalComment.setTitle("Final KeyWorker Comment");
+			userAppraisalComment.setParent(model);
+			userAppraisalComment.setUser(sessionView.getUser());
+			model.addComment(userAppraisalComment);
+			model = service.saveAndRefresh(model);
+
+		}
+		ExternalContext externalContext1 = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			externalContext1.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -2913,12 +2954,41 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	
 		int rating = tnt.getRateMid();
 		if (rating < 0 || rating > 100) {
-			System.out.println("Non valide");
 			return FacesContextMessages.ErrorMessages("The RateMid should be between 0 and 100");
 		}
-		System.out.println(" valide");
-
 		return true;
 	}
-
+	
+	public Boolean validateFinalKeyWorker() {
+		
+		int rating = tnt.getRateFinal();
+		if (rating < 0 || rating > 100) {
+			return FacesContextMessages.ErrorMessages("The Final Rate should be between 0 and 100");
+		}
+		return true;
+	}
+	
+	public List<ToNotify> findToNotifyByUserAppraisalFinal(){
+		
+		return service.findToNotifyByUserAppraisalFinal(model);
+	}
+	
+	public List<ToNotify> findToNotifyByUserAppraisal(){
+		
+		return service.findToNotifyByUserAppraisal(model);
+	}
+	public Boolean isSavedKeyworkerFinal() {
+		ToNotify toNotify = service.findToNotify(sessionView.getUsername(), model);	
+		if (toNotify.getRateFinal()!=null) {
+			return false;
+		}
+		return true;
+	}
+	public Boolean isSavedKeyworkerMid() {
+		ToNotify toNotify = service.findToNotify(sessionView.getUsername(), model);	
+		if (toNotify.getRateMid()!=null) {
+			return false;
+		}
+		return true;
+	}
 }

@@ -47,6 +47,31 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return repos.findToNotify(u,uap);
 	}
 	
+	
+	@Cacheable("userappraisalService.findToNotifyByUserAppraisal")
+	public List<ToNotify> findToNotifyByUserAppraisal(UserAppraisal uap) {
+		
+		List<ToNotify> list = repos.findToNotifyByUserAppraisal(uap);
+		for (ToNotify userAppraisal : list) {
+			initialize(userAppraisal.getInternalResource());
+			//initialize(userAppraisal.getUserAppraisal());
+			
+		}
+		return list;
+	}
+	
+	@Cacheable("userappraisalService.findToNotifyByUserAppraisalFinal")
+	public List<ToNotify> findToNotifyByUserAppraisalFinal(UserAppraisal uap) {
+		
+		List<ToNotify> list = repos.findToNotifyByUserAppraisalFinal(uap);
+		for (ToNotify userAppraisal : list) {
+			initialize(userAppraisal.getInternalResource());
+			//initialize(userAppraisal.getUserAppraisal());
+			
+		}
+		return list;
+	}
+	
 	@Cacheable("userAppraisalService.findByEmployOrAppraisee")
 	public List<UserAppraisal> findByEmployOrAppraisee(User appraisee, User employ) {
 		
@@ -286,10 +311,26 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 		return list;
 	}
 	
-	@Cacheable("userAppraisalService.findUserappraisalbykeyworker")
-	public List<UserAppraisal> findUserappraisalbykeyworker(String username,UserAppraisalStatus stats1) {
+	@Cacheable("userAppraisalService.findUserappraisalbykeyworkerMid")
+	public List<UserAppraisal> findUserappraisalbykeyworkerMid(String username,UserAppraisalStatus stats1) {
 		
-		List<UserAppraisal> list = repos.findUserappraisalbykeyworker(username, stats1);
+		List<UserAppraisal> list = repos.findUserappraisalbykeyworkerMid(username, stats1);
+		for (UserAppraisal userAppraisal : list) {
+			initialize(userAppraisal.getAppraisal());
+			initialize(userAppraisal.getEmploy());
+			initialize(userAppraisal.getAppraisee());
+			initialize(userAppraisal.getCommentList());
+			initialize(userAppraisal.getFileList());
+			initialize(userAppraisal.getHistoryList());
+			
+		}
+
+		return list;
+	}
+	@Cacheable("userAppraisalService.findUserappraisalbykeyworkerFinal")
+	public List<UserAppraisal> findUserappraisalbykeyworkerFinal(String username,UserAppraisalStatus stats1) {
+		
+		List<UserAppraisal> list = repos.findUserappraisalbykeyworkerFinal(username, stats1);
 		for (UserAppraisal userAppraisal : list) {
 			initialize(userAppraisal.getAppraisal());
 			initialize(userAppraisal.getEmploy());
@@ -307,6 +348,14 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 	public Long countTocommentMid(String username,UserAppraisalStatus stats) {
 		
 		return repos.countTocommentMid(username,stats);
+	
+	}
+	
+	
+	@Cacheable("userAppraisalService.countTocommentFinal")
+	public Long countTocommentFinal(String username,UserAppraisalStatus stats) {
+		
+		return repos.countTocommentFinal(username,stats);
 	
 	}
 	

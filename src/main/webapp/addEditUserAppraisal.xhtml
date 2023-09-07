@@ -239,10 +239,17 @@
 						</p:commandLink>
 						
 						<h:outputLink value="addEditKeyworker.xhtml"
-							rendered="true"
+							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_MID_YEAR' and userAppraisalView.isSavedKeyworkerMid()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Keyworker Mid" />
+							<f:param name="id" value="#{userAppraisalView.model.id}" />
+						</h:outputLink>
+						<h:outputLink value="addEditKeyworkerFinal.xhtml"
+							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_FINAL_YEAR' and userAppraisalView.isSavedKeyworkerFinal()}"
+							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
+							<i class="ace-icon fa fa-edit bigger-230"></i>
+							<h:outputText value="Keyworker Final" />
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
 						</h:outputLink>
 					</div>
@@ -1673,7 +1680,57 @@
 </h:panelGroup>
 
 						</div>
+						  
+						  <div class="page-header hidden-xs">
+								<h1>
+									<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+									<h:outputText value="Keyworker Rating" />
+								</h1>
+							</div>
+							<div class="row">
 
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value="Keyworker Rating" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+
+											</h:commandLink>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+									<p:dataTable
+										value="#{userAppraisalView.findToNotifyByUserAppraisal()}"
+										var="item" rowKey="#{title}" id="s"
+										widgetVar="sectionslist" rows="20"
+										styleClass="table table-striped table-hover center"
+										paginator="true" paginatorAlwaysVisible="false"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+										rowSelectMode="checkbox" rowIndexVar="index">
+	
+										<p:column headerText="Full Name">
+											<h:outputText value="#{item.internalResource.fullName}"
+												styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Rate Mid">
+											<h:outputText value="#{item.rateMid}"
+												styleClass="bolder orange" escape="false" />
+										</p:column>
+										
+									</p:dataTable>
+								</div>
+
+							</div>
+
+							&nbsp;
 					</div>
 					<div id="tab6" class="tab-pane">
 
@@ -2106,6 +2163,55 @@
 </h:panelGroup>
 
 						</div>
+
+ <div class="page-header hidden-xs">
+								<h1>
+									<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+									<h:outputText value="Keyworker Rating" />
+								</h1>
+							</div>
+							<div class="row">
+
+								<div class="table-header col-sm-12 col-xs-12">
+									<div class="col-sm-8 col-xs-8">
+										<i class="fa fa-list" />
+										<h:outputText value="Keyworker Rating" />
+									</div>
+									<div class="col-sm-2 hidden-xs">
+										<div class="action-buttons center">
+											<h:commandLink styleClass="aa-tooltip tooltip-success"
+												title="Export to excel">
+
+											</h:commandLink>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+									<p:dataTable
+										value="#{userAppraisalView.findToNotifyByUserAppraisalFinal()}"
+										var="item" rowKey="#{title}" id="keyworker2"
+										widgetVar="sectionslist" rows="20"
+										styleClass="table table-striped table-hover center"
+										paginator="true" paginatorAlwaysVisible="false"
+										paginatorPosition="bottom"
+										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+										rowSelectMode="checkbox" rowIndexVar="index">
+	
+										<p:column headerText="Full Name">
+											<h:outputText value="#{item.internalResource.fullName}"
+												styleClass="bolder green" />
+										</p:column>
+										<p:column headerText="Rate Final">
+											<h:outputText value="#{item.rateFinal}"
+												styleClass="bolder orange" escape="false" />
+										</p:column>
+										
+									</p:dataTable>
+								</div>
+
+							</div>
 
 					</div>
 

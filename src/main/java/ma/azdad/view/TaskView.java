@@ -39,6 +39,9 @@ public class TaskView implements Serializable {
 	private Long totalToCommentMid;
 	private Long totalToCommentFinal;
 	
+	@Autowired
+	UserAppraisalView userAppraisalView;
+	
 	
 	public Long getTotalToCommentFinal() {
 		return totalToCommentFinal;
@@ -62,8 +65,11 @@ public class TaskView implements Serializable {
 		totalToApproveMid = userAppraisalService.countToApprovedMid(sessionView.getUser());
 		totalToApproveFinal = userAppraisalService.countToApprovedFinal(sessionView.getUser());
 		
-		totalToCommentMid = userAppraisalService.countTocommentMid(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_MID_YEAR);
-		totalToCommentFinal = userAppraisalService.countTocommentMid(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_FINAL_YEAR);
+			totalToCommentMid = userAppraisalService.countTocommentMid(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_MID_YEAR);
+			totalToCommentFinal = userAppraisalService.countTocommentFinal(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_FINAL_YEAR);
+
+	
+		
 
 		
 		totalToComment = totalToCommentMid + totalToCommentFinal;
