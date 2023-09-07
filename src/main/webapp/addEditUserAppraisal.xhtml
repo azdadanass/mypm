@@ -237,7 +237,7 @@
 							<i class="ace-icon fa fa-trash-o bigger-230"></i>
 							<h:outputText value="Delete" />
 						</p:commandLink>
-						
+
 						<h:outputLink value="addEditKeyworker.xhtml"
 							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_MID_YEAR' and userAppraisalView.isSavedKeyworkerMid()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
@@ -793,16 +793,18 @@
 								</h1>
 							</div>
 							<style>
-.tbl {
-	margin: 0 auto;
-	text-align: center;
+
+.planningtable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Cela assure que la table est centrée verticalement sur la page */
 }
 
 .tg {
-	border-collapse: collapse;
-	border-spacing: 0;
-	width: 800px; /* Largeur de la table */
-	text-align: center;
+    /* Supprimez la largeur fixe pour permettre au contenu de s'adapter à la largeur de la div parente */
+    width: auto;
+    text-align: center;
 }
 
 .tg td {
@@ -844,69 +846,71 @@
 	font-weight: bold;
 }
 </style>
-							<div class="tbl">
-								<table class="tg">
-									<thead>
-										<tr>
-											<th class="tg-9wq8" style="background-color: #b8cce4"
-												rowspan="2">Planning</th>
-											<th class="tg-lboi"
-												style="background-color: #17375d; color: white;">Planning
-												submitted to Manager</th>
-											<th class="tg-lboi"
-												style="background-color: #17375d; color: white;">Planning
-												approved by Manager</th>
-										</tr>
-										<tr>
-											<th class="tg-lboi"><h:outputText
-													value="#{userAppraisalView.model.dateStatsSubmited}"
-													styleClass="bolder" /></th>
-											<th class="tg-lboi"><h:outputText
-													value="#{userAppraisalView.model.dateStatsApproved}"
-													styleClass="bolder" /></th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td class="tg-9wq8" style="background-color: #dbe5f1"
-												rowspan="2">Midyear Review</td>
-											<td class="tg-lboi"
-												style="background-color: #17375d; color: white;">Mid
-												Year Review submitted by employee</td>
-											<td class="tg-lboi"
-												style="background-color: #17375d; color: white;">Mid
-												Year Review approved by Manager</td>
-										</tr>
-										<tr>
-											<td class="tg-lboi"><h:outputText
-													value="#{userAppraisalView.model.dateStatsSubmitedMidYear}"
-													styleClass="bolder" /></td>
-											<td class="tg-lboi"><h:outputText
-													value="#{userAppraisalView.model.dateStatsApprovedLMMidYear}"
-													styleClass="bolder" /></td>
-										</tr>
-										<tr>
-											<td class="tg-9wq8" style="background-color: #b8cce4"
-												rowspan="2">Final summary</td>
-											<td class="tg-lboi"
-												style="background-color: #17375d; color: white;">Summary
-												submitted by employee</td>
-											<td class="tg-lboi"
-												style="background-color: #17375d; color: white;">Summary
-												approved by Manager</td>
-										</tr>
-										<tr>
-											<td class="tg-lboi"><h:outputText
-													value="#{userAppraisalView.model.dateStatsSubmitedFinalYear}"
-													styleClass="bolder" /></td>
-											<td class="tg-lboi"><h:outputText
-													value="#{userAppraisalView.model.dateStatsApprovedLMFinalYear}"
-													styleClass="bolder" /></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+								<div class="planningtable">
+									<table class="tg">
+										<thead>
+											<tr>
+												<th class="tg-9wq8" style="background-color: #b8cce4"
+													rowspan="2">Planning</th>
+												<th class="tg-lboi"
+													style="background-color: #17375d; color: white;">Planning
+													submitted to Manager</th>
+												<th class="tg-lboi"
+													style="background-color: #17375d; color: white;">Planning
+													approved by Manager</th>
+											</tr>
+											<tr>
+												<th class="tg-lboi"><h:outputText
+														value="#{userAppraisalView.model.dateStatsSubmited}"
+														styleClass="bolder" /></th>
+												<th class="tg-lboi"><h:outputText
+														value="#{userAppraisalView.model.dateStatsApproved}"
+														styleClass="bolder" /></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td class="tg-9wq8" style="background-color: #dbe5f1"
+													rowspan="2">Midyear Review</td>
+												<td class="tg-lboi"
+													style="background-color: #17375d; color: white;">Mid
+													Year Review submitted by employee</td>
+												<td class="tg-lboi"
+													style="background-color: #17375d; color: white;">Mid
+													Year Review approved by Manager</td>
+											</tr>
+											<tr>
+												<td class="tg-lboi"><h:outputText
+														value="#{userAppraisalView.model.dateStatsSubmitedMidYear}"
+														styleClass="bolder" /></td>
+												<td class="tg-lboi"><h:outputText
+														value="#{userAppraisalView.model.dateStatsApprovedLMMidYear}"
+														styleClass="bolder" /></td>
+											</tr>
+											<tr>
+												<td class="tg-9wq8" style="background-color: #b8cce4"
+													rowspan="2">Final summary</td>
+												<td class="tg-lboi"
+													style="background-color: #17375d; color: white;">Summary
+													submitted by employee</td>
+												<td class="tg-lboi"
+													style="background-color: #17375d; color: white;">Summary
+													approved by Manager</td>
+											</tr>
+											<tr>
+												<td class="tg-lboi"><h:outputText
+														value="#{userAppraisalView.model.dateStatsSubmitedFinalYear}"
+														styleClass="bolder" /></td>
+												<td class="tg-lboi"><h:outputText
+														value="#{userAppraisalView.model.dateStatsApprovedLMFinalYear}"
+														styleClass="bolder" /></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 							<!-- 							<**************************************Business Goals******************************-->
+							<div class="space-16" />
+							<div class="space-16" />
 							<div class="space-16" />
 							<div class="page-header hidden-xs">
 								<h1>
@@ -1680,57 +1684,56 @@
 </h:panelGroup>
 
 						</div>
-						  
-						  <div class="page-header hidden-xs">
-								<h1>
-									<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+
+						<div class="page-header hidden-xs">
+							<h1>
+								<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+								<h:outputText value="Keyworker Rating" />
+							</h1>
+						</div>
+						<div class="row">
+
+							<div class="table-header col-sm-12 col-xs-12">
+								<div class="col-sm-8 col-xs-8">
+									<i class="fa fa-list" />
 									<h:outputText value="Keyworker Rating" />
-								</h1>
-							</div>
-							<div class="row">
-
-								<div class="table-header col-sm-12 col-xs-12">
-									<div class="col-sm-8 col-xs-8">
-										<i class="fa fa-list" />
-										<h:outputText value="Keyworker Rating" />
-									</div>
-									<div class="col-sm-2 hidden-xs">
-										<div class="action-buttons center">
-											<h:commandLink styleClass="aa-tooltip tooltip-success"
-												title="Export to excel">
-
-											</h:commandLink>
-										</div>
-									</div>
-
 								</div>
-								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+								<div class="col-sm-2 hidden-xs">
+									<div class="action-buttons center">
+										<h:commandLink styleClass="aa-tooltip tooltip-success"
+											title="Export to excel">
 
-									<p:dataTable
-										value="#{userAppraisalView.findToNotifyByUserAppraisal()}"
-										var="item" rowKey="#{title}" id="s"
-										widgetVar="sectionslist" rows="20"
-										styleClass="table table-striped table-hover center"
-										paginator="true" paginatorAlwaysVisible="false"
-										paginatorPosition="bottom"
-										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
-										rowSelectMode="checkbox" rowIndexVar="index">
-	
-										<p:column headerText="Full Name">
-											<h:outputText value="#{item.internalResource.fullName}"
-												styleClass="bolder green" />
-										</p:column>
-										<p:column headerText="Rate Mid">
-											<h:outputText value="#{item.rateMid}"
-												styleClass="bolder orange" escape="false" />
-										</p:column>
-										
-									</p:dataTable>
+										</h:commandLink>
+									</div>
 								</div>
 
 							</div>
+							<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
-							&nbsp;
+								<p:dataTable
+									value="#{userAppraisalView.findToNotifyByUserAppraisal()}"
+									var="item" rowKey="#{title}" id="s" widgetVar="sectionslist"
+									rows="20" styleClass="table table-striped table-hover center"
+									paginator="true" paginatorAlwaysVisible="false"
+									paginatorPosition="bottom"
+									paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+									rowSelectMode="checkbox" rowIndexVar="index">
+
+									<p:column headerText="Full Name">
+										<h:outputText value="#{item.internalResource.fullName}"
+											styleClass="bolder green" />
+									</p:column>
+									<p:column headerText="Rate Mid">
+										<h:outputText value="#{item.rateMid}"
+											styleClass="bolder orange" escape="false" />
+									</p:column>
+
+								</p:dataTable>
+							</div>
+
+						</div>
+
+						&nbsp;
 					</div>
 					<div id="tab6" class="tab-pane">
 
@@ -2164,54 +2167,54 @@
 
 						</div>
 
- <div class="page-header hidden-xs">
-								<h1>
-									<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+						<div class="page-header hidden-xs">
+							<h1>
+								<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+								<h:outputText value="Keyworker Rating" />
+							</h1>
+						</div>
+						<div class="row">
+
+							<div class="table-header col-sm-12 col-xs-12">
+								<div class="col-sm-8 col-xs-8">
+									<i class="fa fa-list" />
 									<h:outputText value="Keyworker Rating" />
-								</h1>
-							</div>
-							<div class="row">
-
-								<div class="table-header col-sm-12 col-xs-12">
-									<div class="col-sm-8 col-xs-8">
-										<i class="fa fa-list" />
-										<h:outputText value="Keyworker Rating" />
-									</div>
-									<div class="col-sm-2 hidden-xs">
-										<div class="action-buttons center">
-											<h:commandLink styleClass="aa-tooltip tooltip-success"
-												title="Export to excel">
-
-											</h:commandLink>
-										</div>
-									</div>
-
 								</div>
-								<div class="col-sm-12 col-xs-12 aa-datatable-container">
+								<div class="col-sm-2 hidden-xs">
+									<div class="action-buttons center">
+										<h:commandLink styleClass="aa-tooltip tooltip-success"
+											title="Export to excel">
 
-									<p:dataTable
-										value="#{userAppraisalView.findToNotifyByUserAppraisalFinal()}"
-										var="item" rowKey="#{title}" id="keyworker2"
-										widgetVar="sectionslist" rows="20"
-										styleClass="table table-striped table-hover center"
-										paginator="true" paginatorAlwaysVisible="false"
-										paginatorPosition="bottom"
-										paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
-										rowSelectMode="checkbox" rowIndexVar="index">
-	
-										<p:column headerText="Full Name">
-											<h:outputText value="#{item.internalResource.fullName}"
-												styleClass="bolder green" />
-										</p:column>
-										<p:column headerText="Rate Final">
-											<h:outputText value="#{item.rateFinal}"
-												styleClass="bolder orange" escape="false" />
-										</p:column>
-										
-									</p:dataTable>
+										</h:commandLink>
+									</div>
 								</div>
 
 							</div>
+							<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+								<p:dataTable
+									value="#{userAppraisalView.findToNotifyByUserAppraisalFinal()}"
+									var="item" rowKey="#{title}" id="keyworker2"
+									widgetVar="sectionslist" rows="20"
+									styleClass="table table-striped table-hover center"
+									paginator="true" paginatorAlwaysVisible="false"
+									paginatorPosition="bottom"
+									paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+									rowSelectMode="checkbox" rowIndexVar="index">
+
+									<p:column headerText="Full Name">
+										<h:outputText value="#{item.internalResource.fullName}"
+											styleClass="bolder green" />
+									</p:column>
+									<p:column headerText="Rate Final">
+										<h:outputText value="#{item.rateFinal}"
+											styleClass="bolder orange" escape="false" />
+									</p:column>
+
+								</p:dataTable>
+							</div>
+
+						</div>
 
 					</div>
 
