@@ -105,7 +105,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SupplementaryGoals> editsuppl3 = new ArrayList<>();
 	private List<SupplementaryGoals> editsuppl4 = new ArrayList<>();
 	private List<SupplementaryGoals> editsuppl5 = new ArrayList<>();
-	
+
 	private ToNotify tnt = new ToNotify();
 
 	private List<String> goalTitleList;
@@ -128,7 +128,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	@PostConstruct
 	public void init() {
 		super.init();
-		
 		// chart*****************************
 		businessGoalsListEdit = new ArrayList<>();
 		editBusinessGoals();
@@ -408,10 +407,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.FYR_EDITED));
 				break;
 			case 6:
-				initLists(service.findUserappraisalbykeyworker(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_MID_YEAR));
+				initLists(service.findUserappraisalbykeyworker(sessionView.getUsername(),
+						UserAppraisalStatus.SUBMITED_MID_YEAR));
 				break;
 			case 7:
-				initLists(service.findUserappraisalbykeyworker(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_FINAL_YEAR));
+				initLists(service.findUserappraisalbykeyworker(sessionView.getUsername(),
+						UserAppraisalStatus.SUBMITED_FINAL_YEAR));
 				break;
 			default:
 				break;
@@ -646,7 +647,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		List<Sections> s = userAppraisalService.findSectionByEligible(ua);
 		return s;
 	}
-	
+
 	// Business Goals
 	public Boolean validateBusinessMidYear() {
 		Date dt = new Date();
@@ -699,7 +700,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public void fillSupp1() {
-		
+
 		editSupplementaryGoals();
 		List<SectionsData> secdata = userAppraisalService.findSectionDataByGoalId(1);
 		suppl1 = new ArrayList<>();
@@ -731,7 +732,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		suppl2 = new ArrayList<>();
 		secdata = userAppraisalService.findSectionDataByGoalId(2);
 		if (isElig(2)) {
-			
+
 			int k = 0;
 			for (SectionsData se : secdata) {
 				if (getIntegerParameter("isEdit") == 1) {
@@ -757,7 +758,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	}
 
 	public void fillSupp3() {
-		
+
 		editSupplementaryGoals();
 		List<SectionsData> secdata = new ArrayList<>();
 		suppl3 = new ArrayList<>();
@@ -937,9 +938,8 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return true;
 	}
 
-
 	public Boolean validateWeightSuppGoals() {
-	
+
 		if (getIntegerParameter("isEdit") == 0) {
 			int weightTotal1 = 0;
 			int weightTotal2 = 0;
@@ -981,7 +981,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 
 		}
 		if (getIntegerParameter("isEdit") == 1) {
-			
+
 			int weightTotal1 = 0;
 			int weightTotal2 = 0;
 			int weightTotal3 = 0;
@@ -989,7 +989,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			int weightTotal5 = 0;
 
 			for (int i = 0; i < suppl1.size(); i++) {
-				
+
 				weightTotal1 = weightTotal1 + suppl1.get(i).getWeight();
 			}
 			for (int i = 0; i < suppl2.size(); i++) {
@@ -1032,8 +1032,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean canSaveBusinessGoals() {
 		return sessionView.getIsMyPm();
 	}
-	
-
 
 	public String saveBusinessGoals() {
 		if (!canSaveBusinessGoals())
@@ -1047,11 +1045,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				BusinessGoals businessGoals = new BusinessGoals(businessGoalsList.get(i).getGoalDetails(),
 						businessGoalsList.get(i).getGoalTitle(), businessGoalsList.get(i).getGoalWeight(),
 						businessGoalsList.get(i).getMidYearReview(), businessGoalsList.get(i).getSummaryRaiting(),
-						businessGoalsList.get(i).getSections()
-				);
+						businessGoalsList.get(i).getSections());
 				businessGoalsService.save(businessGoals);
 			}
-			
+
 		}
 		if (getIntegerParameter("isEdit") == 1) {
 			for (int i = 0; i < businessGoalsListEdit.size(); i++) {
@@ -1265,59 +1262,60 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		evictCache();
 	}
 
-	// ################################# Auto Mid/Final YEAr ###############################################
-	
-		@Scheduled(fixedRate = 30000)
-		public void autoMidFinalAssesment() {
-			for (UserAppraisal ap : findAll()) {
+	// ################################# Auto Mid/Final YEAr
+	// ###############################################
 
-				midSelfAssessment(ap);
-				finalSelfAssessment(ap);
+	@Scheduled(fixedRate = 30000)
+	public void autoMidFinalAssesment() {
+		for (UserAppraisal ap : findAll()) {
 
-			}
+			midSelfAssessment(ap);
+			finalSelfAssessment(ap);
+
 		}
+	}
 
-		// ################################# Final YEAr ###############################################
+	// ################################# Final YEAr
+	// ###############################################
 
-		public Boolean canFinalSelfAssessment(UserAppraisal us) {
-			return UserAppraisalStatus.MYR_APPROVED_LM.equals(us.getUserAppraisalStatus()) 
-					&& us.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
-		}
+	public Boolean canFinalSelfAssessment(UserAppraisal us) {
+		return UserAppraisalStatus.MYR_APPROVED_LM.equals(us.getUserAppraisalStatus())
+				&& us.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.FINAL_REVIEW);
+	}
 
-		//@Scheduled(fixedRate = 30000)
-		public void finalSelfAssessment(UserAppraisal us) {
-			if (!canFinalSelfAssessment(us))
-				return;
+	// @Scheduled(fixedRate = 30000)
+	public void finalSelfAssessment(UserAppraisal us) {
+		if (!canFinalSelfAssessment(us))
+			return;
 
-			us.setDateStatsSelfAssessmentFinalYear(new Date());
-			us.setUserAppraisalStatus(UserAppraisalStatus.FYR_SELF_ASSESSMENT);
-			us.addHistory(new UserAppraisalHistory(us.getUserAppraisalStatus().getValue(), us.getEmploy(),
-					 us.getEmploy() + " has change " + 	 us.getEmploy() + " to FINAL YEAR Appraisal"));
-			service.save(us);
-			//model = service.findOne(model.getId());
-			evictCache();
-		}
-		
-		// ############### MID YEAr ########################
+		us.setDateStatsSelfAssessmentFinalYear(new Date());
+		us.setUserAppraisalStatus(UserAppraisalStatus.FYR_SELF_ASSESSMENT);
+		us.addHistory(new UserAppraisalHistory(us.getUserAppraisalStatus().getValue(), us.getEmploy(),
+				us.getEmploy() + " has change " + us.getEmploy() + " to FINAL YEAR Appraisal"));
+		service.save(us);
+		// model = service.findOne(model.getId());
+		evictCache();
+	}
 
-		public Boolean canMidSelfAssessment(UserAppraisal us) {
-			return (UserAppraisalStatus.APPROVED.equals(us.getUserAppraisalStatus())) 
-					&& us.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW);
-		}
+	// ############### MID YEAr ########################
 
-		
-		public synchronized void midSelfAssessment(UserAppraisal us) {
-			if (!canMidSelfAssessment(us))
-				return;
+	public Boolean canMidSelfAssessment(UserAppraisal us) {
+		return (UserAppraisalStatus.APPROVED.equals(us.getUserAppraisalStatus()))
+				&& us.getAppraisal().getAppraisalsStatus().equals(AppraisalsStatus.MID_YEAR_REVIEW);
+	}
 
-			us.setDateStatsSelfAssessmentMidYear(new Date());
-			us.setUserAppraisalStatus(UserAppraisalStatus.MYR_SELF_ASSESSMENT);
-			us.addHistory(new UserAppraisalHistory(us.getUserAppraisalStatus().getValue(), us.getEmploy(),
-					us.getEmploy() + " has Change " + us.getEmploy().getFullName() + " to MID YEAR Appraisal"));
-			service.save(us);
-			
-			evictCache();
-		}
+	public synchronized void midSelfAssessment(UserAppraisal us) {
+		if (!canMidSelfAssessment(us))
+			return;
+
+		us.setDateStatsSelfAssessmentMidYear(new Date());
+		us.setUserAppraisalStatus(UserAppraisalStatus.MYR_SELF_ASSESSMENT);
+		us.addHistory(new UserAppraisalHistory(us.getUserAppraisalStatus().getValue(), us.getEmploy(),
+				us.getEmploy() + " has Change " + us.getEmploy().getFullName() + " to MID YEAR Appraisal"));
+		service.save(us);
+
+		evictCache();
+	}
 
 	public Boolean canFYREdited() {
 		return UserAppraisalStatus.FYR_SELF_ASSESSMENT.equals(model.getUserAppraisalStatus())
@@ -1479,6 +1477,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	// files
 	private UserAppraisalFile file;
 	private String fileType;
+
 	public Boolean canAddFile() {
 		return sessionView.getIsInternalAdmin();
 	}
@@ -1526,7 +1525,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	// comments
 	private UserAppraisalComment comment = new UserAppraisalComment();
 	private UserAppraisalComment userAppraisalComment = new UserAppraisalComment();
-	
+
 	public UserAppraisalComment getUserAppraisalComment() {
 		return userAppraisalComment;
 	}
@@ -1679,9 +1678,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 	}
 
 	public Boolean canAddSupplementaryGoals() {
@@ -1821,9 +1820,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void addToNotifyItem() {
 
 		User toNotifyUser = userService.findOne(toNotifyUserUsername);
-		if (model.getToNotifyList().stream().filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
+		if (model.getToNotifyList().stream()
+				.filter(i -> i.getInternalResource().getUsername().equals(toNotifyUser.getUsername())).count() == 0)
 			model.getToNotifyList().add(new ToNotify(toNotifyUser, model));
-		  model = service.saveAndRefresh(model);
+		model = service.saveAndRefresh(model);
 
 	}
 
@@ -1907,7 +1907,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				model.addComment(userAppraisalComment);
 				model = service.saveAndRefresh(model);
 
-				
 			}
 			edited();
 			step++;
@@ -2099,7 +2098,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			businessGoalsService.save(bg);
 		}
 	}
-	
+
 	public void saveFinalSupplementaryGoals() {
 
 		int l = 0;
@@ -2182,7 +2181,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (!validateWeightFinalSupplementaryGoals())
 				return null;
 			saveFinalSupplementaryGoals();
-			
+
 			stepFinal++;
 			break;
 		case 3:
@@ -2422,17 +2421,16 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			}
 		}
 	}
-		
+
 	public void addCommentApproved() {
-		
+
 		comment.setTitle("Final comment Line manager");
 		comment.setDate(new Date());
 		comment.setUser(sessionView.getUser());
 		model.addComment(comment);
 		model = service.saveAndRefresh(model);
 	}
-	
-	
+
 	public UserAppraisalComment getCommentByTitle() {
 		model = service.findOne(id);
 		return userAppraisalRepos.findCommentByTitle(model);
@@ -2607,7 +2605,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			if (b2.getGoalWeight() <= 0 || b2.getGoalWeight() > 100) {
 				return FacesContextMessages.ErrorMessages("Weight should be between 1 and 100");
 			}
-			
+
 		}
 		if (getIntegerParameter("isEdit") == 1) {
 			if (b2.getGoalWeight() <= 0 || b2.getGoalWeight() > 100) {
@@ -2616,240 +2614,241 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 		return true;
 	}
-	
+
 	public void finalCalculBG() {
 		double somme;
 		double sommeMid;
 		double sommeFinal;
 		double somme1;
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.MYR_EDITED)) {
-			 somme=0;
-			 sommeMid=0;
-			 somme1=0;
+			somme = 0;
+			sommeMid = 0;
+			somme1 = 0;
 
 			for (BusinessGoals bg : businessGoalsRepos.findBySectionsUserAppraisal(model)) {
-				sommeMid+=bg.getGoalWeight()*bg.getMidYearReview();
+				sommeMid += bg.getGoalWeight() * bg.getMidYearReview();
 			}
-			somme=sommeMid/100;
-			Sections s=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 0);
+			somme = sommeMid / 100;
+			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 0);
 			s.setMidYearReview(somme);
 			s.setSummaryRaiting(somme1);
 			sectionsService.save(s);
 
 		}
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.FYR_EDITED)) {
 			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 0);
-			
-			sommeFinal=s.getSummaryRaiting();
-			
-			for (BusinessGoals bg : businessGoalsRepos.findBySectionsUserAppraisal(model)) {
-				
-				sommeFinal+=bg.getGoalWeight()*bg.getSummaryRaiting();
 
-			}		
-			somme1=sommeFinal/100;
-			Sections ss=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 0);
+			sommeFinal = s.getSummaryRaiting();
+
+			for (BusinessGoals bg : businessGoalsRepos.findBySectionsUserAppraisal(model)) {
+
+				sommeFinal += bg.getGoalWeight() * bg.getSummaryRaiting();
+
+			}
+			somme1 = sommeFinal / 100;
+			Sections ss = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 0);
 			ss.setSummaryRaiting(somme1);
 			sectionsService.save(ss);
 		}
-	
+
 	}
-	
+
 	public void finalCalculSupp1() {
 		double somme;
 		double sommeMid;
 		double sommeFinal;
 		double somme1;
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.MYR_EDITED)) {
-			 somme=0;
-			 sommeMid=0;
-			 somme1=0;
-			
+			somme = 0;
+			sommeMid = 0;
+			somme1 = 0;
+
 			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 1)) {
-				sommeMid+=supp.getWeight()*supp.getMidYearReview();
+				sommeMid += supp.getWeight() * supp.getMidYearReview();
 			}
-			somme=sommeMid/100;
-			Sections s=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 1);
+			somme = sommeMid / 100;
+			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 1);
 			s.setMidYearReview(somme);
 			s.setSummaryRaiting(somme1);
 			sectionsService.save(s);
 		}
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.FYR_EDITED)) {
 			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 1);
-			
-			sommeFinal=s.getSummaryRaiting();
-			
-			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 1)) {
-				sommeFinal+=supp.getWeight()*supp.getSummaryRaiting();
-			}
-			somme1=sommeFinal/100;
 
-			Sections ss=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 1);
+			sommeFinal = s.getSummaryRaiting();
+
+			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 1)) {
+				sommeFinal += supp.getWeight() * supp.getSummaryRaiting();
+			}
+			somme1 = sommeFinal / 100;
+
+			Sections ss = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 1);
 			ss.setSummaryRaiting(somme1);
 			sectionsService.save(ss);
-		}		
+		}
 	}
-	
-	
-	
+
 	public void finalCalculSupp2() {
 		double somme;
 		double sommeMid;
 		double sommeFinal;
 		double somme1;
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.MYR_EDITED)) {
-			 somme=0;
-			 sommeMid=0;
-			 somme1=0;
-			
+			somme = 0;
+			sommeMid = 0;
+			somme1 = 0;
+
 			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 2)) {
-				sommeMid+=supp.getWeight()*supp.getMidYearReview();
+				sommeMid += supp.getWeight() * supp.getMidYearReview();
 			}
-			somme=sommeMid/100;
-			Sections s=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 2);
+			somme = sommeMid / 100;
+			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 2);
 			s.setMidYearReview(somme);
 			s.setSummaryRaiting(somme1);
 			sectionsService.save(s);
 		}
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.FYR_EDITED)) {
 			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 2);
-			
-			sommeFinal=s.getSummaryRaiting();
-			
-			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 2)) {
-				sommeFinal+=supp.getWeight()*supp.getSummaryRaiting();
-			}
-			somme1=sommeFinal/100;
 
-			Sections ss=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 2);
+			sommeFinal = s.getSummaryRaiting();
+
+			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 2)) {
+				sommeFinal += supp.getWeight() * supp.getSummaryRaiting();
+			}
+			somme1 = sommeFinal / 100;
+
+			Sections ss = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 2);
 			ss.setSummaryRaiting(somme1);
 			sectionsService.save(ss);
-		}		
+		}
 	}
-	
+
 	public void finalCalculSupp3() {
-		
+
 		double somme;
 		double sommeMid;
 		double sommeFinal;
 		double somme1;
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.MYR_EDITED)) {
-			 somme=0;
-			 sommeMid=0;
-			 somme1=0;
-			
+			somme = 0;
+			sommeMid = 0;
+			somme1 = 0;
+
 			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 3)) {
-				sommeMid+=supp.getWeight()*supp.getMidYearReview();
+				sommeMid += supp.getWeight() * supp.getMidYearReview();
 			}
-			somme=sommeMid/100;
-			Sections s=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 3);
+			somme = sommeMid / 100;
+			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 3);
 			s.setMidYearReview(somme);
 			s.setSummaryRaiting(somme1);
 			sectionsService.save(s);
 		}
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.FYR_EDITED)) {
 			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 3);
-			
-			sommeFinal=s.getSummaryRaiting();
-			
-			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 3)) {
-				sommeFinal+=supp.getWeight()*supp.getSummaryRaiting();
-			}
-			somme1=sommeFinal/100;
 
-			Sections ss=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 3);
+			sommeFinal = s.getSummaryRaiting();
+
+			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 3)) {
+				sommeFinal += supp.getWeight() * supp.getSummaryRaiting();
+			}
+			somme1 = sommeFinal / 100;
+
+			Sections ss = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 3);
 			ss.setSummaryRaiting(somme1);
 			sectionsService.save(ss);
-		}		
+		}
 	}
+
 	public void finalCalculSupp4() {
 		double somme;
 		double sommeMid;
 		double sommeFinal;
 		double somme1;
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.MYR_EDITED)) {
-			 somme=0;
-			 sommeMid=0;
-			 somme1=0;
-			
+			somme = 0;
+			sommeMid = 0;
+			somme1 = 0;
+
 			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 4)) {
-				sommeMid+=supp.getWeight()*supp.getMidYearReview();
+				sommeMid += supp.getWeight() * supp.getMidYearReview();
 			}
-			somme=sommeMid/100;
-			Sections s=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 4);
+			somme = sommeMid / 100;
+			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 4);
 			s.setMidYearReview(somme);
 			s.setSummaryRaiting(somme1);
 			sectionsService.save(s);
 		}
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.FYR_EDITED)) {
 			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 4);
-			
-			sommeFinal=s.getSummaryRaiting();
-			
-			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 4)) {
-				sommeFinal+=supp.getWeight()*supp.getSummaryRaiting();
-			}
-			somme1=sommeFinal/100;
 
-			Sections ss=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 4);
+			sommeFinal = s.getSummaryRaiting();
+
+			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 4)) {
+				sommeFinal += supp.getWeight() * supp.getSummaryRaiting();
+			}
+			somme1 = sommeFinal / 100;
+
+			Sections ss = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 4);
 			ss.setSummaryRaiting(somme1);
 			sectionsService.save(ss);
-		}		
+		}
 	}
+
 	public void finalCalculSupp5() {
-		
+
 		double somme;
 		double sommeMid;
 		double sommeFinal;
 		double somme1;
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.MYR_EDITED)) {
-			 somme=0;
-			 sommeMid=0;
-			 somme1=0;
-			
+			somme = 0;
+			sommeMid = 0;
+			somme1 = 0;
+
 			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 5)) {
-				sommeMid+=supp.getWeight()*supp.getMidYearReview();
+				sommeMid += supp.getWeight() * supp.getMidYearReview();
 			}
-			somme=sommeMid/100;
-			Sections s=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 5);
+			somme = sommeMid / 100;
+			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 5);
 			s.setMidYearReview(somme);
 			s.setSummaryRaiting(somme1);
 			sectionsService.save(s);
 		}
-		
+
 		if (model.getUserAppraisalStatus().equals(UserAppraisalStatus.FYR_EDITED)) {
 			Sections s = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 5);
-			
-			sommeFinal=s.getSummaryRaiting();
-			
-			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 5)) {
-				sommeFinal+=supp.getWeight()*supp.getSummaryRaiting();
-			}
-			somme1=sommeFinal/100;
 
-			Sections ss=userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 5);
+			sommeFinal = s.getSummaryRaiting();
+
+			for (SupplementaryGoals supp : supplementaryGoalsRepos.findByUserAppraisal(model, 5)) {
+				sommeFinal += supp.getWeight() * supp.getSummaryRaiting();
+			}
+			somme1 = sommeFinal / 100;
+
+			Sections ss = userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, 5);
 			ss.setSummaryRaiting(somme1);
 			sectionsService.save(ss);
-		}		
+		}
 	}
 
 	public Sections getSection(int s) {
-		
-		return userAppraisalRepos.findSectionByUserAppraisalAndNumber(model,s);
+
+		return userAppraisalRepos.findSectionByUserAppraisalAndNumber(model, s);
 	}
+
 	public void deleteUserAppraisal1() {
-			int id=model.getAppraisal().getId();
+		int id = model.getAppraisal().getId();
 		try {
 			service.delete(model);
 			evictCache();
@@ -2859,9 +2858,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
 	public ToNotify getTnt() {
 		return tnt;
 	}
@@ -2870,24 +2867,58 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		this.tnt = tnt;
 	}
 
-	public void keyworkerSave() {
-			
-		//tnt = new ToNotify();
+	public String keyworkerSave() {
+		if(!validateMidKeyWorker())
+			return null;
 		model = service.findOne(id);
-		
-		ToNotify toNotify =	service.findToNotify(sessionView.getUsername(),model);
-		tnt.setInternalResource(toNotify.getInternalResource());
-		tnt.setUserAppraisal(toNotify.getUserAppraisal());
-		System.out.println("tonotify :"+toNotify);
-		System.out.println("tnt: " + tnt);
-		System.out.println("tnt.rateMid: " + tnt.getRateMid()); 
-		
-		/*
-		 * toNotify.setRateMid(tnt.getRateMid()); model.getToNotifyList().add(toNotify);
-		 * model = service.saveAndRefresh(model);
-		 */
-		
+		ToNotify toNotify = service.findToNotify(sessionView.getUsername(), model);
+		toNotify.setRateMid(tnt.getRateMid());
 
+		List<ToNotify> toNotifyList = model.getToNotifyList();
+		boolean found = false;
+
+		for (int i = 0; i < toNotifyList.size(); i++) {
+			ToNotify toNotify2 = toNotifyList.get(i);
+			if (toNotify2.equals(toNotify)) {
+				toNotifyList.set(i, toNotify);
+				found = true;
+				break;
+			}
+		}
+
+		if (!found) {
+			toNotifyList.add(toNotify);
+		}
+		model = service.saveAndRefresh(model);
+		if (!StringUtils.isBlank(userAppraisalComment.getContent())) {
+
+			userAppraisalComment.setDate(new Date());
+			userAppraisalComment.setTitle("Mid KeyWorker Comment");
+			userAppraisalComment.setParent(model);
+			userAppraisalComment.setUser(sessionView.getUser());
+			model.addComment(userAppraisalComment);
+			model = service.saveAndRefresh(model);
+
+		}
+		ExternalContext externalContext1 = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			externalContext1.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public Boolean validateMidKeyWorker() {
+	
+		int rating = tnt.getRateMid();
+		if (rating < 0 || rating > 100) {
+			System.out.println("Non valide");
+			return FacesContextMessages.ErrorMessages("The RateMid should be between 0 and 100");
+		}
+		System.out.println(" valide");
+
+		return true;
 	}
 
 }

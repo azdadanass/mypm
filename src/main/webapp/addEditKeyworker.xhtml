@@ -31,15 +31,18 @@
 
 
 	<ui:define name="body">
+		<h:form id="main_form">
+
+						<p:messages id="messages" closable="true" />
 
 
-		<div class="page-header hidden-xs">
-			<h1>
-				<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
-				<h:outputText value="Rating scale" />
-			</h1>
-		</div>
-		<style>
+			<div class="page-header hidden-xs">
+				<h1>
+					<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+					<h:outputText value="Rating scale" />
+				</h1>
+			</div>
+			<style>
 .tbl {
 	margin: 0 auto;
 	text-align: center;
@@ -92,106 +95,105 @@
 	font-weight: bold;
 }
 </style>
-		<div class="tbl">
-			<table class="tg">
-				<thead>
-					<tr>
+			<div class="tbl">
+				<table class="tg">
+					<thead>
+						<tr>
 
-						<th class="tg-lboi"
-							style="background-color: #17375d; color: white;">Rate</th>
-						<th class="tg-lboi"
-							style="background-color: #17375d; color: white;">Note</th>
-						<th class="tg-lboi"
-							style="background-color: #17375d; color: white;">Rating
-							Description</th>
-					</tr>
+							<th class="tg-lboi"
+								style="background-color: #17375d; color: white;">Rate</th>
+							<th class="tg-lboi"
+								style="background-color: #17375d; color: white;">Note</th>
+							<th class="tg-lboi"
+								style="background-color: #17375d; color: white;">Rating
+								Description</th>
+						</tr>
 
-				</thead>
-				<tbody>
-					<tr>
-						<th class="tg-lboi">E (5)</th>
-						<th class="tg-lboi">100</th>
-						<th class="tg-lboi">*E (5) Exceptional Consistently exceeds
-							job requirements of the position</th>
-					</tr>
-					<tr>
-						<td class="tg-lboi">H (4)</td>
-						<td class="tg-lboi">80</td>
-						<td class="tg-lboi">H (4) Highly satisfactory Occasionally
-							exceeds job requirements of the position</td>
-					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="tg-lboi">E (5)</th>
+							<th class="tg-lboi">100</th>
+							<th class="tg-lboi">*E (5) Exceptional Consistently exceeds
+								job requirements of the position</th>
+						</tr>
+						<tr>
+							<td class="tg-lboi">H (4)</td>
+							<td class="tg-lboi">80</td>
+							<td class="tg-lboi">H (4) Highly satisfactory Occasionally
+								exceeds job requirements of the position</td>
+						</tr>
 
-					<tr>
-						<td class="tg-lboi">S (3)</td>
-						<td class="tg-lboi">50</td>
-						<td class="tg-lboi">S (3) Satisfactory Consistently meets job
-							requirements; performance is fully acceptable</td>
-					</tr>
-					<tr>
-						<td class="tg-lboi">N (2)</td>
-						<td class="tg-lboi">30</td>
-						<td class="tg-lboi">N (2) Needs improvement Performs at
-							minimum level; significant improvement necessary</td>
-					</tr>
-					<tr>
-						<td class="tg-lboi">U (1)</td>
-						<td class="tg-lboi">10</td>
-						<td class="tg-lboi">U (1) Unsatisfactory Employee does not
-							perform at an acceptable level</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="col-xs-4 col-sm-4">
-			<div class="profile-user-info profile-user-info-striped">
-				<div class="profile-info-row ">
+						<tr>
+							<td class="tg-lboi">S (3)</td>
+							<td class="tg-lboi">50</td>
+							<td class="tg-lboi">S (3) Satisfactory Consistently meets
+								job requirements; performance is fully acceptable</td>
+						</tr>
+						<tr>
+							<td class="tg-lboi">N (2)</td>
+							<td class="tg-lboi">30</td>
+							<td class="tg-lboi">N (2) Needs improvement Performs at
+								minimum level; significant improvement necessary</td>
+						</tr>
+						<tr>
+							<td class="tg-lboi">U (1)</td>
+							<td class="tg-lboi">10</td>
+							<td class="tg-lboi">U (1) Unsatisfactory Employee does not
+								perform at an acceptable level</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-xs-4 col-sm-4">
+				<div class="profile-user-info profile-user-info-striped">
+					<div class="profile-info-row ">
 
-					<div class="profile-info-name">
-						<h:outputText value="Mid Rate" />
-					</div>
-					<div class="profile-info-value">
-						<h:inputText value="#{userAppraisalView.tnt.rateMid}"
-							styleClass="orange" />
-						&nbsp;
+						<div class="profile-info-name">
+							<h:outputText value="Mid Rate" />
+						</div>
+						<div class="profile-info-value">
+							<p:inputNumber value="#{userAppraisalView.tnt.rateMid}"
+								styleClass="orange" required="true" requiredMessage="This field is required. Please Enter the Rate."/>
+							&nbsp;
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="space-16" />
-		<div class="space-16" />
-		<div class="space-16" />
+			<div class="space-16" />
+			<div class="space-16" />
+			<div class="space-16" />
 
 
-		<!-- Comment  -->
+			<!-- Comment  -->
 
-		<h3 class="lighter block green">
-			<i class="ace-icon fa fa-comment-o" />
-			<h:outputText value=" Add Comment" />
-		</h3>
-		<div class="row">
-			<div class="col-xs-12 col-sm-3">
-				<label class="control-label pull-right"> <h:outputText
-						value="Comment " />
-				</label>
-			</div>
-			<div class="col-xs-12 col-sm-9">
-				<div class="clearfix">
-					<p:inputTextarea
-						value="#{userAppraisalView.userAppraisalComment.content}"
-						styleClass="col-xs-12 col-sm-6" required="true"
-						requiredMessage="This field is required. Please fill it out." />
+			<h3 class="lighter block green">
+				<i class="ace-icon fa fa-comment-o" />
+				<h:outputText value=" Add Comment" />
+			</h3>
+			<div class="row">
+				<div class="col-xs-12 col-sm-3">
+					<label class="control-label pull-right"> <h:outputText
+							value="Comment " />
+					</label>
+				</div>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						<p:inputTextarea
+							value="#{userAppraisalView.userAppraisalComment.content}"
+							styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="This field is required. Please fill it out."/>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<p:commandLink id="sub" action="#{userAppraisalView.keyworkerSave()}"
-			styleClass="btn btn-success btn-next">
-		
-			<h:outputText value="subbmit" />
-			<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-		</p:commandLink>
+			<p:commandLink id="sub" action="#{userAppraisalView.keyworkerSave()}"
+				styleClass="btn btn-success btn-next" update="messages">
 
+				<h:outputText value="subbmit" />
+				<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+			</p:commandLink>
 
+		</h:form>
 	</ui:define>
 
 	<ui:include src="fileFooter.xhtml" />
