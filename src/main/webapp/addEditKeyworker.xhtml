@@ -31,8 +31,7 @@
 
 
 	<ui:define name="body">
-
-
+			<h:form id="main_form">
 		<div class="page-header hidden-xs">
 			<h1>
 				<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
@@ -152,6 +151,7 @@
 					<div class="profile-info-value">
 						<h:inputText value="#{userAppraisalView.tnt.rateMid}"
 							styleClass="orange" />
+							
 						&nbsp;
 					</div>
 				</div>
@@ -178,7 +178,7 @@
 				<div class="clearfix">
 					<p:inputTextarea
 						value="#{userAppraisalView.userAppraisalComment.content}"
-						styleClass="col-xs-12 col-sm-6" required="true"
+						styleClass="col-xs-12 col-sm-6"
 						requiredMessage="This field is required. Please fill it out." />
 				</div>
 			</div>
@@ -190,9 +190,11 @@
 			<h:outputText value="subbmit" />
 			<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 		</p:commandLink>
+	</h:form>
 
 
 	</ui:define>
+
 
 	<ui:include src="fileFooter.xhtml" />
 	<ui:include src="userAppraisalFooter.xhtml" />

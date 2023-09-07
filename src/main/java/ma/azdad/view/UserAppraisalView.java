@@ -106,8 +106,9 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<SupplementaryGoals> editsuppl4 = new ArrayList<>();
 	private List<SupplementaryGoals> editsuppl5 = new ArrayList<>();
 	
-	private ToNotify tnt = new ToNotify();
+	private ToNotify tnt ;
 
+	
 	private List<String> goalTitleList;
 
 	private int goaltitlecount = 0;
@@ -122,7 +123,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Sections> sectionEditList;
 	private List<BusinessGoals> businessGoalsListEdit;
 	private List<SupplementaryGoals> supplementaryGoalsListEdit;
-	// private List<ToNotify> keyWorkerList;
 
 	@Override
 	@PostConstruct
@@ -2863,24 +2863,27 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	
 	
 	public ToNotify getTnt() {
+		 if (tnt == null) {
+		        tnt = new ToNotify();
+		    }
 		return tnt;
 	}
 
 	public void setTnt(ToNotify tnt) {
 		this.tnt = tnt;
 	}
-
+	
 	public void keyworkerSave() {
-			
-		//tnt = new ToNotify();
-		model = service.findOne(id);
 		
+		tnt = new ToNotify();
+		model = service.findOne(id);
 		ToNotify toNotify =	service.findToNotify(sessionView.getUsername(),model);
 		tnt.setInternalResource(toNotify.getInternalResource());
 		tnt.setUserAppraisal(toNotify.getUserAppraisal());
 		System.out.println("tonotify :"+toNotify);
 		System.out.println("tnt: " + tnt);
-		System.out.println("tnt.rateMid: " + tnt.getRateMid()); 
+		System.out.println("tnt.rateMid : " + tnt.getRateMid()); 
+		
 		
 		/*
 		 * toNotify.setRateMid(tnt.getRateMid()); model.getToNotifyList().add(toNotify);
