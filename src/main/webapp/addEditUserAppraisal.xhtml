@@ -65,7 +65,7 @@
 
 						</h:outputLink>
 						<p:commandLink
-							styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" update="keyworkersfinal"
+							styleClass="btn btn-app btn-sm btn-primary hover aa-tooltip tooltip-info" 
 							title="Reload page" action="#{userAppraisalView.evictCache()}">
 							<i class="ace-icon fa fa-refresh bigger-230"></i>
 							<h:outputText value="Reload" />
@@ -1712,7 +1712,7 @@
 							<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
 								<p:dataTable
-									value="#{userAppraisalView.tt}"
+									value="#{userAppraisalView.findToNotifyByUserAppraisal()}"
 									var="item" rowKey="#{tonotify}" id="keyworkersmid" widgetVar="sectionslist"
 									rows="20" styleClass="table table-striped table-hover center"
 									paginator="true" paginatorAlwaysVisible="false"
@@ -2195,7 +2195,7 @@
 							<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
 								<p:dataTable
-									value="#{userAppraisalView.tt}"
+									value="#{userAppraisalView.findToNotifyByUserAppraisal()}"
 									var="item" rowKey="#{tonotify}" id="keyworkersfinal"
 									widgetVar="sectionslist" rows="20"
 									styleClass="table table-striped table-hover center"
