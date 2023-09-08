@@ -150,7 +150,7 @@
 
 						<!-- 	################# MID year ################## -->
 						<h:outputLink value="addEditMidyear.xhtml"
-							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'MYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'MYR_EDITED' and userAppraisalView.model.employ eq sessionView.getUser()}"
+							rendered="#{(userAppraisalView.model.userAppraisalStatus eq 'MYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'MYR_EDITED') and (sessionView.getUsername() eq userAppraisalView.model.employ.username)}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Mid Review" />
@@ -239,14 +239,15 @@
 						</p:commandLink>
 
 						<h:outputLink value="addEditKeyworker.xhtml"
-							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_MID_YEAR' and userAppraisalView.isSavedKeyworkerMid()}"
+							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_MID_YEAR' and userAppraisalView.isInTonotifyList()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Keyworker Mid" />
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
 						</h:outputLink>
+						
 						<h:outputLink value="addEditKeyworkerFinal.xhtml"
-							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_FINAL_YEAR' and userAppraisalView.isSavedKeyworkerFinal()}"
+							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_FINAL_YEAR' and userAppraisalView.isInTonotifyList()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Keyworker Final" />
@@ -1723,9 +1724,10 @@
 										<h:outputText value="#{item.internalResource.fullName}"
 											styleClass="bolder green" />
 									</p:column>
+									
 									<p:column headerText="Rate Mid">
 										<h:outputText value="#{item.rateMid}"
-											styleClass="bolder orange" escape="false" />
+											styleClass="bolder orange" />
 									</p:column>
 
 								</p:dataTable>

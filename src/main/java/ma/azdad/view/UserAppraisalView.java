@@ -2968,6 +2968,24 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return true;
 	}
 	
+	
+	public Boolean isInTonotifyList() {
+		
+		List<ToNotify> tnts =service.findToNotifyByUserAppraisalFinal(model);
+		int is = 0;
+		for (ToNotify toNotify : tnts) {
+			if (sessionView.getUser().equals(toNotify.getInternalResource())) {
+				is++;
+			}
+		}
+		
+		if (is==0) {
+			return false;
+		}
+
+		return true;
+	}
+	
 	public List<ToNotify> findToNotifyByUserAppraisalFinal(){
 		
 		return service.findToNotifyByUserAppraisalFinal(model);
@@ -2977,6 +2995,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		
 		return service.findToNotifyByUserAppraisal(model);
 	}
+	
 	public Boolean isSavedKeyworkerFinal() {
 		ToNotify toNotify = service.findToNotify(sessionView.getUsername(), model);	
 		if (toNotify.getRateFinal()!=null) {
@@ -2984,6 +3003,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		}
 		return true;
 	}
+	
 	public Boolean isSavedKeyworkerMid() {
 		ToNotify toNotify = service.findToNotify(sessionView.getUsername(), model);	
 		if (toNotify.getRateMid()!=null) {
