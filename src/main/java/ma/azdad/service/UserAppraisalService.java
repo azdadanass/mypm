@@ -50,15 +50,23 @@ public class UserAppraisalService extends GenericService<Integer, UserAppraisal,
 	
 	@Cacheable("userappraisalService.findToNotifyByUserAppraisal")
 	public List<ToNotify> findToNotifyByUserAppraisal(UserAppraisal uap) {
-	
-		return repos.findToNotifyByUserAppraisal(uap);
-	}
-	
-	@Cacheable("userappraisalService.findToNotifyByUserAppraisalFinal")
-	public List<ToNotify> findToNotifyByUserAppraisalFinal(UserAppraisal uap) {
 		
-		return repos.findToNotifyByUserAppraisalFinal(uap);
+		List<ToNotify> list = repos.findToNotifyByUserAppraisal(uap);
+		for (ToNotify tn : list) {
+			initialize(tn.getInternalResource());
+		}
+		return list;
 	}
+	
+	
+	  @Cacheable("userappraisalService.findToNotifyByUserAppraisalFinal") public
+	  List<ToNotify> findToNotifyByUserAppraisalFinal(UserAppraisal uap) {
+	  
+	  List<ToNotify> list = repos.findToNotifyByUserAppraisal(uap); for
+	  (ToNotify tn : list) { initialize(tn.getInternalResource()); }
+	  
+	  return list; }
+	 
 	
 	@Cacheable("userAppraisalService.findByEmployOrAppraisee")
 	public List<UserAppraisal> findByEmployOrAppraisee(User appraisee, User employ) {
