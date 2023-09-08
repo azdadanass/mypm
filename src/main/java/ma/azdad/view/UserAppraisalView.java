@@ -122,7 +122,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Sections> sectionEditList;
 	private List<BusinessGoals> businessGoalsListEdit;
 	private List<SupplementaryGoals> supplementaryGoalsListEdit;
-	private List<ToNotify> tt;
+	private List<ToNotify> tt = new ArrayList<>();
 
 
 
@@ -139,7 +139,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void init() {
 		super.init();
 		// chart*****************************
-		tt = new ArrayList<>();
+		findToNotifyByUserAppraisal(model);
 		businessGoalsListEdit = new ArrayList<>();
 		editBusinessGoals();
 		sectionEditList = new ArrayList<>();
@@ -3010,17 +3010,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	 * return service.findToNotifyByUserAppraisalFinal(model); }
 	 */
 	
-	public void findToNotifyByUserAppraisal(UserAppraisal user){
-		System.out.println("methode to update tonotifylist");
-		//model = service.findOne(id);
-		
-
-		for (ToNotify notif : service.findToNotifyByUserAppraisal(user)) {
-			tt.add(notif);
-			System.out.println("t "+notif);
-
-		}
-	}
+	
 	
 	
 	
@@ -3056,6 +3046,18 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				return "resources/img/CS.png";
 			
 			else return "resources/img/logo.png"; 
+		}
+		
+		public void findToNotifyByUserAppraisal(UserAppraisal user){
+			System.out.println("methode to update tonotifylist");
+			//model = service.findOne(id);
+			
+
+			for (ToNotify notif : service.findToNotifyByUserAppraisal(user)) {
+				tt.add(notif);
+				System.out.println("t "+notif);
+
+			}
 		}
 		
 		
