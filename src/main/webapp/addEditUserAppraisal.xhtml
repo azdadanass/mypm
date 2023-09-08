@@ -187,7 +187,7 @@
 						<!-- 	##################  Final Year  ################# -->
 
 						<h:outputLink value="addEditFinalYear.xhtml"
-							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'FYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'FYR_EDITED' and (sessionView.getUsername() eq userAppraisalView.model.employ.username)}"
+							rendered="#{(userAppraisalView.model.userAppraisalStatus eq 'FYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'FYR_EDITED') and (sessionView.getUsername() eq userAppraisalView.model.employ.username)}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Final Review" />
@@ -242,7 +242,7 @@
 							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_MID_YEAR' and userAppraisalView.isInTonotifyList() and userAppraisalView.isSavedKeyworkerMid()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
-							<h:outputText value="Keyworker Mid" />
+							<h:outputText value="Keyworker" />
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
 						</h:outputLink>
 						
@@ -250,7 +250,7 @@
 							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_FINAL_YEAR' and userAppraisalView.isInTonotifyList() and userAppraisalView.isSavedKeyworkerFinal()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
-							<h:outputText value="Keyworker Final" />
+							<h:outputText value="Keyworker" />
 							<f:param name="id" value="#{userAppraisalView.model.id}" />
 						</h:outputLink>
 					</div>

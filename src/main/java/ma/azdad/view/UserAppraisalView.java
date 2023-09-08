@@ -411,7 +411,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				break;
 			case 4:
 				initLists(service.findUserappraisalbyStatsApproved(sessionView.getUsername(),
-						UserAppraisalStatus.SUBMITED_MID_YEAR, UserAppraisalStatus.SUBMITED_FINAL_YEAR));
+						UserAppraisalStatus.SUBMITED_MID_YEAR));
+				break;
+			case 8:
+				initLists(service.findUserappraisalbyStatsApprovedFinal(sessionView.getUsername(), UserAppraisalStatus.SUBMITED_FINAL_YEAR));
 				break;
 			case 5:
 				initLists(service.findUserappraisalbyStats(sessionView.getUsername(), UserAppraisalStatus.FYR_EDITED));
