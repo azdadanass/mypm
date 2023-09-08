@@ -122,16 +122,14 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Sections> sectionEditList;
 	private List<BusinessGoals> businessGoalsListEdit;
 	private List<SupplementaryGoals> supplementaryGoalsListEdit;
-	private List<ToNotify> tt = new ArrayList<>();
+	private List<ToNotify> toNotifyList;
 
-
-
-	public List<ToNotify> getTt() {
-		return tt;
+	public List<ToNotify> getToNotifyList() {
+		return toNotifyList;
 	}
 
-	public void setTt(List<ToNotify> tt) {
-		this.tt = tt;
+	public void setToNotifyList(List<ToNotify> toNotifyList) {
+		this.toNotifyList = toNotifyList;
 	}
 
 	@Override
@@ -139,9 +137,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public void init() {
 		super.init();
 		// chart*****************************
-		findToNotifyByUserAppraisal(model);
+		toNotifyList = new ArrayList<>();
 		businessGoalsListEdit = new ArrayList<>();
 		editBusinessGoals();
+		findToNotifyByUserAppraisal();
 		sectionEditList = new ArrayList<>();
 		editSection();
 		pieChartModel = new PieChartModel();
@@ -2911,13 +2910,12 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			model = service.saveAndRefresh(model);
 
 		}
-		findToNotifyByUserAppraisal(model);
-		
-		  ExternalContext externalContext1 =
-		  FacesContext.getCurrentInstance().getExternalContext(); try {
-		  externalContext1.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() +
-		  "&pageIndex=1"); } catch (IOException e) { e.printStackTrace(); }
-		 
+		ExternalContext externalContext1 = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			externalContext1.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
@@ -2954,7 +2952,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			model = service.saveAndRefresh(model);
 
 		}
-		findToNotifyByUserAppraisal(model);
 		ExternalContext externalContext1 = FacesContext.getCurrentInstance().getExternalContext();
 		try {
 			externalContext1.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
@@ -3010,9 +3007,23 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	 * return service.findToNotifyByUserAppraisalFinal(model); }
 	 */
 	
-	
-	
-	
+	public List<ToNotify> findToNotifyByUserAppraisalFinal() {
+
+		for (ToNotify notif : service.findToNotifyByUserAppraisalFinal(model)) {
+			toNotifyList.add(notif);
+		}
+
+		return service.findToNotifyByUserAppraisalFinal(model);
+	}
+
+	public List<ToNotify> findToNotifyByUserAppraisal() {
+		System.out.println("methode to update tonotifylist");
+		for (ToNotify notif : service.findToNotifyByUserAppraisal(model)) {
+			toNotifyList.add(notif);
+		}
+		
+		return service.findToNotifyByUserAppraisal(model);
+	}
 	
 	public Boolean isSavedKeyworkerFinal() {
 		ToNotify toNotify = service.findToNotify(sessionView.getUsername(), model);	
@@ -3046,18 +3057,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 				return "resources/img/CS.png";
 			
 			else return "resources/img/logo.png"; 
-		}
-		
-		public void findToNotifyByUserAppraisal(UserAppraisal user){
-			System.out.println("methode to update tonotifylist");
-			//model = service.findOne(id);
-			
-
-			for (ToNotify notif : service.findToNotifyByUserAppraisal(user)) {
-				tt.add(notif);
-				System.out.println("t "+notif);
-
-			}
 		}
 		
 		
