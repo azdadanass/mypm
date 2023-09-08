@@ -84,8 +84,13 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	List<UserAppraisal> findUserappraisalbykeyworkerFinal(String username, UserAppraisalStatus status);
 	
 
-	@Query("from UserAppraisal u  where (u.userStatsApprovedLMMidYear.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApprovedLMFinalYear.username=?1 and u.userAppraisalStatus=?3)  order by id desc")
-	List<UserAppraisal> findUserappraisalbyStatsApproved(String username, UserAppraisalStatus status1, UserAppraisalStatus status2);
+	@Query("from UserAppraisal u  where (u.userStatsApprovedLMMidYear.username=?1 and u.userAppraisalStatus=?2)   order by id desc")
+	List<UserAppraisal> findUserappraisalbyStatsApproved(String username, UserAppraisalStatus status1);
+	
+	
+	@Query("from UserAppraisal u  where  (u.userStatsApprovedLMFinalYear.username=?1 and u.userAppraisalStatus=?2)  order by id desc")
+	List<UserAppraisal> findUserappraisalbyStatsApprovedFinal(String username, UserAppraisalStatus status1);
+	
 	
 	@Query("from UserAppraisal u where (u.userStatsApprovedLM.username=?1 and u.userAppraisalStatus=?2) or (u.userStatsApproved.username=?1 and u.userAppraisalStatus=?3) order by id desc")
 	List<UserAppraisal> findUserappraisalRolebyStats(String username, UserAppraisalStatus status1,UserAppraisalStatus status2);
