@@ -122,13 +122,24 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<Sections> sectionEditList;
 	private List<BusinessGoals> businessGoalsListEdit;
 	private List<SupplementaryGoals> supplementaryGoalsListEdit;
-	// private List<ToNotify> keyWorkerList;
+	private List<ToNotify> tt;
+
+
+
+	public List<ToNotify> getTt() {
+		return tt;
+	}
+
+	public void setTt(List<ToNotify> tt) {
+		this.tt = tt;
+	}
 
 	@Override
 	@PostConstruct
 	public void init() {
 		super.init();
 		// chart*****************************
+		tt = new ArrayList<>();
 		businessGoalsListEdit = new ArrayList<>();
 		editBusinessGoals();
 		sectionEditList = new ArrayList<>();
@@ -2900,12 +2911,13 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			model = service.saveAndRefresh(model);
 
 		}
-		ExternalContext externalContext1 = FacesContext.getCurrentInstance().getExternalContext();
-		try {
-			externalContext1.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		findToNotifyByUserAppraisal(model);
+		
+		  ExternalContext externalContext1 =
+		  FacesContext.getCurrentInstance().getExternalContext(); try {
+		  externalContext1.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() +
+		  "&pageIndex=1"); } catch (IOException e) { e.printStackTrace(); }
+		 
 		return null;
 	}
 	
@@ -2942,6 +2954,7 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 			model = service.saveAndRefresh(model);
 
 		}
+		findToNotifyByUserAppraisal(model);
 		ExternalContext externalContext1 = FacesContext.getCurrentInstance().getExternalContext();
 		try {
 			externalContext1.redirect("addEditUserAppraisal.xhtml?id=" + model.getId() + "&pageIndex=1");
@@ -2972,9 +2985,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean isInTonotifyList() {
 		
 		List<ToNotify> tnts =service.findToNotifyByUserAppraisalFinal(model);
+		
 		int is = 0;
 		for (ToNotify toNotify : tnts) {
-			if ((toNotify.getInternalResource()).equals(sessionView.getUser())) {
+			if (sessionView.getUsername().equals(toNotify.getInternalResource().getUsername())) {
 				is++;
 			}
 		}
@@ -2986,15 +3000,29 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		return true;
 	}
 	
-	public List<ToNotify> findToNotifyByUserAppraisalFinal(){
+	
+	/*
+	 * public List<ToNotify> findToNotifyByUserAppraisalFinal(){
+	 * 
+	 * for (ToNotify notif : service.findToNotifyByUserAppraisalFinal(model)) {
+	 * toNotifyList.add(notif); }
+	 * 
+	 * return service.findToNotifyByUserAppraisalFinal(model); }
+	 */
+	
+	public void findToNotifyByUserAppraisal(UserAppraisal user){
+		System.out.println("methode to update tonotifylist");
+		//model = service.findOne(id);
 		
-		return service.findToNotifyByUserAppraisalFinal(model);
+
+		for (ToNotify notif : service.findToNotifyByUserAppraisal(user)) {
+			tt.add(notif);
+			System.out.println("t "+notif);
+
+		}
 	}
 	
-	public List<ToNotify> findToNotifyByUserAppraisal(){
-		
-		return service.findToNotifyByUserAppraisal(model);
-	}
+	
 	
 	public Boolean isSavedKeyworkerFinal() {
 		ToNotify toNotify = service.findToNotify(sessionView.getUsername(), model);	

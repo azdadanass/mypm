@@ -131,9 +131,10 @@ public interface UserAppraisalRepos extends JpaRepository<UserAppraisal, Integer
 	@Query("from ToNotify t where t.userAppraisal=?1 ")
 	List<ToNotify> findToNotifyByUserAppraisal( UserAppraisal userappraisal);
 	
-	@Query("from ToNotify t where t.userAppraisal=?1 ")
-	List<ToNotify> findToNotifyByUserAppraisalFinal( UserAppraisal userappraisal);
-	
+	/*
+	 * @Query("from ToNotify t where t.userAppraisal=?1 ") List<ToNotify>
+	 * findToNotifyByUserAppraisalFinal( UserAppraisal userappraisal);
+	 */
 	
 	
 }
