@@ -123,15 +123,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	private List<BusinessGoals> businessGoalsListEdit;
 	private List<SupplementaryGoals> supplementaryGoalsListEdit;
 	private List<ToNotify> toNotifyList;
-	private List<ToNotify> notif;
-
-	public List<ToNotify> getNotif() {
-		return notif;
-	}
-
-	public void setNotif(List<ToNotify> notif) {
-		this.notif = notif;
-	}
 
 	public List<ToNotify> getToNotifyList() {
 		return toNotifyList;
@@ -3016,14 +3007,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	 * return service.findToNotifyByUserAppraisalFinal(model); }
 	 */
 	
-	/*
-	 * public void findToNotifyByUserAppraisal(){
-	 * 
-	 * for (ToNotify notif : service.findToNotifyByUserAppraisalFinal(model)) {
-	 * toNotifyList.add(notif); } }
-	 */
-	
-	
 	public List<ToNotify> findToNotifyByUserAppraisalFinal() {
 
 		for (ToNotify notif : service.findToNotifyByUserAppraisalFinal(model)) {
@@ -3041,9 +3024,6 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 		
 		return service.findToNotifyByUserAppraisal(model);
 	}
-	
-	
-	
 	
 	public Boolean isSavedKeyworkerFinal() {
 		ToNotify toNotify = service.findToNotify(sessionView.getUsername(), model);	
