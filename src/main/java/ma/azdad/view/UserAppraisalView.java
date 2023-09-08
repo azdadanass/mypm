@@ -2972,9 +2972,10 @@ public class UserAppraisalView extends GenericView<Integer, UserAppraisal, UserA
 	public Boolean isInTonotifyList() {
 		
 		List<ToNotify> tnts =service.findToNotifyByUserAppraisalFinal(model);
+		
 		int is = 0;
 		for (ToNotify toNotify : tnts) {
-			if (sessionView.getUser().equals(toNotify.getInternalResource())) {
+			if (sessionView.getUsername().equals(toNotify.getInternalResource().getUsername())) {
 				is++;
 			}
 		}
