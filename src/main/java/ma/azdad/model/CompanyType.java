@@ -6,7 +6,8 @@ public enum CompanyType {
 	CUSTOMER("Customer", Color.GREEN),
 	SUPPLIER("Supplier", Color.BLUE),
 	OTHER("Other", Color.RED),
-	COMPANY("Company", Color.PURPLE),;
+	COMPANY("Company", Color.PURPLE),
+	CONSULTANT("Consultant", Color.PINK),;
 
 	private final String value;
 	private final Color color;
