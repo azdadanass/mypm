@@ -247,7 +247,7 @@
 						</h:outputLink>
 						
 						<h:outputLink value="addEditKeyworkerFinal.xhtml"
-							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_FINAL_YEAR' and userAppraisalView.isInTonotifyList() and userAppraisalView.isSavedKeyworkerFinal()}"
+							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_FINAL_YEAR' and userAppraisalView.isInTonotifyList() and userAppraisalView.isSavedKeyworkerFinal()}	"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Keyworker" />
