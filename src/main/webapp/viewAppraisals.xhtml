@@ -235,10 +235,25 @@
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
 										<div class="profile-info-name">
+											<h:outputText value="Appraisals Status" />
+										</div>
+										<div class="profile-info-value">
+											<h:outputText
+												value="#{appraisalsView.model.appraisalsStatus}"
+												styleClass="bolder green" />
+											&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="profile-user-info profile-user-info-striped">
+									<div class="profile-info-row">
+										<div class="profile-info-name">
 											<h:outputText value="Start Date" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText value="#{appraisalsView.model.startDate}">
+											<h:outputText value="#{appraisalsView.model.startDate}" styleClass="bolder orange">
 												<f:convertDateTime pattern="yyyy-MM-dd"
 													styleClass="bolder green" />
 											</h:outputText>
@@ -253,7 +268,7 @@
 											<h:outputText value="End Date" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText value="#{appraisalsView.model.endDate}">
+											<h:outputText value="#{appraisalsView.model.endDate}" styleClass="bolder orange">
 												<f:convertDateTime pattern="yyyy-MM-dd"
 													styleClass="bolder green" />
 											</h:outputText>
@@ -271,7 +286,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
-												value="#{appraisalsView.model.planningStartDate}">
+												value="#{appraisalsView.model.planningStartDate}" styleClass="bolder pink">
 												<f:convertDateTime pattern="yyyy-MM-dd"
 													styleClass="bolder green" />
 											</h:outputText>
@@ -288,7 +303,7 @@
 											<h:outputText value="Planning End Date" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText value="#{appraisalsView.model.planningEndDate}">
+											<h:outputText value="#{appraisalsView.model.planningEndDate}" styleClass="bolder pink">
 												<f:convertDateTime pattern="yyyy-MM-dd"
 													styleClass="bolder green" />
 											</h:outputText>
@@ -305,7 +320,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
-												value="#{appraisalsView.model.midYearReviewStartDate}">
+												value="#{appraisalsView.model.midYearReviewStartDate}" styleClass="bolder blue">
 												<f:convertDateTime pattern="yyyy-MM-dd"
 													styleClass="bolder green" />
 											</h:outputText>
@@ -322,7 +337,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
-												value="#{appraisalsView.model.midYearReviewEndDate}">
+												value="#{appraisalsView.model.midYearReviewEndDate}" styleClass="bolder blue">
 												<f:convertDateTime pattern="yyyy-MM-dd"
 													styleClass="bolder green" />
 											</h:outputText>
@@ -339,7 +354,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
-												value="#{appraisalsView.model.endYearSummaryStartDate}">
+												value="#{appraisalsView.model.endYearSummaryStartDate}" styleClass="bolder purple">
 												<f:convertDateTime pattern="yyyy-MM-dd"
 													styleClass="bolder green" />
 											</h:outputText>
@@ -356,7 +371,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText
-												value="#{appraisalsView.model.endYearSummaryEndDate}">
+												value="#{appraisalsView.model.endYearSummaryEndDate}" styleClass="bolder purple">
 												<f:convertDateTime pattern="yyyy-MM-dd"
 													styleClass="bolder green" />
 											</h:outputText>
@@ -365,21 +380,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6">
-								<div class="profile-user-info profile-user-info-striped">
-									<div class="profile-info-row">
-										<div class="profile-info-name">
-											<h:outputText value="Appraisals Status" />
-										</div>
-										<div class="profile-info-value">
-											<h:outputText
-												value="#{appraisalsView.model.appraisalsStatus}"
-												styleClass="bolder green" />
-											&nbsp;
-										</div>
-									</div>
-								</div>
-							</div>
+							
 							<div class="col-xs-12 col-sm-6">
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
