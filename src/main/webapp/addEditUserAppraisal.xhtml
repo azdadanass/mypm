@@ -263,7 +263,6 @@
 					<div class="widget-box transparent">
 						<div class="widget-header widget-header-flat">
 							<h4 class="lighter">
-								<i class="ace-icon fa fa-clock-o orange"></i>
 								<h:outputText value=" Approval Time Line" />
 							</h4>
 						</div>
@@ -570,7 +569,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText value="#{userAppraisalView.model.employ.job}"
-												styleClass="bolder orange" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -582,7 +581,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.findHireDate(userAppraisalView.model.employ.username)}"
-												styleClass="bolder pink" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -593,7 +592,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText value="#{userAppraisalView.model.appraisee}"
-												styleClass="bolder blue" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -605,7 +604,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.employ.userData.region}"
-												styleClass="bolder purple" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -615,7 +614,7 @@
 											<h:outputText value="DEP" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText value="#{userAppraisalView.model.employ.lobName}" styleClass="bolder red" />
+											<h:outputText styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -627,7 +626,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.employ.userData.grade}"
-												styleClass="bolder brown" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -639,7 +638,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.employ.userData.ladder}"
-												styleClass="bolder light-green" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -698,16 +697,16 @@
 									<p:column headerText="Weight">
 										<h:outputText value="#{item.weight}"
 											converter="javax.faces.Integer" min="0" max="100"
-											style="width: 40px" styleClass="bolder blue"/>
-										<h:outputText value=" %" styleClass="bolder blue" />
+											style="width: 40px" />
+										<h:outputText value="%" styleClass="bolder blue" />
 									</p:column>
 									<p:column headerText="Mid">
 										<h:outputText value="#{item.midYearReview}"
-											styleClass="bolder orange" />
+											styleClass="bolder" />
 									</p:column>
 									<p:column headerText="Final">
 										<h:outputText value="#{item.summaryRaiting}"
-											styleClass="bolder red" />
+											styleClass="bolder" />
 									</p:column>
 
 								</p:dataTable>
@@ -962,8 +961,8 @@
 										<p:column headerText="Goal Weight">
 											<h:outputText value="#{item.goalWeight}"
 												converter="javax.faces.Integer" min="0" max="100"
-												style="width: 40px" styleClass="bolder blue"/>
-											<h:outputText value=" %" styleClass="bolder blue" />
+												style="width: 40px" />
+											<h:outputText value="%" styleClass="bolder blue" />
 										</p:column>
 
 									</p:dataTable>
@@ -1018,8 +1017,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 
 										</p:dataTable>
@@ -1073,8 +1072,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 
 										</p:dataTable>
@@ -1129,8 +1128,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 
 										</p:dataTable>
@@ -1185,8 +1184,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 
 										</p:dataTable>
@@ -1239,8 +1238,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 
 										</p:dataTable>
@@ -1288,7 +1287,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText value="#{userAppraisalView.model.employ.job}"
-												styleClass="bolder orange" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1300,7 +1299,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.findHireDate(userAppraisalView.model.employ.username)}"
-												styleClass="bolder pink" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1311,7 +1310,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText value="#{userAppraisalView.model.appraisee}"
-												styleClass="bolder blue" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1323,7 +1322,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.employ.userData.region}"
-												styleClass="bolder purple" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1333,7 +1332,7 @@
 											<h:outputText value="DEP" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText value="#{userAppraisalView.model.employ.lobName}" styleClass="bolder red" />
+											<h:outputText styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1345,7 +1344,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.employ.userData.grade}"
-												styleClass="bolder brown" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1357,7 +1356,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.employ.userData.ladder}"
-												styleClass="bolder light-green" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1409,8 +1408,8 @@
 										<p:column headerText="Goal Weight">
 											<h:outputText value="#{item.goalWeight}"
 												converter="javax.faces.Integer" min="0" max="100"
-												style="width: 40px"  styleClass="bolder blue"/>
-											<h:outputText value=" %" styleClass="bolder blue" />
+												style="width: 40px" />
+											<h:outputText value="%" styleClass="bolder blue" />
 										</p:column>
 										<p:column headerText="Mid Year Review">
 											<h:outputText value="#{item.midYearReview}"
@@ -1459,8 +1458,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Mid Year Review">
 												<h:outputText value="#{item.midYearReview}"
@@ -1512,8 +1511,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 
 											<p:column headerText="Mid Year Review">
@@ -1557,8 +1556,6 @@
 											paginatorPosition="bottom"
 											paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
 											rowSelectMode="checkbox" rowIndexVar="index">
-
-
 											<p:column headerText="Goal Title">
 												<h:outputText value="#{item.sectionsData.goalTitle}"
 													styleClass="bolder green" escape="false" />
@@ -1566,8 +1563,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Mid Year Review">
 												<h:outputText value="#{item.midYearReview}"
@@ -1620,8 +1617,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Mid Year Review">
 												<h:outputText value="#{item.midYearReview}"
@@ -1671,8 +1668,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Mid Year Review">
 												<h:outputText value="#{item.midYearReview}"
@@ -1771,7 +1768,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText value="#{userAppraisalView.model.employ.job}"
-												styleClass="bolder orange" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1783,7 +1780,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.findHireDate(userAppraisalView.model.employ.username)}"
-												styleClass="bolder pink" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1794,7 +1791,7 @@
 										</div>
 										<div class="profile-info-value">
 											<h:outputText value="#{userAppraisalView.model.appraisee}"
-												styleClass="bolder blue" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1806,7 +1803,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.employ.userData.region}"
-												styleClass="bolder purple" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1816,7 +1813,7 @@
 											<h:outputText value="DEP" />
 										</div>
 										<div class="profile-info-value">
-											<h:outputText  value="#{userAppraisalView.model.employ.lobName}" styleClass="bolder red" />
+											<h:outputText styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1828,7 +1825,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.employ.userData.grade}"
-												styleClass="bolder brown" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1840,7 +1837,7 @@
 										<div class="profile-info-value">
 											<h:outputText
 												value="#{userAppraisalView.model.employ.userData.ladder}"
-												styleClass="bolder light-green" />
+												styleClass="bolder green" />
 											&nbsp;
 										</div>
 									</div>
@@ -1892,8 +1889,8 @@
 										<p:column headerText="Goal Weight">
 											<h:outputText value="#{item.goalWeight}"
 												converter="javax.faces.Integer" min="0" max="100"
-												style="width: 40px"  styleClass="bolder blue"/>
-											<h:outputText value=" %" styleClass="bolder blue" />
+												style="width: 40px" />
+											<h:outputText value="%" styleClass="bolder blue" />
 										</p:column>
 										<p:column headerText="Fianl Year Review">
 											<h:outputText value="#{item.summaryRaiting}"
@@ -1942,8 +1939,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Fianl Year Review">
 												<h:outputText value="#{item.summaryRaiting}"
@@ -1995,8 +1992,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 
 											<p:column headerText="Fianl Year Review">
@@ -2049,8 +2046,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Fianl Year Review">
 												<h:outputText value="#{item.summaryRaiting}"
@@ -2103,8 +2100,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Fianl Year Review">
 												<h:outputText value="#{item.summaryRaiting}"
@@ -2154,8 +2151,8 @@
 											<p:column headerText="Goal Weight">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
-													style="width: 40px"  styleClass="bolder blue"/>
-												<h:outputText value=" %" styleClass="bolder blue" />
+													style="width: 40px" />
+												<h:outputText value="%" styleClass="bolder blue" />
 											</p:column>
 											<p:column headerText="Fianl Year Review">
 												<h:outputText value="#{item.summaryRaiting}"
