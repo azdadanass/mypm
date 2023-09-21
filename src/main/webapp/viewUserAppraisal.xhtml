@@ -73,52 +73,54 @@
 
 							<f:subview id="step1" rendered="#{userAppraisalView.step==1}">
 								<div class="space-8" />
-								<div class="row">
-									<div class="table-header col-sm-12 col-xs-12">
-										<div class="col-sm-8 col-xs-8">
-											<i class="fa fa-list" />
-											<h:outputText value=" Section List" />
-										</div>
-										<div class="col-sm-2 hidden-xs">
-											<div class="action-buttons center">
-												<h:commandLink styleClass="aa-tooltip tooltip-success"
-													title="Export to excel">
-
-												</h:commandLink>
+								<div class="container" style="width: 900px;">
+									<div class="row">
+										<div class="table-header col-sm-12 col-xs-12">
+											<div class="col-sm-8 col-xs-8">
+												<i class="fa fa-list" />
+												<h:outputText value=" Section List" />
 											</div>
+											<div class="col-sm-2 hidden-xs">
+												<div class="action-buttons center">
+													<h:commandLink styleClass="aa-tooltip tooltip-success"
+														title="Export to excel">
+
+													</h:commandLink>
+												</div>
+											</div>
+
 										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
-									</div>
-									<div class="col-sm-12 col-xs-12 aa-datatable-container">
+											<p:dataTable value="#{userAppraisalView.titleList}"
+												var="title" rowKey="#{title}" id="appraisalsList"
+												widgetVar="sectionslist" rows="20"
+												styleClass="table table-striped table-hover center"
+												paginator="true" paginatorAlwaysVisible="false"
+												paginatorPosition="bottom"
+												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+												rowSelectMode="checkbox" rowIndexVar="index">
 
-										<p:dataTable value="#{userAppraisalView.titleList}"
-											var="title" rowKey="#{title}" id="appraisalsList"
-											widgetVar="sectionslist" rows="20"
-											styleClass="table table-striped table-hover center"
-											paginator="true" paginatorAlwaysVisible="false"
-											paginatorPosition="bottom"
-											paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
-											rowSelectMode="checkbox" rowIndexVar="index">
+												<p:column headerText="ID" style="width: 50px;">
+													<h:outputText value="#{index+1}" styleClass="bolder blue" />
+												</p:column>
+												<p:column headerText="Title" style="width: 400px;">
+													<h:outputText value="#{title}" styleClass="bolder blue" />
+												</p:column>
+												<p:column headerText="Eligible" style="width: 100px;">
+													<p:selectBooleanCheckbox
+														value="#{userAppraisalView.eligibleList[index]}"
+														disabled="#{index==0}" />
+												</p:column>
+												<p:column headerText="Weight" style="width: 200px;">
+													<h:inputText value="#{userAppraisalView.weightList[index]}"
+														converter="javax.faces.Integer" min="0" max="100"
+														required="true" style="width: 40px" />
+													<h:outputText value="%" styleClass="bolder blue" />
+												</p:column>
 
-											<p:column headerText="ID">
-												<h:outputText value="#{index+1}" styleClass="bolder blue" />
-											</p:column>
-											<p:column headerText="Title">
-												<h:outputText value="#{title}" styleClass="bolder blue" />
-											</p:column>
-											<p:column headerText="Eligible">
-												<p:selectBooleanCheckbox
-													value="#{userAppraisalView.eligibleList[index]}"
-													disabled="#{index==0}" />
-											</p:column>
-											<p:column headerText="Weight">
-												<h:inputText value="#{userAppraisalView.weightList[index]}"
-													converter="javax.faces.Integer" min="0" max="100" required="true"
-													style="width: 40px" />
-												<h:outputText value="%" styleClass="bolder blue" />
-											</p:column>
-
-										</p:dataTable>
+											</p:dataTable>
+										</div>
 									</div>
 								</div>
 								<div class="space-8" />
@@ -135,8 +137,10 @@
 													<div class="widget-header widget-header-large">
 														<table width="100%" style="margin: 10px">
 															<tr>
-																														<td width="5%" ><img height="60px" width="100px" src="#{userAppraisalView.bgImgUrl(businessgoal.goalTitle)}" alt="Image" /></td>
-															
+																<td width="5%"><img height="60px" width="100px"
+																	src="#{userAppraisalView.bgImgUrl(businessgoal.goalTitle)}"
+																	alt="Image" /></td>
+
 																<td width="75%">
 																	<h4>
 																		<h:outputText
@@ -181,21 +185,21 @@
 													<div class="profile-info-row ">
 														<div class="profile-info-name">
 															<h:outputText value="Goal Title" />
-																												</div>
-														
+														</div>
+
 														<div class="profile-info-value">
 															<h:outputText value="#{businessgoal.goalTitle}"
 																styleClass="orange" />
 															&nbsp;
 														</div>
-														
+
 													</div>
 												</div>
 											</div>
 											<div class="col-xs-12 col-sm-12">
 												<div class="profile-user-info profile-user-info-striped">
 													<div class="profile-info-row ">
-														
+
 														<div class="profile-info-name">
 															<h:outputText value="Goal Weight" />
 														</div>
@@ -219,7 +223,9 @@
 															<h:outputText value="Description" />
 														</div>
 														<div class="profile-info-value">
-															      <h:inputTextarea value="#{businessgoal.goalDetails}" styleClass="light-blue" rows="5" cols="143"  readonly="true" escape="false"/>
+															<h:inputTextarea value="#{businessgoal.goalDetails}"
+																styleClass="light-blue" rows="5" cols="143"
+																readonly="true" escape="false" />
 															&nbsp;
 														</div>
 													</div>
@@ -247,47 +253,49 @@
 									</h4>
 								</h:panelGroup>
 
-
-
 							</f:subview>
-
-
 
 							<f:subview id="step3" rendered="#{userAppraisalView.step==3}">
 								<h4 class="header blue bolder smaller">
 									<h:outputText value="Supplementary Goals List" />
 								</h4>
 								<ui:fragment rendered="#{userAppraisalView.isElig(1)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="JOB EXECUTION" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="Jobexecution"
-													value="#{userAppraisalView.suppl1}" var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="JOB EXECUTION" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="Jobexecution"
+														value="#{userAppraisalView.suppl1}" var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="ID" style="width: 50px;">
+															<h:outputText value="#{index+1}" styleClass="bolder blue" />
+														</p:column>
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="bolder green"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description"
+															style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -295,36 +303,42 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(2)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="CODE OF CONDUCT" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="CODE" value="#{userAppraisalView.suppl2}"
-													var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="CODE OF CONDUCT" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="CODE" value="#{userAppraisalView.suppl2}"
+														var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="ID" style="width: 50px;">
+															<h:outputText value="#{index+1}" styleClass="bolder blue" />
+														</p:column>
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="bolder green"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description"
+															style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -332,37 +346,43 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(3)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="LEADERSHIP DEPENDABILTY" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="LEADERSHIP"
-													rendered="#{userAppraisalView.isElig(3)}"
-													value="#{userAppraisalView.suppl3}" var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="LEADERSHIP DEPENDABILTY" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="LEADERSHIP"
+														rendered="#{userAppraisalView.isElig(3)}"
+														value="#{userAppraisalView.suppl3}" var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="ID" style="width: 50px;">
+															<h:outputText value="#{index+1}" styleClass="bolder blue" />
+														</p:column>
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="bolder green"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description"
+															style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -370,37 +390,44 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(4)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="PERSONALITY ATTRIBUTES" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="PERSONALITY"
-													rendered="#{userAppraisalView.isElig(4)}"
-													value="#{userAppraisalView.suppl4}" var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="PERSONALITY ATTRIBUTES" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="PERSONALITY"
+														rendered="#{userAppraisalView.isElig(4)}"
+														value="#{userAppraisalView.suppl4}" var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="ID" style="width: 50px;">
+															<h:outputText value="#{index+1}" styleClass="bolder blue" />
+														</p:column>
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="bolder green"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description"
+															style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -408,37 +435,44 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(5)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="MANAGEMENT RESPONSIBILITIES" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="MANAGEMENT"
-													rendered="#{userAppraisalView.isElig(5)}"
-													value="#{userAppraisalView.suppl5}" var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="MANAGEMENT RESPONSIBILITIES" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="MANAGEMENT"
+														rendered="#{userAppraisalView.isElig(5)}"
+														value="#{userAppraisalView.suppl5}" var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="ID" style="width: 50px;">
+															<h:outputText value="#{index+1}" styleClass="bolder blue" />
+														</p:column>
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="bolder green"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description"
+															style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -545,7 +579,8 @@
 										<div class="clearfix">
 											<p:inputTextarea
 												value="#{userAppraisalView.userAppraisalComment.content}"
-												styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="This field is required. Please fill it out."/>
+												styleClass="col-xs-12 col-sm-6" required="true"
+												requiredMessage="This field is required. Please fill it out." />
 										</div>
 									</div>
 								</div>
@@ -618,50 +653,52 @@
 
 							<f:subview id="step1" rendered="#{userAppraisalView.step==1}">
 								<div class="space-8" />
-								<div class="row">
-									<div class="table-header col-sm-12 col-xs-12">
-										<div class="col-sm-8 col-xs-8">
-											<i class="fa fa-list" />
-											<h:outputText value=" Section List" />
-										</div>
-										<div class="col-sm-2 hidden-xs">
-											<div class="action-buttons center">
-												<h:commandLink styleClass="aa-tooltip tooltip-success"
-													title="Export to excel">
-
-												</h:commandLink>
+								<div class="container" style="width: 900px;">
+									<div class="row">
+										<div class="table-header col-sm-12 col-xs-12">
+											<div class="col-sm-8 col-xs-8">
+												<i class="fa fa-list" />
+												<h:outputText value=" Section List" />
 											</div>
+											<div class="col-sm-2 hidden-xs">
+												<div class="action-buttons center">
+													<h:commandLink styleClass="aa-tooltip tooltip-success"
+														title="Export to excel">
+
+													</h:commandLink>
+												</div>
+											</div>
+
 										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
 
-									</div>
-									<div class="col-sm-12 col-xs-12 aa-datatable-container">
-
-										<p:dataTable value="#{userAppraisalView.sectionEditList}"
-											var="item" rowKey="#{item}" id="sections"
-											widgetVar="sectionslist" rows="20"
-											styleClass="table table-striped table-hover center"
-											paginator="true" paginatorAlwaysVisible="false"
-											paginatorPosition="bottom"
-											paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
-											rowSelectMode="checkbox" rowIndexVar="index">
+											<p:dataTable value="#{userAppraisalView.sectionEditList}"
+												var="item" rowKey="#{item}" id="sections"
+												widgetVar="sectionslist" rows="20"
+												styleClass="table table-striped table-hover center"
+												paginator="true" paginatorAlwaysVisible="false"
+												paginatorPosition="bottom"
+												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+												rowSelectMode="checkbox" rowIndexVar="index">
 
 
-											<p:column headerText="Title">
-												<h:outputText value="#{item.sectionsTitle}"
-													styleClass="bolder blue" />
-											</p:column>
-											<p:column headerText="Eligible">
-												<p:selectBooleanCheckbox value="#{item.eligible}"
-													disabled="#{index==0}" />
-											</p:column>
-											<p:column headerText="Weight">
-												<h:inputText value="#{item.weight}"
-													converter="javax.faces.Integer" min="0" max="100" required="true"
-													style="width: 40px" />
-												<h:outputText value="%" styleClass="bolder blue" />
-											</p:column>
+												<p:column headerText="Title">
+													<h:outputText value="#{item.sectionsTitle}"
+														styleClass="bolder blue" />
+												</p:column>
+												<p:column headerText="Eligible">
+													<p:selectBooleanCheckbox value="#{item.eligible}"
+														disabled="#{index==0}" />
+												</p:column>
+												<p:column headerText="Weight">
+													<h:inputText value="#{item.weight}"
+														converter="javax.faces.Integer" min="0" max="100"
+														required="true" style="width: 40px" />
+													<h:outputText value="%" styleClass="bolder blue" />
+												</p:column>
 
-										</p:dataTable>
+											</p:dataTable>
+										</div>
 									</div>
 								</div>
 								<div class="space-8" />
@@ -680,7 +717,9 @@
 													<div class="widget-header widget-header-large">
 														<table width="100%" style="margin: 10px">
 															<tr>
-															<td width="5%" ><img height="60px" width="100px" src="#{userAppraisalView.bgImgUrl(businessgoal.goalTitle)}" alt="Image" /></td>
+																<td width="5%"><img height="60px" width="100px"
+																	src="#{userAppraisalView.bgImgUrl(businessgoal.goalTitle)}"
+																	alt="Image" /></td>
 																<td width="75%">
 																	<h4>
 																		<h:outputText
@@ -746,21 +785,21 @@
 												</div>
 											</div>
 											<div class="col-xs-12 col-sm-12">
-																							<div class="profile-user-info profile-user-info-striped">
-											
-												<div class="profile-info-row">
-													<div class="profile-info-name">
-														<h:outputText value="Description" />
-													</div>
-													<div class="profile-info-value">
-														<h:outputText value="#{businessgoal.goalDetails}"
-															styleClass="light-blue" />
-														&nbsp;
+												<div class="profile-user-info profile-user-info-striped">
+
+													<div class="profile-info-row">
+														<div class="profile-info-name">
+															<h:outputText value="Description" />
+														</div>
+														<div class="profile-info-value">
+															<h:outputText value="#{businessgoal.goalDetails}"
+																styleClass="light-blue" />
+															&nbsp;
+														</div>
 													</div>
 												</div>
 											</div>
-																					</div>
-											
+
 										</div>
 										<hr />
 										<div class="space-8" />
@@ -788,36 +827,39 @@
 									<h:outputText value="Supplementary Goals List" />
 								</h4>
 								<ui:fragment rendered="#{userAppraisalView.isElig(1)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="JOB EXECUTION" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="Jobexecution"
-													value="#{userAppraisalView.suppl1}" var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="JOB EXECUTION" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="Jobexecution"
+														value="#{userAppraisalView.suppl1}" var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="bolder green"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description" style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -825,36 +867,39 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(2)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="CODE OF CONDUCT" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="CODE" value="#{userAppraisalView.suppl2}"
-													var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="CODE OF CONDUCT" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="CODE" value="#{userAppraisalView.suppl2}"
+														var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="green bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description" style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -862,37 +907,40 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(3)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="LEADERSHIP DEPENDABILTY" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="LEADERSHIP"
-													rendered="#{userAppraisalView.isElig(3)}"
-													value="#{userAppraisalView.suppl3}" var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false" />
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="LEADERSHIP DEPENDABILTY" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="LEADERSHIP"
+														rendered="#{userAppraisalView.isElig(3)}"
+														value="#{userAppraisalView.suppl3}" var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="bolder green"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description" style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -900,37 +948,40 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(4)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="PERSONALITY ATTRIBUTES" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="PERSONALITY"
-													rendered="#{userAppraisalView.isElig(4)}"
-													value="#{userAppraisalView.suppl4}" var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="PERSONALITY ATTRIBUTES" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="PERSONALITY"
+														rendered="#{userAppraisalView.isElig(4)}"
+														value="#{userAppraisalView.suppl4}" var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="bolder green"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description" style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -938,37 +989,40 @@
 
 								<div class="space-16" />
 								<ui:fragment rendered="#{userAppraisalView.isElig(5)}">
-									<div class="row">
-										<div class="col-sm-offset-1 col-sm-10">
-											<div class="table-header col-sm-12 col-xs-12">
-												<i class="fa fa-list" />
-												<h:outputText value="MANAGEMENT RESPONSIBILITIES" />
-											</div>
-											<div class="col-sm-12 col-xs-12 aa-datatable-container">
-												<p:dataTable id="MANAGEMENT"
-													rendered="#{userAppraisalView.isElig(5)}"
-													value="#{userAppraisalView.suppl5}" var="item" rows="20"
-													styleClass="table table-striped table-hover center"
-													paginatorAlwaysVisible="false" paginator="true"
-													paginatorPosition="bottom"
-													paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
-													rowIndexVar="index">
-													<p:column headerText="ID">
-														<h:outputText value="#{index+1}" styleClass="bolder blue" />
-													</p:column>
-													<p:column headerText="Goal Title">
-														<h:outputText value="#{item.sectionsData.goalTitle}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal Description">
-														<h:outputText value="#{item.sectionsData.goalDescription}" escape="false"/>
-													</p:column>
-													<p:column headerText="Goal weight">
-														<h:inputText value="#{item.weight}"
-															converter="javax.faces.Integer" min="0" max="100" required="true"
-															style="width: 40px" />
-														<h:outputText value="%" styleClass="bolder blue" />
-													</p:column>
-												</p:dataTable>
+									<div class="container">
+
+										<div class="row">
+											<div class="col-sm-offset-1 col-sm-10">
+												<div class="table-header col-sm-12 col-xs-12">
+													<i class="fa fa-list" />
+													<h:outputText value="MANAGEMENT RESPONSIBILITIES" />
+												</div>
+												<div class="col-sm-12 col-xs-12 aa-datatable-container">
+													<p:dataTable id="MANAGEMENT"
+														rendered="#{userAppraisalView.isElig(5)}"
+														value="#{userAppraisalView.suppl5}" var="item" rows="20"
+														styleClass="table table-striped table-hover center"
+														paginatorAlwaysVisible="false" paginator="true"
+														paginatorPosition="bottom"
+														paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink}  {PageLinks}"
+														rowIndexVar="index">
+														<p:column headerText="Goal Title">
+															<h:outputText value="#{item.sectionsData.goalTitle}" styleClass="bolder green"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal Description" style="width: 50%;">
+															<h:outputText
+																value="#{item.sectionsData.goalDescription}" styleClass="bolder"
+																escape="false" />
+														</p:column>
+														<p:column headerText="Goal weight">
+															<h:inputText value="#{item.weight}"
+																converter="javax.faces.Integer" min="0" max="100"
+																required="true" style="width: 40px" />
+															<h:outputText value="%" styleClass="bolder blue" />
+														</p:column>
+													</p:dataTable>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -1075,7 +1129,8 @@
 										<div class="clearfix">
 											<p:inputTextarea
 												value="#{userAppraisalView.userAppraisalComment.content}"
-												styleClass="col-xs-12 col-sm-6" required="true" requiredMessage="This field is required. Please fill it out."/>
+												styleClass="col-xs-12 col-sm-6" required="true"
+												requiredMessage="This field is required. Please fill it out." />
 										</div>
 									</div>
 								</div>
