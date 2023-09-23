@@ -691,21 +691,21 @@
 												<h:outputText value="#{item.sectionsTitle}"
 													styleClass="bolder green" />
 											</p:column>
-											<p:column headerText="Eligible" style="width: 10%;">
+											<p:column headerText="Eligible" style="width: 8%;">
 												<p:selectBooleanCheckbox value="#{item.eligible}"
 													disabled="true" />
 											</p:column>
-											<p:column headerText="Weight" style="width: 10%;">
+											<p:column headerText="Weight" style="width: 8%;">
 												<h:outputText value="#{item.weight}"
 													converter="javax.faces.Integer" min="0" max="100"
 													style="width: 40px" styleClass="bolder blue" />
 												<h:outputText value=" %" styleClass="bolder blue" />
 											</p:column>
-											<p:column headerText="Mid" style="width: 10%;">
+											<p:column headerText="Mid year Review" style="width: 12%;">
 												<h:outputText value="#{item.midYearReview}"
 													styleClass="bolder orange" />
 											</p:column>
-											<p:column headerText="Final" style="width: 10%;">
+											<p:column headerText="Final year Review" style="width: 12%;">
 												<h:outputText value="#{item.summaryRaiting}"
 													styleClass="bolder red" />
 											</p:column>
@@ -922,7 +922,7 @@
 									<h:outputText value=" Section Raiting Summary" />
 								</h1>
 							</div>
-							
+
 							<div class="container" style="width: 55%;">
 								<div class="row">
 									<div class="table-header col-sm-12 col-xs-12">
@@ -1266,7 +1266,73 @@
 									</div>
 								</div>
 							&nbsp;
-							<div class="space-16" />
+								<div class="space-16" />
+								<div class="space-16" />
+								<div class="page-header hidden-xs">
+									<h1>
+										<i class="ace-icon fa fa-list-alt bigger-110 blue"></i>
+										<h:outputText value="Keyworker Partener" />
+									</h1>
+								</div>
+
+								<div class="container" style="width: 55%;">
+									<div class="row">
+										<div class="table-header col-sm-12 col-xs-12">
+											<div class="col-sm-8 col-xs-8">
+												<i class="fa fa-list" />
+												<h:outputText value="Key Worker List" />
+											</div>
+											<div class="col-sm-2 hidden-xs">
+												<div class="action-buttons center">
+													<h:commandLink styleClass="aa-tooltip tooltip-success"
+														title="Export to excel">
+
+													</h:commandLink>
+												</div>
+											</div>
+
+										</div>
+										<div class="col-sm-12 col-xs-12 aa-datatable-container">
+
+											<p:dataTable
+												value="#{userAppraisalView.findToNotifyByUserAppraisal()}"
+												var="item" rowKey="#{title}" id="keyworkerList"
+												widgetVar="sectionslist" rows="20"
+												styleClass="table table-striped table-hover center"
+												paginator="true" paginatorAlwaysVisible="false"
+												paginatorPosition="bottom"
+												paginatorTemplate="{JumpToPageDropdown} {LastPageLink} {FirstPageLink} {PageLinks}"
+												rowSelectMode="checkbox" rowIndexVar="index">
+
+												<p:column headerText="Photo">
+													<p:graphicImage id="photo"
+														value="#{item.internalResource.photo}"
+														styleClass="img-circle aa-datatable-photo" />
+												</p:column>
+												<p:column headerText="Full Name">
+													<h:outputText value="#{item.internalResource.fullName}"
+														styleClass="bolder" escape="false" />
+												</p:column>
+												<p:column headerText="Dep">
+													<h:outputText value="#{item.internalResource.lobName}"
+														converter="javax.faces.Integer" min="0" max="100"
+														style="width: 40px" styleClass="bolder blue" />
+												</p:column>
+												<p:column headerText="email">
+													<h:outputText value="#{item.internalResource.email}"
+														styleClass="bolder" escape="false" />
+												</p:column>
+												<p:column headerText="Tele">
+													<h:outputText value="#{item.internalResource.phone}"
+														styleClass="bolder" escape="false" />
+												</p:column>
+
+											</p:dataTable>
+										</div>
+									</div>
+								</div>
+								<div class="space-16" />
+
 							</h:panelGroup>
 						</div>
 						<div class="space-16" />
@@ -1696,7 +1762,7 @@
 												rowSelectMode="checkbox" rowIndexVar="index">
 
 
-												<p:column headerText="Goal Title" style="width: 60%;">
+												<p:column headerText="Goal Title" style="width: 50%;">
 													<h:outputText value="#{item.sectionsData.goalTitle}"
 														styleClass="bolder green" escape="false" />
 												</p:column>
@@ -1760,7 +1826,7 @@
 												styleClass="bolder green" />
 										</p:column>
 
-										<p:column headerText="Rate Mid">
+										<p:column headerText="Mid year Review Rating">
 											<h:outputText value="#{item.rateMid}"
 												styleClass="bolder orange" />
 										</p:column>
@@ -2266,7 +2332,7 @@
 											<h:outputText value="#{item.internalResource.fullName}"
 												styleClass="bolder green" />
 										</p:column>
-										<p:column headerText="Rate Final">
+										<p:column headerText="Final year Review Rating">
 											<h:outputText value="#{item.rateFinal}"
 												styleClass="bolder orange" escape="false" />
 										</p:column>
