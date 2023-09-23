@@ -239,7 +239,7 @@
 						</p:commandLink>
 
 						<h:outputLink value="addEditKeyworker.xhtml"
-							rendered="#{userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_MID_YEAR' and userAppraisalView.isInTonotifyList() and userAppraisalView.isSavedKeyworkerMid()}"
+							rendered="#{(userAppraisalView.model.userAppraisalStatus eq 'SUBMITED_MID_YEAR' or userAppraisalView.model.userAppraisalStatus eq 'MYR_SELF_ASSESSMENT' or userAppraisalView.model.userAppraisalStatus eq 'MYR_EDITED' or userAppraisalView.model.userAppraisalStatus eq 'MYR_APPROVED_LM') and userAppraisalView.isInTonotifyList() and userAppraisalView.isSavedKeyworkerMid()}"
 							styleClass="btn btn-app btn-sm btn-warning hover aa-tooltip tooltip-warning">
 							<i class="ace-icon fa fa-edit bigger-230"></i>
 							<h:outputText value="Keyworker" />

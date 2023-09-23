@@ -64,7 +64,7 @@
 								requiredMessage="To notify item should not be null"
 								converter="#{genericSecuredConverter}">
 								<f:selectItem itemLabel="---" noSelectionOption="true" />
-								<f:selectItems value="#{userView.findLightAndActive()}"
+								<f:selectItems value="#{userView.findLightAndActive(sessionView.getUsername())}"
 									var="item" itemLabel="#{item.fullName}"
 									itemValue="#{item.username}" />
 							</p:selectOneMenu>

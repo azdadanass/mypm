@@ -92,7 +92,7 @@
 						<p:commandLink title="Delete"
 							styleClass="btn btn-app btn-sm btn-danger hover aa-tooltip tooltip-error"
 							onclick="PF('deleteDlg').show()"
-							rendered="#{appraisalsView.canDelete()}">
+							rendered="#{appraisalsView.listenerEdit()}">
 							<i class="ace-icon fa fa-trash-o bigger-230"></i>
 							<h:outputText value="Delete" />
 						</p:commandLink>

@@ -912,8 +912,8 @@ public class UserView {
 		this.active = active;
 	}
 	
-	public List<User> findLightAndActive() {
-		return userService.findLightByStatu(true);
+	public List<User> findLightAndActive(String u) {
+		return userService.findLightByStatu(true,u);
 	}
 
 }
