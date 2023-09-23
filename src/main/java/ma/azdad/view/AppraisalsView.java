@@ -146,6 +146,26 @@ public class AppraisalsView extends GenericView<Integer, Appraisals, AppraisalsR
 		userAppraisal.setAppraisal(model);
 		userAppraisal.setEmploy(userNoAppraisal);
 		userAppraisal.setDateStatsCreated(new Date());
+		userAppraisal.setUserStatsCreated(sessionView.getUser());
+		userAppraisal.setUserStatsEdited(userNoAppraisal);
+		userAppraisal.setUserStatsSubmited(userNoAppraisal);
+		userAppraisal.setUserStatsApprovedLM(userNoAppraisal.getAffectation().getLineManager());
+		userAppraisal.setUserStatsApproved(userNoAppraisal.getAffectation().getHrManager());
+
+		userAppraisal.setUserStatsSelfAssessmentMidYear(userNoAppraisal.getAffectation().getHrManager());
+		userAppraisal.setUserStatsMidEdited(userNoAppraisal);
+		userAppraisal.setUserStatsSubmitedMidYear(userNoAppraisal);
+		userAppraisal.setUserStatsApprovedLMMidYear(userNoAppraisal.getAffectation().getLineManager());
+
+		userAppraisal.setUserStatsSelfAssessmentFinalYear(userNoAppraisal.getAffectation().getHrManager());
+		userAppraisal.setUserStatsFinalEdited(userNoAppraisal);
+		userAppraisal.setUserStatsSubmitedFinalYear(userNoAppraisal);
+		userAppraisal.setUserStatsApprovedLMFinalYear(userNoAppraisal.getAffectation().getLineManager());
+		userAppraisal.setUserStatsClosed(userNoAppraisal);
+
+		userAppraisal.addHistory(new UserAppraisalHistory(getIsAddPage() ? "Created" : "Edited",
+				userNoAppraisal.getAffectation().getHrManager(), userNoAppraisal.getAffectation().getLineManager() + " has Created "
+						+ userAppraisal.getEmploy().getFullName() + " Appraisal"));
 		System.out.println(userAppraisal);
 		userAppraisalService.save(userAppraisal);
 
